@@ -1,0 +1,76 @@
+.project-background {
+    display: flex;
+    height: 700px;
+    width: 100%;
+} 
+.container-projects {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-bottom: 50px;
+}
+.project-display {
+    display: flex;
+    position: relative;
+    width: 33%;
+    height: 50%;
+}
+.project-image {
+    box-sizing: border-box;
+    position: absolute;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+.project-textbox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+.project-title {
+    line-height: 30px;
+    margin-left: 20px;
+    font-weight: 400;
+    margin-bottom: 0;
+    z-index: 1;
+}
+.project-description {
+    margin-right: 20px;
+    margin-left: 20px;
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+.project-tech {
+    font-weight: bold;
+    flex-grow: 1;
+    margin-top: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+    font-size: 17px;
+
+}
+.project-links{
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.links {
+    font-weight: bold;
+    font-size: 19px;
+    color: gray;
+    padding: 8px 12px 0 0;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.links, .project-tech, .project-description, .project-title {
+    opacity: 0;
+    pointer-events: none;
+}
+a {
+    background-color: transparent;
+}

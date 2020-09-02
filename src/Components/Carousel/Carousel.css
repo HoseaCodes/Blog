@@ -1,0 +1,144 @@
+/* Buttons */
+*,
+*::before,
+*::after {
+  position: relative;
+}
+
+button {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: black;
+    position: absolute;
+    font-size: 5rem;
+    width: 5rem;
+    height: 5rem;
+    top: 50%;
+    transition: opacity 0.3s;
+    opacity: 0.7;
+    z-index: 5;
+  }
+    button:hover {
+      opacity: 1;
+    }
+
+    button:focus {
+      outline: none;
+    }
+
+    button:first-child {
+      left: -20%;
+    }
+    button:last-child {
+      right: -20%;
+    }
+/* Buttons */
+
+
+.carousel-container {
+  /* height: 100vh; */
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  font-size: 3vmin;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} 
+ 
+ .slides {
+  display: grid;
+} 
+
+  .slide {
+    grid-area: 1 / -1;
+  }
+
+/* .slide {
+    transform-style: preserve-3d;
+    border: solid 1px black;
+} */
+
+.slide[data-active],
+    .slideContent * {
+      transform: none;
+      opacity: 1;
+      transform-style: preserve-3d; 
+      background-color:rgba(0, 0, 0, 0.3);
+    }
+
+.slideContent {
+  width: 50vw;
+  height: 80vw;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.5s ease-in-out;
+  opacity: 0.7;
+  display: grid;
+  align-content: center;
+  transform: perspective(1000px) translateX(calc(100% * var(--offset)))
+    rotateY(calc(-55deg * var(--dir)));
+}
+
+.slideContentInner {
+  transform-style: preserve-3d;
+  transform: translateZ(2rem);
+  transition: opacity 0.3s linear;
+  text-shadow: 0 0.1rem 1rem #000;
+  opacity: 0;
+  color: white; 
+  left: 10px;
+  margin-right: 10px;
+}
+
+  .slideSubtitle,
+  .slideTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.2ch;
+    text-transform: uppercase;
+    margin: 0;
+    color: white;
+  }
+  .slideSubtitle {
+      font-size: 1rem;
+  }
+
+  .slideSubtitle::before {
+    content: "— ";
+  }
+
+  .slideDescription {
+    margin: 0;
+    font-size: .8rem;
+    letter-spacing: 0.2ch;
+    color: white;
+  }
+
+.slide[data-active] {
+  z-index: 2;
+  pointer-events: auto;
+}
+
+
+
+  .slideContentInner {
+    opacity: 1;
+  }
+  /* Middle Slide Content */
+  .slideContent {
+    --x: calc(var(--px) - 0.5);
+    --y: calc(var(--py) - 0.5);
+    opacity: 1;
+    /* transform: perspective(1000px); */
+  }
+    /* Middle Slide Content */
+
+  .slideContent:hover {
+      transition: none;
+      /* transform: perspective(1000px) rotateY(calc(var(--x) * 45deg))
+        rotateX(calc(var(--y) * -45deg)); */
+    }
+ 

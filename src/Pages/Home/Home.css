@@ -35,7 +35,7 @@
     text-transform: uppercase;
 }
 
-.projects h1, .technologies h1, .color h1 {
+.projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1 {
     color: white;
     display: block;
     font-family: Lato, sans-serif;

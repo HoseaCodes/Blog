@@ -51,11 +51,20 @@ const Home = () => {
                 {/* <CodePen /> */}
             </div>
             {/* <img src={logo} className="logo" alt="Logo Image" /> */}
+            <div className='color'>
+                <h1>technologies</h1>
+            </div>
             <div className='technologies'>
                 <CaseStudy />
             </div>
+            <div className='color'>
+                <h1>articles</h1>
+            </div>
             <div className='articles'>
                 <Articles />
+            </div>
+            <div className='color'>
+                <h1>social media</h1>
             </div>
             <div className='socialmedia'>
                 <SocialMedia />

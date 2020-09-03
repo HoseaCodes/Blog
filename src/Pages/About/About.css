@@ -173,11 +173,12 @@ q {
   margin: 60px 10px 10px 60px;
   font-family: 'Times New Roman', Times, serif;
   line-height: 2;
+  width: 80%;
 }
 .rightAbout {
   background-color: black;
   opacity: 0.7;
-  margin: 60px;
+  width: 80%;
 }
 
   /* Media queries - Responsive timeline on screens less than 600px wide */

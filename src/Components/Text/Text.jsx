@@ -1,6 +1,5 @@
 import * as React from "react";
 import '../Text/Text.css';
-
 import { useDencrypt } from "use-dencrypt-effect";
 
 const values = ["PROBLEM SOLVER", "DEVELOPER", "SOFTWARE ENGINEER", "INNOVATOR"];

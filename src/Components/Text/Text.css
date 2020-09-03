@@ -10,3 +10,12 @@
     letter-spacing: 1.5rem;
     line-height: 40px;
 }
+/* ------------------------------------------ */
+
+@media screen and (max-width: 600px) {
+    .header-career {
+        font-size: 1.5rem;
+        letter-spacing: 1.5rem;
+        line-height: 40px;
+    }
+  }

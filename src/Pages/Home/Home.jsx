@@ -10,15 +10,17 @@
 
 import React from 'react';
 import '../Home/Home.css';
-import logo from '../../logo.svg';
 import NavBar2 from '../../Components/NavBar/NavBar2';
+import Text from '../../Components/Text/Text';
+import logo from '../../logo.svg';
 import Project1 from '../../Components/Project/Project1';
 import CaseStudy from '../../Components/Project/Case-Study';
 import WebFiver from '../../Components/Project/WebFiver';
 import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
-import Text from '../../Components/Text/Text';
 import Carousel from '../../Components/Carousel/Carousel';
+import ControlledCarousel from '../../Components/Bootstrap/Carousel';
+import CodePen from '../../Components/CodePen/CodePen';
 
 
 
@@ -35,8 +37,10 @@ const Home = () => {
                     </h1>
                 </div>
             </div>
-            <div className='projects'>
+            <div className='color'>
                 <h1>Projects</h1>
+            </div>
+            <div className='projects'>
                 <Carousel />
                 {/* <h1>Projects</h1> */}
                 {/* <iframe className='iframe' title="p" height="600" width="800" src='https://hoseacodes.github.io/Calorie-Kitchen/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe>
@@ -44,6 +48,7 @@ const Home = () => {
                 <iframe className='iframe' title="p" height="600" width="800" src='http://webfiver.com/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe> */}
                 {/* <Project1 /> */}
                 {/* <WebFiver /> */}
+                {/* <CodePen /> */}
             </div>
             {/* <img src={logo} className="logo" alt="Logo Image" /> */}
             <div className='technologies'>

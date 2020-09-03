@@ -1,4 +1,4 @@
-.container {
+.c-container {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/projects.jpg');    background-size: cover;
     background-position: top;
     background-repeat: no-repeat;

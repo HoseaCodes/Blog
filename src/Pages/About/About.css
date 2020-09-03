@@ -1,0 +1,217 @@
+
+  .box {
+    font-family: Helvetica, sans-serif;
+  }
+  .aHeader {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/TSU.jpeg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 53vh;
+    margin: 0;
+}
+
+/* Quote */
+  .quote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 100px;
+    background-color:#e7e6e1;
+  }
+q {
+    line-height: 2;
+    font-size: 30px;
+    width: 40%;
+  }
+
+  .pQuote {
+    margin-top: 30px;
+    text-transform: uppercase;
+  }
+
+  /* Quote End */
+
+  /* Logo  */
+  .imageHiglights {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 100px;
+
+  }
+  .middleHightlights {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* align-self: center; */
+    line-height: 3;
+  }
+  .breakdown {
+      width: 60%;
+  }
+  .rightHighlights, .leftHighlights {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+/* Logo End */
+
+  /*Timeline  */
+  .timeline {
+    background-color: #e7e6e1;
+    position: relative;
+    margin-top: 100px;
+  }
+
+  .timelineP {
+      line-height: 2;
+  }
+  
+  /* The timeline line and bullet points */
+  .timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    margin-left: -3px;
+  }
+  
+  /* Container around content */
+  .container {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 50%;
+  }
+  
+  /* The circles on the timeline */
+  .container::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: -13px;
+    background-color: white;
+    border: 4px solid #1A1E23;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+  
+  /* Place the container to the left */
+  .left {
+    left: 0;
+  }
+  
+  /* Place the container to the right */
+  .right {
+    left: 50.3%;
+  }
+  
+  /* Add arrows to the left container (pointing right) */
+  .left::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    right: 30px;
+    border: medium solid white;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent white;
+  }
+  
+  /* Add arrows to the right container (pointing left) */
+  .right::before {
+    content: " ";
+    height: 0;
+    position: absolute;
+    top: 22px;
+    width: 0;
+    z-index: 1;
+    left: 30px;
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+  }
+  
+  /* Fix the circle for containers on the right side */
+  .right::after {
+    left: -16px;
+  }
+  
+  /* The actual content */
+  .content {
+    padding: 20px 30px;
+    background-color: white;
+    position: relative;
+    border-radius: 6px;
+  }
+  
+  /* Media queries - Responsive timeline on screens less than 600px wide */
+  @media screen and (max-width: 600px) {
+  /* Place the timelime to the left */
+    .timeline::after {
+      left: 31px;
+    }
+  
+  /* Full-width containers */
+    .container {
+      width: 100%;
+      padding-left: 70px;
+      padding-right: 25px;
+    }
+  
+  /* Make sure that all arrows are pointing leftwards */
+    .container::before {
+      left: 60px;
+      border: medium solid white;
+      border-width: 10px 10px 10px 0;
+      border-color: transparent white transparent transparent;
+    }
+  
+  /* Make sure all circles are at the same spot */
+    .left::after, .right::after {
+      left: 15px;
+    }
+  
+  /* Make all right containers behave like the left ones */
+    .right {
+      left: 0%;
+    }
+  }
+
+  /* About  */
+.about {
+    display: flex;
+    margin-top: 100px;
+
+}
+.aboutHeader {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: lighter;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+.aboutP {
+    font-size: 20px;
+    color: grey; 
+}
+.leftAbout {
+    margin: 60px 10px 10px 60px;
+    font-family: 'Times New Roman', Times, serif;
+    line-height: 2;
+}
+.rightAbout {
+    background-color: black;
+    opacity: 0.7;
+    margin: 60px;
+}
+
+

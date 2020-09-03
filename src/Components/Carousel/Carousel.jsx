@@ -21,7 +21,7 @@ function Carousel() {
 
     };
     return (
-        <div className='container'>
+        <div className='c-container'>
             <div className='carousel-container'>
                 <div className='carousel'>
                     {example.map((item, index) => {

@@ -47,7 +47,7 @@ const Articles = () => {
 
             <div id="articles">
                 <h3>My Articles<hr /></h3>
-                <p>Here are some of my projects, you may like.</p>
+                <p>Here are some of my articles, you may like.</p>
                 <div class="work-box">
                     <div class="work">
 

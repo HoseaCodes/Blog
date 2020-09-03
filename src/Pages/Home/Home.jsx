@@ -11,7 +11,7 @@
 import React from 'react';
 import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
-import Text from '../../Components/Text/Text';
+import Scramble from '../../Components/Scramble/Scramble';
 import Project1 from '../../Components/Project/Project1';
 import CaseStudy from '../../Components/Project/Case-Study';
 import WebFiver from '../../Components/Project/WebFiver';
@@ -19,7 +19,7 @@ import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
 import ControlledCarousel from '../../Components/Bootstrap/Carousel';
-import CodePen from '../../Components/CodePen/CodePen';
+import Blog from '../../Components/Blog/Blog';
 
 
 
@@ -32,7 +32,7 @@ const Home = () => {
                     <h1 className='heading-primary'>
                         <span className="header-username">Hosea Codes</span>
                         {/* <span className="header-career">Software Engineer</span> */}
-                        <Text />
+                        <Scramble />
                     </h1>
                 </div>
             </div>
@@ -58,7 +58,7 @@ const Home = () => {
                 <h1>articles</h1>
             </div>
             <div className='articles'>
-                <Articles />
+                <Blog />
             </div>
             <div className='color'>
                 <h1>social media</h1>

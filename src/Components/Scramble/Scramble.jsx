@@ -1,10 +1,10 @@
 import * as React from "react";
-import '../Text/Text.css';
+import './Scramble.css';
 import { useDencrypt } from "use-dencrypt-effect";
 
 const values = ["PROBLEM SOLVER", "DEVELOPER", "SOFTWARE ENGINEER", "INNOVATOR"];
 
-const Text = () => {
+const Scramble = () => {
     const { result, dencrypt } = useDencrypt();
 
     React.useEffect(() => {
@@ -22,4 +22,4 @@ const Text = () => {
     return <div className="header-career">{result}</div>;
 };
 
-export default Text;
+export default Scramble;

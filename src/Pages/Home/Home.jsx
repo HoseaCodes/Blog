@@ -12,7 +12,6 @@ import React from 'react';
 import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Text from '../../Components/Text/Text';
-import logo from '../../logo.svg';
 import Project1 from '../../Components/Project/Project1';
 import CaseStudy from '../../Components/Project/Case-Study';
 import WebFiver from '../../Components/Project/WebFiver';
@@ -48,9 +47,7 @@ const Home = () => {
                 <iframe className='iframe' title="p" height="600" width="800" src='http://webfiver.com/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe> */}
                 {/* <Project1 /> */}
                 {/* <WebFiver /> */}
-                {/* <CodePen /> */}
             </div>
-            {/* <img src={logo} className="logo" alt="Logo Image" /> */}
             <div className='color'>
                 <h1>technologies</h1>
             </div>

@@ -37,11 +37,60 @@
 //rule of thumb is to post at least twice a month.
 
 import React from 'react';
+import './Articles.css'
+import NavBar2 from '../../Components/NavBar/NavBar2';
 
 const Articles = () => {
     return (
         <div>
-            <h1>Articles</h1>
+            <NavBar2 />
+
+            <div id="articles">
+                <h3>My Articles<hr /></h3>
+                <p>Here are some of my projects, you may like.</p>
+                <div class="work-box">
+                    <div class="work">
+
+                        {/* <!--───────────────card───────────────--> */}
+
+                        <div class="card">
+                            <h2>TITLE HEADING<hr /></h2>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                            <button>Like</button>
+                        </div>
+                        <div class="card">
+                            <h2>TITLE HEADING<hr /></h2>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                            <button>Like</button>
+                        </div>
+                        <div class="card">
+                            <h2>About Me<hr /></h2>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                            <button>Like</button>
+                        </div>
+                        <div class="card">
+                            <h2>Popular Post<hr /></h2>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-img">Image</div><br /></a>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-img">Image</div><br /></a>
+                            <a href="" target="_blank">
+                                {/* <!--Link to project--> */}
+                                <div class="work-img">Image</div></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
     )
 

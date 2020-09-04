@@ -1,0 +1,13 @@
+.header2 {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/project.jpg');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    /* background-color: black;
+    opacity: 0.5; */
+    height: 95vh;
+    /* clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); */
+    margin: 0;
+}

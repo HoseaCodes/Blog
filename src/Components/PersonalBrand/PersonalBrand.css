@@ -1,0 +1,13 @@
+.personal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.domImg {
+    border-radius: 50%;
+    transform: scale(1.5);
+    margin: 100px;
+}
+

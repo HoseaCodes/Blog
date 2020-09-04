@@ -1,10 +1,16 @@
-.c-container {
-    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/projects.jpg');    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    height: 95vh;
+.p-container {
+    display: flex;
+    /* background-color: #1A1E23; */
 
+}
+.p-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+p {
+    text-align: center;
+    width: 80%;
 }
 
 .carousel-container {
@@ -15,11 +21,11 @@
 }
 .carousel {
     position: relative;
-    height: 80vh;
-    width: 80vw;
+    height: 40vh;
+    width: 40vw;
     box-sizing: border-box;
     margin: 0;
-    margin-top: 100px;
+    margin: 50px;
     padding: 0;
     display: flex;
     align-items: center;

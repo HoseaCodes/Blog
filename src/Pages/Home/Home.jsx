@@ -20,6 +20,7 @@ import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
 import ControlledCarousel from '../../Components/Bootstrap/Carousel';
 import Blog from '../../Components/Blog/Blog';
+import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 
 
 
@@ -36,9 +37,17 @@ const Home = () => {
                     </h1>
                 </div>
             </div>
-            <div className='color'>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1>About Me</h1>
+            </div>
+            <div className='color'></div>
+            <PersonalBrand />
+            <div className='color'></div>
+            <div className='open-section'>
                 <h1>Projects</h1>
             </div>
+            <div className='color'></div>
             <div className='projects'>
                 <Carousel />
                 {/* <h1>Projects</h1> */}
@@ -48,21 +57,27 @@ const Home = () => {
                 {/* <Project1 /> */}
                 {/* <WebFiver /> */}
             </div>
-            <div className='color'>
-                <h1>technologies</h1>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1> technologies</h1>
             </div>
+            <div className='color'></div>
             <div className='technologies'>
                 <CaseStudy />
             </div>
-            <div className='color'>
-                <h1>articles</h1>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1> articles</h1>
             </div>
+            <div className='color'></div>
             <div className='articles'>
                 <Blog />
             </div>
-            <div className='color'>
-                <h1>social media</h1>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1> social media</h1>
             </div>
+            <div className='color'></div>
             <div className='socialmedia'>
                 <SocialMedia />
             </div>

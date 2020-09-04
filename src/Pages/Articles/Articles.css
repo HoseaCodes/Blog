@@ -1,4 +1,12 @@
+/*──────────────────
+     Login
+──────────────────*/
 
+.login span:hover {
+	text-decoration: underline;
+	cursor: pointer;
+	
+}
 
 /*──────────────────
     social media

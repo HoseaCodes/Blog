@@ -12,11 +12,21 @@
 //in your website’s contact information.
 
 import React from 'react';
+import './Contact.css'
+import NavBar2 from '../../Components/NavBar/NavBar2';
+
 
 const Contact = () => {
     return (
         <div>
-            <h1>Contact</h1>
+            <NavBar2 />
+            <div className='cHeader'>
+                <div className='header-logo'>
+                    <h1 className='heading-primary'>
+                        <span className="header-username"></span>
+                    </h1>
+                </div>
+            </div>
         </div>
     )
 

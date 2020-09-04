@@ -7,9 +7,22 @@
     position: relative;
     /* background-color: black;
     opacity: 0.5; */
-    height: 95vh;
+    height: 100vh;
     /* clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); */
     margin: 0;
+}
+.open-section {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    height: 25vh;
+    margin: 0;
+}
+.open-section h1 {
+    padding-top: 5%;
 }
 .iframe {
     margin-left: 40px;
@@ -35,7 +48,7 @@
     text-transform: uppercase;
 }
 
-.projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1 {
+.projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1 {
     color: white;
     display: block;
     font-family: Lato, sans-serif;
@@ -45,6 +58,7 @@
     font-size: 4rem;
     letter-spacing: 1.5rem;
     line-height: 40px;
+    margin: 0;
 }
 
 .header-username {

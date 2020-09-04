@@ -22,7 +22,7 @@ import React from 'react';
 
 const SocialMedia = () => {
     return (
-        <h1>Social Media Data</h1>
+        <h2>Social Media Data</h2>
     )
 
 }

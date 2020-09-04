@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Home from './Pages/Home/Home'
 import Projects from './Pages/Projects/Projects'
@@ -11,15 +11,16 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-
-    };
+export default class App extends Component {
+  state = {
+    user: null,
+    authenticated: false
   }
+
   render() {
+
     return (
+
       <BrowserRouter>
         <Switch>
           <Route
@@ -74,9 +75,8 @@ class App extends React.Component {
       //   <Home />
       // </div> */}
       </BrowserRouter>
-
     );
   }
 }
 
-export default App;
+

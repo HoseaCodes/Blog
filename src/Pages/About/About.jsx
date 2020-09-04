@@ -116,7 +116,7 @@ const About = () => {
                     <p className="aboutP">A driven, focused, and knowledgeable professional with several years of experience in high-stress environments in addition to a strong background in engagement and team leadership. Recent, graduate of the Software Engineering program where I had intensive training, and used JavaScript, Python, React, and Django in projects that solve business’ problems. In my graduate program I studied MIS where I leveraged C++, Java, database management, web-design, E-commerce, SAP, system analysis and project management. I also enjoy create mobile apps with Machine Learning IOS, Cloud Based Backend and SwiftUI.</p>
                 </div>
                 <div className="rightAbout">
-                    <img clas="about Image" width="400px" height="600px" src={hosea} alt="Dominique"></img>
+                    <img className="aboutImage" width="400px" height="600px" src={hosea} alt="Dominique"></img>
                 </div>
             </div>
             {/* <!-- About End --> */}

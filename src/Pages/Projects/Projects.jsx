@@ -78,12 +78,21 @@
 
 
 import React from 'react';
-import Carousel from '../../Components/Carousel/Carousel'
+import './Projects.css';
+import NavBar2 from '../../Components/NavBar/NavBar2';
+import Carousel from '../../Components/Carousel/Carousel';
 
 const Projects = () => {
     return (
         <div>
-            <h1>Projects</h1>
+            <NavBar2 />
+            <div className='header2'>
+                <div className='header-logo'>
+                    <h1 className='heading-primary'>
+                        <span className="header-username">Projects</span>
+                    </h1>
+                </div>
+            </div>
             <Carousel />
 
         </div>

@@ -39,61 +39,80 @@
 import React from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
+import { auth, login, logout } from '../../services/firebase';
 
-const Articles = () => {
-    return (
-        <div>
-            <NavBar2 />
 
-            <div id="articles">
-                <h3>My Articles<hr /></h3>
-                <p>Here are some of my articles, you may like.</p>
-                <div class="work-box">
-                    <div class="work">
 
-                        {/* <!--───────────────card───────────────--> */}
+class Articles extends React.Component {
+    componentDidMount() {
+        auth.onAuthStateChanged(user => (
+            user
+            // ? this.setState({ user, authenticated: true })
+            // : this.setState({ user: null, authenticated: false })
+        ));
+    }
+    render() {
+        // const {
+        //     authenticated
+        // } = this.state
+        return (
+            <div>
+                <NavBar2 />
+                {/* <div className='login'>{
+                    authenticated
+                        ? <span onClick={logout}>Logout</span>
+                        : <span onClick={login}>Login</span>
+                }</div> */}
+                <div id="articles">
+                    <h3>My Articles<hr /></h3>
+                    <p>Here are some of my articles, you may like.</p>
+                    <div class="work-box">
+                        <div class="work">
 
-                        <div class="card">
-                            <h2>TITLE HEADING<hr /></h2>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                            <button>Like</button>
+                            {/* <!--───────────────card───────────────--> */}
+
+                            <div class="card">
+                                <h2>TITLE HEADING<hr /></h2>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                                <button>Like</button>
+                            </div>
+                            <div class="card">
+                                <h2>TITLE HEADING<hr /></h2>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                                <button>Like</button>
+                            </div>
+                            <div class="card">
+                                <h2>About Me<hr /></h2>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                                <button>Like</button>
+                            </div>
+                            <div class="card">
+                                <h2>Popular Post<hr /></h2>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-img">Image</div><br /></a>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-img">Image</div><br /></a>
+                                <a href="" target="_blank">
+                                    {/* <!--Link to project--> */}
+                                    <div class="work-img">Image</div></a>
+                            </div>
+
                         </div>
-                        <div class="card">
-                            <h2>TITLE HEADING<hr /></h2>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                            <button>Like</button>
-                        </div>
-                        <div class="card">
-                            <h2>About Me<hr /></h2>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                            <button>Like</button>
-                        </div>
-                        <div class="card">
-                            <h2>Popular Post<hr /></h2>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-img">Image</div><br /></a>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-img">Image</div><br /></a>
-                            <a href="" target="_blank">
-                                {/* <!--Link to project--> */}
-                                <div class="work-img">Image</div></a>
-                        </div>
-
                     </div>
                 </div>
+
             </div>
+        )
 
-        </div>
-    )
-
+    }
 }
 
 export default Articles;

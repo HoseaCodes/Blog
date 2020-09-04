@@ -18,7 +18,7 @@ import NavBar2 from '../../Components/NavBar/NavBar2';
 
 const Contact = () => {
     return (
-        <div>
+        <div >
             <NavBar2 />
             <div className='cHeader'>
                 <div className='header-logo'>
@@ -27,7 +27,17 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
-        </div>
+            <div className='contact-container'>
+                <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
+                <form>
+
+                    <input className='input' type="text" name="name" placeholder="Name" />
+                    <input className='input' type="email" name="email" placeholder="Enter Email" />
+                    <textarea className='area' placeholder='Your Message' />
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+        </div >
     )
 
 }

@@ -80,6 +80,28 @@ const Home = () => {
             <div className='socialmedia'>
                 <SocialMedia />
             </div>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1> Contact</h1>
+            </div>
+            <div className='color'></div>
+            <div className='contact'>
+                <div className='socialtags'>
+                    <a href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
+                    <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+                <div className='form-container'>
+                    <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
+                    <form>
+
+                        <input className='input' type="text" name="name" placeholder="Name" />
+                        <input className='input' type="email" name="email" placeholder="Enter Email" />
+                        <textarea className='area' placeholder='Your Message' />
+                        <input type="submit" value="Submit" />
+                    </form>
+                </div>
+            </div>
         </div>
 
     )

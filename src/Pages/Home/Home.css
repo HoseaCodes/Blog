@@ -81,6 +81,19 @@
     justify-content: center;
     align-items: center;
 }
+
+.socialtags {
+    display: flex;
+    flex-direction: column;
+}
+.contact {
+    display: flex;
+    justify-content: space-evenly;
+}
+.form-container {
+    justify-content: center;
+}
+
 /* --------------------------------------- */
  /* Mobile Responsive */
     @media screen and (max-width: 600px) {

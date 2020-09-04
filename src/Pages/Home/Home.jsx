@@ -18,7 +18,6 @@ import WebFiver from '../../Components/Project/WebFiver';
 import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
-import ControlledCarousel from '../../Components/Bootstrap/Carousel';
 import Blog from '../../Components/Blog/Blog';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 

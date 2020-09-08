@@ -85,7 +85,6 @@ import '../Project/Case-Study.css';
 const CaseStudy = () => {
     return (
         <section>
-            <p className="section-lead"></p>
             <div className="services-grid">
                 <div className="service service1">
                     <h4>Library</h4>

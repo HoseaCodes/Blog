@@ -9,7 +9,6 @@
     opacity: 0.5; */
     height: 100vh;
     /* clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); */
-    margin: 0;
 }
 .open-section {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
@@ -33,7 +32,7 @@
 
 .header-logo {
     position: absolute;
-    top: 15rem;
+    top: 10rem;
     left: 50%;
     transform: translateX(-50%);
 
@@ -66,12 +65,9 @@
     font-size: 5rem;
     letter-spacing: 2.5rem;
     line-height: 100px;
+    padding: 1rem;
     }
-.header-career {
-    font-size: 4rem;
-    letter-spacing: 1.5rem;
-    line-height: 40px;
-}
+
 
 .color {
     height: 20vh;
@@ -81,17 +77,62 @@
     justify-content: center;
     align-items: center;
 }
+.technologies{
+    background-color: #1A1E23;
 
+}
 .socialtags {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
 }
+
+.social {
+    margin: 1rem;
+}
+
 .contact {
-    display: flex;
-    justify-content: space-evenly;
+    background-color: #1A1E23;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
 }
 .form-container {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+}
+
+.btn-input {
+    margin-top: 1rem;
+    font-size: 1rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: none;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
+}
+
+.btn-input:hover {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: underline;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 4px 8px 4px 8px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
 }
 
 /* --------------------------------------- */

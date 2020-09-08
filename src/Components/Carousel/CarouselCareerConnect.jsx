@@ -25,19 +25,17 @@ function CarouselCareerconnect() {
 
     };
     return (
-        <div className='c-container'>
-            <div className='carousel-container'>
-                <div className='carousel'>
-                    {example.map((item, index) => {
-                        return (
-                            <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>
-                                {item}
-                            </div>
-                        )
-                    })}
-                    <button className='btn-left' onClick={goLeft}> ‹ </button>
-                    <button className='btn-right' onClick={goRight}> › </button>
-                </div>
+        <div className='carousel-container'>
+            <div className='carousel'>
+                {example.map((item, index) => {
+                    return (
+                        <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>
+                            {item}
+                        </div>
+                    )
+                })}
+                <button className='btn-left' onClick={goLeft}> ‹ </button>
+                <button className='btn-right' onClick={goRight}> › </button>
             </div>
         </div>
     )

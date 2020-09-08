@@ -42,6 +42,27 @@ import NavBar2 from '../../Components/NavBar/NavBar2';
 import { auth, login, logout } from '../../services/firebase';
 
 
+const e = React.createElement;
+
+class LikeButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { liked: false };
+    }
+
+    render() {
+        if (this.state.liked) {
+            return 'You liked this.';
+        }
+
+        return e(
+            'button',
+            { onClick: () => this.setState({ liked: true }) },
+            'Like'
+        );
+    }
+}
+
 
 class Articles extends React.Component {
     componentDidMount() {
@@ -76,21 +97,22 @@ class Articles extends React.Component {
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                                <button>Like</button>
+                                <LikeButton />
+
                             </div>
                             <div class="card">
                                 <h2>TITLE HEADING<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                                <button>Like</button>
+                                <LikeButton />
                             </div>
                             <div class="card">
                                 <h2>About Me<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                                <button>Like</button>
+                                <LikeButton />
                             </div>
                             <div class="card">
                                 <h2>Popular Post<hr /></h2>

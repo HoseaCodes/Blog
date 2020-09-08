@@ -1,4 +1,5 @@
 import React from 'react';
+import './ImgComp.css'
 
 function ImgComp({ src }) {
     let imgStyles = {
@@ -7,7 +8,7 @@ function ImgComp({ src }) {
     }
     return (
         <div>
-            <img src={src} alt="project-img" style={imgStyles}></img>
+            <img className='cover' src={src} alt="project-img" style={imgStyles}></img>
         </div>
     )
 }

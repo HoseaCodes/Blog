@@ -1,28 +1,44 @@
 .p-container {
     display: flex;
-    /* background-color: #1A1E23; */
-
-}
-.p-content {
-    display: flex;
     flex-direction: column;
-    align-items: center;
-}
-p {
-    text-align: center;
-    width: 80%;
-}
+    overflow: hidden;    
+    background-color: #1A1E23;
 
+}
+/* Project Containers */
+
+.p-details, .carousel-container {
+    height: 70vh;
+    width: 100%;
+
+}
 .carousel-container {
     display: flex;
     justify-content: center;
-    position: relative;
+    /* position: relative; */
     
 }
+.p-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.p-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Project Containers */
+
+/* Carousel Model */
+
 .carousel {
     position: relative;
-    height: 40vh;
-    width: 40vw;
+    height: 50vh;
+    width: 50vw;
     box-sizing: border-box;
     margin: 0;
     margin: 50px;
@@ -30,17 +46,68 @@ p {
     display: flex;
     align-items: center;
     overflow: hidden;
-    
 }
+
 
 .slide {
     position: relative;
     min-width: 100%;
     height: 100%;
     transition: 0.5s;
-    overflow: hidden;
+}
+/* Carousel Model */
+
+/* Project Content */
+.p-h2 {
+    font-size: 3rem;
+    color: #206a5d;
+}
+
+p {
+    text-align: center;
+    width: 80%;
+    color: #ebecf1;
+}
+
+.p-extended {
+    overflow: auto;
 
 }
+.link {
+    font-size: 1rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: none;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
+}
+
+.link:hover {
+    font-size: 1.2rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: underline;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 4px 8px 4px 8px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
+}
+
+/* Project Content */
+
+
+
+/* Button */
 
 .btn-left {
  left: 0;
@@ -69,84 +136,12 @@ p {
 .btn-right {
     right: 0;
 }
+
+
+
+
+/* Button */
  
-.selectors {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 30px;
-    background: rgba(0, 0, 0, 0.1);
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
-}
-.selector {
-    border: 1px solid white;
-    background: none;
-    width: 11px;
-    height: 11px;
-    border-radius: 50%;
-    margin: 5px 0;
-    opacity: 0.6;
-    cursor: pointer;
-    transition: background-image .3s ease-in-out, opacity .3s ease-in-out;
-}
-.selector:hover, .selector.active {
-    background: white;
-    opacity: 0.9;
-}
-
-section.wrapper {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    transition: background-image 500ms ease-in-out;
-}
-
-aside.panel {
-    width: 40vw;
-    height: 100%;
-    opacity: 0.9;
-    color: white;
-    box-shadow: 5px 0 25px 0 rgba(0, 0, 0, 0.3);
-    transition: background-image  500ms ease-in-out;
-}
-
-h2.panel-header, p.panel-info {
-    margin: 0;
-    padding: 1.3rem 3.5rem;
-}
-h2.panel-header {
-    padding-top: 2em;
-    font-size: 2.5rem;
-    text-transform: capitalize;
-}
-p.panel-info {
-  font-size: 1.2rem;
-  line-height: 1.8em;
-}
-button.panel-button {
-    margin: 1.3rem 3.5rem;
-    padding: 0.8em 1.3em;
-    background: none;
-    border: 1px solid white;
-    color: white;
-    cursor: pointer;
-    font-family: 'Montserrat';
-    font-size: 0.8rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: box-shadow 0.5s ease-in-out, color 0.5s ease-in-out;
-}
-button.panel-button:hover {
-    box-shadow: inset 0 0 1.5em 1.5em white;
-}
-button.panel-button:focus {
-      outline: none;
-}
 
 @keyframes fadeIn {
     0% {

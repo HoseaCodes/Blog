@@ -20,6 +20,8 @@ import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
 import Blog from '../../Components/Blog/Blog';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
+import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
+import Footer from '../../Components/Footer/Footer'
 
 
 
@@ -80,11 +82,7 @@ const Home = () => {
                 <h1> Contact</h1>
             </div>
             <div className='contact'>
-                <div className='socialtags'>
-                    <a className='social' href="#" target="_blank" rel="noopener noreferrer">Twitter</a>
-                    <a className='social' href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                    <a className='social' href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
-                </div>
+                <SocialMediaTags />
                 <div className='form-container'>
                     <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
                     <form>
@@ -95,6 +93,7 @@ const Home = () => {
                     </form>
                 </div>
             </div>
+            <Footer />
         </div>
 
     )

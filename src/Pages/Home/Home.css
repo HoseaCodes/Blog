@@ -81,15 +81,7 @@
     background-color: #1A1E23;
 
 }
-.socialtags {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
 
-.social {
-    margin: 1rem;
-}
 
 .contact {
     background-color: #1A1E23;

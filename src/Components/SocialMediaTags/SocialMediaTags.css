@@ -1,0 +1,10 @@
+.social-container {
+    display: flex;
+    justify-content: center;
+}
+.social {
+    margin: 2rem;
+    text-decoration: none;
+    text-decoration: none;
+    color: #206a5d;
+}

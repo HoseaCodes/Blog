@@ -189,6 +189,8 @@ q {
 
 .a-content {
   color: black;
+  width: 80%;
+  font-size: 1.5rem;
 }
 
   /* Media queries - Responsive timeline on screens less than 600px wide */

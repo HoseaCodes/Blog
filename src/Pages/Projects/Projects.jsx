@@ -80,8 +80,7 @@
 import React from 'react';
 import './Projects.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
-import Carousel from '../../Components/Carousel/Carousel';
-
+import Tags from '../../Components/Tags/Tags'
 const Projects = () => {
     return (
         <div>
@@ -93,8 +92,7 @@ const Projects = () => {
                     </h1>
                 </div>
             </div>
-            <Carousel />
-
+            <Tags />
         </div>
     )
 

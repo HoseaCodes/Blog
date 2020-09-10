@@ -49,6 +49,10 @@ import ccLogo from '../../icons/ccLogo.png';
 import MA from '../../icons/MA.mp4';
 import MA1 from '../../icons/MA1.png';
 import CK from '../../icons/CK.png';
+import MI from '../../icons/MI.png';
+import MI2 from '../../icons/MI2.png';
+import CB from '../../icons/CB.jpeg';
+import AD from '../../icons/AD.jpeg';
 import hosea from '../../icons/hosea.jpeg';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 
@@ -68,15 +72,18 @@ const About = () => {
                 <div className="leftHighlights">
                     <img src={ccLogo} width="300" alt="Career Connect Logo"></img>
                     <img src={CK} width="300" alt="Calorie Kitchen Logo"></img>
+                    <img src={MI2} width="300" alt="Merge Immersive Logo"></img>
+                    <img src={MI} width="300" alt="Merge Immersive Logo"></img>
                 </div>
                 <div className="middleHightlights">
-                    <h2>Hosea Codes Software Engineering Views</h2>
-                    <p className="breakdown a-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed turpis laoreet, egestas felis vel, interdum ligula. Morbi a lacus eget nunc consectetur sodales. Cras posuere pharetra semper. Proin ut fringilla dolor. Nunc faucibus elit augue, non egestas dolor hendrerit vitae. Fusce id turpis at lectus rhoncus tincidunt. Duis ultricies mi sed est vestibulum, in hendrerit leo elementum. Pellentesque vel tristique lectus. Quisque a cursus lectus, quis porttitor massa. Mauris sed feugiat purus. Donec nec mauris condimentum, scelerisque augue non, aliquam leo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In consectetur venenatis elit eu accumsan. Fusce in ipsum venenatis, molestie justo vitae, elementum arcu.</p>
+                    <h2 className='a-content'>Hosea Codes Software Engineering Views</h2>
                     <p className="breakdown a-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed turpis laoreet, egestas felis vel, interdum ligula. Morbi a lacus eget nunc consectetur sodales. Cras posuere pharetra semper. Proin ut fringilla dolor. Nunc faucibus elit augue, non egestas dolor hendrerit vitae. Fusce id turpis at lectus rhoncus tincidunt. Duis ultricies mi sed est vestibulum, in hendrerit leo elementum. Pellentesque vel tristique lectus. Quisque a cursus lectus, quis porttitor massa. Mauris sed feugiat purus. Donec nec mauris condimentum, scelerisque augue non, aliquam leo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In consectetur venenatis elit eu accumsan. Fusce in ipsum venenatis, molestie justo vitae, elementum arcu.</p>
                 </div>
                 <div className="rightHighlights">
                     <video src={MA} width="300" playsinline="playsinline" autoplay="" muted="muted" loop="loop"></video>
                     <img src={MA1} width="300" alt="Mordenized Assets Logo"></img>
+                    <img src={CB} width="300" alt="Chasing Binji Logo"></img>
+                    <img src={AD} width="300" alt="American Dream Logo"></img>
                 </div>
             </div>
             {/* <!-- Quote/Highlight End  --> */}

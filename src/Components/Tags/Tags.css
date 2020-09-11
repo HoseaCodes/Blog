@@ -13,8 +13,10 @@
 
 .tag-title {
     align-self: flex-end;
-    color: #206a5d;
-    font-size: 3rem;
+    text-transform: uppercase;
+    letter-spacing: .5rem;
+    color: white;
+    font-size: 2.5rem;
     margin-bottom: 1rem;
 }
 hr {

@@ -87,9 +87,6 @@ const Projects = () => {
             <NavBar2 />
             <div className='header2'>
                 <div className='header-logo'>
-                    <h1 className='heading-primary'>
-                        <span className="header-username">Projects</span>
-                    </h1>
                 </div>
             </div>
             <Tags />

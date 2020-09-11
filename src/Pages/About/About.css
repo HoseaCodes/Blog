@@ -7,7 +7,7 @@
     background-size: cover;
     background-position: center;
     position: relative;
-    height: 53vh;
+    height: 40vh;
     margin: 0;
 }
 
@@ -17,7 +17,7 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 100px;
+    padding: 25px;
     background-color:#e7e6e1;
   }
 q {
@@ -28,7 +28,7 @@ q {
 
   .pQuote {
     margin-top: 30px;
-    text-transform: uppercase;
+    color: black
   }
 
   /* Quote End */
@@ -45,12 +45,10 @@ q {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* align-self: center; */
     line-height: 3;
+    width: 35vw;
   }
-  .breakdown {
-      width: 60%;
-  }
+  
   .rightHighlights, .leftHighlights {
     display: flex;
     flex-direction: column;
@@ -191,6 +189,7 @@ q {
   color: black;
   width: 80%;
   font-size: 1.5rem;
+  text-align: center;
 }
 
   /* Media queries - Responsive timeline on screens less than 600px wide */

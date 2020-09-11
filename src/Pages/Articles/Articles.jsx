@@ -77,54 +77,58 @@ class Articles extends React.Component {
         //     authenticated
         // } = this.state
         return (
-            <div>
+            <div className='article-container'>
                 <NavBar2 />
+                <div className='article-header'>
+                    <div className='artcile-header-logo'>
+                    </div>
+                </div>
                 {/* <div className='login'>{
                     authenticated
                         ? <span onClick={logout}>Logout</span>
                         : <span onClick={login}>Login</span>
                 }</div> */}
                 <div id="articles">
-                    <h3>My Articles<hr /></h3>
+                    <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
                     <p>Here are some of my articles, you may like.</p>
-                    <div class="work-box">
-                        <div class="work">
+                    <div className="work-box">
+                        <div className="work">
 
                             {/* <!--───────────────card───────────────--> */}
 
-                            <div class="card">
-                                <h2>TITLE HEADING<hr /></h2>
+                            <div className="card">
+                                <h2 className='card-header'>The Art of Picking a Project<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
-                                <LikeButton />
+                                    <div className="work-content">Below is a list of projects ideas for new programers</div></a>
+                                <LikeButton className='link' />
 
                             </div>
-                            <div class="card">
-                                <h2>TITLE HEADING<hr /></h2>
+                            <div className="card">
+                                <h2 className='card-header'>Web vs Client Servers<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                                    <div className="work-content">A quick breakdown of web and client servers.</div></a>
                                 <LikeButton />
                             </div>
-                            <div class="card">
-                                <h2>About Me<hr /></h2>
+                            <div className="card">
+                                <h2 className='card-header'>You Down with OOP?<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-content">Lorem ipsum dolor sit amet consectetur.</div></a>
+                                    <div className="work-content">A brief overview of object oriented programming</div></a>
                                 <LikeButton />
                             </div>
-                            <div class="card">
-                                <h2>Popular Post<hr /></h2>
+                            <div className="card">
+                                <h2 className='card-header'>Popular Post<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-img">Image</div><br /></a>
+                                    <div className="work-img">How the Internet Works</div><br /></a>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-img">Image</div><br /></a>
+                                    <div className="work-img">Techinal Interview Help</div><br /></a>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
-                                    <div class="work-img">Image</div></a>
+                                    <div className="work-img">Portfolio Guide</div></a>
                             </div>
 
                         </div>

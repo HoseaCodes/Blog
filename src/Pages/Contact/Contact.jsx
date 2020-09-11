@@ -28,6 +28,7 @@ const Contact = () => {
                 </div>
             </div>
             <div className='contact-container'>
+                <h2 className='contact-header'>Contact Me</h2>
                 <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
                 <form>
 

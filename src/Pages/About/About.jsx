@@ -53,6 +53,7 @@ import MI from '../../icons/MI.png';
 import MI2 from '../../icons/MI2.png';
 import CB from '../../icons/CB.jpeg';
 import AD from '../../icons/AD.jpeg';
+import ST from '../../icons/ST.jpeg';
 import hosea from '../../icons/hosea.jpeg';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 
@@ -77,10 +78,16 @@ const About = () => {
                 </div>
                 <div className="middleHightlights">
                     <h2 className='a-content'>Hosea Codes Software Engineering Views</h2>
-                    <p className="breakdown a-content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sed turpis laoreet, egestas felis vel, interdum ligula. Morbi a lacus eget nunc consectetur sodales. Cras posuere pharetra semper. Proin ut fringilla dolor. Nunc faucibus elit augue, non egestas dolor hendrerit vitae. Fusce id turpis at lectus rhoncus tincidunt. Duis ultricies mi sed est vestibulum, in hendrerit leo elementum. Pellentesque vel tristique lectus. Quisque a cursus lectus, quis porttitor massa. Mauris sed feugiat purus. Donec nec mauris condimentum, scelerisque augue non, aliquam leo. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In consectetur venenatis elit eu accumsan. Fusce in ipsum venenatis, molestie justo vitae, elementum arcu.</p>
+                    <p className="breakdown a-content">I’m a website designer working on multiple platforms. My favorite projects are developing websites for small business owners. It’s an honor to partner with these entrepreneurs and bring life to their web presence without breaking the bank. I’ll listen to your needs, come up with a plan, and create a product that gives you the best possible return on your investment.
+                    When I create your website, rest assured that you will be my main focus. I’ll incorporate both design and SEO best practices while showcasing the amazing work you do.
+                    Strategy: We’ll start with a strategy session to talk about your business and your vision. In this session, we will determine the goals for your site’s style and function, map out your website pages and discuss content development and image curation.
+                    Build: Next, I’ll use your provided branding, content, and images to create a website you’ll be proud to share. This is a two-week process for The Professional Package and a four-week process for The Executive Package. During the website build, we’ll be in touch every day through emails and have at least 3 scheduled video calls.
+                    Support: When your site is complete, I’ll teach you how to update your website yourself. You’ll never have to pay monthly maintenance fees to a web designer again. You’ll also receive two weeks of included email support after your site launches.
+                    </p>
                 </div>
                 <div className="rightHighlights">
                     <video src={MA} width="300" playsinline="playsinline" autoplay="" muted="muted" loop="loop"></video>
+                    <img src={ST} width="300" alt="Supreme Tailor Assets Logo"></img>
                     <img src={MA1} width="300" alt="Mordenized Assets Logo"></img>
                     <img src={CB} width="300" alt="Chasing Binji Logo"></img>
                     <img src={AD} width="300" alt="American Dream Logo"></img>

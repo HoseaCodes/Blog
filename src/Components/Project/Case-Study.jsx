@@ -95,8 +95,8 @@ const CaseStudy = () => {
                 </div>
                 <div className="service service1">
                     <h4>FrontEnd</h4>
-                    <li className="skills"><span>HTML5</span></li>
-                    <li className="skills"><span>CSS3</span></li>
+                    <li className="skills"><span>MATERIL UI</span></li>
+                    <li className="skills"><span>MATERIALIZE</span></li>
                     <li className="skills"><span>BOOTSTRAP</span></li>
                     <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
                 </div>
@@ -112,6 +112,7 @@ const CaseStudy = () => {
                     <h4>BackEnd</h4>
                     <li className="skills"><span>NODE.JS</span></li>
                     <li className="skills"><span>PYTHON</span></li>
+                    <li className="skills"><span>DJANGO</span></li>
 
                     <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
                 </div>

@@ -4,6 +4,7 @@ import Reactjs from './React';
 import JavaScript from './JavaScript';
 import Nodejs from './Nodejs';
 import Python from './Python';
+import Django from './Django';
 
 const Tags = () => {
     return (
@@ -17,6 +18,7 @@ const Tags = () => {
             <Nodejs />
             <Reactjs />
             <Python />
+            <Django />
         </div>
 
     )

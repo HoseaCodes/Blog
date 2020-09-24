@@ -61,6 +61,7 @@ section {
   background: #fff;
   margin: 20px;
   padding: 20px;
+  height: 28vh;
   border-radius: 4px;
   text-align: center;
   -webkit-box-flex: 1;
@@ -90,7 +91,6 @@ section {
   ;
 }
 .service1 i,
-.service1 h4,
 .service1 .cta {
   color: #206a5d;
   text-transform: uppercase;
@@ -120,6 +120,10 @@ color: white;
 
 .service .cta {
   align-self: flex-end;
+}
+
+.service-title {
+  color: #206a5d;
 }
 
 @media all and (max-width:900px) {

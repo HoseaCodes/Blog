@@ -3,6 +3,7 @@ import CarouselCalorieKitchen from '../Carousel/CarouselCalorieKitchen';
 import CarouselCareerconnect from '../Carousel/CarouselCareerConnect';
 import CarouselMergeImmersive from '../Carousel/CarouselMergeImmersive';
 import CarouselWebfiver from '../Carousel/CarouselWebfiver';
+import CarouselDevCenter from './CarouselDevCenter';
 
 function Carousel() {
 
@@ -45,6 +46,16 @@ function Carousel() {
                     <p className='p-extended'>Collaborative Project: Merge-Immersive — This application was developed with a full stack MERN M - MongoDB to store data, E - Express, a back-end framework, R - React, a client side framework, N - NodeJS (RESTful routing) - to run back end service and written in JavaScript including JWT authentication . Styling with Bootstrap and CSS. Problem: Students in the bootcamp have a difficult time connecting with current and past students including students from different disciplines. Another challenge is maintaining the ability to communicate and collaborate on projects. Solution:  Our application gives GA students the ability to see their current projects, websites and applications. Also, giving them the ability to reach out to current and past students even students that are not in their program type like Software Engineering and Data Science. Allowing students to connect and build a stronger network.</p>
                     <a className='link' href="http://www.mergeimmersive.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>
                     <a className='link' href="https://github.com/HoseaCodes/merge-immersive" target="_blank" rel="noopener noreferrer">View Github</a>
+                </div>
+            </div>
+            <div className='p-content'>
+                <CarouselDevCenter />
+                <div className='p-details'>
+                    <h2 className='p-h2'>Dev Center</h2>
+                    <p>This app was built with Djangofor and Python an API back-end.</p>
+                    <p className='p-extended'>Collaborative Project: Dev Center — This application was developed with a full stack Django and Python</p>
+                    <a className='link' href="https://devcenter-629.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>
+                    <a className='link' href="https://github.com/HoseaCodes/DevCenter" target="_blank" rel="noopener noreferrer">View Github</a>
                 </div>
             </div>
         </div>

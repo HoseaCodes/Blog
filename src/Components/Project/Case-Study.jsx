@@ -87,21 +87,21 @@ const CaseStudy = () => {
         <section>
             <div className="services-grid">
                 <div className="service service1">
-                    <h4>Library</h4>
+                    <h4 className='service-title'>Library</h4>
                     <li className="skills"><span>REACT</span></li>
                     <li className="skills"><span>JQUERY</span></li>
                     <li className="skills"><span>JAVASCRIPT</span></li>
                     <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
                 </div>
                 <div className="service service1">
-                    <h4>FrontEnd</h4>
+                    <h4 className='service-title'>FrontEnd</h4>
                     <li className="skills"><span>MATERIL UI</span></li>
                     <li className="skills"><span>MATERIALIZE</span></li>
                     <li className="skills"><span>BOOTSTRAP</span></li>
                     <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
                 </div>
                 <div className="service service1">
-                    <h4>Computer Science</h4>
+                    <h4 className='service-title'>Computer Science</h4>
                     <li className="skills"><span>DATA STUCTURES</span></li>
                     <li className="skills"><span>ALGORITHMS</span></li>
                     <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
@@ -109,7 +109,7 @@ const CaseStudy = () => {
 
                 <div className="service service1">
                     <i className="ti-light-bulb"></i>
-                    <h4>BackEnd</h4>
+                    <h4 className='service-title'>BackEnd</h4>
                     <li className="skills"><span>NODE.JS</span></li>
                     <li className="skills"><span>PYTHON</span></li>
                     <li className="skills"><span>DJANGO</span></li>
@@ -119,7 +119,7 @@ const CaseStudy = () => {
 
                 <div className="service service1">
                     <i className="ti-money"></i>
-                    <h4>Databases</h4>
+                    <h4 className='service-title'>Databases</h4>
                     <li className="skills"><span>POSTGRESQL</span></li>
                     <li className="skills"><span>MONGODB</span></li>
                     <a href="#" className="cta">Read more <span className="ti-angle-right"></span></a>

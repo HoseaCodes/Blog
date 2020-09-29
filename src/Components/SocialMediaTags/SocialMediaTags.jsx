@@ -1,6 +1,6 @@
 import React from 'react';
 import './SocialMediaTags.css'
-// import PModal from '../../Components/Modal/Modal';
+import PModal from '../../Components/Modal/Modal';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
@@ -26,7 +26,7 @@ const SocialMediaTags = () => {
             <a className='social' href="https://github.com/HoseaCodes" target="_blank"><GitHubIcon fontSize="large" /></a>
             <a className='social' href="https://www.youtube.com/channel/UCW0iZYA3zE03qlVJqVE_ajQ/about?view_as=subscriber" target="_blank"><YouTubeIcon fontSize="large" /></a>
             <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank"><AlternateEmailIcon fontSize="large" /></a>
-            {/* <PModal /> */}
+            <PModal />
         </div>
     )
 }

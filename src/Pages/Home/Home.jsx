@@ -19,9 +19,11 @@ import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
 import Blog from '../../Components/Blog/Blog';
+import Pxample from '../../Components/Modal/Modal';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
+import { Modal } from 'react-bootstrap';
 
 
 
@@ -32,10 +34,14 @@ const Home = () => {
             <div className='header'>
                 <div className='header-logo'>
                     <h1 className='heading-primary'>
-                        <span className="header-username">Hosea Codes</span>
+                        <span className="header-username">Hosea </span>
+                        <span className="header-username2">Codes </span>
                         {/* <span className="header-career">Software Engineer</span> */}
-                        <Scramble />
+                        <div>
+                            <Scramble />
+                        </div>
                     </h1>
+                    {/* <p className="header-scroll"> Scoll Down for more</p> */}
                 </div>
             </div>
             <div className='open-section'>
@@ -84,6 +90,9 @@ const Home = () => {
             <div className='contact'>
                 <SocialMediaTags />
                 <div className='form-container'>
+                    <p>Hi</p>
+                    <Pxample />
+                    <p>Hi</p>
                     <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
                     <form>
                         <input className='input' type="text" name="name" placeholder="Name" />

@@ -28,16 +28,18 @@ const PersonalBrand = () => {
                     <h2 className='pb-h2 letter'>About Me</h2>
                 </div>
             </div>
-            <h2 className='pb-h2'>Developer | Traveler | Adventurer </h2>
-            <h2 className='pb-h2 skill'>Skills</h2>
-            <hr />
-            <p>I am skilled in front- and back-end technologies, frameworks, tools, and methods. I currently excel with React.js and Node.js</p>
-            <h2 className='pb-h2 skill'>Education</h2>
-            <hr />
-            <p>I followed my passion and took the Software Engineer Immersive Course at General Assembly. Before that, I graduated from Texas Southern  University in 2017 with a degree in Management Information Systems. Since 2014 I have been working as an Operations Manager in logistics.</p>
-            <h2 className='pb-h2 skill'>Fun</h2>
-            <hr />
-            <p>I love to learn, COD, traveling and sports like activities. I am passionate about Software Engineering and aesthetically pleasing applications.</p>
+            <table>
+                <tr>
+                    <th className='pb-h2 skill'>Skills</th>
+                    <th className='pb-h2 skill'>Education</th>
+                    <th className='pb-h2 skill'>Fun</th>
+                </tr>
+                <tr>
+                    <td>I am skilled in front- and back-end technologies, frameworks, tools, and methods. I currently excel with React.js and Node.js</td>
+                    <td>I followed my passion and took the Software Engineer Immersive Course at General Assembly. Before that, I graduated from Texas Southern  University in 2017 with a degree in Management Information Systems. Since 2014 I have been working as an Operations Manager in logistics.</td>
+                    <td>I love to learn, COD, traveling and sports like activities. I am passionate about Software Engineering and aesthetically pleasing applications.</td>
+                </tr>
+            </table>
         </div>
 
 

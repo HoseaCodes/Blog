@@ -52,8 +52,8 @@ function Carousel() {
                 <CarouselDevCenter />
                 <div className='p-details'>
                     <h2 className='p-h2'>Dev Center</h2>
-                    <p>This app was built with Djangofor and Python an API back-end.</p>
-                    <p className='p-extended'>Collaborative Project: Dev Center — This application was developed with a full stack Django and Python</p>
+                    <p>This application was developed with a full stack Python, Django, Social oAuth, Tweepy, Boto3, JWT .</p>
+                    <p className='p-extended'>Collabrative Project: DevCenter - Styling with Bootstrap, Materialize and CSS. Problem: Devs have multiple tabs windows open while attempting to do there job. Solution: To create an app that would allow the users to authenticate with other applications and then be able to use some base functionality of those sites via a third party API. </p>
                     <a className='link' href="https://devcenter-629.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>
                     <a className='link' href="https://github.com/HoseaCodes/DevCenter" target="_blank" rel="noopener noreferrer">View Github</a>
                 </div>

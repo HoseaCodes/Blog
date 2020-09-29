@@ -7,7 +7,7 @@
     position: relative;
     /* background-color: black;
     opacity: 0.5; */
-    height: 100vh;
+    height: 65vh;
     /* clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%); */
 }
 .open-section {
@@ -38,7 +38,7 @@
 
 }
 
-.header-username, .header-career {
+.header-username, .header-username2, .header-career, .header-scroll {
     color: white;
     display: block;
     font-family: Lato, sans-serif;
@@ -46,7 +46,56 @@
     text-align: center;
     text-transform: uppercase;
 }
+.header-scroll {
+    position: fixed;
+    top: 95%;
+    width: 100%;
+    margin-top: 20rem;
+    /* animation: scrolls 3s steps(3,end) 8s infinite normal; */
+    /* animation: up 3s ease-in 8s 1 normal; */
+}
+/* @keyframes scrolls{
+    0% {
+        color: white;
+    }
+    100% {
+        color: #206a5d;
+        font-size: 2rem;
+    } 
+}
+@keyframes up {
+    0% {
+        bottom: 250%;
+    }
+    100% {
+        bottom: 0%;
+    }
+} */
+.header-username {
+    animation: header 5s ease-in -1s normal;
 
+}
+
+@keyframes header{
+    0% {
+        right: 250%;
+    }
+    100% {
+        right: 0%
+    }
+}
+.header-username2 {
+    animation: header2 5s ease-in -1s normal;
+
+}
+@keyframes header2{
+    0% {
+        left: 250%;
+    }
+    100% {
+        left: 0%
+    }
+}
 .projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1 {
     color: white;
     display: block;
@@ -60,7 +109,7 @@
     margin: 0;
 }
 
-.header-username {
+.header-username, .header-username2 {
     position: relative;
     font-size: 5rem;
     letter-spacing: 2.5rem;

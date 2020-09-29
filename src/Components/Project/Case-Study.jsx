@@ -79,6 +79,7 @@
 // Adapted from Simon Heaton - How to Write a Web Design Case Study that Lands New Clients featured in Shopify Partners blog post, January 15, 2016
 
 import React from 'react';
+import { Link } from "react-router-dom";
 import '../Project/Case-Study.css';
 
 
@@ -91,20 +92,20 @@ const CaseStudy = () => {
                     <li className="skills"><span>REACT</span></li>
                     <li className="skills"><span>JQUERY</span></li>
                     <li className="skills"><span>JAVASCRIPT</span></li>
-                    <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
+                    <Link to="/projects" className="cta">Read More</Link>
                 </div>
                 <div className="service service1">
                     <h4 className='service-title'>FrontEnd</h4>
                     <li className="skills"><span>MATERIL UI</span></li>
                     <li className="skills"><span>MATERIALIZE</span></li>
                     <li className="skills"><span>BOOTSTRAP</span></li>
-                    <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
+                    <Link to="/projects" className="cta">Read More</Link>
                 </div>
                 <div className="service service1">
                     <h4 className='service-title'>Computer Science</h4>
                     <li className="skills"><span>DATA STUCTURES</span></li>
                     <li className="skills"><span>ALGORITHMS</span></li>
-                    <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
+                    <Link to="/projects" className="cta">Read More</Link>
                 </div>
 
                 <div className="service service1">
@@ -113,8 +114,7 @@ const CaseStudy = () => {
                     <li className="skills"><span>NODE.JS</span></li>
                     <li className="skills"><span>PYTHON</span></li>
                     <li className="skills"><span>DJANGO</span></li>
-
-                    <a href="#" className="cta">Read More <span className="ti-angle-right"></span></a>
+                    <Link to="/projects" className="cta">Read More</Link>
                 </div>
 
                 <div className="service service1">
@@ -122,7 +122,7 @@ const CaseStudy = () => {
                     <h4 className='service-title'>Databases</h4>
                     <li className="skills"><span>POSTGRESQL</span></li>
                     <li className="skills"><span>MONGODB</span></li>
-                    <a href="#" className="cta">Read more <span className="ti-angle-right"></span></a>
+                    <Link to="/projects" className="cta">Read More</Link>
                 </div>
             </div>
         </section>

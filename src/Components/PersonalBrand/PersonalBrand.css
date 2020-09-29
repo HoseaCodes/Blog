@@ -31,9 +31,9 @@ hr {
 background-color: #206a5d;
 }
 
-.skill-length {
+/* .skill-length {
     width: 16rem;
-}
+} */
 .letter {
     text-transform: uppercase;
     text-align: center;
@@ -41,11 +41,11 @@ background-color: #206a5d;
     margin: 5px;
 }
 
-p {
+td {
     text-align: center;
-    width: 80%;
     color: #ebecf1;
-    font-size: 1rem;
+    font-size: 1.5rem;
+    border-right: 3px solid #206a5d;    
 }
 .domImg {
     border-radius: 50%;

@@ -23,10 +23,10 @@ const PersonalBrand = () => {
             <div className='group1'>
                 <div className='group2'>
                 </div>
-                <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
-                <div className='group3'>
+                {/* <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" /> */}
+                {/* <div className='group3'>
                     <h2 className='pb-h2 letter'>About Me</h2>
-                </div>
+                </div> */}
             </div>
             <table>
                 <tr>

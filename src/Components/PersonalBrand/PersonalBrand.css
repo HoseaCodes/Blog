@@ -4,6 +4,7 @@
     align-items: center;
     justify-items: center;
     background-color: #1A1E23;
+    height: 40vh;
 }
 .group1 {
     display: flex;
@@ -40,7 +41,9 @@ background-color: #206a5d;
     font-size: 4rem;
     margin: 5px;
 }
-
+table {
+    margin-top: 15rem;
+}
 td {
     text-align: center;
     color: #ebecf1;

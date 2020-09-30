@@ -21,8 +21,9 @@
 import React from 'react';
 
 const SocialMedia = () => {
-    return (
+    return (<>
         <h2>Social Media Data</h2>
+    </>
     )
 
 }

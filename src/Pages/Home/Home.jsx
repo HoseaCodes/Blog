@@ -20,6 +20,7 @@ import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
 import Blog from '../../Components/Blog/Blog';
 import Pxample from '../../Components/Modal/Modal';
+import hosea2 from '../../icons/hosea2.jpeg';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
@@ -45,6 +46,11 @@ const Home = () => {
                 </div>
             </div>
             <div className='open-section'>
+                {/* <h1>ABout Me</h1> */}
+                <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
+
+            </div>
+            <div className='about-me'>
             </div>
             <PersonalBrand />
             <div className='color'></div>
@@ -75,15 +81,16 @@ const Home = () => {
             <div className='articles'>
                 <Blog />
             </div>
-            <div className='color'></div>
+            */}
+            {/* <div className='color'></div>
             <div className='open-section'>
                 <h1> social media</h1>
             </div>
             <div className='color'></div>
             <div className='socialmedia'>
                 <SocialMedia />
-            </div>
-            <div className='color'></div> */}
+            </div> */}
+            <div className='color'></div>
             <div className='open-section'>
                 <h1> Contact</h1>
             </div>

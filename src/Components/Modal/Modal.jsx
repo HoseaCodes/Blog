@@ -1,32 +1,16 @@
-import React, { useState } from 'react'
-import { Modal, Button } from 'react-bootstrap'
+import React from 'react'
 import ShareIcon from '@material-ui/icons/Share';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
-
-function PModal() {
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
+const PopUp = () => {
     return (
         <>
-            <a className='social'> <ShareIcon fontSize="large" onClick={handleShow} /> </a>
-
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Get Link</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Share this portfolio!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-            </Button>
-
-                </Modal.Footer>
-            </Modal>
+            <Popup trigger={<a className="social"><ShareIcon /></a>} position="right center" >
+                <div>Share Link with Others</div>
+            </Popup >
         </>
-    );
-}
 
-export default PModal;
+    )
+}
+export default PopUp 

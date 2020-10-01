@@ -67,12 +67,6 @@ class Home extends React.Component {
                     <div className='color'></div>
                     <div className='projects'>
                         <Carousel />
-                        {/* <h1>Projects</h1> */}
-                        {/* <iframe className='iframe' title="p" height="600" width="800" src='https://hoseacodes.github.io/Calorie-Kitchen/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe>
-                    <iframe className='iframe' title="p" height="600" width="800" src='https://careerconnect.herokuapp.com/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe>
-                    <iframe className='iframe' title="p" height="600" width="800" src='http://webfiver.com/' frameborder="yes" allowtransparency="true" allowfullscreen="true"></iframe> */}
-                        {/* <Project1 /> */}
-                        {/* <WebFiver /> */}
                     </div>
                     <div className='color'></div>
                     <div className='open-section'>

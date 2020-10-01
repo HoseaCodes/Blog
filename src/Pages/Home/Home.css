@@ -5,7 +5,8 @@
     background-repeat: no-repeat;
     background-attachment: fixed;
     position: relative;
-    height: 55vh;
+    height: 100vh;
+    padding-bottom: 55px;
 }
 .open-section {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
@@ -17,16 +18,40 @@
     height: 25vh;
     margin: 0;
 }
+.open-section-first {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    height: 30vh;
+    margin: 0;
+}
+.open-section-first h1 {
+    padding-top: 8%;
+    color: white;
+    display: block;
+    font-family: Lato, sans-serif;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 4rem;
+    letter-spacing: 1.5rem;
+    line-height: 40px;
+    margin: 0;
+}
 .color-first {
     background-color: #1A1E23;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 30vh;
+    height: 20vh;
 }
 .open-section h1 {
     padding-top: 5%;
+    
 }
 .iframe {
     margin-left: 40px;
@@ -41,15 +66,37 @@
     border: 3px solid #204740;
     position: absolute;
     left: 30%;
-    top: 55%;
+    top: 100%;
     z-index: 1;
 }
 
 .header-logo {
     position: absolute;
     left: 50%;
+    top: 15%;
     transform: translateX(-50%);
-
+}
+.header-button, .footer-button {
+    border: 2px solid #fff;
+    color: white;
+    box-sizing: inherit;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13pt;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    background-color: transparent;
+    transition: all 0.5s;
+}
+.footer-button {
+    position: absolute;
+    left: 44%;
+    top: 915%;
+}
+.header-button:hover, .footer-button:hover {
+    background-color: #204740;
+    border-color: #204740;
+    font-size: 15pt;
 }
 
 .header-username, .header-username2, .header-career, .header-scroll {
@@ -110,7 +157,7 @@
         left: 0%
     }
 }
-.projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1 {
+.projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
     color: white;
     display: block;
     font-family: Lato, sans-serif;
@@ -122,6 +169,7 @@
     line-height: 40px;
     margin: 0;
 }
+
 
 .header-username, .header-username2 {
     position: relative;

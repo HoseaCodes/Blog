@@ -28,17 +28,17 @@ import { Modal } from 'react-bootstrap';
 import ContactForm from '../../Components/Contact/ContactForm';
 
 
-
 const Home = () => {
     return (
         <div>
             <NavBar2 />
             <div className='header'>
-                <div className='header-logo'>
+                <div className='header-logo' id='header-logo'>
                     <h1 className='heading-primary'>
                         <span className="header-username">Hosea </span>
                         <span className="header-username2">Codes </span>
                         {/* <span className="header-career">Software Engineer</span> */}
+                        <a href='#domImg' className='header-button'>Find Out More</a>
                         <div>
                             <Scramble />
                         </div>
@@ -48,10 +48,10 @@ const Home = () => {
             </div>
             <div className='color-first'>
                 {/* <h1>ABout Me</h1> */}
-                <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
+                <img className='domImg' id='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
             </div>
             <div className='color'></div>
-            <div className='open-section'>
+            <div className='open-section-first'>
                 <h1>About Me</h1>
             </div>
             <PersonalBrand />
@@ -99,6 +99,8 @@ const Home = () => {
             <div className='contact'>
                 <SocialMediaTags />
                 <ContactForm />
+                <a href='#header-logo' className='footer-button'>Back to Top</a>
+
             </div>
             <Footer />
         </div>

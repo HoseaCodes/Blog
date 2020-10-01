@@ -7,11 +7,14 @@
 }
 ._1-xF_{
     color: #206a5d;
+    font-size: 2rem;
+    text-align: center;
 }
 
 ._3FIQ_ {
-    background-color:slategray;
-    opacity: .4;
+    background-color: rgb(60, 69, 79);
+    /* background-color:slategray;
+    opacity: .4; */
 
 }
 ._1lLZK {

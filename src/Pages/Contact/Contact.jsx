@@ -14,7 +14,7 @@
 import React from 'react';
 import './Contact.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
-
+import ContactForm from '../../Components/Contact/ContactForm'
 
 const Contact = () => {
     return (
@@ -27,17 +27,7 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
-            <div className='contact-container'>
-                <h2 className='contact-header'>Contact Me</h2>
-                <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
-                <form>
-
-                    <input className='input' type="text" name="name" placeholder="Name" />
-                    <input className='input' type="email" name="email" placeholder="Enter Email" />
-                    <textarea className='area' placeholder='Your Message' />
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
+            <ContactForm />
         </div >
     )
 

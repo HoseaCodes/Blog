@@ -8,3 +8,14 @@
     text-decoration: none;
     color: #206a5d;
 }
+
+.social-resume:hover + .hide{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #206a5d;
+}
+.hide {
+    display: none;
+}

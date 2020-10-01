@@ -14,35 +14,20 @@
 //to your audience as what you do.
 
 import React from 'react';
-import './PersonalBrand.css'
-import hosea2 from '../../icons/hosea2.jpeg';
+import './PersonalBrand.css';
+import Resume from '../Resume/Resume';
+import Cards from '../Cards/Cards'
+
 
 const PersonalBrand = () => {
-    return (
+    return (<>
+
         <div className='personal-container'>
-            <div className='group1'>
-                <div className='group2'>
-                </div>
-                {/* <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" /> */}
-                {/* <div className='group3'>
-                    <h2 className='pb-h2 letter'>About Me</h2>
-                </div> */}
-            </div>
-            <table>
-                <tr>
-                    <th className='pb-h2 skill'>Skills</th>
-                    <th className='pb-h2 skill'>Education</th>
-                    <th className='pb-h2 skill'>Fun</th>
-                </tr>
-                <tr>
-                    <td>I am skilled in front- and back-end technologies, frameworks, tools, and methods. I currently excel with React.js and Node.js</td>
-                    <td>I followed my passion and took the Software Engineer Immersive Course at General Assembly. Before that, I graduated from Texas Southern  University in 2017 with a degree in Management Information Systems. Since 2014 I have been working as an Operations Manager in logistics.</td>
-                    <td>I love to learn, COD, traveling and sports like activities. I am passionate about Software Engineering and aesthetically pleasing applications.</td>
-                </tr>
-            </table>
+            <Cards />
+            <Resume />
         </div>
 
-
+    </>
     )
 }
 

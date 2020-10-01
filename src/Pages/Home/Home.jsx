@@ -25,6 +25,7 @@ import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
 import { Modal } from 'react-bootstrap';
+import ContactForm from '../../Components/Contact/ContactForm';
 
 
 
@@ -45,12 +46,13 @@ const Home = () => {
                     {/* <p className="header-scroll"> Scoll Down for more</p> */}
                 </div>
             </div>
-            <div className='open-section'>
+            <div className='color-first'>
                 {/* <h1>ABout Me</h1> */}
                 <img className='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
-
             </div>
-            <div className='about-me'>
+            <div className='color'></div>
+            <div className='open-section'>
+                <h1>About Me</h1>
             </div>
             <PersonalBrand />
             <div className='color'></div>
@@ -96,15 +98,7 @@ const Home = () => {
             </div>
             <div className='contact'>
                 <SocialMediaTags />
-                <div className='form-container'>
-                    <p>Have a question? I am available for hire and open to any ideas of cooperation.</p>
-                    <form>
-                        <input className='input' type="text" name="name" placeholder="Name" />
-                        <input className='input' type="email" name="email" placeholder="Enter Email" />
-                        <textarea className='area' placeholder='Your Message' />
-                        <input className='btn-input' type="submit" value="Submit" />
-                    </form>
-                </div>
+                <ContactForm />
             </div>
             <Footer />
         </div>

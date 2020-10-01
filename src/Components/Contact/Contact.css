@@ -1,0 +1,24 @@
+.contact-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.btn {
+    margin-top: 10px;
+    background-color: #206a5d;
+    color: white;
+    padding: 10px;
+    border-radius: 8%;
+
+}
+.btn:hover {
+    margin-top: 10px;
+    background-color: #206a5d;
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;   
+    border-radius: 8%;
+    font-weight: bold;
+
+}

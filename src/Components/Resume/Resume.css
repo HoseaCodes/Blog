@@ -1,0 +1,39 @@
+.btn-input {
+    margin-top: 100px;
+    font-size: 1rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: none;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
+    margin-left: 50px;
+
+}
+
+.btn-input:hover {
+    margin-top: 100px;
+    font-size: 1.2rem;
+    border-color: #206a5d;
+    border: #206a5d;
+    text-decoration: underline;
+    background-color: #206a5d;
+    color: #ebecf1;
+    padding: 4px 8px 4px 8px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+    border-radius: 8%;
+    margin-left: 50px;
+
+}
+
+.resume-group {
+    display: flex;
+}

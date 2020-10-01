@@ -96,30 +96,30 @@ class Articles extends React.Component {
 
                             {/* <!--───────────────card───────────────--> */}
 
-                            <div className="card">
-                                <h2 className='card-header'>The Art of Picking a Project<hr /></h2>
+                            <div className="article-card">
+                                <h2 className='article-card-header'>The Art of Picking a Project<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div className="work-content">Below is a list of projects ideas for new programers</div></a>
                                 <LikeButton className='link' />
 
                             </div>
-                            <div className="card">
-                                <h2 className='card-header'>Web vs Client Servers<hr /></h2>
+                            <div className="article-card">
+                                <h2 className='article-card-header'>Web vs Client Servers<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div className="work-content">A quick breakdown of web and client servers.</div></a>
                                 <LikeButton />
                             </div>
-                            <div className="card">
-                                <h2 className='card-header'>You Down with OOP?<hr /></h2>
+                            <div className="article-card">
+                                <h2 className='atricle-card-header'>You Down with OOP?<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div className="work-content">A brief overview of object oriented programming</div></a>
                                 <LikeButton />
                             </div>
-                            <div className="card">
-                                <h2 className='card-header'>Popular Post<hr /></h2>
+                            <div className="article-card">
+                                <h2 className='article-card-header'>Popular Post<hr /></h2>
                                 <a href="" target="_blank">
                                     {/* <!--Link to project--> */}
                                     <div className="work-img">How the Internet Works</div><br /></a>

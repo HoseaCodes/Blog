@@ -24,8 +24,9 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         position: relative;
-        height: 100vh;
-        padding-bottom: 55px;
+        height: 50vh;
+        width: 100%;
+        padding-bottom: 35px;
     }
     .open-section {
         background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
@@ -44,7 +45,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         position: relative;
-        height: 30vh;
+        height: 20vh;
         margin: 0;
     }
     .open-section-first h1 {
@@ -55,10 +56,12 @@
         font-weight: bold;
         text-align: center;
         text-transform: uppercase;
-        font-size: 4rem;
-        letter-spacing: 1.5rem;
+        font-size: 2rem;
+        letter-spacing: 1rem;
         line-height: 40px;
         margin: 0;
+        padding-top: 80px;
+        
     }
     .color-first {
         background-color: #1A1E23;
@@ -66,26 +69,21 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 10vh;
+        height: 0vh;
     }
     .open-section h1 {
         padding-top: 5%;
         
     }
-    .iframe {
-        margin-left: 40px;
-        margin-right: 40px;
-        height: 70vh;
-        width: 45vw;
-    }
+   
     .domImg {
         border-radius: 50%;
-        transform: scale(1.5);
+        transform: scale(1);
         margin: 100px;
         border: 3px solid #204740;
         position: absolute;
-        left: 20%;
-        top: 100%;
+        left: 15%;
+        top: 43%;
         z-index: 1;
     }
     
@@ -187,18 +185,19 @@
         font-weight: bold;
         text-align: center;
         text-transform: uppercase;
-        font-size: 4rem;
-        letter-spacing: 1.5rem;
+        font-size: 2rem;
+        letter-spacing: 1rem;
         line-height: 40px;
         margin: 0;
+        padding-top: 80px;
     }
     
     
     .header-username, .header-username2 {
         position: relative;
-        font-size: 5rem;
+        font-size: 3rem;
         letter-spacing: 2.5rem;
-        line-height: 100px;
+        line-height: 50px;
         padding: 1rem;
         }
     

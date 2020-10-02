@@ -5,7 +5,7 @@ import { ThemeProvider } from "styled-components";
 import { useDarkMode } from "../../Components/DarkMode/useDarkMode";
 import { GlobalStyles } from "../../Components/GlobalStyles/GlobalStyles";
 import { lightTheme, darkTheme } from "../../Components/Themes/Themes";
-import Toggle from "../../Components/Toggle/Toggle"
+// import Toggle from "../../Components/Toggle/Toggle"
 
 
 
@@ -24,7 +24,7 @@ const NavBar2 = () => {
                     <Link to="/articles" className="item">Articles</Link>
                     <Link to="/about" className="item">About</Link>
                     <Link to="/contact" className="item">Contact</Link>
-                    <Toggle theme={theme} toggleTheme={themeToggler} />
+                    {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
 
                 </div>
 

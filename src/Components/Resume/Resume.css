@@ -42,3 +42,13 @@
 @media only screen and (min-width: 768px) {
  
 }
+@media only screen and (max-width: 600px) {
+    .resume-group {
+        background-color: #1A1E23;
+        width: 155vw;
+        display: flex;
+        justify-content: center;
+        margin-left: 150px;
+
+    }
+}

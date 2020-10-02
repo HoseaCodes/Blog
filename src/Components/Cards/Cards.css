@@ -27,5 +27,18 @@
         flex-direction: column;
         width: 90%;
     }
-   
+}
+@media only screen and (max-width: 600px) {
+    ._1-wtg {
+        display: flex;
+        flex-direction: column;
+        width: 400%;
+    }
+    ._2sohj img{
+        background-size: cover;
+    }
+    ._3FIQ_, ._VrCvP {
+        width: 100vw;
+        margin-left: 180px;
+    }
 }

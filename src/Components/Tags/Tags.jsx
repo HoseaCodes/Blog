@@ -12,7 +12,6 @@ const Tags = () => {
             <div className="tags-title">
                 <h2 className='tag-title'> Project Details</h2>
                 <hr />
-
             </div>
             <JavaScript />
             <Nodejs />

@@ -21,6 +21,7 @@
 }
 hr {
     width: 100%;
+    background-color: #206a5d;
 }
 
 .tag-group {
@@ -33,7 +34,6 @@ hr {
 .tag-group:hover {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6));
     overflow: hidden;
-
 }
 
 .tag-header {

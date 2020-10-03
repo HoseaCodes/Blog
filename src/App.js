@@ -7,6 +7,10 @@ import Articles from './Pages/Articles/Articles'
 import Contact from './Pages/Contact/Contact'
 import Error from './Pages/Error/Error'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import CalorieKitchen from './Pages/Projects/CalorieKitchen';
+import CareerConnect from './Pages/Projects/CareerConnect';
+import MergeImmersive from './Pages/Projects/MergeImmersive';
+import DevCenter from './Pages/Projects/DevCenter';
 
 
 
@@ -36,6 +40,38 @@ export default class App extends Component {
             path="/projects"
             render={() => (
               <Projects
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/caloriekitchen"
+            render={() => (
+              <CalorieKitchen
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/devcenter"
+            render={() => (
+              <DevCenter
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/careerconnect"
+            render={() => (
+              <CareerConnect
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/mergeimmersive"
+            render={() => (
+              <MergeImmersive
               />
             )}
           />

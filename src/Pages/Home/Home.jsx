@@ -12,9 +12,7 @@ import React from 'react';
 import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Scramble from '../../Components/Scramble/Scramble';
-import Project1 from '../../Components/Project/Project1';
 import CaseStudy from '../../Components/Project/Case-Study';
-import WebFiver from '../../Components/Project/WebFiver';
 import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
@@ -25,6 +23,7 @@ import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
 import ContactForm from '../../Components/Contact/ContactForm';
+import Technologies from '../../Components/Technologies/Technologies';
 
 
 class Home extends React.Component {
@@ -73,7 +72,7 @@ class Home extends React.Component {
                         <h1> technologies</h1>
                     </div>
                     <div className='technologies'>
-                        <CaseStudy />
+                        <Technologies />
                     </div>
                     {/* <div className='open-section'>
                     <h1> articles</h1>

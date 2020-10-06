@@ -3,7 +3,6 @@ import '../Carousel/Carousel.css'
 import '../Carousel/Modal.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-// import Popup from 'reactjs-popup';
 import CalorieKitchen from '../../icons/CalorieKitchen.png'
 import CaloriesKitchen2 from '../../icons/CaloriesKitchen2.png'
 import caloriekitchen2 from '../../icons/caloriekitchen2.png'
@@ -41,69 +40,10 @@ function Carousel() {
                 <button className='btn-left' onClick={goLeft}> ‹ </button>
                 <button className='btn-right' onClick={goRight}> › </button>
             </div>
-            {/* <P1Modal /> */}
         </div>
     )
 }
 
 
-
-
-
-
-// const P1Modal = () => (
-//     <Popup
-//         trigger={<button className="button"> 🔍 </button>}
-//         modal
-//         nested
-//     >
-//         {close => (
-//             <div className="modal">
-//                 <a className="close" onClick={close}>
-//                     &times;
-// </a>
-//                 <div className="top"> Modal Title </div>
-//                 <div className="middle">
-//                     {' '}
-//                     <p></p>
-//                     This app was built using HTML, CSS, and Javascript.
-//   Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, a nostrum.
-//   Dolorem, repellat quidem ut, minima sint vel eveniet quibusdam voluptates
-//   delectus doloremque, explicabo tempore dicta adipisci fugit amet dignissimos?
-//   <br />
-//   Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.
-//   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur sit
-//   commodi beatae optio voluptatum sed eius cumque, delectus saepe repudiandae
-//   explicabo nemo nam libero ad, doloribus, voluptas rem alias. Vitae?
-// </div>
-//                 <div className="actions">
-//                     <Popup
-//                         trigger={<button className="button"> Trigger </button>}
-//                         position="top center"
-//                         nested
-//                     >
-//                         <span>
-//                             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae
-//                             magni omnis delectus nemo, maxime molestiae dolorem numquam
-//                             mollitia, voluptate ea, accusamus excepturi deleniti ratione
-//                             sapiente! Laudantium, aperiam doloribus. Odit, aut.
-//     </span>
-//                     </Popup>
-//                     <button
-//                         className="button"
-//                         onClick={() => {
-//                             console.log('modal closed ');
-//                             close();
-//                         }}
-//                     >
-//                         close modal
-//   </button>
-//                 </div>
-//             </div>
-//         )}
-//     </Popup>
-// );
-
 export default
-    Carousel
-    // P1Modal
+    Carousel;

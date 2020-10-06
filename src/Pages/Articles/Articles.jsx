@@ -76,6 +76,17 @@ class Articles extends React.Component {
         // const {
         //     authenticated
         // } = this.state
+        const articles = ['The Art of Picking a Project', 'Web vs Client Servers', 'You Down with OOP?']
+        const aInfo = ['Below is a list of projects ideas for new programers', 'A quick breakdown of web and client servers', 'A brief overview of object oriented programming']
+        const aInfoFormatted = aInfo.map((info) => <a href="" target="_blank">
+            {/* Link to Project */}
+            <div className="work-content" key={info}>{info}</div></a>
+        )
+        const articlesFormatted = articles.map((article) => <div className="article-card">
+            <h2 className='article-card-header' key={article}>{article}<hr /></h2>
+            {aInfoFormatted}
+            <LikeButton className='link' />
+        </div>)
         return (
             <div className='article-container'>
                 <NavBar2 />
@@ -96,28 +107,10 @@ class Articles extends React.Component {
 
                             {/* <!--───────────────card───────────────--> */}
 
-                            <div className="article-card">
-                                <h2 className='article-card-header'>The Art of Picking a Project<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* <!--Link to project--> */}
-                                    <div className="work-content">Below is a list of projects ideas for new programers</div></a>
-                                <LikeButton className='link' />
+                            <div>
+                                {articlesFormatted}
+                            </div>
 
-                            </div>
-                            <div className="article-card">
-                                <h2 className='article-card-header'>Web vs Client Servers<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* <!--Link to project--> */}
-                                    <div className="work-content">A quick breakdown of web and client servers.</div></a>
-                                <LikeButton />
-                            </div>
-                            <div className="article-card">
-                                <h2 className='atricle-card-header'>You Down with OOP?<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* <!--Link to project--> */}
-                                    <div className="work-content">A brief overview of object oriented programming</div></a>
-                                <LikeButton />
-                            </div>
                             <div className="article-card">
                                 <h2 className='article-card-header'>Popular Post<hr /></h2>
                                 <a href="" target="_blank">

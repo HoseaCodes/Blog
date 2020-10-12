@@ -34,7 +34,7 @@
         height: 50vh;
         width: 100vw;
     }
-    .contact-container input {
+    .contact-container .contact-input {
         width: 170%;
     }
     .contact-container textarea {

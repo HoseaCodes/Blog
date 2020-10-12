@@ -266,13 +266,13 @@
         
     }
     .color-first {
-        height: 10vh;
+        height: 0vh;
     }
     .domImg {
-        transform: scale(1);
-        margin: 100px;
-        left: -18%;
-        top: 50%;
+        display: none;
+    }
+    .mobile {
+        display: none;
     }
 
     .header-button {

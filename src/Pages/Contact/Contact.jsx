@@ -27,6 +27,8 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
+            <h3 className='contacth3'>Contact Me</h3>
+
             <ContactForm />
         </div >
     )

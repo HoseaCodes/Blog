@@ -54,8 +54,8 @@ class Home extends React.Component {
 
                         <img className='domImg' id='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
                     </div>
-                    <div className='color'></div>
-                    <div className='open-section-first'>
+                    <div className='color mobile'></div>
+                    <div className='open-section-first mobile'>
                         <h1>About Me</h1>
                     </div>
                     <PersonalBrand />

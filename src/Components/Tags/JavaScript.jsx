@@ -7,7 +7,7 @@ import JS from '../../icons/JS.png'
 const JavaScript = () => {
     return (
         <>
-            <Link to="/caloriekitchen" className="item active">
+            <Link to="/caloriekitchen" className="tag-item active">
                 <div className='tag-group'>
                     <div className="tag-logo">
                         <img src={JS} width='200' height='150' alt="JavaScript" />

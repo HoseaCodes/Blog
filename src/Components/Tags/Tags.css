@@ -29,7 +29,6 @@ hr {
     padding: 2rem;
     width: 100vw;
     overflow: hidden;
-
 }
 .tag-group:hover {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6));
@@ -51,4 +50,16 @@ hr {
     align-items: center;
     width: 100vw;
     color: white;
+}
+@media only screen and (max-width: 480px) {
+
+    .tag-group {
+        display: flex;
+        flex-direction: column;
+        align-self: center;
+        padding: 10px;
+    }
+    .tag-item {
+        text-decoration: none;
+    }
 }

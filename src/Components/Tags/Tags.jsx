@@ -14,9 +14,13 @@ const Tags = () => {
                 <hr />
             </div>
             <JavaScript />
+            <hr />
             <Nodejs />
+            <hr />
             <Reactjs />
+            <hr />
             <Python />
+            <hr />
             <Django />
         </div>
 

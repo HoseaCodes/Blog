@@ -79,7 +79,7 @@
 }
 #artilces p{
 	font-family: var(--main-font-family);
-	font-size:1.2rem;
+	font-size:1.5rem;
 	padding: 10px;
 }
 
@@ -107,7 +107,7 @@
 .article-card .work-content{
 	text-align: center;
 	padding: 10px 5px;
-	font-size: 1rem;
+	font-size: 1.5rem;
 	color: grey;
 	font-family: var(--main-font-family);
 	cursor: pointer;
@@ -215,9 +215,14 @@ hr {
 }
 
 
-@media only screen and (max-width: 500px) {
-
-	#home, #projects, #contact{
-        overflow-x: hidden;
-	}
+@media only screen and (max-width: 480px) {
+	.article-card {
+		width: 80vw;
+		height: 55vh;
+		box-shadow: 0 0 1.5rem gray;
+}
+.work {
+	flex-direction: column;
+	flex-wrap: nowrap;
+}
 }

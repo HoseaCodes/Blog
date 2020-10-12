@@ -46,3 +46,13 @@ form {
     padding: 10px;
 
 }
+.contacth3 {
+    background-color: #1A1E23;
+    margin: 0;
+    color: white;
+    font-size: 2rem;
+    text-transform: uppercase;
+    text-align: center;
+    padding-top: 3rem;
+    letter-spacing: .5rem;
+}

@@ -6,7 +6,7 @@ import django from '../../icons/django.png'
 
 const Django = () => {
     return (<>
-        <Link to="/devcenter" className="item active">
+        <Link to="/devcenter" className="tag-item active">
             <div className='tag-group'>
                 <div className="tag-logo">
                     <img src={django} width='300' height='250' alt="JavaScript" />

@@ -11,14 +11,11 @@ const NavBar2 = () => {
     const handleToggle = () => {
         setActive(!isActive);
     };
-
-
-
     return (
         <div className="header-nav">
             <div className='burger-nav'>
-                <img className='nav-img' src={burger} alt="menu" width='50px' height='50px' onClick={handleToggle}
-
+                <img className='nav-img' src={burger} alt="menu" width='50px' height='50px'
+                    onClick={handleToggle}
                 />
             </div>
             <div className={`left-nav ${isActive ? "" : "left-nav open"}`}>

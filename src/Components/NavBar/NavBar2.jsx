@@ -1,37 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import "./NavBar2.css";
+import burger from '../../icons/burger.jpg'
 import { Link } from "react-router-dom";
-import { ThemeProvider } from "styled-components";
-import { useDarkMode } from "../../Components/DarkMode/useDarkMode";
-import { GlobalStyles } from "../../Components/GlobalStyles/GlobalStyles";
-import { lightTheme, darkTheme } from "../../Components/Themes/Themes";
-// import Toggle from "../../Components/Toggle/Toggle"
 
 
 
 const NavBar2 = () => {
-    const [theme, themeToggler, mountedComponent] = useDarkMode();
+    const [isActive, setActive] = useState("false");
 
-    const themeMode = theme === 'light' ? lightTheme : darkTheme;
+    const handleToggle = () => {
+        setActive(!isActive);
+    };
+
+
 
     return (
-        <ThemeProvider theme={themeMode}>
-            <GlobalStyles />
-            <div className="header-nav">
-                <div className="left-nav">
-                    <Link to="/" className="item active">Home</Link>
-                    <Link to="/projects" className="item">Projects</Link>
-                    <Link to="/articles" className="item">Articles</Link>
-                    <Link to="/about" className="item">About</Link>
-                    <Link to="/contact" className="item">Contact</Link>
-                    {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
+        <div className="header-nav">
+            <div className='burger-nav'>
+                <img className='nav-img' src={burger} alt="menu" width='50px' height='50px' onClick={handleToggle}
 
-                </div>
+                />
+            </div>
+            <div className={`left-nav ${isActive ? "" : "left-nav open"}`}>
+                <Link to="/" className="item active">Home</Link>
+                <Link to="/projects" className="item">Projects</Link>
+                <Link to="/articles" className="item">Articles</Link>
+                <Link to="/about" className="item">About</Link>
+                <Link to="/contact" className="item">Contact</Link>
+                {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
 
             </div>
-        </ThemeProvider>
+
+        </div>
 
     )
-};
+}
+
 
 export default NavBar2;

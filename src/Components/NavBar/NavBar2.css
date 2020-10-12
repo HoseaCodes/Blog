@@ -1,28 +1,116 @@
 
 .left-nav {
-    max-width: 100%;
-    height: 100%;
     font-weight: 700;
+    height: 5vh;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    align-items: center;
     background-color: #1A1E23;
     font-family: 'Lato', sans-serif;
-    margin-bottom: 0px;
 }
 .item{
     text-decoration: none;
     color: white;
     opacity: .4;
+    font-size: 1.5rem;
 }
 .active {
         opacity: 1;
 }
 
-.item:hover {
-    text-decoration: underline;
-    color: teal;
-    opacity: .7;
+.item:focus, .item:hover {
+    padding: 5px 7px;
+    border-color: rgba(255,255,255,1);
+    outline: none;
+  }
+  
+  .item::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    max-height: 0;
+    color: rgba(255,255,255,0);
+    border-left: 2px solid rgba(255,255,255,0);
+    content: attr(data-text);
+    transition: max-height .3s,border-color 0s;
+  }
+  
+  .item::after {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+    max-height: 0;
+    color: rgba(255,255,255,0);
+    border-right: 2px solid rgba(255,255,255,0);
+    content: attr(data-text);
+    transition: max-height .3s,border-color 0s;
+  }
+  
+  .item:focus::before, .item:hover::before, .item:focus::after, .item:hover::after {
+    max-height: 100%;
+    transition-delay: .28s;
+    border-color: rgba(255,255,255,1);
+  }
 
+/* --------------------------------------- */
+ /* Mobile Responsive */
+ /* Small devices (portrait tablets and large phones, 480px and up) */
+ @media only screen and (max-width: 480px) {
+     .burger-nav {
+        width: 100%;
+        height: 8vh;
+        background-color: #1A1E23;
+     }
+     .burger-nav img {
+        cursor: pointer;
+     }
+     .item {
+         text-align: left;
+         width: 100%;
+         margin: 0;
+         color: white;
+         opacity: 1 !important;
+         padding: 10px;
+         border-bottom: 1px solid #404040;
+         display: block !important;
+
+     }
+     .left-nav {
+         overflow: hidden;
+         display: block;
+         height: 0;
+     }
+     .left-nav.open {
+         height: auto;
+     }
+ }
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .nav-img {
+        display: none;
+    }  
+}  
+/* Large devices (laptops/desktops, 996px and up) */
+@media only screen and (min-width: 996px) {
+
+    .nav-img {
+        display: none;
+    }  
+  
 }
 
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   
+    .nav-img {
+        display: none;
+    }  
+}
+   

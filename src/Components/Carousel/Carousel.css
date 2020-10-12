@@ -153,10 +153,11 @@ p {
     }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 480px) {
+
     .p-container {
         height: 100%;
-        width: 100%;
+        width: 100vw;
         
     }
     .p-content {
@@ -167,7 +168,7 @@ p {
     }
    .carousel-container {
         height: 35vh;
-        width: 100%;
+        width: 100vw;
     }
     .p-details {
         height: 40vh;
@@ -175,17 +176,10 @@ p {
         margin-bottom: 75px;
     }
     .carousel {
-        position: relative;
         height: 100%;
-        width: 100%;
-        box-sizing: border-box;
-        margin: 0;
-        margin: 50px;
-        padding: 0;
-        display: flex;
-        align-items: center;
-        overflow: hidden;
+        width: 100vw;
     }
+ 
     .p-h2 {
         font-size: 2.5rem;
         color: #206a5d;
@@ -197,20 +191,7 @@ p {
         color: #ebecf1;
         font-size: 1rem;
     }
-    .btn-left, .btn-right {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 5rem;
-        height: 5rem;
-        background: none;
-        border: none;
-        outline: none;
-        transition: 0.5s;
-        font-size: 10rem;
-        opacity: 0.7;
-        margin-top: 10px;
-    }
+   
     .link {
         margin-bottom: 30px;
     }

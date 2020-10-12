@@ -39,16 +39,22 @@
 .resume-group {
     display: flex;
 }
-@media only screen and (min-width: 768px) {
- 
-}
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 480px) {
+    .btn-input {
+        margin-top: 50px; 
+    }
+    
+    .btn-input:hover {
+        margin-top: 50px;
+    }
     .resume-group {
         background-color: #1A1E23;
         width: 155vw;
         display: flex;
         justify-content: center;
         margin-left: 150px;
-
-    }
+}
+}
+@media only screen and (min-width: 768px) {
+ 
 }

@@ -24,6 +24,7 @@ import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
 import ContactForm from '../../Components/Contact/ContactForm';
 import Technologies from '../../Components/Technologies/Technologies';
+import Testomonies from '../../Components/Testomonies/Testomonies'
 
 
 class Home extends React.Component {
@@ -66,6 +67,13 @@ class Home extends React.Component {
                     <div className='color'></div>
                     <div className='projects'>
                         <Carousel />
+                    </div>
+                    <div className='color'></div>
+                    <div className='open-section'>
+                        <h1> Testomonies</h1>
+                    </div>
+                    <div className='testomonies'>
+                        <Testomonies />
                     </div>
                     <div className='color'></div>
                     <div className='open-section'>

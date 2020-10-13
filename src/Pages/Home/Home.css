@@ -512,7 +512,7 @@
             left: 0%
         }
     }
-    .projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
+    .projects h1, .testomonies h1 .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
         color: white;
         display: block;
         font-family: Lato, sans-serif;

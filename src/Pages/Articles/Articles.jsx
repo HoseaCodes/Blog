@@ -40,6 +40,7 @@ import React from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
+import Stack from '../../Components/Blog/Data Structures/Stack'
 import { auth, login, logout } from '../../services/firebase';
 
 
@@ -124,6 +125,7 @@ class Articles extends React.Component {
                                     {/* <!--Link to project--> */}
                                     <div className="work-img">Portfolio Guide</div></a>
                             </div>
+
                             <Subscribe />
                         </div>
                     </div>

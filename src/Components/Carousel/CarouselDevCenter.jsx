@@ -27,7 +27,7 @@ function CarouselDevCenter() {
     };
     return (
         <div className='carousel-container'>
-            <div className='carousel'>
+            <div className='c-carousel'>
                 {example.map((item, index) => {
                     return (
                         <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>

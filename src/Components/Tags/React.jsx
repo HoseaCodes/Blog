@@ -6,7 +6,7 @@ import Reactt from '../../icons/Reactt.png'
 const Reactjs = () => {
     return (
         <>
-            <Link to="/mergeimmersive" className="tag-item active">
+            <Link to="/mergeimmersive" className="tag-item active" style={{ textDecoration: 'none' }}>
                 <div className='tag-group'>
                     <div className="tag-logo">
                         <img src={Reactt} width='200' height='200' alt="" />

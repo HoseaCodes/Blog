@@ -6,6 +6,7 @@ import About from './Pages/About/About'
 import Articles from './Pages/Articles/Articles'
 import Contact from './Pages/Contact/Contact'
 import Error from './Pages/Error/Error'
+import Shop from './Pages/Shop/Shop';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CalorieKitchen from './Pages/Projects/CalorieKitchen';
 import CareerConnect from './Pages/Projects/CareerConnect';
@@ -87,6 +88,14 @@ export default class App extends Component {
             path="/about"
             render={() => (
               <About
+
+              />
+            )}
+          />
+          <Route
+            path="/shop"
+            render={() => (
+              <Shop
 
               />
             )}

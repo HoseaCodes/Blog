@@ -85,6 +85,7 @@
     padding: 10px 20px;
     background-color: transparent;
     transition: all 0.5s;
+    text-decoration: none;
 }
 .header-button {
     left: 35%;

@@ -6,7 +6,7 @@ import Py from '../../icons/Py.png'
 const Python = () => {
     return (
         <>
-            <Link to="/devcenter" className="tag-item active">
+            <Link to="/devcenter" className="tag-item active" style={{ textDecoration: 'none' }}>
                 <div className='tag-group'>
                     <div className="tag-logo">
                         <img src={Py} width='200' height='200' alt="" />

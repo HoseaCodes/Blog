@@ -24,7 +24,7 @@ import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer'
 import ContactForm from '../../Components/Contact/ContactForm';
 import Technologies from '../../Components/Technologies/Technologies';
-import Testomonies from '../../Components/Testomonies/Testomonies'
+import Testomonials from '../Testimonials/Testimonials';
 
 
 class Home extends React.Component {
@@ -73,7 +73,7 @@ class Home extends React.Component {
                         <h1> Testomonies</h1>
                     </div>
                     <div className='testomonies'>
-                        <Testomonies />
+                        <Testomonials />
                     </div>
                     <div className='color'></div>
                     <div className='open-section'>
@@ -90,14 +90,15 @@ class Home extends React.Component {
                     <Blog />
                 </div>
                 */}
-                    {/* <div className='color'></div>
-                <div className='open-section'>
-                    <h1> social media</h1>
-                </div>
-                <div className='color'></div>
-                <div className='socialmedia'>
-                    <SocialMedia />
-                </div> */}
+                    <div className='color'></div>
+                    <div className='open-section'>
+                        <h1> social media</h1>
+                    </div>
+                    <div className='color'></div>
+                    <div className='socialmedia'>
+                        <SocialMedia />
+
+                    </div>
                     <div className='color'></div>
                     <div className='open-section'>
                         <h1> Contact</h1>

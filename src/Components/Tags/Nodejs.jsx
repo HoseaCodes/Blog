@@ -6,7 +6,7 @@ import Node from '../../icons/Node.png'
 const Nodejs = () => {
     return (
         <>
-            <Link to="/careerconnect" className="tag-item active">
+            <Link to="/careerconnect" className="tag-item active" style={{ textDecoration: 'none' }}>
                 <div className='tag-group'>
                     <div className="tag-logo">
                         <img src={Node} width='200' height='150' alt="" />

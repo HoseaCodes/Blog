@@ -28,13 +28,6 @@
     opacity: .6;
     font-size: 1.5rem;
 }
-@media only screen and (min-width: 768px) {
-    ._1-wtg {
-        display: flex;
-        flex-direction: column;
-        width: 90%;
-    }
-}
 @media only screen and (max-width: 480px) {
     ._1-wtg {
         display: flex;
@@ -53,7 +46,53 @@
 
     ._1lLZK, ._ve3dP {
         line-height: 1.5rem;
+        width: 90%;
+        margin: 10px;
     }
+}
+
+/* @media only screen and (min-width: 480px) {
+    ._1-wtg {
+        display: flex;
+        flex-direction: column;
+        width: 400%;
+        margin-left: 100px;
+
+    }
+    ._2sohj img{
+        background-size: cover;
+        height: 300px !important;
+        width: 70% !important;
+        margin-left: 100px;
+
+    }
+    ._3FIQ_, ._VrCvP {
+        width: 100vw;
+        margin-left: 180px;
+      }
+
+    ._1lLZK, ._ve3dP {
+        line-height: 1.5rem;
+        width: 90%;
+        margin: 10px;
+        margin-left: 50px;
+    }
+} */
+@media only screen and (max-width: 1024px) {
+    ._1-wtg {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    ._1-wtg {
+        display: flex;
+        flex-direction: column;
+        width: 90%;
+    }
+    
 }
 
 

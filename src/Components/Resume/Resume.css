@@ -60,6 +60,11 @@
         margin-left: 150px;
 }
 }
+/* @media only screen and (min-width: 480px) {
+    .resume-group {
+        width: 50%;
+    }
+} */
 @media only screen and (min-width: 768px) {
  
 }

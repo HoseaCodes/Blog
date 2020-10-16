@@ -229,6 +229,69 @@
 
 /* --------------------------------------- */
  /* Mobile Responsive */
+ /* @media only screen and (min-width: 480px) {
+    .header {
+        height: 60vh;
+        width: 100%;
+        padding-bottom: 35px;
+    }
+    .open-section-first {
+        height: 20vh;
+    }
+    .open-section-first h1 {
+        font-size: 2rem;
+        letter-spacing: 1rem;
+        padding-top: 80px;   
+    }
+    .open-section h1 {
+        padding-top: 5%;
+        
+    }
+    .color-first {
+        height: 0vh;
+    }
+    .domImg {
+        display: none;
+    }
+    .mobile {
+        display: none;
+    }
+
+    .header-button {
+        position: relative;
+        left: -2%;
+        color: transparent !important;
+        border: transparent !important;
+    }
+
+    .footer-button {
+        position: absolute;
+        left: 35%;
+        top: 1025%;
+        color: transparent !important;
+        border: transparent !important;
+    }
+   
+    .socialmedia h1, .projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
+        font-size: 2rem !important;
+        letter-spacing: 1rem;
+        padding-top: 80px;
+    }
+    
+    
+    .header-username, .header-username2 {
+        position: relative;
+        font-size: 3rem;
+        letter-spacing: 2.5rem;
+        line-height: 50px;
+        padding: 1rem;
+        margin-left: 35px;
+        }
+    .color {
+        height: 10vh;
+    }
+
+} */
  /* Small devices (portrait tablets and large phones, 480px and up) */
 @media only screen and (max-width: 480px) {
     .header {
@@ -577,6 +640,22 @@
         border-bottom: 1px solid #333333;
         border-left: 1px solid #CCCCCC;
         border-radius: 8%;
+    }
+}
+@media only screen and (min-device-width: 1024px) {
+    .header-button {
+        display: none;
+    }
+    .domImg {
+        transform: scale(1.5);
+        top: 52%;
+        left: 30%
+    }
+    .open-section-first h1,.projects h1, .testomonies h1 .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
+        font-size: 3rem;
+    }
+    .color-first {
+        height: 20vh;
     }
 }
 

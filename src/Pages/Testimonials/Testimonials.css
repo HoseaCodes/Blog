@@ -164,3 +164,9 @@
       transform: scale(1.5);
     }
   }
+  @media only screen and (min-device-width: 1024px) {
+    .step-image img {
+      width: 60%;
+      height: 60%;
+    }
+  }

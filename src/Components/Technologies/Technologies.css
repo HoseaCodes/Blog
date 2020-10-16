@@ -208,13 +208,26 @@ opacity: .6;
   font-size: 20px;
 }
 }
-@media all and (max-width:900px) {
-  .services-grid {
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    flex-direction: column;
-    align-items: center;
+@media only screen and (min-width: 1200px) {
+  .service {
+    height: 55vh;
+    width: 50vw;
+    padding: 40px;
+
   }
 }
+@media only screen and (min-device-width: 1024px) {
+  .service {
+    height: 55vh;
+  }
+}
+/* @media only screen and (min-width: 480px) {
+  .service {
+    height: 65vh;
+  }
+  .services-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+} */

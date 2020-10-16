@@ -121,19 +121,19 @@ const Testimonials = () => {
                                 <img src={step.imageUrl} />
                             </div>
                             <div className="step-content">
-                                <h2 style={{ color: 'white', opacity: '.6' }}>
+                                <h2 className='t-title' style={{ color: 'white', opacity: '.6' }}>
                                     <small style={{ color: 'white', opacity: '.6' }}>Testimony {item + 1}</small>
                                     <br />
                                     {step.title}
                                 </h2>
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-                                    <p style={{ opacity: '.6' }}>{step.description}</p>
+                                    <p style={{ opacity: '.6', lineHeight: '40px', letterSpacing: '1px' }}>{step.description}</p>
                                     <div style={{
                                         display: 'flex', flexDirection: 'column',
                                         alignItems: 'center'
                                     }}>
-                                        <p style={{ opacity: '.6', margin: '0' }}> Follow {step.fName} on Twitter</p>
+                                        <p style={{ opacity: '.6', margin: '0', lineHeight: '40px', letterSpacing: '1px' }}> Follow {step.fName} on Twitter</p>
                                         <a className='social' href={step.social} target="_blank">
                                             <TwitterIcon fontSize="large" />
                                         </a>

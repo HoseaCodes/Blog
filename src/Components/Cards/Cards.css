@@ -6,14 +6,15 @@
     margin: 10px;
 }
 ._1-xF_{
-    color: #206a5d;
-    font-size: 2rem;
+    font-size: 3rem !important;
+    color: gray !important;
+    text-shadow: 2px 2px 2px #206a5d;
     text-align: center;
     width: 100%;
 }
 
 ._3FIQ_ {
-    background-color: rgb(60, 69, 79);
+    background-color: rgb(35, 41, 47);
     /* background-color:slategray;
     opacity: .4; */
 

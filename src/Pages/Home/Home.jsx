@@ -12,12 +12,8 @@ import React from 'react';
 import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Scramble from '../../Components/Scramble/Scramble';
-import CaseStudy from '../../Components/Project/Case-Study';
-import Articles from '../../Pages/Articles/Articles';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Carousel from '../../Components/Carousel/Carousel';
-import Blog from '../../Components/Blog/Blog';
-import PopUp from '../../Components/Modal/Modal';
 import hosea2 from '../../icons/hosea2.jpeg';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
@@ -41,18 +37,14 @@ class Home extends React.Component {
                             <h1 className='heading-primary'>
                                 <span className="header-username">Hosea </span>
                                 <span className="header-username2">Codes </span>
-                                {/* <span className="header-career">Software Engineer</span> */}
                                 <a href='#domImg' className='header-button'>Find Out More</a>
                                 <div>
                                     <Scramble />
                                 </div>
                             </h1>
-                            {/* <p className="header-scroll"> Scoll Down for more</p> */}
                         </div>
                     </div>
                     <div className='color-first'>
-                        {/* <h1>ABout Me</h1> */}
-
                         <img className='domImg' id='domImg' src={hosea2} alt="Dominique" width="300" height="300" />
                     </div>
                     <div className='color mobile'></div>
@@ -82,14 +74,6 @@ class Home extends React.Component {
                     <div className='technologies'>
                         <Technologies />
                     </div>
-                    {/* <div className='open-section'>
-                    <h1> articles</h1>
-                </div>
-                <div className='color'></div>
-                <div className='articles'>
-                    <Blog />
-                </div>
-                */}
                     <div className='color'></div>
                     <div className='open-section'>
                         <h1> social media</h1>
@@ -97,7 +81,6 @@ class Home extends React.Component {
                     <div className='color'></div>
                     <div className='socialmedia'>
                         <SocialMedia />
-
                     </div>
                     <div className='color'></div>
                     <div className='open-section'>
@@ -107,7 +90,6 @@ class Home extends React.Component {
                         <SocialMediaTags />
                         <ContactForm />
                         <a href='#header-logo' className='footer-button'>Back to Top</a>
-
                     </div>
                     <Footer />
                 </div>

@@ -126,4 +126,8 @@
     height: 100px;
     object-fit: cover;
   }
-  
+  .t-title {
+    font-size: 2rem !important;
+    color: gray !important;
+    text-shadow: 1px 1px 1px #206a5d;
+  }

@@ -28,40 +28,41 @@ const Technologies = () => {
             <div className="services-grid">
                 <div className="service service1">
                     <h4 className='service-title'>{library}</h4>
-                    <li className="skills"><span>{react}</span></li>
-                    <li className="skills"><span>{jQuery}</span></li>
-                    <li className="skills"><span>{js}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{react}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{jQuery}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{js}</span></li>
                     <Link to="/projects" className="cta">{readMe}</Link>
                 </div>
                 <div className="service service1">
                     <h4 className='service-title'>{fEnd}</h4>
-                    <li className="skills"><span>{materialUI}</span></li>
-                    <li className="skills"><span>{materialize}</span></li>
-                    <li className="skills"><span>{bootstrap}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{materialUI}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{materialize}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{bootstrap}</span></li>
                     <Link to="/projects" className="cta">{readMe}</Link>
                 </div>
                 <div className="service service1">
                     <h4 className='service-title'>{cs}</h4>
-                    <li className="skills"><span>{structure}</span></li>
-                    <li className="skills"><span>{algorithms}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{structure}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{algorithms}</span></li>
                     <Link to="/projects" className="cta">{readMe}</Link>
                 </div>
 
                 <div className="service service1">
                     <i className="ti-light-bulb"></i>
                     <h4 className='service-title'>{bEnd}</h4>
-                    <li className="skills"><span>{node}</span></li>
-                    <li className="skills"><span>{python}</span></li>
-                    <li className="skills"><span>{django}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{node}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{python}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{django}</span></li>
                     <Link to="/projects" className="cta">{readMe}</Link>
                 </div>
 
                 <div className="service service1">
                     <i className="ti-money"></i>
                     <h4 className='service-title'>{db}</h4>
-                    <li className="skills"><span>{postgres}</span></li>
-                    <li className="skills"><span>{mongo}</span></li>
-                    <Link to="/projects" className="cta">{readMe}</Link>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{postgres}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>{mongo}</span></li>
+                    <li className="skills"><span style={{ fontSize: '1rem' }}>NoSQL</span></li>
+                    <Link to="/projects" style={{ padding: '0 !important', justifyContent: 'center' }} className="cta">{readMe}</Link>
                 </div>
             </div>
         </section>

@@ -27,7 +27,13 @@
     border-radius: 12px;
     width: 75%;
     height: 75vh !important;
-    box-shadow: .2px .2px .2px .2px gray;
+    box-shadow: .2px .2px .2px .2px rgb(47, 54, 62);
+    border-top: 2px solid #206a5d;
+    border-right: 2px solid #206a5d;
+    border-left: .5px solid gray;
+    border-bottom: .5px solid gray;
+
+
 
 }
 .p-details:hover {
@@ -69,15 +75,19 @@
 
 /* Project Content */
 .p-h2 {
-    font-size: 3rem;
-    color: #206a5d;
-    text-shadow: 1px 1px 1px gray;
+    font-size: 5rem !important;
+    color: gray !important;
+    text-shadow: 2px 2px 2px #206a5d;
+    margin: 0%;
+    margin-bottom: 10px;
 
 }
 
 .p-details p {
     text-align: center;
-    width: 80%;
+    width: 70%;
+    line-height: 40px;
+    letter-spacing: 1px;
     color: white;
     opacity: .6;
     font-size: 1.5rem;

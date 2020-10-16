@@ -141,11 +141,11 @@ section {
 
 
 .services-grid {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  margin-top: 100px;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 0;
+  padding: 150px;
 }
 
 .service {

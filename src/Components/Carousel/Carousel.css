@@ -110,9 +110,11 @@
     background-color: transparent;
     transition: all 0.5s;
     text-decoration: none;
-    margin-left: 50px;
     background-color: #206a5d;
 
+}
+.github {
+    margin-left: 50px;
 }
 
 .link:hover {
@@ -327,8 +329,7 @@
         overflow: hidden;
     }
     .p-h2 {
-        font-size: 2.5rem;
-        color: #206a5d;
+        text-align: center;
     }
     p {
         text-align: center;
@@ -353,7 +354,12 @@
     .link {
         margin-bottom: 20px;
     }
-    
+    .main-tag {
+        display: none;
+    }
+    .p-details {
+        height: 80vh !important;
+    }
 }
 @media only screen and (min-width: 1200px) {
     .carousel-container {

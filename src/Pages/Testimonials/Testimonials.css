@@ -131,3 +131,13 @@
     color: gray !important;
     text-shadow: 1px 1px 1px #206a5d;
   }
+  @media only screen and (min-width: 768px) {
+    .step-image img {
+      width: 50%;
+      height: 30%;
+      transform: scale(1.5);
+    }
+    .step-content p {
+      font-size: 1.5rem;
+    }
+  }

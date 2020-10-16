@@ -18,7 +18,7 @@ function Carousel() {
                 <CarouselCalorieKitchen />
                 <div className='p-details'>
                     <h2 className='p-h2'>{p1}</h2>
-                    <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                         <li><a href="#" className="main-tag">JavaScript</a></li>
                         <li><a href="#" className="main-tag">JQuery</a></li>
                         <li><a href="#" className="main-tag">AJAX</a></li>
@@ -34,7 +34,7 @@ function Carousel() {
                 <CarouselWebfiver />
                 <div className='p-details'>
                     <h2 className='p-h2'>{p2}</h2>
-                    <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                         <li><a href="#" className="main-tag">CMS</a></li>
                         <li><a href="#" className="main-tag">WordPress</a></li>
                     </ul>
@@ -47,7 +47,7 @@ function Carousel() {
                 <CarouselCareerconnect />
                 <div className='p-details'>
                     <h2 className='p-h2'>{p3}</h2>
-                    <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                         <li><a href="#" className="main-tag">MongoDB</a></li>
                         <li><a href="#" className="main-tag">Express.js</a></li>
                         <li><a href="#" className="main-tag">Node.js</a></li>
@@ -65,7 +65,7 @@ function Carousel() {
                 <CarouselMergeImmersive />
                 <div className='p-details'>
                     <h2 className='p-h2'>{p4}</h2>
-                    <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                         <li><a href="#" className="main-tag">React,js</a></li>
                         <li><a href="#" className="main-tag">Node,js</a></li>
                         <li><a href="#" className="main-tag">AJAX</a></li>
@@ -82,7 +82,7 @@ function Carousel() {
                 <CarouselDevCenter />
                 <div className='p-details'>
                     <h2 className='p-h2'>{p5}</h2>
-                    <ul style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                         <li><a href="#" className="main-tag">Python</a></li>
                         <li><a href="#" className="main-tag">Django</a></li>
                         <li><a href="#" className="main-tag">JWT</a></li>

@@ -60,11 +60,11 @@ class Home extends React.Component {
                     <div className='projects'>
                         <Carousel />
                     </div>
-                    <div className='color'></div>
-                    <div className='open-section'>
+                    <div className='color mobile'></div>
+                    <div className='open-section mobile'>
                         <h1> Testomonies</h1>
                     </div>
-                    <div className='testomonies'>
+                    <div className='testomonies mobile'>
                         <Testomonials />
                     </div>
                     <div className='color'></div>

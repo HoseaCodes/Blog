@@ -36,36 +36,19 @@
 //updating whichever platform that you choose regularly. One 
 //rule of thumb is to post at least twice a month.
 
-import React from 'react';
+import React, { Component } from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
-import Blog from '../../Components/Blog/Blog'
+import { articleData } from './ArticleData';
+import Article from '../Articles/Article';
+import Blog from '../../Components/Blog/Blog';
 import StackOps from '../../icons/stack-operations.png';
 
 import { auth, login, logout } from '../../services/firebase';
 
 
-const e = React.createElement;
 
-class LikeButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { liked: false };
-    }
-
-    render() {
-        if (this.state.liked) {
-            return 'You liked this.';
-        }
-
-        return e(
-            'button',
-            { onClick: () => this.setState({ liked: true }) },
-            'Like'
-        );
-    }
-}
 
 
 class Articles extends React.Component {
@@ -74,8 +57,11 @@ class Articles extends React.Component {
             user
         ));
     }
+    state = {
+        articles: articleData
+    }
     render() {
-
+        const { articles } = this.state;
         return (
             <div className='article-container'>
                 <NavBar2 />
@@ -89,35 +75,13 @@ class Articles extends React.Component {
                     <div className="work-box">
                         <div className="work">
                             {/* <!--───────────────card───────────────--> */}
-                            <div className="article-card">
-                                <h2 className='article-card-header' >Data Structure: Stack<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* Link to Project */}
-                                    <div className="work-content" >Description</div></a>
-                                <LikeButton className='link' />
-                            </div>
-                            <div className="article-card">
-                                <h2 className='article-card-header' >The Art of Picking a Project<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* Link to Project */}
-                                    <div className="work-content" >Below is a list of projects ideas for new programers</div></a>
-                                <LikeButton className='link' />
-                            </div>
-                            <div className="article-card">
-                                <h2 className='article-card-header' >Web vs Client Servers<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* Link to Project */}
-                                    <div className="work-content" >A quick breakdown of web and client servers</div></a>
-                                <LikeButton className='link' />
-                            </div>
-                            <div className="article-card">
-                                <h2 className='article-card-header' >You Down with OOP?<hr /></h2>
-                                <a href="" target="_blank">
-                                    {/* Link to Project */}
-                                    <div className="work-content" >A brief overview of object oriented programming</div></a>
-                                <LikeButton className='link' />
-                            </div>
-
+                            <section className='articleList'>
+                                {articles.map(article => {
+                                    return (
+                                        <Article article={article} />
+                                    )
+                                })}
+                            </section>
                             <div className="article-card">
                                 <h2 className='article-card-header'>Popular Post<hr /></h2>
                                 <a href="" target="_blank">

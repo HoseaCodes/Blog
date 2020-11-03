@@ -82,6 +82,7 @@
   
   .step-content {
     padding: 1rem;
+    color: white;
   }
   
   .step-content small {
@@ -100,14 +101,19 @@
     text-align: center;
     position: relative;
     border-bottom: 1px solid gray;
-    opacity: 0.5;
-    will-change: opacity;
-    transition: opacity 225ms;
+    opacity: 0.5 !important;
+    will-change: opacity !important;
+    transition: opacity 225ms !important;
   }
-  
+  .nav-content {
+    color: white;
+    list-style-type: none;
+    opacity: .6 !important;
+    letter-spacing: 1px !important;
+  }
   .nav-item.active,
   .nav-item:hover {
-    opacity: 1;
+    opacity: 1 !important;
   }
   
   .nav-item.active {
@@ -118,7 +124,7 @@
     background: transparent;
     border: none;
     padding: 0;
-    cursor: pointer;
+    cursor: pointer !important;
   }
   
   .nav-image {

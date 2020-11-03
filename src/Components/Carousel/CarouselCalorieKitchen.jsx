@@ -11,7 +11,7 @@ import caloriekitchen4 from '../../icons/caloriekitchen4.png'
 
 
 function Carousel() {
-    let example = [
+    let project1 = [
         <ImgComp className='cover' src={CalorieKitchen} />,
         <ImgComp className='cover' src={CaloriesKitchen2} />,
         <ImgComp className='cover' src={caloriekitchen2} />,
@@ -19,18 +19,19 @@ function Carousel() {
         <ImgComp className='cover' src={caloriekitchen4} />,
 
     ];
+    const p1 = 'Calorie Kitchen';
     const [x, setX] = useState(0)
     const goLeft = () => {
-        x === 0 ? setX(-100 * (example.length - 1)) : setX(x + 100);
+        x === 0 ? setX(-100 * (project1.length - 1)) : setX(x + 100);
     };
     const goRight = () => {
-        x === -100 * (example.length - 1) ? setX(0) : setX(x - 100);
+        x === -100 * (project1.length - 1) ? setX(0) : setX(x - 100);
 
     };
     return (
-        <div className='carousel-container'>
+        <div className='carousel-container' >
             <div className='c-carousel'>
-                {example.map((item, index) => {
+                {project1.map((item, index) => {
                     return (
                         <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>
                             {item}
@@ -39,6 +40,19 @@ function Carousel() {
                 })}
                 <button className='btn-left' onClick={goLeft}> ‹ </button>
                 <button className='btn-right' onClick={goRight}> › </button>
+            </div>
+            <div className='p-details'>
+                <h2 className='p-h2'>{p1}</h2>
+                <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
+                    <li><a href="#" className="main-tag">JavaScript</a></li>
+                    <li><a href="#" className="main-tag">JQuery</a></li>
+                    <li><a href="#" className="main-tag">AJAX</a></li>
+                </ul>
+                <p>Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
+                <div style={{ display: 'flex', marginTop: '30px' }}>
+                    <a className='link' href="https://hoseacodes.github.io/Calorie-Kitchen/" target="_blank" rel="noopener noreferrer">View Live Site</a>
+                    <a className='link github' href="https://github.com/HoseaCodes/Calorie-Kitchen" target="_blank" rel="noopener noreferrer">View Github</a>
+                </div>
             </div>
         </div>
     )

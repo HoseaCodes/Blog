@@ -28,6 +28,27 @@
     opacity: .6;
     font-size: 1.5rem;
 }
+
+.card-click {
+    animation-name: pulse;
+    animation-delay: 5s;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    visibility: hidden;
+    transition: 3s;
+}
+@keyframes pulse {
+    0% {
+      display: none;
+      visibility: hidden;
+
+    }
+    100% {
+      display: visible;
+      visibility: visible;
+    }
+  }
+
 @media only screen and (max-width: 480px) {
     ._1-wtg {
         display: flex;

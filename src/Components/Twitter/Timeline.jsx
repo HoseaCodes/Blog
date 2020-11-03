@@ -125,14 +125,23 @@ const words = [
 
 const TweeterTimeline = () => {
     return (
-        <div className='twitter'>
+        <div className='twitter'
+            data-aos="fade-right"
+            data-aos-offset="600"
+            data-aos-easing="ease-in"
+            data-aos-duration="500"
+
+        >
             <Timeline dataSource={{
                 sourceType: "profile", screenName: "DominiqueRHosea",
             }}
-                options={{ theme: "dark", width: "600", height: "600" }}
-            />
+                options={{ theme: "dark", width: "600", height: "600" }} />
             {/* <ReactWordcloud words={words} /> */}
-            <img className='word-cloud' src={WordCloud} alt="Twitter Info" style={{ width: '600', height: '700 !important' }} />
+            <img className='word-cloud' src={WordCloud} alt="Twitter Info" style={{ width: '600', height: '700 !important' }}
+                data-aos="fade-left"
+                data-aos-offset="600"
+                data-aos-duration="500"
+            />
         </div>
     )
 }

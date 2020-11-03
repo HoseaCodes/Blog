@@ -1,0 +1,61 @@
+import React, { Component } from 'react';
+import Bootstrap from '../../icons/Bootstrap.png';
+import JS from '../../icons/jsicon.png';
+import Django from '../../icons/django.png';
+import MongoDB from '../../icons/MongoDB.png';
+import Node from '../../icons/Node.png';
+import postgresql from '../../icons/postgresql.png';
+import Py from '../../icons/Py.png';
+import Reactt from '../../icons/Reactt.png';
+import Swift from '../../icons/swift.png';
+import JQuery from '../../icons/jquery.png';
+import Carousel from 'react-elastic-carousel';
+import './Technologies.css';
+
+
+
+
+class Tech extends Component {
+    state = {
+        items: [
+            { id: 1, title: 'JavaScript', img: JS },
+            { id: 2, title: 'Bootstrap', img: Bootstrap },
+            { id: 3, title: 'Django', img: Django },
+            { id: 4, title: 'MongoDB', img: MongoDB },
+            { id: 5, title: 'Node', img: Node },
+            { id: 6, title: 'postgresql', img: postgresql },
+            { id: 7, title: 'Python', img: Py },
+            { id: 8, title: 'React', img: Reactt },
+            { id: 9, title: 'Swift', img: Swift },
+            { id: 10, title: 'jQuery', img: JQuery },
+        ]
+    }
+    constructor(props) {
+        super(props)
+        this.breakPoints = [
+            { width: 1, itemsToShow: 1 },
+            { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
+            { width: 850, itemsToShow: 3 },
+            { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
+            { width: 1450, itemsToShow: 5 },
+            { width: 1750, itemsToShow: 6 },
+        ];
+
+    }
+    render() {
+        const { items } = this.state;
+
+        return (
+            <Carousel itemsToScroll={1} itemsToShow={3}
+                initialActiveIndex={4} focusOnSelect={true}
+                enableAutoPlay autoPlaySpeed={2000}
+                itemPadding={[10, 40]} >
+                {items.map(item => <div key={item.id}>
+                    <img src={item.img} alt={item.title} />
+                </div>)}
+            </Carousel>
+        );
+    }
+};
+
+export default Tech;

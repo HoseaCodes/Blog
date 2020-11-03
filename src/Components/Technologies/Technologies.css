@@ -6,8 +6,24 @@
   box-sizing: inherit;
 }
 
+.ikyGAt, .brcpxa {
+  background-color: #204740 !important;
+  box-shadow: 0 0 1px 3px #317266 !important;
+  opacity: .5;
+}
 
+.rec-arrow {
+  background-color: #204740 !important;
+  opacity: .5;
+}
 
+.rec-dot_active {
+  background-color: white !important;
+}
+
+.rec-carousel-wrapper {
+  background-color: rgb(35, 41, 47);
+} 
 section {
   max-width: 1000px;
   margin: 0 auto;

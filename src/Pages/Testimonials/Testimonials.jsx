@@ -98,10 +98,18 @@ const Testimonials = () => {
         <div className="t-container">
             <ul className="step-list">
                 <li className="step-overlay">
-                    <button className="prev-button" onClick={prev}>
+                    <button className="prev-button" onClick={prev}
+                        data-aos="fade-left"
+                        data-aos-offset="600"
+                        data-aos-duration="3000"
+                    >
                         ‹
               </button>
-                    <button className="next-button" style={{ right: '0' }} onClick={next}>
+                    <button className="next-button" style={{ right: '0' }} onClick={next}
+                        data-aos="fade-left"
+                        data-aos-offset="600"
+                        data-aos-duration="3000"
+                    >
                         ›
               </button>
                 </li>

@@ -81,9 +81,8 @@ export default function SpringModal() {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">Calorie Kitchen</h2>
-                        <hr style={{ background: 'black', width: '30%' }} />
-                        <p id="spring-modal-description">Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
+                        <h2 id="spring-modal-title">Merge Immersive</h2>
+                        <p id="spring-modal-description">Collaborative Project: Merge-Immersive — This application was developed with a full stack MERN M - MongoDB to store data, E - Express, a back-end framework, R - React, a client side framework, N - NodeJS (RESTful routing) - to run back end service and written in JavaScript including JWT authentication . Styling with Bootstrap and CSS. Problem: Students in the bootcamp have a difficult time connecting with current and past students including students from different disciplines. Another challenge is maintaining the ability to communicate and collaborate on projects. Solution:  Our application gives GA students the ability to see their current projects, websites and applications. Also, giving them the ability to reach out to current and past students even students that are not in their program type like Software Engineering and Data Science. Allowing students to connect and build a stronger network.</p>
                     </div>
                 </Fade>
             </Modal>

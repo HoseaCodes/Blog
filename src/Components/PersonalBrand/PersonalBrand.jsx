@@ -1,8 +1,8 @@
 import React from 'react';
 import './PersonalBrand.css';
-import Resume from '../Resume/Resume';
-import Cards from '../Cards/Cards'
 import nique from '../../icons/nique.jpg'
+import Resume2020 from '../../icons/Resume2020.pdf'
+
 
 
 const PersonalBrand = () => {
@@ -12,6 +12,14 @@ const PersonalBrand = () => {
         window.location.href = '/about';
 
     }
+    function handleDownload(e) {
+        e.preventDefault();
+        window.location.href = Resume2020;
+    }
+    window.addEventListener('scroll', () => {
+        document.body.style.setProperty('--scroll', window.pageYOffset / (document.body.offsetHeight - window.innerHeight));
+    }, false);
+
     return (<>
 
         <div className='personal-container'>
@@ -62,6 +70,8 @@ const PersonalBrand = () => {
                         companies since the beginning of my career and I am excited for the opportunity
                             to continue this journey with another industry leader.</p>
                         <button onClick={handleClick} className='personal-btn'>More about Dominique</button>
+                        <br />
+                        <button onClick={handleDownload} className='personal-btn'>Download my Resume</button>
                     </div>
                 </div>
             </div>

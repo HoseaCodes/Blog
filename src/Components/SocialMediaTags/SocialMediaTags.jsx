@@ -31,8 +31,6 @@ const SocialMediaTags = () => {
             <a className='social' href="https://www.youtube.com/channel/UCW0iZYA3zE03qlVJqVE_ajQ/about?view_as=subscriber" target="_blank"><YouTubeIcon fontSize="large" /></a>
             <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank"><AlternateEmailIcon fontSize="large" /></a>
             <a className="social-resume social" href={Resume2020} download="Resume2020.pdf"><GetAppIcon fontSize='large' /></a>
-            <PopUp />
-
             {/* <PModal /> */}
 
         </div >

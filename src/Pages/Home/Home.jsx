@@ -1,18 +1,16 @@
-
 import React from 'react';
 import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Scramble from '../../Components/Scramble/Scramble';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import Projects from '../../Components/Carousel/Carousel';
-import hosea2 from '../../icons/hosea2.jpeg';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
-import Footer from '../../Components/Footer/Footer'
-import ContactForm from '../../Components/Contact/ContactForm';
+import Footer from '../../Components/Footer/Footer';
+import Resume from '../../Components/Resume/Resume';
 import Testomonials from '../Testimonials/Testimonials';
 import Tech from '../../Components/Technologies/Tech';
-
+import EmailIcon from '@material-ui/icons/Email';
 
 class Home extends React.Component {
     constructor(props) {
@@ -89,6 +87,24 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='contact'>
+                        <Resume />
+                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                        <div className='contact-group'>
+                            <h2 style={{
+                                fontSize: '5rem', textAlign: 'center',
+                                color: 'white', opacity: '.8', textTransform: 'uppercase',
+                                textShadow: '2px 2px 2px #206a5d', letterSpacing: '1rem'
+                            }}
+                            >
+                                Send Me A Message
+                            </h2>
+                            <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank">
+                                <EmailIcon className='email' fontSize='large' style={{ color: '#206a5d', width: '15rem !important' }} />
+                            </a>
+
+                        </div>
+                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                        <br />
                         <a href='#header-logo' className='footer-button'
                             data-aos="fade-right"
                             data-aos-offset="200"

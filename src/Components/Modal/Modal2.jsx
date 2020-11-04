@@ -81,9 +81,8 @@ export default function SpringModal() {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">Calorie Kitchen</h2>
-                        <hr style={{ background: 'black', width: '30%' }} />
-                        <p id="spring-modal-description">Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
+                        <h2 id="spring-modal-title">Career Connect</h2>
+                        <p id="spring-modal-description">Solo Project: Career Connect - JavaScript, CSS, HTML, MongoDB, oAuth Google, Node.js, RESTful routing -  Created a web server using a templating engine and MVC model. Building all of the application from beginning to end with an ability to consume a third party API and convert its JSON components.</p>
                     </div>
                 </Fade>
             </Modal>

@@ -7,7 +7,7 @@ import careerconnect2 from '../../icons/careerconnect2.png'
 import careerconnect3 from '../../icons/careerconnect3.png'
 import careerconnect4 from '../../icons/careerconnect4.png'
 import careerconnect5 from '../../icons/careerconnect5.png'
-import ZoomInIcon from '@material-ui/icons/ZoomIn';
+import Modal2 from '../Modal/Modal2'
 
 function CarouselCareerconnect() {
     let connect = [
@@ -49,8 +49,7 @@ function CarouselCareerconnect() {
                     <li><a href="#" className="main-tag">AJAX</a></li>
                     <li><a href="#" className="main-tag">RESTful Routing</a></li>
                 </ul>
-                <ZoomInIcon fontSize='large' style={{ color: '#206a5d' }} />
-                <p>Solo Project: Career Connect - JavaScript, CSS, HTML, MongoDB, oAuth Google, Node.js, RESTful routing -  Created a web server using a templating engine and MVC model. Building all of the application from beginning to end with an ability to consume a third party API and convert its JSON components.</p>
+                <Modal2 />
                 <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href="https://careerconnect.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>
                     <a className='link github' href="https://github.com/HoseaCodes/CareerConnect" target="_blank" rel="noopener noreferrer">View Github</a>

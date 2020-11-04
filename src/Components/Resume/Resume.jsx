@@ -11,14 +11,14 @@ const Resume = () => {
             >
                 Download Resume
     </a>
-            <br />
+            {/* <br />
             <a className="btn-input" href='#btn'
                 data-aos="fade-left"
                 data-aos-offset="500"
                 data-aos-duration="500"
             >
                 View Resume
-    </a>
+    </a> */}
         </div>
     )
 }

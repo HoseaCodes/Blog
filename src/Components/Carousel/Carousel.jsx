@@ -6,9 +6,7 @@ import CarouselWebfiver from '../Carousel/CarouselWebfiver';
 import CarouselDevCenter from './CarouselDevCenter';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import JS from '../../icons/jsicon.png';
 
 
 function Projects() {
@@ -26,25 +24,6 @@ function Projects() {
     AOS.init();
     return (
         <div style={{ background: '#1A1E23' }}>
-            {/* <h2 style={{ fontSize: '2rem', margin: 'auto', textAlign: 'center', background: '#1A1E23', color: 'white', opacity: '.8', textShadow: '2px 2px 2px #206a5d' }}>
-                Scroll down to read more about my projects. </h2> */}
-            {/* <Carousel>
-                <Carousel.Item>
-                    <CarouselCalorieKitchen />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <CarouselCareerconnect />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <CarouselWebfiver />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <CarouselDevCenter />
-                </Carousel.Item>
-                <Carousel.Item>
-                    <CarouselMergeImmersive />
-                </Carousel.Item>
-            </Carousel> */}
             <div className='p-container'>
                 <div className='p-content' data-aos="fade-right" data-aos-duration="3000" data-aos-offset="500"
                 >

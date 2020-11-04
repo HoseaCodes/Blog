@@ -81,9 +81,8 @@ export default function SpringModal() {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">Calorie Kitchen</h2>
-                        <hr style={{ background: 'black', width: '30%' }} />
-                        <p id="spring-modal-description">Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
+                        <h2 id="spring-modal-title">Dev Center</h2>
+                        <p id="spring-modal-description">Collabrative Project: DevCenter - Styling with Bootstrap, Materialize and CSS. Problem: Devs have multiple tabs windows open while attempting to do there job. Solution: To create an app that would allow the users to authenticate with other applications and then be able to use some base functionality of those sites via a third party API.</p>
                     </div>
                 </Fade>
             </Modal>

@@ -81,9 +81,8 @@ export default function SpringModal() {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">Calorie Kitchen</h2>
-                        <hr style={{ background: 'black', width: '30%' }} />
-                        <p id="spring-modal-description">Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
+                        <h2 id="spring-modal-title">Web Fiver</h2>
+                        <p id="spring-modal-description">Solo Project: WebFiver - JavaScript, CSS, HTML </p>
                     </div>
                 </Fade>
             </Modal>

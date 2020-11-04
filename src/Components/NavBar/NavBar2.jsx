@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./NavBar2.css";
-import burger from '../../icons/burger.jpg'
+import burger from '../../icons/burger.jpg';
 import { Link } from "react-router-dom";
-
+import Logo from '../../icons/logo.png';
 
 
 const NavBar2 = () => {
@@ -18,17 +18,19 @@ const NavBar2 = () => {
                     onClick={handleToggle}
                 />
             </div>
-            <div className={`left-nav ${isActive ? "" : "left-nav open"}`}>
-                <Link to="/" className="item active">Home</Link>
-                <Link to="/projects" className="item">Projects</Link>
-                <Link to="/articles" className="item">Articles</Link>
-                <Link to="/about" className="item">About</Link>
-                <a href="https://teespring.com/stores/hoseacodes-2" className="item">Shop</a>
-                <Link to="/contact" className="item">Contact</Link>
-                {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
-
+            <div className='nav-combo'>
+                <img className='nav-logo' src={Logo} alt="HoseaCodes" />
+                <div className={`left-nav ${isActive ? "" : "left-nav open"}`}>
+                    <Link to="/" className="nav-link active">Home</Link>
+                    <Link to="/projects" className="nav-link">Projects</Link>
+                    <Link to="/articles" className="nav-link">Articles</Link>
+                    <Link to="/about" className="nav-link">About</Link>
+                    <a href="https://teespring.com/stores/hoseacodes-2" className="nav-link">Shop</a>
+                    <Link to="/contact" className="nav-link">Contact</Link>
+                    {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
+                </div>
             </div>
-
+            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
         </div>
 
     )

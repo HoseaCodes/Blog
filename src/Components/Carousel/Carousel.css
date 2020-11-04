@@ -3,9 +3,11 @@
     grid-template-columns: 1fr 1fr 1fr;
     justify-content: space-evenly;    
     column-gap: 1rem;
-    row-gap: 1rem;
+    row-gap: 3rem;
     overflow: hidden;    
     background-color: #1A1E23;
+    margin-top: 5rem;
+    
 
 }
 /* Project Containers */
@@ -55,9 +57,8 @@
 
 .c-carousel {
     position: relative;
-    height: 50vh;
+    height: 90000vh;
     width: 100%;
-    margin: 50px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -104,9 +105,9 @@
     box-sizing: inherit;
     cursor: pointer;
     display: inline-block;
-    font-size: 13pt;
+    font-size: 12pt;
     margin-bottom: 10px;
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: transparent;
     transition: all 0.5s;
     text-decoration: none;
@@ -146,7 +147,9 @@
 }
 /* Project Content */
 
-  
+  .main-tag-container {
+      margin-top: 30px;
+  }
   .main-tag {
     background: #206a5d;
     border-radius: 3px 0 0 3px;
@@ -184,8 +187,10 @@
     right: 0;
     top: 0;
   }
-  
-  .main-tag:hover {
+  .MuiSvgIcon-root:hover {
+      font-size: 3rem;
+  }
+  .main-tag:hover{
     border: 2px solid #fff;
     color: white;
     opacity: 1;
@@ -210,20 +215,18 @@
 /* Button */
 
 .btn-left {
- left: 0;
+ left: 0%;
 }
 
 .btn-left, .btn-right {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 5rem;
-    height: 5rem;
     background: none;
     border: none;
     outline: none;
     transition: 0.5s;
-    font-size: 10rem;
+    font-size: 5rem;
     opacity: 0.7;
 }
 
@@ -234,7 +237,7 @@
 }
 
 .btn-right {
-    right: 0;
+    right: 0%;
 }
 
 

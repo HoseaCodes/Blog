@@ -46,14 +46,17 @@ class Tech extends Component {
         const { items } = this.state;
 
         return (
-            <Carousel itemsToScroll={1} itemsToShow={3}
-                initialActiveIndex={4} focusOnSelect={true}
-                enableAutoPlay autoPlaySpeed={2000}
-                itemPadding={[10, 40]} >
-                {items.map(item => <div key={item.id}>
-                    <img src={item.img} alt={item.title} />
-                </div>)}
-            </Carousel>
+            <>
+                <h2 className='tech-title'>Technologies</h2>
+                <Carousel itemsToScroll={1} itemsToShow={3}
+                    initialActiveIndex={4} focusOnSelect={true}
+                    enableAutoPlay autoPlaySpeed={2000}
+                    itemPadding={[10, 40]} >
+                    {items.map(item => <div key={item.id}>
+                        <img src={item.img} alt={item.title} />
+                    </div>)}
+                </Carousel>
+            </>
         );
     }
 };

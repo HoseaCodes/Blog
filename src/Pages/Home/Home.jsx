@@ -26,63 +26,76 @@ class Home extends React.Component {
                     <div className='header'>
                         <div className='header-logo' id='header-logo'>
                             <h1 className='heading-primary'>
-                                <span className="header-username">Dominique </span>
-                                <span className="header-username2">Hosea </span>
-                                <a href='#aboutme' className='header-button'>Find Out More</a>
+                                <span className="header-username">Hosea </span>
+                                <span className="header-username2">Codes </span>
+                                <a href='#aboutme' className='header-button'
+                                    data-aos="fade-right"
+                                    data-aos-offset="200"
+                                    data-aos-duration="3000"
+                                    data-aos-easing="ease-in"
+                                >Find Out More</a>
                                 <div>
                                     <Scramble />
                                 </div>
                             </h1>
                         </div>
                     </div>
-                    <div className='color-first'>
-                        <img className='domImg' id='domImg' src={hosea2} alt="Dominique"
-                            data-aos="fade-down"
-                            data-aos-easing="linear"
-                            data-aos-duration="1500" />
-                    </div>
-                    <div className='color mobile'></div>
+                    {/* <img className='domImg' id='domImg' src={hosea2} alt="Dominique"
+                        data-aos="fade-down"
+                        data-aos-easing="linear"
+                        data-aos-duration="1500" /> */}
+                    {/* <div className='color mobile'></div>
                     <div className='open-section-first mobile'>
                         <h1 id='aboutme'> About Me</h1>
-                    </div>
+                    </div> */}
+                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+
                     <PersonalBrand />
-                    <div className='color'></div>
-                    <div className='open-section'>
-                        <h1> technologies</h1>
-                    </div>
-                    <div className='technologies'>
-                        <Tech />
-                    </div>
-                    <div className='open-section'>
-                        <h1>Projects</h1>
-                    </div>
-                    <div className='color'></div>
+                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+
+                    <Tech />
+                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+
                     <div className='projects'>
                         <Projects />
                     </div>
-                    <div className='color mobile'></div>
-                    <div className='open-section mobile'>
-                        <h1> Testomonies</h1>
-                    </div>
-                    <div className='testomonies mobile'>
-                        <Testomonials />
+                    <div className='color'></div>
+                    <div className='testimonies-group'>
+                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+
+                        <h2 style={{
+                            fontSize: '5rem', margin: '100px', textAlign: 'center',
+                            color: 'white', opacity: '.8', textTransform: 'uppercase',
+                            textShadow: '2px 2px 2px #206a5d', letterSpacing: '1rem'
+                        }}
+                            data-aos="zoom-out-up"
+                            data-aos-offset="600"
+                            data-aos-easing="ease-in"
+                        >
+                            Testimonies
+                        </h2>
                     </div>
 
-                    <div className='color'></div>
-                    <div className='open-section'>
-                        <h1> social media</h1>
-                    </div>
-                    <div className='color'></div>
-                    <div className='socialmedia'>
-                        <SocialMedia />
-                    </div>
-                    <div className='color'></div>
-                    <div className='open-section'>
-                        <h1> Contact</h1>
+                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+
+                    <br />
+                    <br />
+                    <div className='homepage-combo'>
+                        <div className='socialmedia'>
+                            <SocialMedia />
+                        </div>
+                        <div className='testomonies mobile'>
+                            <Testomonials />
+                        </div>
                     </div>
                     <div className='contact'>
+                        <a href='#header-logo' className='footer-button'
+                            data-aos="fade-right"
+                            data-aos-offset="200"
+                            data-aos-duration="3000"
+                            data-aos-easing="ease-in"
+                        >Back to Top</a>
                         <SocialMediaTags />
-                        <a href='#header-logo' className='footer-button'>Back to Top</a>
                     </div>
                     <Footer />
                 </div>

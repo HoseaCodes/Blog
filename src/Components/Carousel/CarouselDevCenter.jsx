@@ -7,7 +7,7 @@ import DevCenter from '../../icons/DevCenter.png'
 import DevCenter2 from '../../icons/DevCenter2.png'
 import DevCenter3 from '../../icons/DevCenter3.png'
 import DevCenter4 from '../../icons/DevCenter4.png'
-
+import ZoomInIcon from '@material-ui/icons/ZoomIn';
 
 function CarouselDevCenter() {
     let example = [
@@ -28,24 +28,26 @@ function CarouselDevCenter() {
     };
     return (
         <div className='carousel-container'>
-            <div className='c-carousel'>
-                {example.map((item, index) => {
-                    return (
-                        <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>
-                            {item}
-                        </div>
-                    )
-                })}
-                <button className='btn-left' onClick={goLeft}> ‹ </button>
-                <button className='btn-right' onClick={goRight}> › </button>
-            </div>
             <div className='p-details'>
                 <h2 className='p-h2'>{p5}</h2>
+                <div className='c-carousel'>
+                    {example.map((item, index) => {
+                        return (
+                            <div key={index} className='slide' style={{ transform: `translateX(${x}%)` }}>
+                                {item}
+                            </div>
+                        )
+                    })}
+                    <button className='btn-left' onClick={goLeft}> ‹ </button>
+                    <button className='btn-right' onClick={goRight}> › </button>
+                </div>
+
                 <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
                     <li><a href="#" className="main-tag">Python</a></li>
                     <li><a href="#" className="main-tag">Django</a></li>
                     <li><a href="#" className="main-tag">JWT</a></li>
                 </ul>
+                <ZoomInIcon fontSize='large' style={{ color: '#206a5d' }} />
                 <p className='p-extended'>Collabrative Project: DevCenter - Styling with Bootstrap, Materialize and CSS. Problem: Devs have multiple tabs windows open while attempting to do there job. Solution: To create an app that would allow the users to authenticate with other applications and then be able to use some base functionality of those sites via a third party API. </p>
                 <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href="https://devcenter-629.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>

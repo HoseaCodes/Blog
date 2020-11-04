@@ -43,7 +43,7 @@
 //Make sure to include a downloadable PDF version of your resume in 
 //your “About Me” section as well.
 
-import React from 'react';
+import React, { Component } from 'react';
 import './About.css';
 import ccLogo from '../../icons/ccLogo.png';
 import MA from '../../icons/MA.mp4';
@@ -54,9 +54,51 @@ import MI2 from '../../icons/MI2.png';
 import CB from '../../icons/CB.jpeg';
 import AD from '../../icons/AD.jpeg';
 import ST from '../../icons/ST.jpeg';
-import hosea from '../../icons/hosea.jpeg';
+import Carousel from 'react-elastic-carousel';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 
+
+class Logo extends Component {
+    state = {
+        logos: [
+            { id: 1, title: 'JavaScript', img: ccLogo },
+            { id: 2, title: 'Bootstrap', img: MA },
+            { id: 3, title: 'Django', img: MA1 },
+            { id: 4, title: 'MongoDB', img: CK },
+            { id: 5, title: 'Node', img: MI },
+            { id: 6, title: 'postgresql', img: MI2 },
+            { id: 7, title: 'Python', img: CB },
+            { id: 8, title: 'React', img: AD },
+            { id: 9, title: 'Swift', img: ST },
+        ]
+    }
+    constructor(props) {
+        super(props)
+        this.breakPoints = [
+            { width: 1, itemsToShow: 1 },
+            { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
+            { width: 850, itemsToShow: 3 },
+            { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
+            { width: 1450, itemsToShow: 5 },
+            { width: 1750, itemsToShow: 6 },
+        ];
+
+    }
+    render() {
+        const { logos } = this.state;
+
+        return (
+            <Carousel style={{ background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }} itemsToScroll={1} itemsToShow={2}
+                initialActiveIndex={4} focusOnSelect={true}
+                enableAutoPlay autoPlaySpeed={2000}
+                itemPadding={[10, 40]} >
+                {logos.map(logo => <div key={logo.id}>
+                    <img src={logo.img} alt={logo.title} width="300px" />
+                </div>)}
+            </Carousel>
+        );
+    }
+};
 
 const About = () => {
     return (
@@ -70,34 +112,7 @@ const About = () => {
                 <p className="pQuote">-Buddha</p>
             </div>
             <div className="imageHiglights">
-                <div className="leftHighlights">
-                    <img src={ccLogo} width="300" alt="Career Connect Logo"></img>
-                    <img src={CK} width="300" alt="Calorie Kitchen Logo"></img>
-                    <img src={MI2} width="300" alt="Merge Immersive Logo"></img>
-                    <img src={MI} width="300" alt="Merge Immersive Logo"></img>
-                </div>
-                <div className="middleHightlights">
-                    <h2 className='a-content'>Hosea Codes Software Engineering Views</h2>
-                    <p className="breakdown a-content">I’m a website designer working on multiple platforms. My favorite projects are developing websites for small business owners. It’s an honor to partner with these entrepreneurs and bring life to their web presence without breaking the bank. I’ll listen to your needs, come up with a plan, and create a product that gives you the best possible return on your investment.
-                    When I create your website, rest assured that you will be my main focus. I’ll incorporate both design and SEO best practices while showcasing the amazing work you do.
-                    <br />
-                        <br />
-                    Strategy: We’ll start with a strategy session to talk about your business and your vision. In this session, we will determine the goals for your site’s style and function, map out your website pages and discuss content development and image curation.
-                    <br />
-                        <br />
-                    Build: Next, I’ll use your provided branding, content, and images to create a website you’ll be proud to share. This is a two-week process for The Professional Package and a four-week process for The Executive Package. During the website build, we’ll be in touch every day through emails and have at least 3 scheduled video calls.
-                    <br />
-                        <br />
-                    Support: When your site is complete, I’ll teach you how to update your website yourself. You’ll never have to pay monthly maintenance fees to a web designer again. You’ll also receive two weeks of included email support after your site launches.
-                    </p>
-                </div>
-                <div className="rightHighlights">
-                    <video src={MA} width="300" playsinline="playsinline" autoplay="" muted="muted" loop="loop"></video>
-                    <img src={ST} width="300" alt="Supreme Tailor Assets Logo"></img>
-                    <img src={MA1} width="300" alt="Mordenized Assets Logo"></img>
-                    <img src={CB} width="300" alt="Chasing Binji Logo"></img>
-                    <img src={AD} width="300" alt="American Dream Logo"></img>
-                </div>
+                <Logo />
             </div>
             {/* <!-- Quote/Highlight End  --> */}
 
@@ -129,24 +144,6 @@ const About = () => {
                 </div>
             </div>
             {/* <!-- Timeline End  --> */}
-            {/* <!-- About --> */}
-            <div id="about" className="about">
-                <div className="leftAbout">
-                    <h2 className="aboutHeader">About Me</h2>
-                    <p className="aboutP a-content">A driven, focused, and knowledgeable professional with several years of experience in high-stress environments in addition to a strong background in engagement and team leadership.
-                    <br />
-                        <br />
-                    Recent, graduate of the Software Engineering program where I had intensive training, and used JavaScript, Python, React, and Django in projects that solve business’ problems.
-
-                    <br />
-                        <br />
-                    In my graduate program I studied MIS where I leveraged C++, Java, database management, web-design, E-commerce, SAP, system analysis and project management. I also enjoy create mobile apps with Machine Learning IOS, Cloud Based Backend and SwiftUI.</p>
-                </div>
-                <div className="rightAbout">
-                    <img className="aboutImage" width="400px" height="600px" src={hosea} alt="Dominique"></img>
-                </div>
-            </div>
-            {/* <!-- About End --> */}
         </div>
     )
 }

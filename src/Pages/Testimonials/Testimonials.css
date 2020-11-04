@@ -58,7 +58,6 @@
   .step-item {
     background-repeat: no-repeat;
     background-size: cover;
-  
     display: flex;
     width: 100%;
   }
@@ -74,7 +73,7 @@
   .step-image img {
     width: 60%;
     height: 100%;
-    margin-left: 150px;
+    margin-left: 100px;
     border: 5px solid #204740;
     object-fit: cover;
     border-radius: 50%;
@@ -83,6 +82,7 @@
   .step-content {
     padding: 1rem;
     color: white;
+    margin-right: 1rem;
   }
   
   .step-content small {
@@ -109,6 +109,7 @@
     color: white;
     list-style-type: none;
     opacity: .6 !important;
+    line-height: 40px !important;
     letter-spacing: 1px !important;
   }
   .nav-item.active,
@@ -165,8 +166,7 @@
   }
   @media only screen and (min-width: 1200px) {
     .step-image img {
-      width: 50%;
-      height: 80% !important;
+      height: 50% !important;
       transform: scale(1.2);
     }
   }

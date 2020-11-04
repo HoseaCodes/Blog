@@ -26,9 +26,9 @@ function Projects() {
     AOS.init();
     return (
         <div style={{ background: '#1A1E23' }}>
-            <h2 style={{ fontSize: '2rem', margin: 'auto', textAlign: 'center', background: '#1A1E23', color: 'white', opacity: '.8', textShadow: '2px 2px 2px #206a5d' }}>
-                Scroll down to read more about my projects. </h2>
-            <Carousel>
+            {/* <h2 style={{ fontSize: '2rem', margin: 'auto', textAlign: 'center', background: '#1A1E23', color: 'white', opacity: '.8', textShadow: '2px 2px 2px #206a5d' }}>
+                Scroll down to read more about my projects. </h2> */}
+            {/* <Carousel>
                 <Carousel.Item>
                     <CarouselCalorieKitchen />
                 </Carousel.Item>
@@ -44,27 +44,28 @@ function Projects() {
                 <Carousel.Item>
                     <CarouselMergeImmersive />
                 </Carousel.Item>
-            </Carousel>
+            </Carousel> */}
             <div className='p-container'>
-                <div className='p-content' data-aos="fade-right" data-aos-duration="3000">
+                <div className='p-content' data-aos="fade-right" data-aos-duration="3000" data-aos-offset="500"
+                >
                     <CarouselCalorieKitchen />
                 </div>
-                <div className='p-content' data-aos="fade-down" data-aos-duration="4000"
+                <div className='p-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
                     data-aos-delay="300">
                     <CarouselWebfiver />
                 </div>
 
-                <div className='p-content' data-aos="fade-left" data-aos-duration="3000">
+                <div className='p-content' data-aos="fade-left" data-aos-duration="3000" data-aos-offset="500">
                     <CarouselCareerconnect />
 
                 </div>
-                <div className='p-content' data-aos="fade-up-right" data-aos-duration="3000">
+                <div className='p-content' data-aos="fade-up-right" data-aos-duration="3000" data-aos-offset="500">
                     <CarouselMergeImmersive />
                 </div>
-                <div className='p-content' data-aos="zoom-in-up" data-aos-duration="3000">
+                <div className='p-content' data-aos="zoom-in-up" data-aos-duration="3000" data-aos-offset="500">
                     <CarouselDevCenter />
                 </div>
-                <div className='p-content' data-aos="fade-up-left" data-aos-duration="3000">
+                <div className='p-content' data-aos="fade-up-left" data-aos-duration="3000" data-aos-offset="500">
                     <CarouselDevCenter />
                 </div>
             </div>

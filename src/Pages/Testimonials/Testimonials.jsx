@@ -96,16 +96,6 @@ const Testimonials = () => {
 
     return (
         <div className="t-container">
-            <h2 style={{
-                fontSize: '2rem', margin: 'auto', textAlign: 'center',
-                color: 'white', opacity: '.8',
-                textShadow: '2px 2px 2px #206a5d'
-            }}
-                data-aos="zoom-out-up"
-                data-aos-offset="600"
-                data-aos-easing="ease-in"
-            >
-                What are they saying about my projects? </h2>
             <ul className="step-list">
                 <li className="step-overlay">
                     <button className="prev-button" onClick={prev}>
@@ -130,14 +120,14 @@ const Testimonials = () => {
                             <div className="step-image"
                                 data-aos="fade-right"
                                 data-aos-offset="600"
-                                data-aos-easing="ease-in"
+                                data-aos-duration="3000"
                             >
                                 <img src={step.imageUrl} />
                             </div>
                             <div className="step-content"
                                 data-aos="fade-left"
-                                data-aos-offset="700"
-                                data-aos-duration="500"
+                                data-aos-offset="600"
+                                data-aos-duration="3000"
                             >
                                 <h2 className='t-title' style={{ color: 'white', opacity: '.6' }}>
                                     <small style={{ color: 'white', opacity: '.6' }}>Testimony {item + 1}</small>
@@ -166,7 +156,8 @@ const Testimonials = () => {
             </ul>
 
             <ul className="step-nav" style={{ listStyle: 'none' }}
-                data-aos="fade-up"
+                data-aos="fade-left"
+                data-aos-offset="300"
                 data-aos-duration="3000"
             >
                 {steps.map((step, index) => {

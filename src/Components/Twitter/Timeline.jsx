@@ -137,11 +137,12 @@ const TweeterTimeline = () => {
             }}
                 options={{ theme: "dark", width: "600", height: "600" }} />
             {/* <ReactWordcloud words={words} /> */}
-            <img className='word-cloud' src={WordCloud} alt="Twitter Info" style={{ width: '600', height: '700 !important' }}
+            {/* <img className='word-cloud' src={WordCloud} alt="Twitter Info" style={{ width: '600', height: '700 !important' }}
                 data-aos="fade-left"
                 data-aos-offset="600"
+                data-aos-easing="ease-in"
                 data-aos-duration="500"
-            />
+            /> */}
         </div>
     )
 }

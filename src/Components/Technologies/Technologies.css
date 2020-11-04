@@ -10,20 +10,45 @@
   background-color: #204740 !important;
   box-shadow: 0 0 1px 3px #317266 !important;
   opacity: .5;
+  visibility: hidden;
 }
 
 .rec-arrow {
   background-color: #204740 !important;
   opacity: .5;
+  visibility: hidden;
 }
 
 .rec-dot_active {
   background-color: white !important;
 }
+.tech-title {
+  color: white;
+    display: block;
+    font-family: Lato, sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 4rem;
+    letter-spacing: 1rem;
+    line-height: 40px;
+    margin: 0;
+}
 
-.rec-carousel-wrapper {
+.rec-carousel-wrapper, .tech-title {
   background-color: rgb(35, 41, 47);
+  background-color: whitesmoke;
+  background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/keyboard.jpeg');
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 } 
+
+.tech-title {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
 section {
   max-width: 1000px;
   margin: 0 auto;

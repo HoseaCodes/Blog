@@ -1,6 +1,26 @@
 
  .home-page {
     overflow: hidden;
+    background-color: #1A1E23;
+
+}
+.homepage-combo {
+    display: flex;
+    flex-direction: row;
+}
+.testomonies, .socialmedia {
+    width: 50%;
+    background-color: #1A1E23;
+}
+.testimonies-group {
+    background-color: rgb(35, 41, 47);
+    background-color: whitesmoke;
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/cpu.jpeg');
+    background-size: cover;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 40vh;
 }
 .header {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
@@ -37,21 +57,13 @@
     color: white;
     display: block;
     font-family: Lato, sans-serif;
-    font-weight: bold;
+    font-weight: bolder;
     text-align: center;
     text-transform: uppercase;
     font-size: 4rem;
     letter-spacing: 1.5rem;
     line-height: 40px;
     margin: 0;
-}
-.color-first {
-    background-color: #1A1E23;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 20vh;
 }
 .open-section h1 {
     padding-top: 5%;
@@ -60,13 +72,12 @@
 .domImg {
     border-radius: 50%;
     transform: scale(1.5) !important;
-    height: 300 !important;
     width: 300 !important;
     margin: 85px;
     border: 3px solid #204740;
     position: absolute;
     left: 35% !important;
-    top: 78% !important;
+    top: 68% !important;
     z-index: 1;
 }
 
@@ -112,6 +123,7 @@
     background-color: #204740;
     border-color: #204740;
     font-size: 15pt;
+    color: rgb(235,183,65);
 }
 
 .header-username, .header-username2, .header-career, .header-scroll {
@@ -158,11 +170,11 @@
     color: white;
     display: block;
     font-family: Lato, sans-serif;
-    font-weight: bold;
+    font-weight: bolder;
     text-align: center;
     text-transform: uppercase;
     font-size: 4rem;
-    letter-spacing: 1.5rem;
+    letter-spacing: 1rem;
     line-height: 40px;
     margin: 0;
 }
@@ -313,9 +325,7 @@
         padding-top: 5%;
         
     }
-    .color-first {
-        height: 0vh;
-    }
+
     .domImg {
         display: none;
     }
@@ -449,14 +459,7 @@
         padding-top: 80px;
         
     }
-    .color-first {
-        background-color: #1A1E23;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 0vh;
-    }
+  
     .open-section h1 {
         padding-top: 5%;
         
@@ -656,9 +659,7 @@
     .open-section-first h1,.projects h1, .testomonies h1 .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
         font-size: 3rem;
     }
-    .color-first {
-        height: 20vh;
-    }
+ 
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -709,14 +710,7 @@
         line-height: 40px;
         margin: 0;
     }
-    .color-first {
-        background-color: #1A1E23;
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 20vh;
-    }
+   
     .open-section h1 {
         padding-top: 5%;
         

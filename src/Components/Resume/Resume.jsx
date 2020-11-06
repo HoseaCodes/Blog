@@ -6,8 +6,9 @@ const Resume = () => {
         <div className='resume-group'>
             <a className="btn-input" href={Resume2020} download="Resume2020.pdf"
                 data-aos="fade-right"
-                data-aos-offset="300"
-                data-aos-easing="ease-in-sine"
+                data-aos-offset="200"
+                data-aos-duration="3000"
+                data-aos-easing="ease-in"
             >
                 Download Resume
     </a>

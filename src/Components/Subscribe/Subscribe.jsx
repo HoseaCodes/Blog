@@ -3,7 +3,7 @@ import React from 'react'
 import './Subscribe.css'
 
 const subscribeStyle = {
-    background: 'white',
+    background: 'gray',
     margin: '50px',
     padding: '50px',
     borderRadius: '12px'

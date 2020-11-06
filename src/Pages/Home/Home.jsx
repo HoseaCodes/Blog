@@ -20,7 +20,7 @@ class Home extends React.Component {
         return (
             <>
                 <div className='home-page'>
-                    <NavBar2 />
+                    <NavBar2 id='top' />
                     <div className='header'>
                         <div className='header-logo' id='header-logo'>
                             <h1 className='heading-primary'>
@@ -105,7 +105,7 @@ class Home extends React.Component {
                         </div>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                         <br />
-                        <a href='#header-logo' className='footer-button'
+                        <a href='#top' className='footer-button'
                             data-aos="fade-right"
                             data-aos-offset="200"
                             data-aos-duration="3000"

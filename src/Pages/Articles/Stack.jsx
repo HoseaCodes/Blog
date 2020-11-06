@@ -3,9 +3,9 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import MessageIcon from '@material-ui/icons/Message';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import StackResults from '../../../icons/StackResults.png'
-import Stackimg from '../../../icons/Stackimg.png'
-import '../Blog.css'
+import StackResults from '../../icons/StackResults.png'
+import Stackimg from '../../icons/Stackimg.png';
+import './Articles.css'
 
 const Stack = () => {
     return (

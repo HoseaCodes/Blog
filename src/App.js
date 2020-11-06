@@ -12,7 +12,7 @@ import CalorieKitchen from './Pages/Projects/CalorieKitchen';
 import CareerConnect from './Pages/Projects/CareerConnect';
 import MergeImmersive from './Pages/Projects/MergeImmersive';
 import DevCenter from './Pages/Projects/DevCenter';
-
+import Stacks from './Pages/Articles/Stack';
 
 
 
@@ -81,6 +81,14 @@ export default class App extends Component {
             path="/articles"
             render={() => (
               <Articles
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/stack"
+            render={() => (
+              <Stacks
               />
             )}
           />

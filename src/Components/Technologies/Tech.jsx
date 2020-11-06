@@ -22,12 +22,12 @@ class Tech extends Component {
             { id: 2, title: 'Bootstrap', img: Bootstrap },
             { id: 3, title: 'Django', img: Django },
             { id: 4, title: 'MongoDB', img: MongoDB },
-            { id: 5, title: 'Node', img: Node },
-            { id: 6, title: 'postgresql', img: postgresql },
-            { id: 7, title: 'Python', img: Py },
+            { id: 5, title: 'postgresql', img: postgresql },
+            { id: 6, title: 'Swift', img: Swift },
+            { id: 7, title: 'jQuery', img: JQuery },
             { id: 8, title: 'React', img: Reactt },
-            { id: 9, title: 'Swift', img: Swift },
-            { id: 10, title: 'jQuery', img: JQuery },
+            { id: 9, title: 'Python', img: Py },
+            { id: 10, title: 'Node', img: Node },
         ]
     }
     constructor(props) {
@@ -53,7 +53,7 @@ class Tech extends Component {
                     enableAutoPlay autoPlaySpeed={2000}
                     itemPadding={[10, 40]} >
                     {items.map(item => <div key={item.id}>
-                        <img src={item.img} alt={item.title} />
+                        <img src={item.img} alt={item.title} width='375px' height='300px' />
                     </div>)}
                 </Carousel>
             </>

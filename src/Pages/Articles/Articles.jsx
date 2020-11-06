@@ -41,9 +41,7 @@ import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
 import { articleData } from './ArticleData';
-import Article from '../Articles/Article';
-import Blog from '../../Components/Blog/Blog';
-import StackOps from '../../icons/stack-operations.png';
+import ArticleCard from './ArticleCard';
 
 import { auth, login, logout } from '../../services/firebase';
 
@@ -69,20 +67,21 @@ class Articles extends React.Component {
                     <div className='artcile-header-logo'>
                     </div>
                 </div>
+                <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
-                    <p>Here are some of my articles, you may like.</p>
+                    <p style={{ color: 'white', fontSize: '1.5rem' }}>Here are some of my articles, you may like.</p>
                     <div className="work-box">
                         <div className="work">
                             {/* <!--───────────────card───────────────--> */}
                             <section className='articleList'>
                                 {articles.map(article => {
                                     return (
-                                        <Article article={article} />
+                                        <ArticleCard article={article} />
                                     )
                                 })}
                             </section>
-                            <div className="article-card">
+                            <div className="article-card popular">
                                 <h2 className='article-card-header'>Popular Post<hr /></h2>
                                 <a href="" target="_blank">
                                     <div className="work-img">How the Internet Works</div><br /></a>

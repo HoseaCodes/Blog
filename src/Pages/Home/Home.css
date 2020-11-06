@@ -116,6 +116,7 @@
     background-color: transparent;
     transition: all 0.5s;
     text-decoration: none;
+    text-transform: uppercase;
 }
 .header-button {
     animation: header-btn 10s steps(1) -1s normal;
@@ -132,8 +133,10 @@
 
 .header-button:hover, .footer-button:hover {
     background-color: #204740;
+    text-decoration: none;
     border-color: #204740;
     font-size: 15pt;
+    transition:0.5s color ease;
     color: rgb(235,183,65);
 }
 
@@ -216,7 +219,6 @@
 .contact {
     background-color: #1A1E23;
     padding-top: 2.5rem;
-    padding-bottom: 2.5rem;
 }
 
 
@@ -622,7 +624,6 @@
     .contact {
         background-color: #1A1E23;
         padding-top: 2.5rem;
-        padding-bottom: 2.5rem;
     }
     
     
@@ -878,7 +879,6 @@
     .contact {
         background-color: #1A1E23;
         padding-top: 2.5rem;
-        padding-bottom: 2.5rem;
     }
     
     

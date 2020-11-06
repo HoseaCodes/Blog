@@ -104,12 +104,13 @@ const About = () => {
     return (
         <div>
             <NavBar2 />
-            <div className='aHeader'></div>
+            <div className='about-background'></div>
+            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <div className="quote">
                 <q>
                     What you think, you become. What you feel, you attract. What you imagine, you create.
                 </q>
-                <p className="pQuote">-Buddha</p>
+                <p className="quoteAuthor">-Buddha</p>
             </div>
             <div className="imageHiglights">
                 <Logo />

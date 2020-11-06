@@ -27,6 +27,7 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
+            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <h3 className='contacth3'>Contact Me</h3>
 
             <ContactForm />

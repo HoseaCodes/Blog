@@ -130,7 +130,7 @@ const Testimonials = () => {
                                 data-aos-offset="600"
                                 data-aos-duration="3000"
                             >
-                                <img src={step.imageUrl} />
+                                <img src={step.imageUrl} alt={step.title} />
                             </div>
                             <div className="step-content"
                                 data-aos="fade-left"
@@ -165,7 +165,7 @@ const Testimonials = () => {
 
             <ul className="step-nav" style={{ listStyle: 'none' }}
                 data-aos="fade-left"
-                data-aos-offset="300"
+                data-aos-offset="00"
                 data-aos-duration="3000"
             >
                 {steps.map((step, index) => {

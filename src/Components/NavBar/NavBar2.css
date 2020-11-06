@@ -5,6 +5,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: #1A1E23;
 }
 .left-nav {
     font-weight: 700;

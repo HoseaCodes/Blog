@@ -28,25 +28,42 @@ const PersonalBrand = () => {
             <div style={{ background: 'rgb(35, 41, 47)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
                 <h2 className='name-title'>Dominique Hosea</h2>
-                <p className='bio-info'>A full-stack Software Engineer driven by a passion for knowledge.
-                I am focused on building software that improves user engagement and experience through
-                developing fast solutions to complex problems that allow users to excel.
+                <p className='bio-info'>A full-stack &nbsp;
+                <span style={{
+                        color: 'white', textShadow: '2px 2px 2px black',
+                        textDecoration: 'underline', textDecorationStyle: 'dashed',
+                        textDecorationColor: 'rgb(235,183,65)'
+
+                    }}>
+                        Software Engineer </span>
+                        driven by a passion for knowledge. I am focused on building software that
+                        improves user engagement and experience through &nbsp;
+                <span style={{
+                        color: 'white', textShadow: '2px 2px 2px black',
+                        textDecoration: 'underline', textDecorationStyle: 'dashed',
+                        textDecorationColor: 'rgb(235,183,65)'
+
+                    }}>
+                        developing fast solutions </span>
+                        to complex problems that allow users to excel.
             </p>
-                <hr style={{ background: 'white', margin: '50px', width: '80vw' }} />
+                <hr id='aboutme' style={{ background: 'white', margin: '50px', width: '80vw' }} />
             </div>
             <div className='personal-combo'>
                 <img className='personal-image' src={nique} alt="Dominique Hosea"
                     data-aos="fade-right"
-                    data-aos-offset="600"
+                    data-aos-offset="500"
+                    data-aos-duration="3000"
                     data-aos-easing="ease-in"
                 />
                 <div className='personal-card'
                     data-aos="fade-left"
-                    data-aos-offset="600"
-                    data-aos-duration="600"
+                    data-aos-offset="500"
+                    data-aos-duration="3000"
+                    data-aos-easing="ease-in"
                 >
                     <div className='personal-card-info'>
-                        <h2 className='personal-card-title'>Software Developer.Engineer</h2>
+                        <h2 className='personal-card-title' >Software Developer.Engineer</h2>
                         <br />
                         <p> In my previous Operations Manager role, I identified
                         underlying problems, analyzing potential solutions, and implementing

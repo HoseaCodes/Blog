@@ -43,11 +43,5 @@
         display: none;
     }
 }
-@media only screen and (max-width: 600px) {
-    .social {
-        margin: .6rem;
-        text-decoration: none;
-        text-decoration: none;
-        color: #206a5d;
-    }
-}
+
+

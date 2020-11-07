@@ -254,57 +254,49 @@
     border-radius: 8%;
 }
 
-/* --------------------------------------- */
- /* Mobile Responsive */
- /* @media only screen and (min-width: 480px) {
+@media only screen and (max-width: 375px) and  (max-width: 768px){
     .header {
-        height: 60vh;
+        height: 40vh !important;
         width: 100%;
         padding-bottom: 35px;
     }
-    .open-section-first {
-        height: 20vh;
+    .testimonies-group h2 {
+        font-size: 3rem !important;
+        letter-spacing: normal !important;
     }
-    .open-section-first h1 {
-        font-size: 2rem;
-        letter-spacing: 1rem;
-        padding-top: 80px;   
+    .homepage-combo {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
     }
-    .open-section h1 {
-        padding-top: 5%;
-        
+    .socialmedia {
+        width: 80%;
     }
-    .color-first {
-        height: 0vh;
+    .contact-group h2 {
+        letter-spacing: normal !important;
+        font-size: 3rem !important;
     }
-    .domImg {
-        display: none;
+    .testomonies {
+        width: 85%;
     }
-    .mobile {
-        display: none;
-    }
-
-    .header-button {
-        position: relative;
-        left: -2%;
-        color: transparent !important;
-        border: transparent !important;
-    }
-
     .footer-button {
-        position: absolute;
-        left: 35%;
-        top: 1025%;
-        color: transparent !important;
-        border: transparent !important;
-    }
-   
-    .socialmedia h1, .projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
-        font-size: 2rem !important;
-        letter-spacing: 1rem;
-        padding-top: 80px;
+        width: 20%;
+        margin: auto;
+        bottom: 0 !important;
     }
     
+    .header-button {
+        margin: auto !important;
+        width: 40% !important;
+    }
+    .header-button:hover, .footer-button:hover {
+        background-color: transparent;
+        text-decoration: none;
+        border: 2px solid #fff;
+        font-size: 13pt;
+        transition:0.5s color ease;
+        color: white;
+    }
     
     .header-username, .header-username2 {
         position: relative;
@@ -314,72 +306,9 @@
         padding: 1rem;
         margin-left: 35px;
         }
-    .color {
-        height: 10vh;
-    }
-
-} */
- /* Small devices (portrait tablets and large phones, 480px and up) */
-@media only screen and (max-width: 480px) {
-    .header {
-        height: 60vh;
-        width: 100%;
-        padding-bottom: 35px;
-    }
-    .open-section-first {
-        height: 20vh;
-    }
-    .open-section-first h1 {
-        font-size: 2rem;
-        letter-spacing: 1rem;
-        padding-top: 80px;   
-    }
-    .open-section h1 {
-        padding-top: 5%;
-        
-    }
-
-    .domImg {
-        display: none;
-    }
-    .mobile {
-        display: none;
-    }
-
-    .header-button {
-        position: relative;
-        left: -2%;
-        color: transparent !important;
-        border: transparent !important;
-    }
-
-    .footer-button {
-        position: absolute;
-        left: 35%;
-        top: 1025%;
-        color: transparent !important;
-        border: transparent !important;
-    }
-   
-    .projects h1, .technologies h1, .color h1, .articles h1, .socialmedia h1, .open-section h1{
-        font-size: 2.5rem;
-        letter-spacing: 1rem;
-        padding-top: 80px;
-    }
-    
-    
-    .header-username, .header-username2 {
-        position: relative;
-        font-size: 3rem;
-        letter-spacing: 2.5rem;
-        line-height: 50px;
-        padding: 1rem;
-        margin-left: 35px;
+        .footer-button {
+            width: 40%;
         }
-    .color {
-        height: 10vh;
-    }
-
 }
 
 
@@ -397,28 +326,30 @@
         height: 15vh;
         margin: 0;
     }
-    .open-section-first {
-        background-color:  rgba(119,119,119,0.6);
-        background-size: cover;
-        background-position: top;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        height: 20vh;
-        margin: 0;
+    .testimonies-group h2 {
+        margin: auto;
     }
     .header-button{
         display: none;
         
     }
-    .domImg {
-        top: 53%;
-        left: 25%;
-        width: 200px !important;
-        height: 200px !important;
-    }
     .color {
         height: 5vh;
+    }
+    .homepage-combo {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+    .socialmedia {
+        width: 80%;
+    }
+    .testomonies {
+        width: 80%;
+    }
+    .footer-button {
+        width: 20%;
+        margin: auto;
     }
 }
 /* Large devices (laptops/desktops, 996px and up) */

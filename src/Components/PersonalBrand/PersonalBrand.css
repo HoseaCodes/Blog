@@ -5,9 +5,18 @@
     justify-items: center;
     background-color: #1A1E23;
     background-color: rgb(35, 41, 47);
-    width: 45vw;
+    width: 80%;
+}
+.personalBrand-opener {
+    background: rgb(35, 41, 47);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto; 
 }
 .name-title {
+    margin: auto;
+    text-align: center;
     margin-top: 3rem;
     letter-spacing: .2rem;
     font-size: 3.5rem;
@@ -26,7 +35,8 @@
     }
   }
 .bio-info {
-    margin: 1rem 10rem 1rem 10rem;
+    width: 70%;
+    margin-top: 1rem;
     font-size: 2.3rem;
     font-weight: 600;
     text-align: center;
@@ -81,9 +91,52 @@
         left: 0%
     }
 }
+@media only screen and (max-width: 375px) and  (max-width: 768px){
+    .personal-combo {
+       flex-direction: column;
+       align-items: center;
+       margin: auto;
+       padding-bottom: 2rem;
+       width: 100vw;
+       background-color: rgb(35, 41, 47);
+    }
+    .personal-image {
+        width: 80%;
+        height: 400px;
+    }
+
+    .personal-card {
+        width: 80%;
+        margin: auto;
+    }
+    .personal-card-info {
+        margin: 1rem 2em;
+    }
+    .bio-info {
+        margin-top: 3rem;
+    }
+
+}
 
 @media only screen and (min-width: 768px) {
     .personal-container {
         width: 100%;
+    }
+    .personal-combo {
+        display: grid;
+       grid-template-columns: 1fr;
+    }
+    .personal-image {
+        width: 80%;
+        margin: auto;
+        padding-bottom: 2rem;
+    }
+    .personal-card {
+        width: 80%;
+        margin: auto;
+        margin-bottom: 2rem;
+    }
+    .personal-card-info {
+        margin: 2rem;
     }
 }

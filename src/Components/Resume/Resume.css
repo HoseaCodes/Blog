@@ -46,7 +46,7 @@
     justify-content: center;
     margin-bottom: 2rem;
 }
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 375px) and  (max-width: 768px){
     .btn-input {
         margin-top: 50px; 
     }
@@ -56,11 +56,11 @@
     }
     .resume-group {
         background-color: #1A1E23;
-        width: 155vw;
+        width:100%;
         display: flex;
         justify-content: center;
-        margin-left: 150px;
-}
+        margin: auto;
+    }
 }
 /* @media only screen and (min-width: 480px) {
     .resume-group {

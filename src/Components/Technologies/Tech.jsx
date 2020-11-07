@@ -33,12 +33,9 @@ class Tech extends Component {
     constructor(props) {
         super(props)
         this.breakPoints = [
-            { width: 1, itemsToShow: 1 },
-            { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
-            { width: 850, itemsToShow: 3 },
-            { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
-            { width: 1450, itemsToShow: 5 },
-            { width: 1750, itemsToShow: 6 },
+            { width: 375, itemsToShow: 1 },
+            { width: 768, itemsToShow: 2 },
+            { width: 850, itemsToShow: 2 },
         ];
 
     }
@@ -51,7 +48,7 @@ class Tech extends Component {
                 <Carousel itemsToScroll={1} itemsToShow={3}
                     initialActiveIndex={0} focusOnSelect={true}
                     enableAutoPlay autoPlaySpeed={2000}
-                    itemPadding={[10, 40]} >
+                    itemPadding={[10, 40]} breakPoints={this.breakPoints} >
                     {items.map(item => <div key={item.id}>
                         <img src={item.img} alt={item.title} width='375px' height='300px' />
                     </div>)}

@@ -38,14 +38,6 @@ class Home extends React.Component {
                             </h1>
                         </div>
                     </div>
-                    {/* <img className='domImg' id='domImg' src={hosea2} alt="Dominique"
-                        data-aos="fade-down"
-                        data-aos-easing="linear"
-                        data-aos-duration="1500" /> */}
-                    {/* <div className='color mobile'></div>
-                    <div className='open-section-first mobile'>
-                        <h1 id='aboutme'> About Me</h1>
-                    </div> */}
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
 
                     <PersonalBrand />
@@ -62,7 +54,7 @@ class Home extends React.Component {
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
 
                         <h2 style={{
-                            fontSize: '5rem', margin: '100px', textAlign: 'center',
+                            fontSize: '5rem', margin: 'auto', textAlign: 'center',
                             color: 'white', opacity: '.8', textTransform: 'uppercase',
                             textShadow: '2px 2px 2px #206a5d', letterSpacing: '1rem'
                         }}

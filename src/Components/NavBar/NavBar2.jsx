@@ -25,7 +25,7 @@ const NavBar2 = () => {
                     <Link to="/projects" className="nav-link">Projects</Link>
                     <Link to="/articles" className="nav-link">Articles</Link>
                     <Link to="/about" className="nav-link">About</Link>
-                    <a href="https://teespring.com/stores/hoseacodes-2" className="nav-link">Shop</a>
+                    {/* <a href="https://teespring.com/stores/hoseacodes-2" className="nav-link">Shop</a> */}
                     <Link to="/contact" className="nav-link">Contact</Link>
                     {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
                 </div>

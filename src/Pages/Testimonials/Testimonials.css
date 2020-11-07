@@ -138,17 +138,18 @@
     color: gray !important;
     text-shadow: 1px 1px 1px #206a5d;
   }
-  @media only screen and (max-width: 375px) and  (max-width: 768px){
+  @media only screen and (max-width: 375px) {
     .step-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 20px;
+      margin-top: 50px;
     }
     .step-image img {
       margin: 0%;
-      height: 100%;
-      transform: scale(1.5);
+      height: 100% !important;
+      transform: scale(2) !important;
       width: 100%;
     }
     .prev-button {
@@ -159,8 +160,8 @@
     }
     
     .step-content p {
-      font-size: 1rem;
-      width: 80vw;
+      font-size: 1.5rem !important;
+      width: 65vw !important;
       padding-top: 10px;
     }
     .t-title small {
@@ -173,8 +174,11 @@
     .step-nav {
       margin-top: -40%
     }
+    .step-overlay > button {
+      font-size: 8rem;
+    }
   }
-  @media only screen and (min-width: 768px) {
+  @media only screen and (max-width: 768px) {
     .step-image img {
       margin: 0%;
       height: 50%;

@@ -55,7 +55,9 @@
   text-align: center;
   padding: 10px;
 } */
-
+.knnrxv {
+  display: none;
+}
 @media only screen and (max-width: 375px) {
   .rec-carousel-item {
     display: none;

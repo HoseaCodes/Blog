@@ -25,6 +25,11 @@
     background-attachment: fixed;
     height: 40vh;
 }
+
+.testimonies-group h2 {
+    display: flex;
+    justify-content: center;
+}
 .contact-group {
     background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/projects.jpg');
     background-position: center;
@@ -213,7 +218,7 @@
     border-radius: 8%;
 }
 
-@media only screen and (min-width: 375px) {
+@media only screen and (max-width: 375px) {
     .header {
         height: 40vh !important;
         width: 100%;

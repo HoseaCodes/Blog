@@ -54,13 +54,10 @@ class Home extends React.Component {
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
 
                         <h2 style={{
-                            fontSize: '5rem', margin: 'auto', textAlign: 'center',
+                            fontSize: '8rem', margin: 'auto',
                             color: 'white', opacity: '.8', textTransform: 'uppercase',
                             textShadow: '2px 2px 2px #206a5d', letterSpacing: '1rem'
                         }}
-                            data-aos="zoom-out-up"
-                            data-aos-offset="600"
-                            data-aos-easing="ease-in"
                         >
                             Testimonies
                         </h2>

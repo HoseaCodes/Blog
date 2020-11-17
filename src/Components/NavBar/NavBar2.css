@@ -1,3 +1,6 @@
+#project-link, #article-link {
+  display: none;
+}
 .header-nav {
   position: sticky;
 }

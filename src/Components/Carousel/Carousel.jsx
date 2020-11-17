@@ -4,6 +4,7 @@ import CarouselCareerconnect from '../Carousel/CarouselCareerConnect';
 import CarouselMergeImmersive from '../Carousel/CarouselMergeImmersive';
 import CarouselWebfiver from '../Carousel/CarouselWebfiver';
 import CarouselDevCenter from './CarouselDevCenter';
+import CarouselSneakerAPI from './CarouselSneakerAPI';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -45,7 +46,7 @@ function Projects() {
                     <CarouselDevCenter />
                 </div>
                 <div className='p-content' data-aos="fade-up-left" data-aos-duration="3000" data-aos-offset="500">
-                    <CarouselDevCenter />
+                    <CarouselSneakerAPI />
                 </div>
             </div>
         </div>

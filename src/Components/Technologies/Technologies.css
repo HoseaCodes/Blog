@@ -49,12 +49,12 @@
   padding-top: 50px;
   padding-bottom: 50px;
 }
-section {
+/* section {
   max-width: 1000px;
   margin: 0 auto;
   text-align: center;
   padding: 10px;
-}
+} */
 
 @media only screen and (max-width: 375px) {
   .rec-carousel-item {

@@ -19,7 +19,7 @@ class Home extends React.Component {
     render() {
         return (
             <>
-                <div className='home-page'>
+                <main className='home-page'>
                     <NavBar2 id='top' />
                     <div className='header'>
                         <div className='header-logo' id='header-logo'>
@@ -106,7 +106,7 @@ class Home extends React.Component {
                         <SocialMediaTags />
                     </div>
                     <Footer />
-                </div>
+                </main>
             </>
         )
     }

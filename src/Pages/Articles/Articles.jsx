@@ -40,9 +40,9 @@ import React, { Component } from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
-import { articleData } from './ArticleData';
+import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
-
+import Pagination from 'react-bootstrap/Pagination'
 import { auth, login, logout } from '../../services/firebase';
 
 
@@ -50,16 +50,37 @@ import { auth, login, logout } from '../../services/firebase';
 
 
 class Articles extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            search: "",
+            articles: articleData,
+            tags: categoryTags,
+            currentPage: 1,
+            postPerPage: 5
+        }
+
+    }
     componentDidMount() {
         auth.onAuthStateChanged(user => (
             user
         ));
     }
-    state = {
-        articles: articleData
+
+    updateSearch = event => {
+        this.setState({ search: event.target.value.substr(0, 20) })
     }
     render() {
-        const { articles } = this.state;
+        const { filter, articles, tags, currentPage, postPerPage } = this.state;
+        const indexOfLastPost = currentPage * postPerPage;
+        const indexOfFirstPost = indexOfLastPost - postPerPage;
+        const currentPosts = articles.slice(indexOfFirstPost, indexOfLastPost);
+        const filteredArticles = articles.filter(
+            (article) => {
+                return article.name.toLowerCase().indexOf(
+                    this.state.search.toLowerCase()) !== -1;
+            }
+        );
         return (
             <div className='article-container'>
                 <NavBar2 />
@@ -70,31 +91,64 @@ class Articles extends React.Component {
                 <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
-                    <p style={{ color: 'white', fontSize: '1.5rem' }}>Here are some of my articles, you may like.</p>
-                    <div className="work-box">
-                        <div className="work">
-                            {/* <!--───────────────card───────────────--> */}
-                            <section className='articleList'>
-                                {articles.map(article => {
-                                    return (
-                                        <ArticleCard article={article} />
-                                    )
-                                })}
-                            </section>
-                            <div className="article-card popular">
-                                <h2 className='article-card-header'>Popular Post<hr /></h2>
-                                <a href="" target="_blank">
-                                    <div className="work-img">How the Internet Works</div><br /></a>
-                                <a href="" target="_blank">
-                                    <div className="work-img">Techinal Interview Help</div><br /></a>
-                                <a href="" target="_blank">
-                                    <div className="work-img">Portfolio Guide</div></a>
-                            </div>
+                    <p style={{ color: 'white', fontSize: '1.5rem' }}>Here are some of my articles you may like.</p>
+                    <input type="text"
+                        className='article-search'
+                        label="Search Articles"
+                        placeholder="Find a Post"
+                        value={this.state.search}
+                        onChange={this.updateSearch.bind(this)}
+                    />
+                    {/* <!--───────────────card───────────────--> */}
+                    <div className="article-box">
+                        <section className='articleList'>
+                            {filteredArticles.map(article => {
+                                return (<>
+                                    <ArticleCard article={article}
+                                        key={article.id}
+                                    />
+                                    <hr className='article-line' />
+                                </>
+                                )
+                            })}
+                        </section>
+                        <section className='article-sidebar'>
                             <Subscribe />
-                        </div>
+                            <div className=" popular">
+                                <h2 className='article-card-header'>Popular Post<hr /></h2>
+                                <section className='popular-articles'>
+                                    <a href="" target="_blank">
+                                        <div className="popular-link">How the Internet Works</div><br /></a>
+                                    <a href="" target="_blank">
+                                        <div className="work-img">Techinal Interview Help</div><br /></a>
+                                    <a href="" target="_blank">
+                                        <div className="work-img">Portfolio Guide</div></a>
 
+                                </section>
+                            </div>
+                        </section>
                     </div>
                 </div>
+                <Pagination className='justify-content-center'>
+                    <Pagination.First />
+                    <Pagination.Prev disabled />
+                    <Pagination.Item active>{1}</Pagination.Item>
+                    <Pagination.Item >{2}</Pagination.Item>
+                    <Pagination.Item >{3}</Pagination.Item>
+                    <Pagination.Ellipsis />
+                    <Pagination.Item>{6}</Pagination.Item>
+                    <Pagination.Next />
+                    <Pagination.Last />
+                </Pagination>
+                <article className='article-category-container'>
+                    <h2>Categories</h2>
+                    <section className='article-categories'>
+                        {tags.map(tag => {
+                            return (<li className='tag-category'>{tag} </li>
+                            )
+                        })}
+                    </section>
+                </article>
             </div>
 
         )

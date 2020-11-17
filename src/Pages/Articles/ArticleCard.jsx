@@ -1,40 +1,49 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Articles.css'
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 
 class Article extends Component {
-    state = {
-        showInfo: false,
+    constructor(props) {
+        super(props);
+        this.state = {
+            count: 0
+        }
     }
-    handleInfo = () => {
-        this.setState({
-            showInfo: !this.state.showInfo
-        })
-    }
+
+
     render() {
-        const { name, info, img, tags, link } = this.props.article;
+        function handleCount() {
+            this.state({
+                count: this.state.count + 1
+            });
+        }
+        const { name, date, info, img, tags, link } = this.props.article;
         return (
             <div className="article-card">
-                <img className='article-img' src={img} alt={name} width='200px' />
+                <img className='article-img' src={img} alt={name} />
                 <div className='article-content'>
-                    <h2 className='article-card-header' >{name}</h2>
-                    <ul className="main-tag-container">
-                        <li>
-                            {tags.map(tag => {
-                                return (<a href="#" className="main-tag">{tag}</a>
-                                )
-                            })}
-                        </li>
-                    </ul>
-                    <h5>info {''}
-                        <span onClick={this.handleInfo}>
-                            <i className="fas fa-caret-square-down"></i>
-                        </span>
-                    </h5>
-                    <br />
-                    {this.state.showInfo && <p className="work-content">{info}</p>}
-                    <a className='article-btn-info' href={link}>Find Out More</a>
-                    <br />
+                    <div style={{ padding: '1rem' }}>
+
+                        <Link to={link} className='article-card-header'
+                        // onClick={() => this.handleCount()}
+                        >
+                            <h2 className='article-card-header' >{name}</h2>
+                        </Link>
+                        <p><span>{this.state.count} &nbsp;<VisibilityIcon /> &nbsp;</span>{date}</p>
+                        <p className="work-content">{info}</p>
+                        <br />
+                        <ul className="main-tag-container-article">
+                            <li className="main-category">
+                                <h3>Category: &nbsp;</h3>
+                                {tags.map(tag => {
+                                    return (<a href="#" className="main-tag-article">{tag}</a>
+                                    )
+                                })}
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         )

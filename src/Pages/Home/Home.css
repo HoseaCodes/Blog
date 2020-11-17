@@ -48,54 +48,7 @@
     height: 70vh !important;
     padding-bottom: 55px;
 }
-.open-section {
-    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
-    height: 25vh;
-    margin: 0;
-}
-.open-section-first {
-    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-    background-size: cover;
-    background-position: top;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    position: relative;
-    height: 30vh;
-    margin: 0;
-}
-.open-section-first h1 {
-    padding-top: 8%;
-    color: white;
-    display: block;
-    font-family: Lato, sans-serif;
-    font-weight: bolder;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 4rem;
-    letter-spacing: 1.5rem;
-    line-height: 40px;
-    margin: 0;
-}
-.open-section h1 {
-    padding-top: 5%;
-    
-}
-.domImg {
-    border-radius: 50%;
-    transform: scale(1.5) !important;
-    width: 300 !important;
-    margin: 85px;
-    border: 3px solid #204740;
-    position: absolute;
-    left: 35% !important;
-    top: 68% !important;
-    z-index: 1;
-}
+
 
 .header-logo {
     position: absolute;
@@ -322,10 +275,7 @@
         width: 100%;
         padding-bottom: 35px;
     }
-    .open-section {
-        height: 15vh;
-        margin: 0;
-    }
+  
     .testimonies-group h2 {
         margin: auto;
     }
@@ -367,61 +317,6 @@
         height: 50vh;
         width: 100%;
         padding-bottom: 35px;
-    }
-    .open-section {
-        background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-        background-size: cover;
-        background-position: top;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        height: 25vh;
-        margin: 0;
-    }
-    .open-section-first {
-        background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-        background-size: cover;
-        background-position: top;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        height: 20vh;
-        margin: 0;
-    }
-    .open-section-first h1 {
-        padding-top: 8%;
-        color: white;
-        display: block;
-        font-family: Lato, sans-serif;
-        font-weight: bold;
-        text-align: center;
-        text-transform: uppercase;
-        font-size: 2rem;
-        letter-spacing: 1rem;
-        line-height: 40px;
-        margin: 0;
-        padding-top: 80px;
-        
-    }
-  
-    .open-section h1 {
-        padding-top: 5%;
-        
-    }
-   
-    .domImg {
-        border-radius: 50%;
-        transform: scale(1);
-        margin: 100px;
-        border: 3px solid #204740;
-        position: absolute;
-        left: 15%;
-        top: 43%;
-        z-index: 1;
-        transition: 1s;
-    }
-    .domImg:hover {
-        transform: rotate(180deg);
     }
     .header-logo {
         position: absolute;
@@ -620,55 +515,6 @@
         height: 100vh;
         padding-bottom: 55px;
     }
-    .open-section {
-        background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-        background-size: cover;
-        background-position: top;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        height: 25vh;
-        margin: 0;
-    }
-    .open-section-first {
-        background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/wireframe.jpg');
-        background-size: cover;
-        background-position: top;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        position: relative;
-        height: 30vh;
-        margin: 0;
-    }
-    .open-section-first h1 {
-        padding-top: 8%;
-        color: white;
-        display: block;
-        font-family: Lato, sans-serif;
-        font-weight: bold;
-        text-align: center;
-        text-transform: uppercase;
-        font-size: 4rem;
-        letter-spacing: 1.5rem;
-        line-height: 40px;
-        margin: 0;
-    }
-   
-    .open-section h1 {
-        padding-top: 5%;
-        
-    }
-    .domImg {
-        border-radius: 50%;
-        transform: scale(2);
-        margin: 85px;
-        border: 3px solid #204740;
-        position: absolute;
-        left: 37%;
-        top: 110%;
-        z-index: 1;
-    }
-    
     .header-logo {
         position: absolute;
         left: 50%;

@@ -3,10 +3,15 @@ import React from 'react'
 import './Subscribe.css'
 
 const subscribeStyle = {
+    display: 'flex',
+    flexDirection: 'column',
     background: 'gray',
-    margin: '50px',
-    padding: '50px',
-    borderRadius: '12px'
+    margin: 'auto',
+    padding: '1rem',
+    borderRadius: '12px',
+    width: '50%',
+    height: '20%',
+    textAlign: 'center'
 
 }
 
@@ -17,9 +22,9 @@ const Subscribe = () => {
             <hr />
             <p style={{ textAlign: 'center', margin: '30px', color: 'black' }}> Sign up with your email address to reveive news and updates.</p>
             <div>
-                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '205px', borderColor: 'white' }} placeholder={'First Name'}></input>
-                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '205px', borderColor: 'white' }} placeholder={'Last Name'}></input>
-                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '305px', borderColor: 'white' }} placeholder={'Email'}></input>
+                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '70%', borderColor: 'white' }} placeholder={'First Name'}></input>
+                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '70%', borderColor: 'white' }} placeholder={'Last Name'}></input>
+                <input style={{ margin: '10px', padding: '15px', borderRadius: '12px', width: '80%', borderColor: 'white' }} placeholder={'Email'}></input>
             </div>
             <button className='btn' >Subscribe</button>
         </div>

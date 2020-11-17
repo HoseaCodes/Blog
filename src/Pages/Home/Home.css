@@ -12,6 +12,9 @@
     width: 50%;
     background-color: #1A1E23;
 }
+.socialmedia {
+    margin-bottom: 15rem;
+}
 .testimonies-group, .contact-group {
     background-color: rgb(35, 41, 47);
     background-color: whitesmoke;
@@ -29,6 +32,7 @@
     flex-direction: column;
     align-items: center;
     height: 35vh;
+    justify-content: center;
 
 }
 .email {
@@ -65,11 +69,12 @@
     justify-content: center;
     font-size: 13pt;
     margin-bottom: 10px;
-    padding: 10px 20px;
+    padding: 10px 10px;
     background-color: transparent;
     transition: all 0.5s;
     text-decoration: none;
     text-transform: uppercase;
+    text-align: center;
 }
 .header-button {
     animation: header-btn 10s steps(1) -1s normal;
@@ -172,6 +177,7 @@
 .contact {
     background-color: #1A1E23;
     padding-top: 2.5rem;
+    margin-top: 15rem;
 }
 
 
@@ -207,7 +213,7 @@
     border-radius: 8%;
 }
 
-@media only screen and (max-width: 375px) and  (max-width: 768px){
+@media only screen and (min-width: 375px) {
     .header {
         height: 40vh !important;
         width: 100%;
@@ -317,6 +323,11 @@
         height: 50vh;
         width: 100%;
         padding-bottom: 35px;
+    }
+    .homepage-combo {
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
     }
     .header-logo {
         position: absolute;

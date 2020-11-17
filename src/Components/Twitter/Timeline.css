@@ -7,6 +7,10 @@
 }
 }
 .word-cloud {
-    width: 500px;
-    height: 500px;
+    width: 50%;
+    height: 50%;
+}
+
+.twitter-timeline {
+    height: 90vh !important;
 }

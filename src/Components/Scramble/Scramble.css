@@ -21,6 +21,6 @@
   }
   @media only screen and (max-width: 600px) {
     .header-career {
-    color: transparent;
+    color: transparent !important;
     }
   }

@@ -164,8 +164,8 @@ h1{
 
 .front .inner p:after{
   content: '';
-  width: 4rem;
-  height: 1px;
+  width: 5%;
+  height: 1%;
   position: absolute;
   background: #C6D4DF;
   display: block;

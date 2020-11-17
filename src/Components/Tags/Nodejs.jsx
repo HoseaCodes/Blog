@@ -14,7 +14,7 @@ const Nodejs = () => {
                     <div className="tag-info">
                         <h2 className='tag-header'>Node.JS</h2>
                         <p>Node.js is a tool for executing JavaScript in a variety of environments.</p>
-                        <label>1 Project</label>
+                        <label>2 Project</label>
                     </div>
                 </div>
             </Link>

@@ -7,6 +7,7 @@
     overflow: hidden;    
     background-color: #1A1E23;
     margin-top: 5rem;
+    justify-items: center;
     
 
 }
@@ -31,8 +32,8 @@
     justify-content: center;
     background-color: rgb(35, 41, 47);
     border-radius: 12px;
-    width: 95%;
-    height: 55vh !important;
+    width: 30vw;
+    height: 85vh !important;
     box-shadow: .2px .2px .2px .2px rgb(47, 54, 62);
     border-top: 2px solid #206a5d;
     border-right: 2px solid #206a5d;
@@ -57,7 +58,7 @@
 
 .c-carousel {
     position: relative;
-    height: 90000vh;
+    height: 100%;
     width: 100%;
     padding: 0;
     display: flex;
@@ -107,7 +108,6 @@
     font-size: 12pt;
     margin-bottom: 10px;
     padding: 5px 10px;
-    background-color: transparent;
     transition: all 0.5s;
     text-decoration: none;
     background-color: #206a5d;
@@ -121,20 +121,14 @@
     border: 2px solid #fff;
     color: white;
     opacity: 1;
-    box-sizing: inherit;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13pt;
-    margin-bottom: 10px;
     padding: 10px 20px;
-    background-color: transparent;
-    transition: all 0.5s;
-    text-decoration: none;
     margin-left: 50px;
     left: 35%;
     animation: header-btn 10s steps(1) -1s normal;
     background-color: transparent;
+    text-decoration: none;
     font-size: larger;
+    font-weight: bold;
 }
 @keyframes header-btn{
     0% {
@@ -148,6 +142,7 @@
 
   .main-tag-container {
       margin-top: 30px;
+      flex-wrap: wrap;
   }
   .main-tag {
     background: #206a5d;
@@ -155,7 +150,7 @@
     color: white;
     opacity: .6;
     display: inline-block;
-    height: 26px;
+    height: 60%;
     line-height: 26px;
     padding: 0 20px 0 23px;
     position: relative;
@@ -170,10 +165,10 @@
     border-radius: 10px;
     box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
     content: '';
-    height: 6px;
+    height: 2%;
     left: 10px;
     position: absolute;
-    width: 6px;
+    width: 2%;
     top: 10px;
   }
   
@@ -268,12 +263,16 @@
     }
 
 }
-  @media only screen and (max-width: 768px) {
+  @media only screen and (max-width: 968px) {
     .p-container {
         grid-template-columns: 1fr 1fr;
     }
     .MuiSvgIcon-root {
         visibility: hidden !important;
+    }
+    .p-details {
+        height: 80vh !important;
+        width: 50vw;
     }
   }
 

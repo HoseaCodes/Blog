@@ -111,7 +111,7 @@ const Posts = () => {
             </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <div id="articles">
-                <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
+                <h2 className='articles-header'>Thoughts of a Wise Mind<hr /></h2>
                 <p style={{ color: 'white', fontSize: '1.5rem' }}>Here are some of my articles, you may like.</p>
                 <div className="work-box">
                     <div className="work">
@@ -124,7 +124,7 @@ const Posts = () => {
                             })}
                         </section>
                         <div className="article-card popular">
-                            <h2 className='article-card-header'>Popular Post<hr /></h2>
+                            <h3 className='article-card-header'>Popular Post<hr /></h3>
                             <a href="" target="_blank">
                                 <div className="work-img">How the Internet Works</div><br /></a>
                             <a href="" target="_blank">

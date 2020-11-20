@@ -2,7 +2,6 @@ import React from 'react';
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-import SneakerAPI from '../../icons/SneakerAPI.mp4';
 import SneakerAPI1 from '../../icons/SneakerAPI1.png';
 import SneakerAPI2 from '../../icons/SneakerAPI2.png';
 import SneakerAPI3 from '../../icons/SneakerAPI3.png';
@@ -12,7 +11,6 @@ import Modal from '../Modal/Modal'
 function CarouselSneakerAPI() {
     let project1 = [
         <ImgComp className='cover' src={SneakerAPI1} />,
-        <ImgComp className='cover' src={SneakerAPI} />,
         <ImgComp className='cover' src={SneakerAPI2} />,
         <ImgComp className='cover' src={SneakerAPI3} />,
 
@@ -53,7 +51,7 @@ function CarouselSneakerAPI() {
                 <Modal />
                 <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href=" https://hoseacodes.github.io/Sneaker-Api/" target="_blank" rel="noopener noreferrer">View Live Site</a>
-                    <a className='link github' href="https://github.com/HoseaCodes/Sneaker-Api" target="_blank" rel="noopener noreferrer">View Github</a>
+                    <a className='link github' href="https://sneaker-api-htx.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Github</a>
                 </div>
             </div>
         </div>

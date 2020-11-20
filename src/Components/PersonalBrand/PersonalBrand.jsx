@@ -63,7 +63,7 @@ const PersonalBrand = () => {
                     data-aos-easing="ease-in"
                 >
                     <div className='personal-card-info'>
-                        <h2 className='personal-card-title' >Software Developer.Engineer</h2>
+                        <h3 className='personal-card-title' >Software Developer.Engineer</h3>
                         <br />
                         <p> In my previous Operations Manager role, I identified
                         underlying problems, analyzing potential solutions, and implementing

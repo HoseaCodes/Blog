@@ -24,8 +24,8 @@ class Home extends React.Component {
                     <div className='header'>
                         <div className='header-logo' id='header-logo'>
                             <h1 className='heading-primary'>
-                                <span className="header-username">Hosea </span>
-                                <span className="header-username2">Codes </span>
+                                <span className="header-username">Hosea</span>
+                                <span className="header-username2">Codes</span>
                                 <a href='#aboutme' className='header-button'
                                     data-aos="fade-right"
                                     data-aos-offset="200"

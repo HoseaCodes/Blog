@@ -47,11 +47,13 @@
 }
 .personal-combo {
     display: flex;
+    width: 100%;
+    height: 70vh;
 }
 .personal-card {
     background-color: whitesmoke;
     margin: 0 4rem 10rem 0rem;
-    width: 50%;
+    overflow: scroll;
 }
 .personal-card-title {
     text-transform: uppercase;
@@ -59,8 +61,11 @@
     font-weight: 400;
 }
 .personal-card-info {
-    margin: 10rem 5rem 5rem 5rem;
-
+    margin: 5rem 5rem 5rem 5rem;
+    height: 1vh;
+}
+.personal-card-content{
+    overflow: scroll;
 }
 .personal-image {
     width: 45%;

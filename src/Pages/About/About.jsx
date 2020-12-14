@@ -112,12 +112,13 @@ const About = () => {
                 </q>
                 <p className="quoteAuthor">-Buddha</p>
             </div>
-            <div className="imageHiglights">
+            {/* <div className="imageHiglights">
                 <Logo />
-            </div>
+            </div> */}
             {/* <!-- Quote/Highlight End  --> */}
 
             {/* <!-- Timeline  -->  */}
+            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <div className="timeline">
                 <div id="timeline" className="about-container left">
                     <div className="content">

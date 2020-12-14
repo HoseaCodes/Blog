@@ -15,18 +15,19 @@
     align-items: center;
     text-align: center;
     padding: 25px;
-    background-color: #1A1E23;
+    background-color: #fff;
   }
 q {
     line-height: 2;
     font-size: 30px;
     width: 40%;
-    color: white;
+    color: #000;
   }
 
   .quoteAuthor {
     margin-top: 30px;
-    color: white;
+    color: #000;
+    font-size: 1.5rem;
   }
 
   /* Quote End */
@@ -73,19 +74,6 @@ q {
   .left {
     margin-left: 4rem;
   }
-  /* The circles on the timeline */
-  /* .about-container::after {
-    content: '';
-    position: absolute;
-    width: 1.5%;
-    height: 4%;
-    right: 0;
-    background-color: white;
-    border: 4px solid #206a5d;
-    top: 0;
-    border-radius: 50%;
-    z-index: 1;
-  }
    */
   /* Place the container to the left */
   .left {
@@ -103,7 +91,7 @@ q {
     position: absolute;
     top: 1rem;
     z-index: 1;
-    right: 61.2%;
+    right: 60.1%;
     border: medium solid white;
     border-width: 10px 0 10px 10px;
     border-color: transparent transparent transparent white;

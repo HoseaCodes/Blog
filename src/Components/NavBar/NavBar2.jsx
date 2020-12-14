@@ -23,7 +23,7 @@ const NavBar2 = () => {
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
                     <Link to="/projects" id='project-link' className="nav-link">Projects</Link>
-                    <Link to="/articles" id='article-link' className="nav-link">Articles</Link>
+                    {/* <Link to="/articles" id='article-link' className="nav-link">Articles</Link> */}
                     <Link to="/about" className="nav-link">About</Link>
                     {/* <a href="https://teespring.com/stores/hoseacodes-2" className="nav-link">Shop</a> */}
                     <Link to="/contact" className="nav-link">Contact</Link>

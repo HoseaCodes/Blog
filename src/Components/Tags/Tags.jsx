@@ -8,22 +8,25 @@ import Django from './Django';
 
 const Tags = () => {
     return (
-        <div className='tags-container'>
-            <div className="tags-title">
-                <h2 className='tag-title'> Project Details</h2>
+        <>
+            <div className='tags-container'>
+                <input type="text"
+                    className='project-search'
+                    label="Search Articles"
+                    placeholder="Type of Project"
+                />
+                <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                <JavaScript />
                 <hr />
+                <Nodejs />
+                <hr />
+                <Reactjs />
+                <hr />
+                <Python />
+                <hr />
+                <Django />
             </div>
-            <JavaScript />
-            <hr />
-            <Nodejs />
-            <hr />
-            <Reactjs />
-            <hr />
-            <Python />
-            <hr />
-            <Django />
-        </div>
-
+        </>
     )
 
 }

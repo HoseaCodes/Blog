@@ -39,13 +39,10 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-
                     <PersonalBrand />
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-
                     <Tech />
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-
                     <div className='projects'>
                         <Projects />
                     </div>

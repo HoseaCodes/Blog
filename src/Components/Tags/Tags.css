@@ -4,21 +4,6 @@
     background-color: #1A1E23;
     overflow: hidden;
 }
-
-.tags-title {
-    display: flex;
-    flex-direction: column;
-   
-}
-
-.tag-title {
-    align-self: flex-end;
-    text-transform: uppercase;
-    letter-spacing: .5rem;
-    color: white;
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
 hr {
     width: 100%;
     background-color: #206a5d;
@@ -50,6 +35,17 @@ hr {
     align-items: center;
     width: 100vw;
     color: white;
+}
+.project-search {
+    background-color: #1A1E23;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    width: 100%;
+    text-align: center;
+    font-size: 4rem;
+    letter-spacing: 1rem;
+    outline: hidden;
 }
 @media only screen and (max-width: 480px) {
 

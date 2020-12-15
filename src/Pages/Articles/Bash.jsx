@@ -1,15 +1,9 @@
 import React, { Component } from 'react'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import MessageIcon from '@material-ui/icons/Message';
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import { articleData } from './ArticleData';
-import StackResults from '../../icons/StackResults.png'
-import Stackimg from '../../icons/Stackimg.png';
 import NavBar2 from '../../Components/NavBar/NavBar2'
 import './Blog.css'
-import { styled } from '@material-ui/core';
-import Subscribe from '../../Components/Subscribe/Subscribe';
 import Footer from '../../Components/Footer/Footer';
 import terminal from '../../icons/terminal.png'
 import bashcommands from '../../icons/bashcommands.mp4'

@@ -13,7 +13,7 @@ import CareerConnect from './Pages/Projects/CareerConnect';
 import MergeImmersive from './Pages/Projects/MergeImmersive';
 import DevCenter from './Pages/Projects/DevCenter';
 import Stacks from './Pages/Articles/Stack';
-import Bootcamp from './Pages/Articles/Bootcamp';
+import Bash from './Pages/Articles/Bash';
 
 
 
@@ -87,9 +87,9 @@ export default class App extends Component {
           />
           <Route
             exact
-            path="/bootcamp"
+            path="/bash"
             render={() => (
-              <Bootcamp
+              <Bash
               />
             )}
           />

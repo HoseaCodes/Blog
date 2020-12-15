@@ -1,6 +1,6 @@
 import React from 'react'
 import Japan from '../../icons/Japan.jpeg';
-import skills from '../../icons/skills.jpg';
+import skills from '../../icons/cpu.jpeg';
 import TSU2 from '../../icons/TSU2.jpeg';
 import { CardView } from 'react-card-with-image'
 import 'react-card-with-image/dist/index.css'

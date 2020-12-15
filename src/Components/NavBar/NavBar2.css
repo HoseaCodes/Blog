@@ -1,4 +1,4 @@
-#article-link {
+#project-link {
   display: none;
 }
 .header-nav {
@@ -17,7 +17,7 @@
 
 }
 .active {
-        opacity: 1;
+    opacity: 1;
 }
 
 .nav-link:focus, .nav-link:hover, .nav-link:active, .nav-link:visited {

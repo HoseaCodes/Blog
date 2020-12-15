@@ -65,14 +65,14 @@ const PersonalBrand = () => {
                     <div className='personal-card-info'>
                         <h3 className='personal-card-title' >Software Developer.Engineer</h3>
                         <br />
-                        <p className='peronal-card-content'> In my previous Operations Manager role, I identified
+                        <p className='personal-card-content'> In my previous Operations Manager role, I identified
                         underlying problems, analyzing potential solutions, and implementing
                         resolutions. My attention to detail and love for technology lead me to seek a
                         deep understanding of Management of Information Systems. In my graduate program,
                         I received a sound understanding of the relational database, SQL, C#/C++, and
                         business processes.</p>
                         <br />
-                        <p className='peronal-card-content'>I enrolled in an immersive full-stack software
+                        <p className='personal-card-content'>I enrolled in an immersive full-stack software
                         engineering program, where I was exposed to the MERN stack and turned my MIS
                         knowledge into applicable, real-world solutions. I developed several full-stack web
                         apps and worked on dynamic team projects. The projects allowed me to hone my skills
@@ -82,7 +82,7 @@ const PersonalBrand = () => {
                         learn more while also finding ways to integrate my experiences and new-found
                         knowledge to enhance user experience.</p>
                         <br />
-                        <p className='peronal-card-content'> I’m looking to move into a role where I can grow with motivated people
+                        <p className='personal-card-content'> I’m looking to move into a role where I can grow with motivated people
                         that believe in growth and innovation. I have worked progressively with major
                         companies since the beginning of my career and I am excited for the opportunity
                             to continue this journey with another industry leader.</p>

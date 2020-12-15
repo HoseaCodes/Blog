@@ -113,8 +113,7 @@ class Articles extends React.Component {
                             })}
                         </section>
                         <section className='article-sidebar'>
-                            <Subscribe />
-                            <div className=" popular">
+                            <div className="popular">
                                 <h2 className='article-card-header'>Popular Post<hr /></h2>
                                 <section className='popular-articles'>
                                     <a href="" target="_blank">
@@ -123,13 +122,14 @@ class Articles extends React.Component {
                                         <div className="work-img">Techinal Interview Help</div><br /></a>
                                     <a href="" target="_blank">
                                         <div className="work-img">Portfolio Guide</div></a>
-
                                 </section>
                             </div>
+                            <br />
+                            <Subscribe />
                         </section>
                     </div>
                 </div>
-                <Pagination className='justify-content-center'>
+                {/* <Pagination className='justify-content-center'>
                     <Pagination.First />
                     <Pagination.Prev disabled />
                     <Pagination.Item active>{1}</Pagination.Item>
@@ -139,7 +139,8 @@ class Articles extends React.Component {
                     <Pagination.Item>{6}</Pagination.Item>
                     <Pagination.Next />
                     <Pagination.Last />
-                </Pagination>
+                </Pagination> */}
+                <br />
                 <article className='article-category-container'>
                     <h2>Categories</h2>
                     <section className='article-categories'>

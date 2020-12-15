@@ -25,8 +25,6 @@ const Footer = () => {
                 All Rights Reserved, &copy; {year} Hosea Codes
             </footer>
         </div >
-
-
     )
 };
 

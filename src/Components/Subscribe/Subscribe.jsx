@@ -1,4 +1,3 @@
-import { Visibility } from '@material-ui/icons'
 import React from 'react'
 import './Subscribe.css'
 
@@ -6,11 +5,11 @@ const subscribeStyle = {
     display: 'flex',
     flexDirection: 'column',
     background: 'gray',
-    margin: 'auto',
+    marginBottom: '15rem',
     padding: '1rem',
     borderRadius: '12px',
-    width: '50%',
-    height: '20%',
+    width: 'auto',
+    height: 'auto',
     textAlign: 'center'
 
 }

@@ -33,7 +33,7 @@
     background-color: rgb(35, 41, 47);
     border-radius: 12px;
     width: 30vw;
-    height: 85vh !important;
+    height: 70vh !important;
     box-shadow: .2px .2px .2px .2px rgb(47, 54, 62);
     border-top: 2px solid #206a5d;
     border-right: 2px solid #206a5d;
@@ -97,6 +97,18 @@
 .p-extended {
     overflow: auto;
 
+}
+.portfolio-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+    color: white;
+}
+.portfolio {
+    margin: 2.5rem;
+    font-size: 1.5rem !important;
 }
 .link {
     border: 2px solid gray;

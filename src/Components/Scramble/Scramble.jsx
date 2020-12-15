@@ -17,7 +17,7 @@ const Scramble = () => {
         }, 5000);
 
         return () => clearInterval(action);
-    }, []);
+    }, [dencrypt]);
 
     return <div className="header-career">{result}</div>;
 };

@@ -1,7 +1,7 @@
 //https://hoseacodes.github.io/Project-1/
 
 import React from 'react';
-import './Project1.css'
+import './Option2.css'
 
 const Project1 = () => {
     return (

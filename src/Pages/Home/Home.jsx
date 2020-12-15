@@ -13,9 +13,6 @@ import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
 
 class Home extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <>
@@ -84,7 +81,7 @@ class Home extends React.Component {
                             >
                                 Send Me A Message
                             </h2>
-                            <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank">
+                            <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank" rel="noopener noreferrer">
                                 <EmailIcon className='email' fontSize='large' style={{ color: '#206a5d', width: '15rem !important' }} />
                             </a>
 

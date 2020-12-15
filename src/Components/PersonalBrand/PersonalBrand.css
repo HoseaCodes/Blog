@@ -61,11 +61,12 @@
     font-weight: 400;
 }
 .personal-card-info {
-    margin: 5rem 5rem 5rem 5rem;
+    margin: 5rem 2rem 5rem 2rem;
     height: 1vh;
 }
 .personal-card-content{
     overflow: scroll;
+    font-size: 1.2rem;
 }
 .personal-image {
     width: 45%;

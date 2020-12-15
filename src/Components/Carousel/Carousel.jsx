@@ -1,9 +1,6 @@
 import React from 'react';
 import CarouselCalorieKitchen from '../Carousel/CarouselCalorieKitchen';
 import CarouselCareerconnect from '../Carousel/CarouselCareerConnect';
-import CarouselMergeImmersive from '../Carousel/CarouselMergeImmersive';
-import CarouselWebfiver from '../Carousel/CarouselWebfiver';
-import CarouselDevCenter from './CarouselDevCenter';
 import CarouselSneakerAPI from './CarouselSneakerAPI';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -32,22 +29,17 @@ function Projects() {
                 </div>
                 <div className='p-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
                     data-aos-delay="300">
-                    <CarouselWebfiver />
+                    <CarouselSneakerAPI />
                 </div>
 
                 <div className='p-content' data-aos="fade-left" data-aos-duration="3000" data-aos-offset="500">
                     <CarouselCareerconnect />
 
                 </div>
-                <div className='p-content' data-aos="fade-up-right" data-aos-duration="3000" data-aos-offset="500">
-                    <CarouselMergeImmersive />
-                </div>
-                <div className='p-content' data-aos="zoom-in-up" data-aos-duration="3000" data-aos-offset="500">
-                    <CarouselDevCenter />
-                </div>
-                <div className='p-content' data-aos="fade-up-left" data-aos-duration="3000" data-aos-offset="500">
-                    <CarouselSneakerAPI />
-                </div>
+            </div>
+            <div className="portfolio-group">
+                <h2 className='p-h2'>Visit my portfolio for more</h2>
+                <a className="link portfolio" href="http://www.dominiquehosea.com" target="_blank">My Portfolio</a>
             </div>
         </div>
     )

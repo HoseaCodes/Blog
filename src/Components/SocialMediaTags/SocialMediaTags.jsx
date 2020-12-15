@@ -1,18 +1,14 @@
 import React from 'react';
 import './SocialMediaTags.css'
 // import PModal from '../../Components/Modal/Modal';
-import PopUp from '../../Components/Modal/Modal';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import YouTubeIcon from '@material-ui/icons/YouTube';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import Resume2020 from '../../icons/Resume2020.pdf'
 import { createMuiTheme } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-import purple from '@material-ui/core/colors/purple';
 
 const theme = createMuiTheme({
     palette: {

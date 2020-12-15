@@ -1,7 +1,7 @@
 //http://webfiver.com/
 
 import React from 'react';
-import './WebFiver.css'
+import './Option1.css'
 
 const WebFiver = () => {
     return (

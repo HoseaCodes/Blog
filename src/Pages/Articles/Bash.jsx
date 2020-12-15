@@ -32,7 +32,6 @@ class Bash extends Component {
         }
 
 
-
         const { name, date, info, title, img, tags, lists, subHeading, link } = this.state.article;
         return (
             <div>

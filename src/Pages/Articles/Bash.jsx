@@ -38,7 +38,7 @@ class Bash extends Component {
                         <div className='blog-combo'>
                             <article>
                                 <h3 className='blog-title'>{title}</h3>
-                                <img className='blog-img' src={img} alt={name} />
+                                <img className='blog-img' src="https://i.imgur.com/GYcr7gZ.png" alt={name} />
                                 <article className='blog-card'>
                                     <section className="blog-heading">
                                         <br />

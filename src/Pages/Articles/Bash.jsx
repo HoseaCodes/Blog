@@ -5,7 +5,6 @@ import { articleData } from './ArticleData';
 import NavBar2 from '../../Components/NavBar/NavBar2'
 import './Blog.css'
 import Footer from '../../Components/Footer/Footer';
-import terminal from '../../icons/terminal.png'
 import bashcommands from '../../icons/bashcommands.mp4'
 
 class Bash extends Component {

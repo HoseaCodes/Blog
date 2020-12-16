@@ -63,7 +63,7 @@ class Bash extends Component {
                                         <p className='blog-content-info'>{info[0]}</p>
                                         <br />
                                         <div style={{ display: 'flex' }}>
-                                            <img id="terminal" src={terminal} alt="terminal" />
+                                            <img id="terminal" src={img} alt="terminal" />
                                             <p style={{ marginLeft: '1rem', textAlign: 'justify' }} className='blog-content-info'>{info[1]} </p>
                                         </div>
                                         <br />

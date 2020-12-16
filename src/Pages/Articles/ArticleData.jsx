@@ -9,7 +9,7 @@ export const articleData = [
         id: 1,
         name: 'Bash Commands',
         date: 'Dec. 14, 2020',
-        img: "bash",
+        img: "https://i.imgur.com/cnYPuQC.png",
         title: 'How to navigate through your terminal',
         info: ['Bash is a command processor that tyipcally runs in a text window where the user types commands that cause actions. I am sure you have seen a terminal window before. It is that window that gives you that Steve Jobs or early 90s Microsoft feeling when you look at it.',
             'If looks could kill I am sure the command line has taken many people out of their tech lives. For the most part most of us are not use to seeing a computer program that does not have a user friendly experience. That is right the terminal is the same concept as your favorite website. The difference is that your terminal was created to aid your os, operating system, to do it job.',

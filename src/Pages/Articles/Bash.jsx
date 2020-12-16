@@ -5,7 +5,6 @@ import { articleData } from './ArticleData';
 import NavBar2 from '../../Components/NavBar/NavBar2'
 import './Blog.css'
 import Footer from '../../Components/Footer/Footer';
-import bashcommands from '../../icons/bashcommands.mp4'
 
 class Bash extends Component {
     constructor(props) {
@@ -62,7 +61,7 @@ class Bash extends Component {
                                         <p className='blog-content-info'>{info[0]}</p>
                                         <br />
                                         <div style={{ display: 'flex' }}>
-                                            <img id="terminal" src={img} alt="terminal" />
+                                            <img id="terminal" src="https://i.imgur.com/cnYPuQC.png" alt="terminal" />
                                             <p style={{ marginLeft: '1rem', textAlign: 'justify' }} className='blog-content-info'>{info[1]} </p>
                                         </div>
                                         <br />
@@ -76,7 +75,7 @@ class Bash extends Component {
                                                 })}
                                             </div>
                                             <video loop="true" autoplay="autoplay" muted width="50%">
-                                                <source src={bashcommands} type="video/mp4" />
+                                                <source src="https://i.imgur.com/gGeSG7W.mp4" type="video/mp4" />
                                             </video>
                                         </div>
                                         <br />

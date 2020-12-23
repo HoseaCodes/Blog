@@ -32,6 +32,46 @@ export const articleData = [
         ]
 
     },
+    {
+        id: 2,
+        name: 'Big O Notation',
+        date: 'Dec. 23, 2020',
+        img: "https://i.imgur.com/kFCusLd.png",
+        title: 'Time & Space Complexity',
+        info: ['Big O time is the lanuage and metric we use to describe the efficiency of algorithms. The Big O notation defines an upper bound of an algorithm, it bounds a function only from above. In general cases, we mainly used to measure and compare the worst-case theoretical running time complexities of algorithms for the performance analysis. The fastest possible running time for any algorithm is O(1), commonly referred to as Constant Running Time. In this case, the algorithm always takes the same amount of time to execute, regardless of the input size. This is the ideal runtime for an algorithm, but it’s rarely achievable. In actual cases, the performance (Runtime) of an algorithm depends on n, that is the size of the input or the number of operations is required for each input item. ',
+            '1.) Figure out what the input is and what n represents.\n 2.) Express the maximum number of operations, the algorithm performs in terms of n. \n 3.) Eliminate all excluding the highest order terms. \n 4.) Remove all the constant factors.',
+            'Typically, we are usually interested in the worst case: what is the maximum number of operations that might be performed for a given problem size. For example, inserting an element into an array, we have to move the current element and all of the elements that come after it one place to the right in the array. In the worst case, inserting at the beginning of the array, all of the elements in the array must be moved. Therefore, in the worst case, the time for insertion is proportional to the number of elements in the array, and we say that the worst-case time for the insertion operation is linear in the number of elements in the array. For a linear-time algorithm, if the problem size doubles, the number of operations also doubles.',
+            'What Big O notation doesn\'t tell you is the speed of the algorithm in seconds. There are way too many factors that influence the time an algorithm takes to run. Instead, you\'ll use Big O notation to compare different algorithms by the number of operations they make.',
+            'Firstly, the implementation of the program is responsible for memory usage. For example, we can assume that recursive implementation always reserves more memory than the corresponding iterative implementation of a particular problem. And the other one is n, the input size or the amount of storage required for each item. For example, a simple algorithm with a high amount of input size can consume more memory than a complex algorithm with less amount of input size. In general for an algorithm, space efficiency and time efficiency reach at two opposite ends and each point in between them has a certain time and space efficiency. So, the more time efficiency you have, the less space efficiency you have and vice versa.',
+        ],
+        subHeading: ['Upper Bound of the Algorithm',
+            'How to find the time complexity',
+            'The algorithms can be classified as follows from the best-to-worst performance (Running Time Complexity):',
+            'Analyze Runtime',
+            'Memory Footprint of the algorithm or Space Complexity'
+        ],
+        tags: ['BigO', 'Time', 'Space'],
+        link: './bigo',
+        lists: [
+            'A constant algorithm - O(1)',
+            'A linear algorithm – O(n) Runtime grows directly in proportion to n. Ex. Linear Search',
+            'A logarithmic algorithm – O(log(n)) Runtime grows logarithmically in proportion to n. Ex. Binary Search',
+            'A quadratic algorithm - o(n^2)',
+            'A polynomial algorithm – O(n^c) Runtime grows quicker than previous all based on n. Ex. Strassen’s Matrix Multiplication, Bubble Sort, Selection Sort, Insertion Sort, or Bucket Sort',
+            'A superlinear algorithm – O(nlogn) Runtime grows in proportion to n. Ex, Heap Sort or Merge Sort',
+            'A exponential algorithm – O(c^n)Runtime grows even faster than polynomial algorithm based on n. Ex. Tower of Hanoi',
+            ' A factorial algorithm – O(n!) Runtime grows the fastest and becomes quickly unusable for even small values of n. Ex. Determinant Expansion by Minors, Brute force Search algorithm for Traveling Salesman Problem.',
+            'Where, n is the input size and c is a positive constant. ',
+        ],
+        lists2: [
+            'Logarithmic algorithm - O(log n) - Merge Sort.',
+            'Linear algorithm - O(n) - Quick Sort.',
+            'Sub-linear algorithm - O(n+k) - Radix Sort.',
+            'Ideal algorithm - O(1) - Linear Search, Binary Search, Bubble Sort, Selection Sort, Insertion Sort, Heap Sort, or Shell Sort.',
+        ]
+
+
+    },
     // {
     //     id: 1,
     //     name: 'General Assembly Bootcamp',

@@ -14,6 +14,7 @@ import MergeImmersive from './Pages/Projects/MergeImmersive';
 import DevCenter from './Pages/Projects/DevCenter';
 import Stacks from './Pages/Articles/Stack';
 import Bash from './Pages/Articles/Bash';
+import BigO from './Pages/Articles/Big0';
 
 
 
@@ -90,6 +91,14 @@ export default class App extends Component {
             path="/bash"
             render={() => (
               <Bash
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/bigo"
+            render={() => (
+              <BigO
               />
             )}
           />

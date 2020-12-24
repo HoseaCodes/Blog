@@ -15,7 +15,7 @@ import './Technologies.css';
 
 const ImageSlider = () => {
 
-    const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery];
+    const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png'];
     const [current, setCurrent] = useState(0);
 
     const nextSlide = () => {

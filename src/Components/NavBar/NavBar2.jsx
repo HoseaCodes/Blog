@@ -22,7 +22,7 @@ const NavBar2 = () => {
                 <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
-                    <a href="http://www.dominiquehosea.com" className="nav-link">Portfolio</a>
+                    <a href="http://www.dominiquehosea.com" target="_blank" className="nav-link">Portfolio</a>
                     {/* <Link to="/projects" id='project-link' className="nav-link">Projects</Link> */}
                     <Link to="/articles" id='article-link' className="nav-link">Articles</Link>
                     <Link to="/about" className="nav-link">About</Link>

@@ -45,60 +45,8 @@
 
 import React, { Component } from 'react';
 import './About.css';
-import ccLogo from '../../icons/ccLogo.png';
-import MA from '../../icons/MA.mp4';
-import MA1 from '../../icons/MA1.png';
-import CK from '../../icons/CK.png';
-import MI from '../../icons/MI.png';
-import MI2 from '../../icons/MI2.png';
-import CB from '../../icons/CB.jpeg';
-import AD from '../../icons/AD.jpeg';
-import ST from '../../icons/ST.jpeg';
-import Carousel from 'react-elastic-carousel';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 
-
-class Logo extends Component {
-    state = {
-        logos: [
-            { id: 1, title: 'JavaScript', img: ccLogo },
-            { id: 2, title: 'Bootstrap', img: MA },
-            { id: 3, title: 'Django', img: MA1 },
-            { id: 4, title: 'MongoDB', img: CK },
-            { id: 5, title: 'Node', img: MI },
-            { id: 6, title: 'postgresql', img: MI2 },
-            { id: 7, title: 'Python', img: CB },
-            { id: 8, title: 'React', img: AD },
-            { id: 9, title: 'Swift', img: ST },
-        ]
-    }
-    constructor(props) {
-        super(props)
-        this.breakPoints = [
-            { width: 1, itemsToShow: 1 },
-            { width: 550, itemsToShow: 2, itemsToScroll: 2, pagination: false },
-            { width: 850, itemsToShow: 3 },
-            { width: 1150, itemsToShow: 4, itemsToScroll: 2 },
-            { width: 1450, itemsToShow: 5 },
-            { width: 1750, itemsToShow: 6 },
-        ];
-
-    }
-    render() {
-        const { logos } = this.state;
-
-        return (
-            <Carousel style={{ background: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }} itemsToScroll={1} itemsToShow={2}
-                initialActiveIndex={4} focusOnSelect={true}
-                enableAutoPlay autoPlaySpeed={2000}
-                itemPadding={[10, 40]} >
-                {logos.map(logo => <div key={logo.id}>
-                    <img src={logo.img} alt={logo.title} width="300px" />
-                </div>)}
-            </Carousel>
-        );
-    }
-};
 
 const About = () => {
     return (
@@ -112,9 +60,6 @@ const About = () => {
                 </q>
                 <p className="quoteAuthor">-Buddha</p>
             </div>
-            {/* <div className="imageHiglights">
-                <Logo />
-            </div> */}
             {/* <!-- Quote/Highlight End  --> */}
 
             {/* <!-- Timeline  -->  */}

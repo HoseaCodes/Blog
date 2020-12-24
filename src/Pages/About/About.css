@@ -85,48 +85,12 @@ q {
     left: 55%;
   }
   
-  /* Add arrows to the left container (pointing right) */
-  .left::before {
-    content: " ";
-    position: absolute;
-    top: 1rem;
-    z-index: 1;
-    right: 60.1%;
-    border: medium solid white;
-    border-width: 10px 0 10px 10px;
-    border-color: transparent transparent transparent white;
-  }
-  
-  /* Add arrows to the right container (pointing left) */
-  .right::before {
-    content: " ";
-    height: 0;
-    position: absolute;
-    top: 1rem;
-    width: 0;
-    z-index: 1;
-    left: 2rem;
-    border: medium solid white;
-    border-width: 10px 10px 10px 0;
-    border-color: transparent white transparent transparent;
-  }
-  
-  /* Fix the circle for containers on the right side */
-  .right::after {
-    left: -0.5%;
-    top: 2%;
-  }
-  
-  .left::after {
-    left: 42.5%;
-  }
-  
   /* The actual content */
   .content {
     padding: 20px 30px;
     background-color: white;
     position: relative;
-    border-radius: 0px;
+    border-radius: 12px;
     left: 0%;
     width: 35.6vw;
   }

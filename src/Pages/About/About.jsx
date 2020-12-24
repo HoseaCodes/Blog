@@ -52,7 +52,12 @@ const About = () => {
     return (
         <div>
             <NavBar2 />
-            <div className='about-background'></div>
+            <div className='about-background'>
+                <h1 className='about-title'>
+                    More About Me
+                </h1>
+                <img className='about-img' src="https://i.imgur.com/dj1vhqzm.png?1" alt="Hosea" />
+            </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <div className="quote">
                 <q>

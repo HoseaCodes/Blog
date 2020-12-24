@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect, useReducer, useState } from 'react';
 import Bootstrap from '../../icons/Bootstrap.png';
 import JS from '../../icons/jsicon.png';
 import Django from '../../icons/django.png';
@@ -9,53 +9,69 @@ import Py from '../../icons/Py.png';
 import Reactt from '../../icons/Reactt.png';
 import Swift from '../../icons/swift.png';
 import JQuery from '../../icons/jquery.png';
-import Carousel from 'react-elastic-carousel';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import './Technologies.css';
 
+const ImageSlider = () => {
 
+    const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery];
+    const [current, setCurrent] = useState(0);
 
+    const nextSlide = () => {
+        setCurrent(current === img.length - 1 ? 0 : current + 1);
+    };
 
-class Tech extends Component {
-    state = {
-        items: [
-            { id: 1, title: 'JavaScript', img: JS },
-            { id: 2, title: 'Bootstrap', img: Bootstrap },
-            { id: 3, title: 'Django', img: Django },
-            { id: 4, title: 'MongoDB', img: MongoDB },
-            { id: 5, title: 'postgresql', img: postgresql },
-            { id: 6, title: 'Swift', img: Swift },
-            { id: 7, title: 'jQuery', img: JQuery },
-            { id: 8, title: 'React', img: Reactt },
-            { id: 9, title: 'Python', img: Py },
-            { id: 10, title: 'Node', img: Node },
-        ]
+    const prevSlide = () => {
+        setCurrent(current === 0 ? img.length - 1 : current - 1);
+    };
+
+    if (!Array.isArray(img) || img.length <= 0) {
+        return null;
     }
-    constructor(props) {
-        super(props)
-        this.breakPoints = [
-            { width: 375, itemsToShow: 6 },
-            { width: 768, itemsToShow: 4 },
-            { width: 850, itemsToShow: 4 },
-        ];
 
-    }
-    render() {
-        const { items } = this.state;
-
-        return (
-            <>
-                <h2 className='tech-title'>Technologies</h2>
-                <Carousel itemsToScroll={3} itemsToShow={4}
-                    initialActiveIndex={0} focusOnSelect={true}
-                    enableAutoPlay autoPlaySpeed={2000}
-                    itemPadding={[10, 40]} breakPoints={this.breakPoints} >
-                    {items.map(item => <div key={item.id}>
-                        <img src={item.img} alt={item.title} width='125px' height='150px' />
-                    </div>)}
-                </Carousel>
-            </>
-        );
-    }
+    return (
+        <section className='slider' style={{ display: 'flex' }}>
+            <div className="slide-track">
+                <ArrowBackIosIcon
+                    className='left-arrow'
+                    onClick={prevSlide}>
+                    ←
+                </ArrowBackIosIcon>
+                {img.map((slide, index) => {
+                    return (
+                        <div
+                            className={index === current ? 'img-slide active' : 'img-slide'}
+                            key={index}
+                        >
+                            {index === current && (
+                                <img
+                                    src={slide} alt='image'
+                                    className='image' />
+                            )}
+                        </div>
+                    );
+                })}
+                <ArrowForwardIosIcon
+                    className='right-arrow'
+                    onClick={nextSlide
+                    }>
+                    →
+            </ArrowForwardIosIcon>
+            </div>
+        </section>
+    );
 };
+class Tech extends Component {
+    render() {
+        return (
+            <div className="tech-container">
+                <h2 className='tech-title'>Technologies</h2>
+                <ImageSlider></ImageSlider>
+
+            </div>
+        )
+    }
+}
 
 export default Tech;

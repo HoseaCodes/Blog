@@ -1,41 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans');
-
-*, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
-}
-
-.ikyGAt, .brcpxa {
-  background-color: #204740 !important;
-  box-shadow: 0 0 1px 3px #317266 !important;
-  opacity: .5;
-  visibility: hidden !important;
-}
-
-.rec-arrow {
-  background-color: #204740 !important;
-  opacity: .5;
-  visibility: hidden !important;
-}
-
-.rec-dot_active {
-  background-color: white !important;
-}
-.tech-title {
-  color: white;
-    display: block;
-    font-family: Lato, sans-serif;
-    font-weight: bolder;
-    text-align: center;
-    text-transform: uppercase;
-    font-size: 4rem;
-    letter-spacing: 1rem;
-    line-height: 40px;
-    margin: 0;
-}
-
-.rec-carousel-wrapper, .tech-title {
+.tech-container {
   background-color: rgb(35, 41, 47);
   background-color: whitesmoke;
   background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/keyboard.jpeg');
@@ -43,31 +6,69 @@
   background-position: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
-} 
-
+  height: 150%;
+}
 .tech-title {
+  color: white;
+  display: block;
+  font-family: Lato, sans-serif;
+  font-weight: bolder;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 4rem;
+  letter-spacing: 1rem;
+  line-height: 40px;
+  margin: 0;
   padding-top: 50px;
   padding-bottom: 50px;
 }
-/* section {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 10px;
-} */
-.knnrxv {
-  display: none;
+.slider {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 }
+.image {
+  width: 300px;
+  height: 200px;
+  border-radius: 10px;
+} 
+
+.right-arrow, .left-arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 3.5rem !important;
+  font-weight: bold !important;
+  color: #000;
+  opacity: .7;
+  z-index: 10;
+  cursor: pointer;
+  transition: 0.5s !important;
+}
+.right-arrow {
+  right: 32px;
+}
+.left-arrow {
+  left: 32px;
+}
+.right-arrow:hover, .left-arrow:hover {
+  cursor: pointer;
+  color: whitesmoke;
+}
+.img-slide {
+  opacity: 0;
+  transition-duration: 1s ease;
+} 
+
+.img-slide.active {
+  opacity: 1;
+  transition-duration: 1s;
+  transform: scale(1.08);
+}
+
 @media only screen and (max-width: 375px) {
-  .rec-carousel-item {
-    display: none;
-  }
-  .tech-title {
-    display: none;
-  }
-  .rec-carousel-wrapper {
-    height: 30vh;
-  }
+
 }
 @media only screen and (max-width: 768px) {
   

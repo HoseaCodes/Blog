@@ -61,7 +61,7 @@ and (max-device-width: 812px) {
        background-color: #1A1E23;
     }
     .burger-nav img {
-       cursor: pointer;
+      display: none;
     }
     .nav-link {
         text-align: left;

@@ -60,7 +60,7 @@ and (max-device-width: 812px) {
        height: 8vh;
        background-color: #1A1E23;
     }
-    .burger-nav img {
+    .nav-logo {
       display: none;
     }
     .nav-link {

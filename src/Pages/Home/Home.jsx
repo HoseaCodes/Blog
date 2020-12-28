@@ -35,7 +35,7 @@ class Home extends React.Component {
                             </h1>
                         </div>
                     </div>
-                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                    <hr className="header-hr" style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                     <PersonalBrand />
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                     <Tech />

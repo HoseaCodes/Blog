@@ -29,7 +29,7 @@ const PersonalBrand = () => {
 
                 <h2 className='name-title'>Dominique Hosea</h2>
                 <p className='bio-info'>A full-stack &nbsp;
-                <span style={{
+                <span className="personalBrand-p" style={{
                         color: 'white', textShadow: '2px 2px 2px black',
                         textDecoration: 'underline', textDecorationStyle: 'dashed',
                         textDecorationColor: 'rgb(235,183,65)'

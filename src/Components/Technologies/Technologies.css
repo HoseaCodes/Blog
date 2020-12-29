@@ -73,6 +73,6 @@
 and (min-device-width: 375px) 
 and (max-device-width: 600px) { 
   .tech-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
   }
  }

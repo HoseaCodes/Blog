@@ -134,7 +134,7 @@ and (max-device-width: 600px) {
         margin: auto;
     }
     .personal-card-info {
-        margin: 1rem 2em;
+        display: none;
 
     }
     .bio-info {

@@ -6,6 +6,7 @@
   background-position: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  width: 100%;
   height: 150%;
 }
 .tech-title {

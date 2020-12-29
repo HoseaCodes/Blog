@@ -103,7 +103,7 @@
 and (min-device-width: 375px) 
 and (max-device-width: 600px) {    
     .bio-info {
-        width: 80%;
+        width: 90%;
         margin-top: 1rem;
         font-size: 1.5rem;
         font-weight: 600;
@@ -121,11 +121,12 @@ and (max-device-width: 600px) {
     }
     .personal-image {
         width: 80%;
-        height: 50%;
+        height: 80%;
     }
 
     .personal-card {
         width: 80%;
+        height: 80%s;
         margin: auto;
     }
     .personal-card-info {

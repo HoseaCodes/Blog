@@ -126,11 +126,12 @@ and (max-device-width: 600px) {
 
     .personal-card {
         width: 80%;
-        height: 80%s;
+        height: 80%;
         margin: auto;
     }
     .personal-card-info {
         margin: 1rem 2em;
+
     }
     .bio-info {
         margin-top: 3rem;

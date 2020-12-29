@@ -266,16 +266,19 @@ and (max-device-width: 600px) {
     .p-container {
         grid-template-columns: 1fr !important;
     }
+
     .MuiSvgIcon-root {
         visibility: hidden !important;
     }
+
     .p-details {
         height: 80vh !important;
+        width: 50vw;
     }
+
     .slide {
         height: 35vh;
     }
-
 }
   /* @media only screen and (max-width: 968px) {
     .p-container {

@@ -126,7 +126,7 @@ and (max-device-width: 600px) {
 
     .personal-card {
         width: 80%;
-        height: 80%;
+        height: 50vh;
         margin: auto;
     }
     .personal-card-info {

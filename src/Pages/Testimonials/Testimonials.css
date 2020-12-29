@@ -140,7 +140,10 @@
     text-shadow: 1px 1px 1px #206a5d;
   }
   @media only screen and (max-width: 375px) {
-    .step-item {
+    .t-container {
+      display: none;
+    }
+    /* .step-item {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -177,7 +180,7 @@
     }
     .step-overlay > button {
       font-size: 8rem;
-    }
+    } */
   }
   @media only screen and (max-width: 768px) {
     .step-image img {

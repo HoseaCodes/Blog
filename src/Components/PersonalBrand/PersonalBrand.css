@@ -142,7 +142,7 @@ and (max-device-width: 600px) {
     }
 
 }
-/* 
+
 @media only screen and (max-width: 768px) {
     .personal-container {
         width: 100%;
@@ -165,4 +165,4 @@ and (max-device-width: 600px) {
     .personal-card-info {
         margin: 2rem;
     }
-} */
+}

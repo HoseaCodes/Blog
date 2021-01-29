@@ -26,13 +26,14 @@
     color: #eee;
 }
 
-#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+#tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .tab-active {
     color: #f3f3f3;
     background-color: transparent;
     border-color: transparent transparent #f3f3f3;
     border-bottom: 4px solid !important;
     font-size: 20px;
     font-weight: bold;
+    opacity: 0.5;
 }
 #tabs .nav-tabs .nav-link {
     border: 1px solid transparent;
@@ -40,6 +41,10 @@
     border-top-right-radius: .25rem;
     color: #eee;
     font-size: 20px;
+}
+.tab-active {
+    opacity: 1 !important;
+    color: blue !important;
 }
 
 /*──────────────────
@@ -74,9 +79,9 @@
 	text-transform: uppercase;
     letter-spacing: .5rem;
     color: white;
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 1rem;
-    margin-top: 1rem;
+    margin-top: 5rem;
 }
 .article-content {
 	background-color: grey;
@@ -208,6 +213,7 @@
     width: 50%;
     text-align: center;
     font-size: 3rem;
+    margin-top: 5rem;
     color: white;
     text-transform: uppercase;
 }

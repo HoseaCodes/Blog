@@ -43,9 +43,6 @@ import Subscribe from '../../Components/Subscribe/Subscribe'
 import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
 import { auth, login, logout } from '../../services/firebase';
-import TweeterTimeline from '../../Components/Twitter/Timeline';
-import { Timeline } from 'react-twitter-widgets';
-
 
 
 
@@ -58,7 +55,10 @@ class Articles extends React.Component {
             articles: articleData,
             tags: categoryTags,
             currentPage: 1,
-            postPerPage: 5
+            postPerPage: 5,
+            tagsShow: "All",
+            status: "active"
+
         }
 
     }
@@ -71,6 +71,15 @@ class Articles extends React.Component {
     updateSearch = event => {
         this.setState({ search: event.target.value.substr(0, 20) })
     }
+
+
+    updateItemsShow = (str) => {
+        this.setState({
+            tagsShow: str,
+            status: "active"
+        })
+    }
+
     render() {
         const { filter, articles, tags, currentPage, postPerPage } = this.state;
         const indexOfLastPost = currentPage * postPerPage;
@@ -82,6 +91,24 @@ class Articles extends React.Component {
                     this.state.search.toLowerCase()) !== -1;
             }
         );
+        let items = []
+        if (this.state.tagsShow === "All") {
+            items = filteredArticles
+        }
+        else if (this.state.tagsShow === "JavaScript") {
+            items = filteredArticles.filter(item => item.type.includes("JavaScript"))
+        }
+        else if (this.state.tagsShow === "Python") {
+            items = filteredArticles.filter(item => item.type.includes("Python"))
+        }
+        else if (this.state.tagsShow === "Software Engineer") {
+            items = filteredArticles.filter(item => item.type.includes("Software Engineer"))
+        }
+        console.log(filteredArticles + "filtered")
+
+        console.log(items)
+        console.log(this.state.tagsShow)
+        console.log(this.state.status)
         return (
             <div className='article-container'>
                 <NavBar2 />
@@ -92,7 +119,7 @@ class Articles extends React.Component {
                 <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
-                    <p style={{ color: 'white', fontSize: '1.5rem' }}>Here are some of my articles you may like.</p>
+                    <p style={{ color: 'white', fontSize: '1.5rem', color: 'lightgray' }}>Here are some of my articles you may like.</p>
                     <input type="text"
                         className='article-search'
                         label="Search Articles"
@@ -107,36 +134,42 @@ class Articles extends React.Component {
 
                         <section id="tabs">
                             <div class="row">
-                                <div class="col-xs-12 ">
+                                <div class="col">
                                     <nav>
                                         <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
-                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
-                                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
-                                            <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a>
+                                            <a id="nav-all-tab"
+                                                data-toggle="tab" href="#nav-all" role="tab"
+                                                aria-controls="nav-all" aria-selected="true"
+                                                onClick={() => this.updateItemsShow("All")}
+                                                className={this.status ? "tab-active" : "nav-item nav-link"}
+                                            >All</a>
+                                            <a id="nav-javascript-tab"
+                                                data-toggle="tab" href="#nav-javascript" role="tab"
+                                                aria-controls="nav-javascript" aria-selected="false"
+                                                onClick={() => this.updateItemsShow("JavaScript")}
+                                                className={this.status ? "tab-active" : "nav-item nav-link"}
+                                            >JavaScript</a>
+                                            <a id="nav-python-tab"
+                                                data-toggle="tab" href="#nav-python" role="tab"
+                                                aria-controls="nav-python" aria-selected="false"
+                                                onClick={() => this.updateItemsShow("Python")}
+                                                className={this.status ? "tab-active" : "nav-item nav-link"}
+                                            >Python</a>
+                                            <a id="nav-softwareengineer-tab"
+                                                data-toggle="tab" href="#nav-softwareengineer" role="tab"
+                                                aria-controls="nav-softwareengineer" aria-selected="false"
+                                                onClick={() => this.updateItemsShow("Software Engineer")}
+                                                className={this.status ? "tab-active" : "nav-item nav-link"}
+                                            >Software Engineer</a>
                                         </div>
                                     </nav>
-                                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
-                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                                            Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-					</div>
-                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                            et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-					</div>
-                                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                            consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-					</div>
-                                        <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                            ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-					</div>
-                                    </div>
 
                                 </div>
                             </div>
                         </section>
                         {/* <!--───────────────card───────────────--> */}
                         <section className='articleList'>
-                            {filteredArticles.map(article => {
+                            {items.map(article => {
                                 return (<>
                                     <ArticleCard article={article}
                                         key={article.id}

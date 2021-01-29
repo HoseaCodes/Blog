@@ -22,13 +22,10 @@ const NavBar2 = () => {
                 <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
-                    <a href="http://www.dominiquehosea.com" target="_blank" className="nav-link">Portfolio</a>
-                    {/* <Link to="/projects" id='project-link' className="nav-link">Projects</Link> */}
+                    <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="nav-link">Portfolio</a>
                     <Link to="/articles" id='article-link' className="nav-link">Articles</Link>
                     <Link to="/about" className="nav-link">About</Link>
-                    {/* <a href="https://teespring.com/stores/hoseacodes-2" className="nav-link">Shop</a> */}
                     <Link to="/contact" className="nav-link">Contact</Link>
-                    {/* <Toggle theme={theme} toggleTheme={themeToggler} /> */}
                 </ul>
             </nav>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />

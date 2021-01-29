@@ -105,6 +105,7 @@
     align-items: center;
     margin-top: 5rem;
     color: white;
+    margin-bottom: 5rem;
 }
 .portfolio {
     margin: 2.5rem;
@@ -162,7 +163,7 @@
     color: white;
     opacity: .6;
     display: inline-block;
-    height: 60%;
+    height: 70%;
     line-height: 26px;
     padding: 0 20px 0 23px;
     position: relative;
@@ -183,33 +184,14 @@
     width: 2%;
     top: 10px;
   }
-  
-  .main-tag::after {
-    border-bottom: 13px solid transparent;
-    border-left: 10px solid #206a5d;
-    border-top: 13px solid transparent;
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
   .MuiSvgIcon-root:hover {
       font-size: 3rem;
   }
   .main-tag:hover{
-    border: 2px solid #fff;
-    color: white;
-    opacity: 1;
-    box-sizing: inherit;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13pt;
-    padding: 0 22px 0 25px;
-    background-color: transparent;
-    transition: all 0.5s;
+    color: whitesmoke;
     text-decoration: none;
-    background-color: transparent;
-    font-size: larger;
+    cursor: default;
+
 }
 
   

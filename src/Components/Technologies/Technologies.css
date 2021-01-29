@@ -10,19 +10,15 @@
   height: 150%;
 }
 .tech-title {
-  color: white;
-  display: block;
-  font-family: Lato, sans-serif;
-  font-weight: bolder;
-  text-align: center;
-  text-transform: uppercase;
-  font-size: 4rem;
-  letter-spacing: 1rem;
-  line-height: 40px;
+  font-size: 8rem;
   margin: 0 auto;
-  padding-top: 50px;
-  padding-bottom: 50px;
-  width: 80%;
+  color: white;
+  opacity: 0.8;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px #206a5d;
+  letter-spacing: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .carousel-item {

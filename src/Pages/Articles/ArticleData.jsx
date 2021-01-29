@@ -1,9 +1,3 @@
-import GA from '../../icons/GA.jpg';
-import Stackimg from '../../icons/stack-operations.png'
-import project from '../../icons/project.jpg'
-import project1 from '../../icons/project1.jpg'
-import projects from '../../icons/projects.jpg'
-
 export const articleData = [
     {
         id: 1,

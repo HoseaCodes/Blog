@@ -14,8 +14,8 @@ const CalorieKitchen = () => {
             <img src={JS} width='500' height='450' alt="JavaScript" />
             <h1 style={{ color: 'green' }}>CalorieKitchen</h1>
             <ul class="tags">
-                <li><a href="#" class="tag">JavaScript</a></li>
-                <li><a href="#" class="tag">AJAX</a></li>
+                <li class="tag">JavaScript</li>
+                <li class="tag">AJAX</li>
             </ul>
             <div className='project-box'>
                 <div className='project-description'>

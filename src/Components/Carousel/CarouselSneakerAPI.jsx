@@ -41,12 +41,12 @@ function CarouselSneakerAPI() {
                 </div>
 
                 <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
-                    <li><a href="#" className="main-tag">JavaScript</a></li>
-                    <li><a href="#" className="main-tag">Mongoose</a></li>
-                    <li><a href="#" className="main-tag">MongoDB</a></li>
-                    <li><a href="#" className="main-tag">Express.js</a></li>
-                    <li><a href="#" className="main-tag">EJS</a></li>
-                    <li><a href="#" className="main-tag">Node.js</a></li>
+                    <li className="main-tag">JavaScript</li>
+                    <li className="main-tag">Mongoose</li>
+                    <li className="main-tag">MongoDB</li>
+                    <li className="main-tag">Express.js</li>
+                    <li className="main-tag">EJS</li>
+                    <li className="main-tag">Node.js</li>
                 </ul>
                 <Modal />
                 <div style={{ display: 'flex', marginTop: '30px' }}>

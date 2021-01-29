@@ -14,11 +14,6 @@ class Article extends Component {
 
 
     render() {
-        function handleCount() {
-            this.state({
-                count: this.state.count + 1
-            });
-        }
         const { name, date, info, img, tags, link } = this.props.article;
         return (
             <div className="article-card">

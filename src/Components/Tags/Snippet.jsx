@@ -14,10 +14,10 @@ const Snippet = () => {
                 <h2 className='snippet-header'>Django</h2>
                 <p>Descripition </p>
                 <ul className="tags">
-                    <li><a href="#" className="tag">Python</a></li>
-                    <li><a href="#" className="tag">Django</a></li>
-                    <li><a href="#" className="tag">PostgreSQL</a></li>
-                    <li><a href="#" className="tag">AJAX</a></li>
+                    <li className="tag">Python</li>
+                    <li className="tag">Django</li>
+                    <li className="tag">PostgreSQL</li>
+                    <li className="tag">AJAX</li>
                 </ul>
             </div>
         </div>
@@ -29,8 +29,8 @@ const Snippet = () => {
                 <h2 className='snippet-header'>JavaScript</h2>
                 <p>Description</p>
                 <ul className="tags">
-                    <li><a href="#" className="tag">JavaScript</a></li>
-                    <li><a href="#" className="tag">AJAX</a></li>
+                    <li className="tag">JavaScript</li>
+                    <li className="tag">AJAX</li>
                 </ul>
             </div>
         </div>
@@ -42,10 +42,10 @@ const Snippet = () => {
                 <h2 className='snippet-header'>React</h2>
                 <p>React is an open source web application plateform</p>
                 <ul className="tags">
-                    <li><a href="#" className="tag">React</a></li>
-                    <li><a href="#" className="tag">JSX</a></li>
-                    <li><a href="#" className="tag">MongoDB</a></li>
-                    <li><a href="#" className="tag">AJAX</a></li>
+                    <li className="tag">React</li>
+                    <li className="tag">JSX</li>
+                    <li className="tag">MongoDB</li>
+                    <li className="tag">AJAX</li>
                 </ul>
             </div>
         </div>

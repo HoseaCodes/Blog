@@ -36,14 +36,15 @@
 //updating whichever platform that you choose regularly. One 
 //rule of thumb is to post at least twice a month.
 
-import React, { Component } from 'react';
+import React from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
 import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
-import Pagination from 'react-bootstrap/Pagination'
 import { auth, login, logout } from '../../services/firebase';
+import TweeterTimeline from '../../Components/Twitter/Timeline';
+import { Timeline } from 'react-twitter-widgets';
 
 
 
@@ -99,8 +100,41 @@ class Articles extends React.Component {
                         value={this.state.search}
                         onChange={this.updateSearch.bind(this)}
                     />
-                    {/* <!--───────────────card───────────────--> */}
+
                     <div className="article-box">
+
+                        {/* <!--───────────────Tabs───────────────--> */}
+
+                        <section id="tabs">
+                            <div class="row">
+                                <div class="col-xs-12 ">
+                                    <nav>
+                                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                            <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Home</a>
+                                            <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</a>
+                                            <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+                                            <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+					</div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+					</div>
+                                        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                            consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+					</div>
+                                        <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                                            ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+					</div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </section>
+                        {/* <!--───────────────card───────────────--> */}
                         <section className='articleList'>
                             {filteredArticles.map(article => {
                                 return (<>
@@ -112,44 +146,25 @@ class Articles extends React.Component {
                                 )
                             })}
                         </section>
-                        <section className='article-sidebar'>
-                            <div className="popular">
-                                <h2 className='article-card-header'>Popular Post<hr /></h2>
-                                <section className='popular-articles'>
-                                    <a href="" target="_blank">
-                                        <div className="popular-link">How the Internet Works</div><br /></a>
-                                    <a href="" target="_blank">
-                                        <div className="work-img">Techinal Interview Help</div><br /></a>
-                                    <a href="" target="_blank">
-                                        <div className="work-img">Portfolio Guide</div></a>
-                                </section>
-                            </div>
-                            <br />
-                            <Subscribe />
-                        </section>
+                        <div>
+                            <section className='article-sidebar'>
+                                <div className="popular">
+                                    <h2 className='article-card-header'>Popular Post</h2>
+                                    <section className='popular-articles'>
+                                        {articles.map(article => {
+                                            return (<>
+                                                <a href={article.link} target="_blank">
+                                                    <div className="popular-link">{article.name}</div><br /></a>
+                                            </>)
+                                        })}
+                                    </section>
+                                </div>
+                                <br />
+                                <Subscribe />
+                            </section>
+                        </div>
                     </div>
                 </div>
-                {/* <Pagination className='justify-content-center'>
-                    <Pagination.First />
-                    <Pagination.Prev disabled />
-                    <Pagination.Item active>{1}</Pagination.Item>
-                    <Pagination.Item >{2}</Pagination.Item>
-                    <Pagination.Item >{3}</Pagination.Item>
-                    <Pagination.Ellipsis />
-                    <Pagination.Item>{6}</Pagination.Item>
-                    <Pagination.Next />
-                    <Pagination.Last />
-                </Pagination> */}
-                <br />
-                <article className='article-category-container'>
-                    <h2>Categories</h2>
-                    <section className='article-categories'>
-                        {tags.map(tag => {
-                            return (<li className='tag-category'>{tag} </li>
-                            )
-                        })}
-                    </section>
-                </article>
             </div>
 
         )

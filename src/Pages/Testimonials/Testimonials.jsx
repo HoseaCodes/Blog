@@ -150,7 +150,7 @@ const Testimonials = () => {
                                         alignItems: 'center'
                                     }}>
                                         <p style={{ opacity: '.6', margin: '0', lineHeight: '40px', letterSpacing: '1px' }}> Follow {step.fName} on Twitter</p>
-                                        <a className='social' href={step.social} target="_blank">
+                                        <a className='social' href={step.social} rel="noopener noreferrer" target="_blank">
                                             <TwitterIcon fontSize="large" />
                                         </a>
                                     </div>
@@ -176,7 +176,7 @@ const Testimonials = () => {
                                 className="nav-button"
                                 onClick={() => setIndex(index)}
                             >
-                                <img src={step.imageUrl} className="nav-image" />
+                                <img src={step.imageUrl} alt={step.fName} className="nav-image" />
                                 <p className="nav-content">{`${index + 1}. ${step.title}`}</p>
                             </button>
                         </li>

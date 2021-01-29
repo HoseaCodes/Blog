@@ -43,7 +43,7 @@
 //Make sure to include a downloadable PDF version of your resume in 
 //your “About Me” section as well.
 
-import React, { Component } from 'react';
+import React from 'react';
 import './About.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 

@@ -45,9 +45,9 @@ function Carousel() {
                 </div>
 
                 <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
-                    <li><a href="#" className="main-tag">JavaScript</a></li>
-                    <li><a href="#" className="main-tag">JQuery</a></li>
-                    <li><a href="#" className="main-tag">AJAX</a></li>
+                    <li className="main-tag">JavaScript</li>
+                    <li className="main-tag">JQuery</li>
+                    <li className="main-tag">AJAX</li>
                 </ul>
                 <Modal />
                 <div style={{ display: 'flex', marginTop: '30px' }}>

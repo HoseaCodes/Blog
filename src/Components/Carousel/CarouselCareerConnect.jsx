@@ -43,11 +43,11 @@ function CarouselCareerconnect() {
                 </div>
 
                 <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none', flexWrap: 'wrap' }}>
-                    <li><a href="#" className="main-tag">MongoDB</a></li>
-                    <li><a href="#" className="main-tag">Express.js</a></li>
-                    <li><a href="#" className="main-tag">Node.js</a></li>
-                    <li><a href="#" className="main-tag">AJAX</a></li>
-                    <li><a href="#" className="main-tag">RESTful Routing</a></li>
+                    <li className="main-tag">MongoDB</li>
+                    <li className="main-tag">Express.js</li>
+                    <li className="main-tag">Node.js</li>
+                    <li className="main-tag">AJAX</li>
+                    <li className="main-tag">RESTful Routing</li>
                 </ul>
                 <Modal2 />
                 <div style={{ display: 'flex', marginTop: '30px' }}>

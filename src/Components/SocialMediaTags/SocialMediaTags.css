@@ -9,6 +9,10 @@
     color: #206a5d;
 }
 
+.social:hover {
+    color: #206a5d;
+}
+
 .social-resume:hover + .hide{
     display: flex;
     flex-direction: row;

@@ -10,10 +10,10 @@ const DevCenter = () => {
             <NavBar2 />
             <img src={django} width='400' height='350' alt="JavaScript" />
             <ul class="tags">
-                <li><a href="#" class="tag">Python</a></li>
-                <li><a href="#" class="tag">Django</a></li>
-                <li><a href="#" class="tag">PostgreSQL</a></li>
-                <li><a href="#" class="tag">AJAX</a></li>
+                <li class="tag">Python</li>
+                <li class="tag">Django</li>
+                <li class="tag">PostgreSQL</li>
+                <li class="tag">AJAX</li>
             </ul>
             <Link to="/projects" className="item" style={{ color: "red" }}>Back</Link>
 

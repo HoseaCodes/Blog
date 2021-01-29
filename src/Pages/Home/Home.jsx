@@ -7,7 +7,6 @@ import Projects from '../../Components/Carousel/Carousel';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
 import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
 import Footer from '../../Components/Footer/Footer';
-import Resume from '../../Components/Resume/Resume';
 import Testomonials from '../Testimonials/Testimonials';
 import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
@@ -23,12 +22,16 @@ class Home extends React.Component {
                             <h1 className='heading-primary'>
                                 <span className="header-username">Hosea</span>
                                 <span className="header-username2">Codes</span>
-                                <a href='#aboutme' className='header-button'
-                                    data-aos="fade-right"
-                                    data-aos-offset="200"
-                                    data-aos-duration="3000"
-                                    data-aos-easing="ease-in"
-                                >Find Out More</a>
+                                <div style={{ width: "50%", margin: "0 auto" }}>
+
+                                    <a href='#aboutme' className='header-button'
+                                        data-aos="fade-right"
+                                        data-aos-offset="200"
+                                        data-aos-duration="3000"
+                                        data-aos-easing="ease-in"
+                                    >Find Out More</a>
+                                </div>
+
                                 <div>
                                     <Scramble />
                                 </div>
@@ -43,16 +46,10 @@ class Home extends React.Component {
                     <div className='projects'>
                         <Projects />
                     </div>
-                    <div className='color'></div>
                     <div className='testimonies-group'>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
 
-                        <h2 style={{
-                            fontSize: '8rem', margin: 'auto',
-                            color: 'white', opacity: '.8', textTransform: 'uppercase',
-                            textShadow: '2px 2px 2px #206a5d', letterSpacing: '1rem'
-                        }}
-                        >
+                        <h2 className="subTitle" >
                             Testimonies
                         </h2>
                     </div>
@@ -70,7 +67,6 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='contact'>
-                        <Resume />
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                         <div className='contact-group'>
                             <h2 style={{
@@ -88,12 +84,14 @@ class Home extends React.Component {
                         </div>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                         <br />
-                        <a href='#top' className='footer-button'
-                            data-aos="fade-right"
-                            data-aos-offset="200"
-                            data-aos-duration="3000"
-                            data-aos-easing="ease-in"
-                        >Back to Top</a>
+                        <div style={{ width: '10%', margin: '0 auto' }}>
+                            <a href='#top' className='footer-button'
+                                data-aos="fade-right"
+                                data-aos-offset="200"
+                                data-aos-duration="3000"
+                                data-aos-easing="ease-in"
+                            >Back to Top</a>
+                        </div>
                         <SocialMediaTags />
                     </div>
                     <Footer />

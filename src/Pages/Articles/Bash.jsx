@@ -17,14 +17,7 @@ class Bash extends Component {
 
 
     render() {
-        function handleCount() {
-            this.state({
-                count: this.state.count + 1
-            });
-        }
-
-
-        const { name, date, info, title, img, tags, lists, subHeading, link } = this.state.article;
+        const { name, date, info, title, img, tags, lists, subHeading } = this.state.article;
         return (
             <div>
                 <NavBar2 />
@@ -46,10 +39,6 @@ class Bash extends Component {
                                             <PermIdentityIcon /> <span> By Dominique Hosea</span>
                                     &nbsp;&nbsp;
                                     <EventNoteIcon /> <span> {date}</span>
-                                            {/* &nbsp;&nbsp;
-                                    <MessageIcon /> <span> 5</span>
-                                    &nbsp;&nbsp;
-                                    <ThumbUpIcon /> <span>12 k</span> */}
                                     &nbsp;&nbsp;
                                 </section>
                                     </section>

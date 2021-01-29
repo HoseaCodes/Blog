@@ -39,7 +39,7 @@ function Projects() {
             </div>
             <div className="portfolio-group">
                 <h2 className='p-h2'>Visit my portfolio for more</h2>
-                <a className="link portfolio" href="http://www.dominiquehosea.com" target="_blank">My Portfolio</a>
+                <a className="link portfolio" href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank">My Portfolio</a>
             </div>
         </div>
     )

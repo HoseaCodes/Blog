@@ -6,11 +6,11 @@
 
 Sharing information is vital and especially in the dev commnunity. The blog showcases my latest works, testomines, articles, about me section, and contact me section. 
 
+### Homepage
 ![Homepage](https://i.imgur.com/5k3N3ex.png)
-Homepage
 
+### Article Page
 ![Article Page](https://i.imgur.com/PeDkdtv.png)
-Article Page
 
 ## Technologies Used
 
@@ -34,6 +34,17 @@ Dependencies used:
 ## Getting Started
 
 The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
+
+## Data Structure
+ 
+### Interal Data
+![Data](https://i.imgur.com/Jj5TcBZ.png)
+
+### Handling Data 
+![Filter](https://i.imgur.com/6h2s0jL.png)
+
+### Client-Side Routing
+![Routing](https://i.imgur.com/5HLKoH0.png)
 
 ## Unsolved Problems
 

@@ -33,23 +33,16 @@ Dependencies used:
 
 ## Getting Started
 
-The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
+The user is brought to the my single page application where they can navigate to my [blog](www.hoseacodes.com), jump to my projects, interest, side-projects, or contact form. The home page is an introduction to who I am as a Software Engineer. There is a video walkthrough of each application with a short synopsis of the project and how it came to be with links to my github code and live website. Followed a currently working section, a visual representation of my interest, working iframe of side projects and a form to connect. In the side bar you will see my profile picture and a little about me with links to my active social media. \
 
 ## Data Structure
  
-### Interal Data
-![Data](https://i.imgur.com/Jj5TcBZ.png)
-
-### Handling Data 
-![Filter](https://i.imgur.com/6h2s0jL.png)
-
-### Client-Side Routing
-![Routing](https://i.imgur.com/5HLKoH0.png)
+This is a single page application with only two views and routes. As this website develops and I place more interesting easter eggs in there I will display the code I used. 
 
 ## Unsolved Problems
 
-I am having issues with my jwt access. The header size is too large causing a 431 error. 
+- N/A
 
 ## Future Enhancements
 
-- User login with the ability to add comments and like post. 
+- Intergrated React.js into this application.

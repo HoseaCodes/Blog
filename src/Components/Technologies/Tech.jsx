@@ -9,12 +9,11 @@ import Py from '../../icons/Py.png';
 import Reactt from '../../icons/Reactt.png';
 import Swift from '../../icons/swift.png';
 import JQuery from '../../icons/jquery.png';
-import Solidity from '../../icons/solidity.png';
 import './Technologies.css';
 
 class Tech extends Component {
     render() {
-        const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png', Solidity];
+        const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png', 'https://i.imgur.com/NhpXJN2.png'];
         return (
             <>
                 <div className="tech-container">
@@ -53,7 +52,7 @@ class Tech extends Component {
                                 <img className="pinklemonade" src={img[10]} height="100" width="120" alt="PinkLemonade" />
                             </div>
                             <div class="client-slide">
-                                <img src={Solidity} height="100" width="150" alt="" />
+                                <img src={img[11]} height="100" width="150" alt="" />
                             </div>
 
                         </div>

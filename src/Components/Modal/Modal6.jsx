@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        outline: 'none'
     },
     paper: {
         backgroundColor: theme.palette.background.paper,
@@ -27,7 +26,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
     const style = useSpring({
         from: { opacity: 0 },
         to: { opacity: open ? 1 : 0 },
-        outline: 'none',
         onStart: () => {
             if (open && onEnter) {
                 onEnter();
@@ -83,9 +81,9 @@ export default function SpringModal() {
             >
                 <Fade in={open}>
                     <div className={classes.paper}>
-                        <h2 id="spring-modal-title">Social Ring</h2>
+                        <h2 id="spring-modal-title">Calorie Kitchen</h2>
                         <hr style={{ background: 'black', width: '30%' }} />
-                        <p id="spring-modal-description">Enterprise Project: ‎Social Ring lets you create custom rings for your profile pictures on your favorite social media platform. The idea was simple and easy to follow. The project duration was two months with my main focus on writing maintainable Swift code that is scalable for future improvements. If you would like a demo please let me know, I would be happy to walk you through the codebase.</p>
+                        <p id="spring-modal-description">Solo Project: Calorie Kitchen API - JavaScript, CSS, HTML - Created a single page application with client side rending with API and AJAX capabilities. The API accessed Spoonacular DB JSON data.</p>
                     </div>
                 </Fade>
             </Modal>

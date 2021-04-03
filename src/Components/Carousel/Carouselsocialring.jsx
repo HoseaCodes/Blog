@@ -2,24 +2,20 @@ import React from 'react';
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-import CalorieKitchen from '../../icons/CalorieKitchen.png';
-import CaloriesKitchen2 from '../../icons/CaloriesKitchen2.png';
-import caloriekitchen2 from '../../icons/caloriekitchen2.png';
-import caloriekitchen3 from '../../icons/caloriekitchen3.png';
-import caloriekitchen4 from '../../icons/caloriekitchen4.png';
+// import Socialring from '../../icons/socialring.png';
+// import Socialring2 from '../../icons/socialring2.png';
+// import Socialring3 from '../../icons/socialring3.png';
 import Modal from '../Modal/Modal'
 
 
-function Carousel() {
+function Carouselsocialring() {
     let project1 = [
-        <ImgComp className='cover' src={CalorieKitchen} />,
-        <ImgComp className='cover' src={CaloriesKitchen2} />,
-        <ImgComp className='cover' src={caloriekitchen2} />,
-        <ImgComp className='cover' src={caloriekitchen3} />,
-        <ImgComp className='cover' src={caloriekitchen4} />,
+        <ImgComp className='cover' src="https://i.imgur.com/OTlZhu8.jpg" />,
+        <ImgComp className='cover' src="https://i.imgur.com/XHVDZhx.jpg" />,
+        <ImgComp className='cover' src="https://i.imgur.com/8lqi3Ff.jpg" />,
 
     ];
-    const p1 = 'Calorie Kitchen';
+    const p1 = 'Social Ring';
     const [x, setX] = useState(0)
     const goLeft = () => {
         x === 0 ? setX(-100 * (project1.length - 1)) : setX(x + 100);
@@ -45,14 +41,11 @@ function Carousel() {
                 </div>
 
                 <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
-                    <li className="main-tag">JavaScript</li>
-                    <li className="main-tag">JQuery</li>
-                    <li className="main-tag">AJAX</li>
+                    <li className="main-tag">Swift</li>
                 </ul>
                 <Modal />
                 <div style={{ display: 'flex', marginTop: '30px' }}>
-                    <a className='link' href="https://hoseacodes.github.io/Calorie-Kitchen/" target="_blank" rel="noopener noreferrer">View Live Site</a>
-                    <a className='link github' href="https://github.com/HoseaCodes/Calorie-Kitchen" target="_blank" rel="noopener noreferrer">View Github</a>
+                    <a className='link' href="https://apps.apple.com/us/app/social-ring/id1551446005" target="_blank" rel="noopener noreferrer">View Live App</a>
                 </div>
             </div>
         </div>
@@ -61,4 +54,4 @@ function Carousel() {
 
 
 export default
-    Carousel;
+    Carouselsocialring;

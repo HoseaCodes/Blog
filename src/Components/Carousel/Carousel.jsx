@@ -5,6 +5,7 @@ import CarouselSneakerAPI from './CarouselSneakerAPI';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Carouselsocialring from './Carouselsocialring';
 
 
 function Projects() {
@@ -25,7 +26,7 @@ function Projects() {
             <div className='p-container'>
                 <div className='p-content' data-aos="fade-right" data-aos-duration="3000" data-aos-offset="500"
                 >
-                    <CarouselCalorieKitchen />
+                    <Carouselsocialring />
                 </div>
                 <div className='p-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
                     data-aos-delay="300">

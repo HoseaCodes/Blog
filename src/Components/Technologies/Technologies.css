@@ -7,7 +7,10 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   width: 100%;
-  height: 150%;
+  height: 40vh;
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
 }
 .tech-title {
   font-size: 8rem;
@@ -19,21 +22,79 @@
   letter-spacing: 1rem;
   display: flex;
   justify-content: center;
+  padding-bottom: 6%;
 }
 
-.carousel-item {
-  padding-bottom: 4%;
+
+
+@-webkit-keyframes scroll {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(calc(-250px * 7));
+            transform: translateX(calc(-250px * 7));
+  }
 }
 
-.carousel-control-prev, .carousel-control-next, .carousel-indicators {
-  display: none;
+@keyframes scroll {
+  0% {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+  }
+  100% {
+    -webkit-transform: translateX(calc(-250px * 7));
+            transform: translateX(calc(-250px * 7));
+  }
+}
+.client-slider {
+  background: whitesmoke;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125);
+  height: 100px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
+.client-slider::before, .client-slider::after {
+  background: -webkit-gradient(linear, left top, right top, from(#1a1f23), to(rgba(255, 255, 255, 0)));
+  background: linear-gradient(to right, #1a1f23 0%, rgba(255, 255, 255, 0) 100%);
+  content: "";
+  height: 100px;
+  position: absolute;
+  width: 200px;
+  z-index: 2;
+}
+.client-slider::after {
+  right: 0;
+  top: 0;
+  -webkit-transform: rotateZ(180deg);
+          transform: rotateZ(180deg);
+}
+.client-slider::before {
+  left: 0;
+  top: 0;
+}
+.client-slider .client-slide-track {
+  -webkit-animation: scroll 40s linear infinite;
+          animation: scroll 40s linear infinite;
+  display: -webkit-box;
+  display: flex;
+  width: calc(250px * 11);
+}
+.client-slider .client-slide {
+  height: 100px;
+  width: 250px;
 }
 
-.img {
-  height: 20rem;
-  border-radius: 10px;
-  margin: 0 auto;
-} 
+.pinklemonade {
+  border-radius: 12px;
+}
+
+.client-slide {
+  padding-left: 0.5%;
+  padding-right: 0.5%;
+}
 
 @media only screen 
 and (min-device-width: 375px) 

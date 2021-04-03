@@ -9,34 +9,58 @@ import Py from '../../icons/Py.png';
 import Reactt from '../../icons/Reactt.png';
 import Swift from '../../icons/swift.png';
 import JQuery from '../../icons/jquery.png';
-import Carousel from 'react-bootstrap/Carousel'
+import Solidity from '../../icons/solidity.png';
 import './Technologies.css';
 
 class Tech extends Component {
     render() {
-        const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png'];
+        const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png', Solidity];
         return (
-            <div className="tech-container">
-                <h2 className='tech-title'>Technologies</h2>
-                <Carousel>
+            <>
+                <div className="tech-container">
+                    <h2 className='tech-title'>Technologies</h2>
 
-                    {img.map(image => {
-                        return (<Carousel.Item interval={500} keyboard="true" pause="hover">
-                            <img
-                                className="img d-block"
-                                im
-                                src={image}
-                                alt="First slide"
-                            />
-                        </Carousel.Item>
+                    <div class="client-slider">
+                        <div class="client-slide-track">
+                            <div class="client-slide">
+                                <img src={Bootstrap} height="100" width="150" alt="Social Ring" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={JS} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Django} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={MongoDB} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Node} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={postgresql} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Py} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Reactt} height="100" width="150" alt="" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Swift} height="100" width="150" alt="Social Ring" />
+                            </div>
+                            <div class="client-slide">
+                                <img className="pinklemonade" src={img[10]} height="100" width="120" alt="PinkLemonade" />
+                            </div>
+                            <div class="client-slide">
+                                <img src={Solidity} height="100" width="150" alt="" />
+                            </div>
 
-                        )
-                    })}
+                        </div>
+                    </div>
+                </div>
 
-
-                </Carousel>
-
-            </div>
+            </>
         )
     }
 }

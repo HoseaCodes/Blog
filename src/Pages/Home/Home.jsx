@@ -22,6 +22,7 @@ class Home extends React.Component {
                             <h1 className='heading-primary'>
                                 <span className="header-username">Hosea</span>
                                 <span className="header-username2">Codes</span>
+                                {/*
                                 <div style={{ width: "50%", margin: "0 auto" }}>
 
                                     <a href='#aboutme' className='header-button'
@@ -30,7 +31,7 @@ class Home extends React.Component {
                                         data-aos-duration="3000"
                                         data-aos-easing="ease-in"
                                     >Find Out More</a>
-                                </div>
+                                </div> */}
 
                                 <div>
                                     <Scramble />

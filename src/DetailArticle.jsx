@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { GlobalState } from './GlobalState';
-import ArticleItem from './ArticleItem';
+import ArticleItem from './Pages/Articles/ArticleCard';
 
 const DetailArticle = () => {
     const params = useParams()

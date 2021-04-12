@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const cloudinary = require('cloudinary');
 const fs = require('fs');
+require('dotenv').config()
 
 cloudinary.config({
     cloud_name: process.env.CLOUND_NAME,
@@ -8,10 +9,10 @@ cloudinary.config({
     api_secret: process.env.CLOUD_API_SECRET
 })
 
+
 //image upload
 router.post("/upload", (req, res) => {
     try {
-        console.log(req.files)
         if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send({ msg: "No files were uploaded." })
 
         const file = req.files.file;
@@ -25,7 +26,7 @@ router.post("/upload", (req, res) => {
             return res.status(400).json({ msg: "File format is incorrect" })
         }
 
-        cloudinary.v2.uploader.upload(file.tempFilePath, { folder: "Hoseacodes" }, async (err, result) => {
+        cloudinary.v2.uploader.upload(file.tempFilePath, { folder: "HoseaCodes" }, async (err, result) => {
             if (err) throw err;
 
             removeTmp(file.tempFilePath)
@@ -34,6 +35,7 @@ router.post("/upload", (req, res) => {
         })
 
     } catch (err) {
+        console.log(err)
         return res.status(500).json({ msg: err.message })
     }
 })

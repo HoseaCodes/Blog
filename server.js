@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
@@ -8,7 +9,6 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 const articleRouter = require('./routes/articles')
 const uploadRouter = require('./routes/upload')
-require('dotenv').config()
 
 const app = express();
 app.use(logger('dev'));
@@ -27,6 +27,10 @@ app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
 
 
+// Put API routes here, before the "catch all" route
+app.use('/api', articleRouter);
+app.use('/api', uploadRouter);
+
 const URI = process.env.MONGODB_URL
 mongoose.connect(URI, {
     useCreateIndex: true,
@@ -37,10 +41,6 @@ mongoose.connect(URI, {
     if (err) throw err;
     console.log('Connected to MongoDB')
 })
-
-// Put API routes here, before the "catch all" route
-app.use('/api', articleRouter);
-app.use('/api', uploadRouter);
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

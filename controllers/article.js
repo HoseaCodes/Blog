@@ -27,7 +27,7 @@ async function getArticle(req, res) {
 async function createArticle(req, res) {
     try {
 
-        const { article_id, title, subtitle, description, content, images, category } = req.body;
+        const { article_id, title, subtitle, markdown, description, content, images, category } = req.body;
         // if (!images) return res.status(400).json({ msg: "No image upload" })
 
         const article = await Articles.findOne({ article_id })
@@ -35,7 +35,7 @@ async function createArticle(req, res) {
         if (article) return res.status(400).json({ msg: "This article already exists." })
 
         const newArticle = new Articles({
-            article_id, title, subtitle, description, content, images, category
+            article_id, title, subtitle, markdown, description, content, images, category
         })
         console.log(newArticle)
         await newArticle.save()

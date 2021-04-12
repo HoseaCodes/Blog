@@ -6,7 +6,7 @@ import ArticleItem from './ArticleItem';
 const DetailArticle = () => {
     const params = useParams()
     const state = useContext(GlobalState)
-    const [articles] = state.articleAPI.articles
+    const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
 
     useEffect(() => {

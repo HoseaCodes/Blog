@@ -149,9 +149,9 @@ export default class App extends Component {
           <DataProvider>
 
             <Route path="/blog" exact component={Blog} />
-            <Route path="/blog/detail/:id" exact component={DetailArticle} />
-            <Route path="/create_product" exact component={CreateArticle} />
-            <Route path="/edit_product" exact component={CreateArticle} />
+            <Route path="/blog/:id" exact component={DetailArticle} />
+            <Route path="/articles/new" exact component={CreateArticle} />
+            <Route path="/articles/edit" exact component={CreateArticle} />
           </DataProvider>
 
           <Route

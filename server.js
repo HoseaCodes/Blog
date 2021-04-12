@@ -2,20 +2,45 @@ const express = require('express');
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const bodyParser = require("body-parser");
+const mongoose = require('mongoose');
+const articleRouter = require('./routes/articles')
+const uploadRouter = require('./routes/upload')
+require('dotenv').config()
 
 const app = express();
-
 app.use(logger('dev'));
 app.use(express.json());
-
-app.use(express.json());
+app.use(cors());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(fileUpload({
+    useTempFiles: true
+}))
 
 // Configure both serve-favicon & static middlewares
 // to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
 
+
+const URI = process.env.MONGODB_URL
+mongoose.connect(URI, {
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, err => {
+    if (err) throw err;
+    console.log('Connected to MongoDB')
+})
+
 // Put API routes here, before the "catch all" route
+app.use('/api', articleRouter);
+app.use('/api', uploadRouter);
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

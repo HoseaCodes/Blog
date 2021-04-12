@@ -15,7 +15,11 @@ import DevCenter from './Pages/Projects/DevCenter';
 import Stacks from './Pages/Articles/Stack';
 import Bash from './Pages/Articles/Bash';
 import BigO from './Pages/Articles/Big0';
-
+import ReactSecurity from './Pages/Articles/ReactSecurity';
+import DetailArticle from './DetailArticle';
+import CreateArticle from './CreateArticle'
+import Blog from './Articles';
+import { DataProvider } from './GlobalState';
 
 
 export default class App extends Component {
@@ -104,6 +108,14 @@ export default class App extends Component {
           />
           <Route
             exact
+            path="/reactsecurity"
+            render={() => (
+              <ReactSecurity
+              />
+            )}
+          />
+          <Route
+            exact
             path="/stack"
             render={() => (
               <Stacks
@@ -126,6 +138,22 @@ export default class App extends Component {
               />
             )}
           />
+          <Route
+            path="/shop"
+            render={() => (
+              <Shop
+
+              />
+            )}
+          />
+          <DataProvider>
+
+            <Route path="/blog" exact component={Blog} />
+            <Route path="/blog/detail/:id" exact component={DetailArticle} />
+            <Route path="/create_product" exact component={CreateArticle} />
+            <Route path="/edit_product" exact component={CreateArticle} />
+          </DataProvider>
+
           <Route
             path="/contact"
             render={() => (

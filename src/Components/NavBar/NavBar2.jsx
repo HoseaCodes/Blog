@@ -23,7 +23,7 @@ const NavBar2 = () => {
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
                     <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="nav-link">Portfolio</a>
-                    <Link to="/articles" id='article-link' className="nav-link">Articles</Link>
+                    <Link to="/articles" id='article-link' className="nav-link">Blog</Link>
                     <Link to="/about" className="nav-link">About</Link>
                     <Link to="/contact" className="nav-link">Contact</Link>
                 </ul>

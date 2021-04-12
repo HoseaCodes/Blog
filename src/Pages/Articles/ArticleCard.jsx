@@ -1,48 +1,37 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Articles.css'
+import BtnRender from '../../BtnRender';
+import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
+const ArticleItem = (props) => {
 
-class Article extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            count: 0
-        }
-    }
+    const { title, createdAt, description, images, checked, _id, sanitizedHtml } = props.article;
+    return (
+        <div className="article-card">
+            <input type="checkbox" checked={checked}
+                onChange={() => props.handleCheck(_id)} />
+            <img className='article-img' src={images} alt={title} />
+            <div className='article-content'>
+                <div style={{ padding: '1rem' }}>
 
+                    <Link to={`/blog/${_id}`} className='article-card-header'
+                    // onClick={() => this.handleCount()}
+                    >
+                        <h2 className='article-card-header' >{title}</h2>
+                    </Link>
+                    <p><span>1 &nbsp;<VisibilityIcon /> &nbsp;</span>{createdAt}</p>
+                    <p className="work-content">{description}</p>
+                    <br />
+                    <div>{ReactHtmlParser(sanitizedHtml)}</div>
 
-    render() {
-        const { name, date, info, img, tags, link } = this.props.article;
-        return (
-            <div className="article-card">
-                <img className='article-img' src={img} alt={name} />
-                <div className='article-content'>
-                    <div style={{ padding: '1rem' }}>
-
-                        <Link to={link} className='article-card-header'
-                        // onClick={() => this.handleCount()}
-                        >
-                            <h2 className='article-card-header' >{name}</h2>
-                        </Link>
-                        <p><span>{this.state.count} &nbsp;<VisibilityIcon /> &nbsp;</span>{date}</p>
-                        <p className="work-content">{info}</p>
-                        <br />
-                        <ul className="main-tag-container-article">
-                            <li className="main-category">
-                                <h3>Category: &nbsp;</h3>
-                                {tags.map(tag => {
-                                    return (<a href="#" className="main-tag-article">{tag}</a>
-                                    )
-                                })}
-                            </li>
-                        </ul>
-                    </div>
                 </div>
+                <BtnRender article={props.article} deleteArticle={props.deleteArticle} />
+
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-export default Article;
+export default ArticleItem;

@@ -84,14 +84,6 @@ export default class App extends Component {
           />
           <Route
             exact
-            path="/articles"
-            render={() => (
-              <Articles
-              />
-            )}
-          />
-          <Route
-            exact
             path="/bash"
             render={() => (
               <Bash
@@ -148,7 +140,7 @@ export default class App extends Component {
           />
           <DataProvider>
 
-            <Route path="/blog" exact component={Blog} />
+            <Route path="/blog" exact component={Articles} />
             <Route path="/blog/:id" exact component={DetailArticle} />
             <Route path="/articles/new" exact component={CreateArticle} />
             <Route path="/articles/edit" exact component={CreateArticle} />

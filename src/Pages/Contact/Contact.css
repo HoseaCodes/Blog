@@ -29,13 +29,13 @@
     height: 40vh;
     margin: 0;
 }
-
+/* 
 form {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+} */
 
 .contact-input, .area {
     width: 60vw;

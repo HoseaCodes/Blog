@@ -17,7 +17,7 @@ import Bash from './Pages/Articles/Bash';
 import BigO from './Pages/Articles/Big0';
 import ReactSecurity from './Pages/Articles/ReactSecurity';
 import DetailArticle from './DetailArticle';
-import CreateArticle from './CreateArticle'
+import CreateArticle from './Pages/Articles/CreateArticle'
 import Blog from './Articles';
 import { DataProvider } from './GlobalState';
 

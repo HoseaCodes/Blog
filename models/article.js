@@ -17,16 +17,16 @@ const articleSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    subtitle: {
-        type: String,
-        trim: true,
-    },
+    // subtitle: {
+    //     type: String,
+    //     trim: true,
+    // },
     description: {
         type: String,
     },
-    content: {
-        type: String,
-    },
+    // content: {
+    //     type: String,
+    // },
     images: {
         type: Object,
         required: true,

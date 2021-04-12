@@ -1,0 +1,17 @@
+.create_article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.mb {
+    margin-bottom: 10px;
+}
+.mauto {
+    margin: 0 auto;
+}
+
+.maxwidth {
+    width: 100vw;
+}

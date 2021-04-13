@@ -6,6 +6,7 @@ import axios from 'axios';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Footer from '../../Components/Footer/Footer';
 import './CreateArticle.css';
+import ReactMarkdown from 'react-markdown'
 
 const initialState = {
     article_id: '',
@@ -201,20 +202,27 @@ function CreatArticle() {
                                     </div>
 
                                     <div className="col-md-12">
-                                        <div id="div_description" className="form-group required">
+                                        <div id="div_description" className="form-group required row">
                                             <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-12 ">
-                                                <textarea className="d-flex jusify-self-center mauto mb"
+                                            <div className="controls col-md-6 ">
+                                                <h5 className="text-center">Enter your markdown</h5>
+                                                <textarea className="preview d-flex jusify-self-center mauto mb"
                                                     name="markdown" id="markdown"
                                                     required value={article.markdown}
                                                     onChange={handleChangeInput}
-                                                    rows="15"
-                                                    cols="175"
+                                                // rows="15"
+                                                // cols="175"
                                                 ></textarea>
+                                            </div>
+                                            <div className="col-6" id="perview">
+                                                <h5 className="text-center">See the result</h5>
+                                                <div className="preview">
+                                                    <ReactMarkdown source={article.markdown} className="markdown" />
+                                                    <p>ghjhggj</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-
                                     <br />
                                     <div className="form-group">
                                         <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">

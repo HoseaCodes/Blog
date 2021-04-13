@@ -78,3 +78,9 @@
     color: crimson;
 }
 
+
+.textarea, .preview {
+    min-height: 400px;
+    border: 1px solid lightgray;
+    min-width: 400px;
+}

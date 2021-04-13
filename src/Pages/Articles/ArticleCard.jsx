@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Articles.css'
 import BtnRender from './BtnRender';
-import ReactHtmlParser from 'react-html-parser';
+// import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const ArticleItem = (props) => {
 
     const { title, createdAt, description, images, checked, _id, sanitizedHtml } = props.article;
+    console.log(props)
     return (
         <div className="article-card">
-            <input type="checkbox" checked={checked}
-                onChange={() => props.handleCheck(_id)} />
-            <img className='article-img' src={images} alt={title} />
+            {/* <input type="checkbox" checked={checked}
+                onChange={() => props.handleCheck(_id)} /> */}
+            <img className='article-img' src={images.url} alt={title} />
             <div className='article-content'>
                 <div style={{ padding: '1rem' }}>
 
@@ -24,7 +25,7 @@ const ArticleItem = (props) => {
                     <p><span>1 &nbsp;<VisibilityIcon /> &nbsp;</span>{createdAt}</p>
                     <p className="work-content">{description}</p>
                     <br />
-                    <div>{ReactHtmlParser(sanitizedHtml)}</div>
+                    {/* <div>{ReactHtmlParser(sanitizedHtml)}</div> */}
 
                 </div>
                 <BtnRender article={props.article} deleteArticle={props.deleteArticle} />

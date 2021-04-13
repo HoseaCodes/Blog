@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { GlobalState } from './GlobalState';
 import ArticleItem from './Pages/Articles/ArticleCard';
+import ReactHtmlParser from 'react-html-parser';
 
 const DetailArticle = () => {
     const params = useParams()
@@ -28,9 +29,9 @@ const DetailArticle = () => {
                         <h2>{detailArticle.title}</h2>
                         <h6>#id: {detailArticle.product_id}</h6>
                     </div>
-                    <span>{detailArticle.subtitle}</span>
                     <p>{detailArticle.description}</p>
-                    <p>{detailArticle.content}</p>
+                    <div>{ReactHtmlParser(detailArticle.sanitizedHtml)}</div>
+
                 </div>
             </div>
             <div>

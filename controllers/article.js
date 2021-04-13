@@ -28,7 +28,7 @@ async function createArticle(req, res) {
     try {
 
         const { article_id, title, markdown, description, images, category } = req.body;
-        // if (!images) return res.status(400).json({ msg: "No image upload" })
+        if (!images) return res.status(400).json({ msg: "No image upload" })
 
         const article = await Articles.findOne({ article_id })
         console.log(article)

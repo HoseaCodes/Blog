@@ -63,7 +63,8 @@ function CreatArticle() {
                 headers: { 'content-type': 'multipart/form-data' }
             })
             setLoading(false)
-            setImages(res.data)
+            setImages(res.data.result)
+            console.log(res.data.result)
 
         } catch (err) {
             alert(err.response.data.msg)
@@ -75,7 +76,8 @@ function CreatArticle() {
             setLoading(true)
             await axios.post('/api/destroy', { public_id: images.public_id })
             setLoading(false)
-            setImages(false)
+            setImages('')
+            history.push('/blog')
         } catch (err) {
             alert(err.response.data.msg)
         }
@@ -89,7 +91,7 @@ function CreatArticle() {
     const handleSubmit = async e => {
         e.preventDefault()
         try {
-            // if (!images) return alert("No Image Upload")
+            if (!images) return alert("No Image Upload")
             if (onEdit) {
                 await axios.put(`/api/articles/${article._id}`, { ...articles, images })
             } else {
@@ -99,7 +101,7 @@ function CreatArticle() {
             }
             setCallback(!callback)
 
-            history.push('/')
+            history.push('/blog')
         } catch (err) {
             alert(err.response.data.msg)
         }
@@ -158,13 +160,27 @@ function CreatArticle() {
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div className="col-md-6">
+                                        <div id="div_description" className="form-group required">
+                                            <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label>
+                                            <div className="controls col-md-8 ">
+                                                <textarea className="mb"
+                                                    name="description" id="description"
+                                                    required value={article.description}
+                                                    onChange={handleChangeInput}
+                                                    style={{ width: '100%' }}
+                                                    rows="5"
+                                                    cols="50"
+                                                ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div className="col-md-6">
                                         <div id="div_id_image" className="form-group required">
                                             <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 mb" >
+                                            <div className="controls col-md-8 mb upload" >
 
-                                                <input className="input-md emailinput form-control mb" id="p_id"
+                                                <input className="input-md emailinput form-control mb"
                                                     name="file" id="file_up"
                                                     onChange={handleUpload}
                                                     placeholder="Enter Project Id" type="file" />
@@ -183,20 +199,7 @@ function CreatArticle() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="col-md-12">
-                                        <div id="div_description" className="form-group required">
-                                            <label for="p_name" className="control-label col-md-2  requiredField">Description<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-6 ">
-                                                <textarea className="mb"
-                                                    name="description" id="description"
-                                                    required value={article.description}
-                                                    onChange={handleChangeInput}
-                                                    rows="5"
-                                                    cols="50"
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
+
                                     <div className="col-md-12">
                                         <div id="div_description" className="form-group required">
                                             <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>

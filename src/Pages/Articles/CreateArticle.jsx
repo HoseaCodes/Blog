@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import { useHistory, useParams } from 'react-router-dom';
@@ -29,7 +29,6 @@ function CreatArticle() {
     const [articles] = state.articlesAPI.articles
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
-    const textInput = useRef('');
 
     useEffect(() => {
         if (param.id) {
@@ -110,7 +109,7 @@ function CreatArticle() {
             alert(err.response.data.msg)
         }
     }
-    console.log(textInput.current.value)
+
     return (
         <>
             <NavBar2 />
@@ -204,6 +203,7 @@ function CreatArticle() {
                                         </div>
                                     </div>
 
+                                    {/* <ReactMarkdown source={input} className="markdown" /> */}
                                     <div className="col-md-12">
                                         <div id="div_description" className="form-group required row">
                                             <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
@@ -213,14 +213,12 @@ function CreatArticle() {
                                                     name="markdown" id="markdown"
                                                     required value={article.markdown}
                                                     onChange={(e) => setInput(e.target.value)}
-                                                    ref={textInput}
                                                     value={input}
                                                 ></textarea>
                                             </div>
                                             <div className="col-6" id="perview">
                                                 <h5 className="text-center">See the result</h5>
                                                 <div className="preview" dangerouslySetInnerHTML={{ __html: marked(input) }}>
-                                                    {/* <ReactMarkdown source={input} className="markdown" /> */}
                                                 </div>
                                             </div>
                                         </div>

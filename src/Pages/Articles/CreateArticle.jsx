@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import { useHistory, useParams } from 'react-router-dom';
@@ -7,6 +7,7 @@ import NavBar2 from '../../Components/NavBar/NavBar2';
 import Footer from '../../Components/Footer/Footer';
 import './CreateArticle.css';
 import ReactMarkdown from 'react-markdown'
+import marked from 'marked';
 
 const initialState = {
     article_id: '',
@@ -21,12 +22,14 @@ function CreatArticle() {
     const state = useContext(GlobalState)
     const [article, setArticle] = useState(initialState)
     const [images, setImages] = useState(false)
+    const [input, setInput] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
     const param = useParams()
     const [articles] = state.articlesAPI.articles
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
+    const textInput = useRef('');
 
     useEffect(() => {
         if (param.id) {
@@ -107,7 +110,7 @@ function CreatArticle() {
             alert(err.response.data.msg)
         }
     }
-
+    console.log(textInput.current.value)
     return (
         <>
             <NavBar2 />
@@ -209,16 +212,15 @@ function CreatArticle() {
                                                 <textarea className="preview d-flex jusify-self-center mauto mb"
                                                     name="markdown" id="markdown"
                                                     required value={article.markdown}
-                                                    onChange={handleChangeInput}
-                                                // rows="15"
-                                                // cols="175"
+                                                    onChange={(e) => setInput(e.target.value)}
+                                                    ref={textInput}
+                                                    value={input}
                                                 ></textarea>
                                             </div>
                                             <div className="col-6" id="perview">
                                                 <h5 className="text-center">See the result</h5>
-                                                <div className="preview">
-                                                    <ReactMarkdown source={article.markdown} className="markdown" />
-                                                    <p>ghjhggj</p>
+                                                <div className="preview" dangerouslySetInnerHTML={{ __html: marked(input) }}>
+                                                    {/* <ReactMarkdown source={input} className="markdown" /> */}
                                                 </div>
                                             </div>
                                         </div>

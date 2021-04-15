@@ -37,6 +37,7 @@
     "react-fontawesome": "^1.7.1",
     "react-html-parser": "^2.0.2",
     "react-icons": "^3.11.0",
+    "react-markdown": "^6.0.0",
     "react-responsive-carousel": "^3.2.10",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",

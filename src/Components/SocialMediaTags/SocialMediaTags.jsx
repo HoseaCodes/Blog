@@ -20,16 +20,22 @@ const theme = createMuiTheme({
 
 const SocialMediaTags = () => {
     return (
-        <div className='social-container'>
-            <a className='social' rel="noopener noreferrer" href="https://twitter.com/DominiqueRHosea" target="_blank"><TwitterIcon fontSize="large" style={{ color: theme }} /></a>
-            <a className='social' rel="noopener noreferrer" href="https://www.linkedin.com/in/dominique-hosea/" target="_blank"><LinkedInIcon fontSize="large" /></a>
-            <a className='social' rel="noopener noreferrer" href="https://github.com/HoseaCodes" target="_blank"><GitHubIcon fontSize="large" /></a>
-            <a className='social' rel="noopener noreferrer" href="https://www.youtube.com/channel/UCW0iZYA3zE03qlVJqVE_ajQ/about?view_as=subscriber" target="_blank"><YouTubeIcon fontSize="large" /></a>
-            <a className='social' rel="noopener noreferrer" href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank"><AlternateEmailIcon fontSize="large" /></a>
-            <a className="social-resume social" rel="noopener noreferrer" href={Resume2020} download="Resume2020.pdf"><GetAppIcon fontSize='large' /></a>
-            {/* <PModal /> */}
+        // <div className='social-container'>
+        //     <a className='social' rel="noopener noreferrer" href="https://twitter.com/DominiqueRHosea" target="_blank"><TwitterIcon fontSize="large" style={{ color: theme }} /></a>
+        //     <a className='social' rel="noopener noreferrer" href="https://www.linkedin.com/in/dominique-hosea/" target="_blank"><LinkedInIcon fontSize="large" /></a>
+        //     <a className='social' rel="noopener noreferrer" href="https://github.com/HoseaCodes" target="_blank"><GitHubIcon fontSize="large" /></a>
+        //     <a className='social' rel="noopener noreferrer" href="https://www.youtube.com/channel/UCW0iZYA3zE03qlVJqVE_ajQ/about?view_as=subscriber" target="_blank"><YouTubeIcon fontSize="large" /></a>
+        //     <a className='social' rel="noopener noreferrer" href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank"><AlternateEmailIcon fontSize="large" /></a>
+        //     <a className="social-resume social" rel="noopener noreferrer" href={Resume2020} download="Resume2020.pdf"><GetAppIcon fontSize='large' /></a>
+        //     {/* <PModal /> */}
 
-        </div >
+        // </div >
+        <ul class="social_footer_ul">
+            <li><a href="https://codepen.io/hosead6168"><i class="fab fa-codepen"></i></a></li>
+            <li><a href="https://twitter.com/DominiqueRHosea"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/dominique-hosea/"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://www.youtube.com/channel/UCW0iZYA3zE03qlVJqVE_ajQ"><i class="fab fa-youtube"></i></a></li>
+        </ul>
     )
 }
 

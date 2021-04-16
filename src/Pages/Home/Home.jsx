@@ -93,7 +93,6 @@ class Home extends React.Component {
                                 data-aos-easing="ease-in"
                             >Back to Top</a>
                         </div>
-                        <SocialMediaTags />
                     </div>
                     <Footer />
                 </main>

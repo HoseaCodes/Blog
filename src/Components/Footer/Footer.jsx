@@ -7,59 +7,41 @@ import SocialMediaTags from '../SocialMediaTags/SocialMediaTags';
 const Footer = () => {
     const year = new Date().getFullYear()
     return (
-        // <div className="footer">
-        //     <footer className="footer-item">
-        //         <section className='footer-info'>
-        //             <div>
-        //                 <h2>Hosea Codes</h2>
-        //                 <p> <PhoneIphoneIcon /> +1 (281)-780-8424</p>
-        //                 <p><AlternateEmailIcon /> <a href="mailto:mr.dhosea@gmail.com">mr.dhosea@gmail.com</a> </p>
-        //             </div>
-        //             <div className='footer-built'>
-        //                 <h2>Built With</h2>
-        //                 <a href="https://reactjs.org/docs/getting-started.html">React</a>
-        //                 <a href="https://material-ui.com/">Material UI</a>
-        //                 <a href="https://react-bootstrap.github.io/">Bootstrap</a>
-        //                 <a href="https://sass-lang.com/">SCSS</a>
-        //             </div>
-        //         </section>
-        //         All Rights Reserved, &copy; {year} Hosea Codes
-        //     </footer>
-        // </div >
-        <footer class="footer">
-            <div class="container bottom_border">
-                <div class="row">
-                    <div class=" col-sm-4 col-md col-sm-4  col-12 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Find us</h5>
+        <footer className="footer">
+            <div className="container bottom_border">
+                <div className="row">
+                    <div className=" col-sm-4 col-md col-sm-4  col-12 col">
+                        <h5 className="headin5_amrc col_white_amrc pt2">Find Me</h5>
                         {/* <!--headin5_amrc--> */}
-                        <p class="mb10">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
-                        <p><i class="fa fa-location-arrow"></i> 9878/25 sec 9 rohini 35 </p>
-                        <p><i class="fa fa-phone"></i>  +91-9999878398  </p>
-                        <p><i class="fa fa fa-envelope"></i> info@example.com  </p>
+                        <p className="mb10">HoseaCodes’ mission statement is to build the future while empowering every person and every organization on the planet to achieve more. </p>
+                        <p><i className="fa fa-location-arrow"></i> Houston, TX </p>
+                        <p><i className="fa fa-phone"></i>  +1-281-780-8424</p>
+                        <p><i className="fa fa fa-envelope"></i> <a href="mailto:mr.dhosea@gmail.com"></a> mr.dhosea@gmail.com </p>
 
 
                     </div>
 
 
-                    <div class=" col-sm-4 col-md  col-6 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                    <div className=" col-sm-4 col-md  col-6 col dompl">
+                        <h5 className="headin5_amrc col_white_amrc pt2">Built With</h5>
                         {/* <!--headin5_amrc--> */}
-                        <ul class="footer_ul_amrc">
-                            <li><a href="http://webenlance.com">Image Rectoucing</a></li>
-                            <li><a href="http://webenlance.com">Clipping Path</a></li>
-                            <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
-                            <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
-                            <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
-                            <li><a href="http://webenlance.com">Image Cropping</a></li>
+                        <ul className="footer_ul_amrc" >
+                            <li> <a href="https://reactjs.org/docs/getting-started.html">React.js</a></li>
+                            <li> <a href="https://nodejs.org/en/docs/guides/getting-started-guide/">Node.js</a></li>
+                            <li><a href="https://material-ui.com/">Material UI</a></li>
+                            <li><a href="https://react-bootstrap.github.io/">Bootstrap</a></li>
+                            <li><a href="https://sass-lang.com/">SCSS</a></li>
+                            <li><a href="https://styled-components.com/">Styled Components</a></li>
+
                         </ul>
                         {/* <!--footer_ul_amrc ends here--> */}
                     </div>
 
 
-                    <div class=" col-sm-4 col-md  col-6 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                    <div className=" col-sm-4 col-md  col-6 col">
+                        <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
                         {/* <!--headin5_amrc--> */}
-                        <ul class="footer_ul_amrc">
+                        <ul className="footer_ul_amrc">
                             <li><a href="http://webenlance.com">Remove Background</a></li>
                             <li><a href="http://webenlance.com">Shadows & Mirror Reflection</a></li>
                             <li><a href="http://webenlance.com">Logo Design</a></li>
@@ -71,32 +53,28 @@ const Footer = () => {
                     </div>
 
 
-                    <div class=" col-sm-4 col-md  col-12 col">
-                        <h5 class="headin5_amrc col_white_amrc pt2">Follow Me On</h5>
-                        {/* <!--headin5_amrc ends here--> */}
-
-                        <ul class="footer_ul2_amrc">
-                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>Lorem Ipsum is simply dummy text of the printing...<a href="#">https://www.lipsum.com/</a></p></li>
-                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>Lorem Ipsum is simply dummy text of the printing...<a href="#">https://www.lipsum.com/</a></p></li>
-                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a><p>Lorem Ipsum is simply dummy text of the printing...<a href="#">https://www.lipsum.com/</a></p></li>
+                    <div className=" col-sm-4 col-md  col-12 col">
+                        <h5 className="headin5_amrc col_white_amrc pt2">Follow Me On</h5>
+                        {/* Twitter Profile Tweets */}
+                        <ul className="footer_ul2_amrc">
+                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 56 #100DaysOfCode I added a markdown preview...<a href="https://twitter.com/DominiqueRHosea/status/1382724497954930693">twitter.com/status/Day56</a></p></li>
+                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 55 #100DaysOfCode I revisted solidity smart ...<a href="https://twitter.com/DominiqueRHosea/status/1382215669115080705">twitter.com/status/Day55</a></p></li>
+                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Received my work laptop. I’m so excited!...<a href="https://twitter.com/DominiqueRHosea/status/1381995531375890437">twitter.com/status/startjob</a></p></li>
                         </ul>
-                        {/* <!--footer_ul2_amrc ends here--> */}
                     </div>
                 </div>
             </div>
 
 
-            <div class="container">
-                <ul class="foote_bottom_ul_amrc">
-                    <li><a href="http://webenlance.com">Home</a></li>
-                    <li><a href="http://webenlance.com">About</a></li>
-                    <li><a href="http://webenlance.com">Services</a></li>
-                    <li><a href="http://webenlance.com">Pricing</a></li>
-                    <li><a href="http://webenlance.com">Blog</a></li>
-                    <li><a href="http://webenlance.com">Contact</a></li>
+            <div className="container">
+                <ul className="foote_bottom_ul_amrc">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/blog">Blog</a></li>
+                    <li><a href="/contact">Contact</a></li>
                 </ul>
                 {/* <!--foote_bottom_ul_amrc ends here--> */}
-                <p class="text-center">Copyright @2017 | Designed With by <a href="#">Your Company Name</a></p>
+                <p className="text-center">All Rights Reserved, &copy; {year} Hosea Codes</p>
                 <SocialMediaTags />
 
             </div>

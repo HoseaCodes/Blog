@@ -19,6 +19,7 @@ import ReactSecurity from './Pages/Articles/ReactSecurity';
 import DetailArticle from './DetailArticle';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
+import Client from './Pages/Client/Client';
 
 
 export default class App extends Component {
@@ -125,15 +126,13 @@ export default class App extends Component {
             path="/shop"
             render={() => (
               <Shop
-
               />
             )}
           />
           <Route
-            path="/shop"
+            path="/client"
             render={() => (
-              <Shop
-
+              <Client
               />
             )}
           />

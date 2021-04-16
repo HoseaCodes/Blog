@@ -1,56 +1,40 @@
-/* .social-container {
-    display: flex;
-    justify-content: center;
-}
-.social {
-    margin: 2rem;
-    text-decoration: none;
-    text-decoration: none;
-    color: #206a5d;
-}
-
-.social:hover {
-    color: #206a5d;
-}
-
-.social-resume:hover + .hide{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    color: #206a5d;
-}
-.hide {
-    display: none;
-}
-@media only screen and (min-width: 768px) {
-    .social-container {
-        display: flex;
-        justify-content: center;
-        width: 100%;
+ .social_footer_ul { 
+     display:table; 
+     margin:15px auto 0 auto; 
+     list-style-type:none;  
     }
-    .social {
-        margin: 2rem;
-        text-decoration: none;
-        text-decoration: none;
-        color: #206a5d;
-    }
-    
-    .social-resume:hover + .hide{
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        color: #206a5d;
-    }
-    .hide {
-        display: none;
-    }
-}
 
- */
+ .social_footer_ul li { 
+     padding-left:20px; 
+     padding-top:10px; 
+     float:left; 
+     font-size: 20px;
+     margin: 0 auto;
+    }
 
- .social_footer_ul { display:table; margin:15px auto 0 auto; list-style-type:none;  }
- .social_footer_ul li { padding-left:20px; padding-top:10px; float:left; }
- .social_footer_ul li a { color:#CCC; border:1px solid #CCC; padding:8px;border-radius:50%;}
- .social_footer_ul li i {  width:20px; height:20px; text-align:center;}
+ .social_footer_ul li a { 
+     color:#CCC; 
+     border:1px solid #CCC; 
+     padding:10px;
+     border-radius:50%;
+     margin: 0 auto;
+    }
+
+ .social_footer_ul li i {  
+     width: 24px; 
+     height:24px; 
+     text-align:center;
+    }
+
+    @media only screen and (min-width: 768px) {
+        .social_footer_ul li i {  
+            width: 16px;
+            height: 16px;
+        }
+        .social_footer_ul li {
+            padding-left: 16px;
+        }
+        .social_footer_ul { 
+            padding: 0;
+        }
+    }

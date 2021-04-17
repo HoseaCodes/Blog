@@ -4,7 +4,7 @@ import './SocialRing.css';
 const SocialRing = () => {
     return (
         <>
-            <div className="socialring section-presentation">
+            <div className="socialring section-presentation section-cards">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-6">

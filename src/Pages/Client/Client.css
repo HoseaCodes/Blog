@@ -1,0 +1,242 @@
+
+.client-header {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/design.jpg');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    position: relative;
+    height: 40vh !important;
+    padding-bottom: 55px;
+}
+
+.section-images{
+    background-color: #435b69;
+}
+  .section {
+    padding: 40px 0;
+    position: relative;
+    color: whitesmoke;
+    font-size: 18px;
+}
+  
+.main{
+    font-size: 4rem;
+}
+  
+  .section-cards{
+      overflow: hidden;
+      padding-bottom: 0;
+      border-top: 1px solid #DDDDDD;
+      z-index: 3;
+  }
+  .client-info {
+    margin-top: 30px;
+    line-height: 1.7;
+    font-size: 2.5rem;
+    font-weight: 200;
+  }
+
+  .client-info-group {
+    margin-top: 30px;
+    line-height: 1.5;
+    font-size: 2rem;
+    font-weight: 200;
+}
+
+@media (max-width: 767px){
+    .presentation .section-images .resposnive-switch{
+      position: relative;
+      top: 315px;
+    }
+  }
+  .presentation .cards {
+    margin-top: -160px;
+    z-index: 7;
+  }
+
+  .presentation .white-text{
+      color: #FFFFFF;
+  }
+
+  @media (min-width: 768px){
+    .presentation .colors{
+      padding: 70px 0;
+    }
+    .presentation .section-responsive{
+        padding-top: 0;
+    }
+  }
+
+
+  @media (max-width: 767px){
+    .presentation h2,h4{
+      text-align: center;;
+    }
+  }
+  .presentation h1,
+  .presentation h2{
+      font-weight: 200;
+  }
+  
+  .presentation h4,
+  .presentation h5,
+  .presentation h6{
+      font-weight: 300;
+  }
+  .presentation h4{
+      font-size: 18px;
+      line-height: 28px;
+  }
+  .card-info h4{
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 500;
+      margin-top: 5px;
+  }
+  
+   small{
+      color: whitesmoke;
+  }
+    
+
+  .presentation .section-images .image {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      overflow: hidden;
+  }
+  .presentation .section-images .image img {
+    border-radius: 50%;
+     -webkit-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+  }
+  
+  .presentation .section-images .image .image-info {
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+    color: whitesmoke;
+    padding: 20px;
+    position: relative;
+    top: -150px;
+    border-radius: 50%;
+    border: 1px solid;
+     -webkit-transition: all 200ms ease-in;
+    -moz-transition: all 200ms ease-in;
+    -o-transition: all 200ms ease-in;
+    -ms-transition: all 200ms ease-in;
+    transition: all 200ms ease-in;
+  
+  }
+  .presentation .section-images .image .image-info h3 {
+    font-size: 32px;
+  }
+  .presentation .section-images .image:hover .image-info{
+    opacity: 1;
+   }
+   .presentation .section-images .image:hover img {
+    opacity: 0;
+   }
+  .presentation .responsive-image {
+    width: 250px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+  .presentation .responsive-image img {
+    width: 552px;
+    height: auto;
+  
+  }
+  .section-responsive h6{
+      font-weight: 500;
+      color: whitesmoke;
+      font-size: 12px;
+  }
+  .presentation .section-responsive{
+      border-top: 1px solid #DDDDDD;
+  /*     border-bottom: 1px solid #DDDDDD; */
+  }
+ 
+  .presentation .screen {
+      position: absolute;
+      top: 112px;
+      z-index: 3;
+      width: 214px;
+      text-align: center;
+      left: 19px;
+      padding: 0;
+  }
+  .presentation .screen img {
+    width: 100%;
+    height: auto;
+  }
+
+
+
+.newcard-container {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 300px;
+    height: 400px;
+    margin-left: -150px;
+    margin-top: -100px;
+    animation: cards 3s ease-in-out;
+    animation-direction: normal;
+  }
+      .card:nth-child(1) {
+        z-index: 3;
+        background-color: rgba(101,4,95, .85);
+        transform:translateY(-145px) rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
+        ;
+  
+      }
+      .card:nth-child(2) {
+        z-index: 2;
+        background-color: rgba(112,128,144, .85);
+        transform:translateY(-50px) rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
+        ;
+  
+      }
+      .card:nth-child(3) {
+        z-index: 1;
+        background-color: rgba(207, 198, 198, 0.85);
+        transform:translateY(20px) rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
+        ;
+  
+     }
+  
+  .card__title {
+    font-size: 30px;
+    font-weight: normal;
+    color: #fffbe1;
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    margin: 0;
+    animation: titles 4s ease-in-out;
+    animation-direction: normal;
+  }
+  
+  @keyframes cards {
+    0% { opacity: 0; transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    30% {opacity: 0 }
+    50% { opacity: 1 }
+    60% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    80% { transform: rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
+      ; }
+    100% {}
+  }
+  @keyframes titles {
+    0% {opacity: 0; transform:translateX(30px); }
+    80% {opacity: 0; transform:translateX(30px); }
+  }

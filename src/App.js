@@ -16,10 +16,10 @@ import Stacks from './Pages/Articles/Stack';
 import Bash from './Pages/Articles/Bash';
 import BigO from './Pages/Articles/Big0';
 import ReactSecurity from './Pages/Articles/ReactSecurity';
-import DetailArticle from './DetailArticle';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
+import ArticleItem from './Pages/Articles/Article/Article';
 
 
 export default class App extends Component {
@@ -139,7 +139,7 @@ export default class App extends Component {
           <DataProvider>
 
             <Route path="/blog" exact component={Articles} />
-            <Route path="/blog/:id" exact component={DetailArticle} />
+            <Route path="/blog/:id" exact component={ArticleItem} />
             <Route path="/blog/new" exact component={CreateArticle} />
             <Route path="/blog/edit" exact component={CreateArticle} />
           </DataProvider>

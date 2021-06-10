@@ -17,6 +17,11 @@ const articleSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
+    subtitle: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     // subtitle: {
     //     type: String,
     //     trim: true,
@@ -33,7 +38,7 @@ const articleSchema = new mongoose.Schema({
         default: "https://i.imgur.com/19i5Whc.png",
     },
     category: {
-        type: String,
+        type: [String],
     },
     checked: {
         type: Boolean,

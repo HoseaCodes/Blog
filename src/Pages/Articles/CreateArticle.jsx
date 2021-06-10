@@ -12,6 +12,7 @@ import marked from 'marked';
 const initialState = {
     article_id: '',
     title: '',
+    subtitle: '',
     description: 'Description',
     markdown: 'Markdown',
     category: '',
@@ -124,11 +125,24 @@ function CreatArticle() {
                                 <form className="row g-3" onSubmit={handleSubmit}>
                                     <div className="col-md-6">
                                         <div id="div_p_name" className="form-group required">
-                                            <label for="p_name" className="control-label col-md-4  requiredField">Project Name<span className="asteriskField">*</span> </label>
+                                            <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                    name="title" id="title"
+                                                    name="title" 
                                                     required value={article.title}
+                                                    onChange={handleChangeInput}
+                                                // disabled={onEdit}
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-6">
+                                        <div id="div_p_name" className="form-group required">
+                                            <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label>
+                                            <div className="controls col-md-8 ">
+                                                <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
+                                                    name="subtitle" 
+                                                    required value={article.subtitle}
                                                     onChange={handleChangeInput}
                                                 // disabled={onEdit}
                                                 />
@@ -140,7 +154,7 @@ function CreatArticle() {
                                             <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb"
-                                                    name="article_id" id="product_id"
+                                                    name="article_id"
                                                     required value={article.article_id}
                                                     onChange={handleChangeInput}
                                                     placeholder="Enter Project Id" type="text" />
@@ -168,7 +182,7 @@ function CreatArticle() {
                                             <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
                                                 <textarea className="mb"
-                                                    name="description" id="description"
+                                                    name="description"
                                                     required value={article.description}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
@@ -210,7 +224,7 @@ function CreatArticle() {
                                             <div className="controls col-md-6 ">
                                                 <h5 className="text-center">Enter your markdown</h5>
                                                 <textarea className="preview d-flex jusify-self-center mauto mb"
-                                                    name="markdown" id="markdown"
+                                                    name="markdown"
                                                     required value={article.markdown}
                                                     onChange={(e) => setInput(e.target.value)}
                                                     value={input}

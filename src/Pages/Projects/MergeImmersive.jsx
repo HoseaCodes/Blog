@@ -9,11 +9,11 @@ const MergeImmersive = () => {
         <>
             <NavBar2 />
             <img src={Reactt} width='300' height='300' alt="" />
-            <ul class="tags">
-                <li class="tag">React</li>
-                <li class="tag">JSX</li>
-                <li class="tag">MongoDB</li>
-                <li class="tag">AJAX</li>
+            <ul className="tags">
+                <li className="tag">React</li>
+                <li className="tag">JSX</li>
+                <li className="tag">MongoDB</li>
+                <li className="tag">AJAX</li>
             </ul>
             <Link to="/projects" className="item" style={{ color: "red" }}>Back</Link>
 

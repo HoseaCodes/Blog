@@ -10,7 +10,7 @@ import './Articles.css'
 const Stack = () => {
     return (
         <div>
-            <div class="blog-content">
+            <div className="blog-content">
                 <h2>Data Struture: Stack</h2>
                 <div className='blog-card'>
                     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }} class="post-meta mb-30">
@@ -37,23 +37,23 @@ const Stack = () => {
                     <img src={StackResults} alt="Results" />
                 </div>
             </div>
-            <div class="post-a-comment-area mb-100 clearfix">
-                <h3 class="mb-50">Leave a comment</h3>
+            <div className="post-a-comment-area mb-100 clearfix">
+                <h3 className="mb-50">Leave a comment</h3>
 
                 {/* <!-- Reply Form --> */}
-                <div class="contact-form-area">
+                <div className="contact-form-area">
                     <form action="#" method="post">
-                        <div class="row">
-                            <div class="col-12 col-lg-6">
-                                <input type="text" class="form-control" id="name" placeholder="Your Name*"
+                        <div className="row">
+                            <div className="col-12 col-lg-6">
+                                <input type="text" className="form-control" id="name" placeholder="Your Name*"
                                     required />
                             </div>
-                            <div class="col-12">
-                                <textarea name="message" class="form-control" id="message" cols="30" rows="10"
+                            <div className="col-12">
+                                <textarea name="message" className="form-control" id="message" cols="30" rows="10"
                                     placeholder="Message*" required></textarea>
                             </div>
-                            <div class="col-12">
-                                <button class="btn videomag-btn mt-30" type="submit">Submit Comment</button>
+                            <div className="col-12">
+                                <button className="btn videomag-btn mt-30" type="submit">Submit Comment</button>
                             </div>
                         </div>
                     </form>

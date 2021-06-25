@@ -241,8 +241,8 @@ function CreatArticle() {
                                     <div className="form-group">
                                         <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
                                             <br />
-                                            <button className="btn btn-info btn-md" type="submit">Add Project</button>
-                                            <button className="btn btn-danger btn-md" type="reset"><a href="/articles">Cancel</a> </button>
+                                            <button className="btn btn-info btn-md" type="submit">Add Article</button>
+                                            <button className="btn btn-danger btn-md" type="reset"><a href="/blog">Cancel</a> </button>
                                         </div>
                                     </div>
                                 </form>

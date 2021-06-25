@@ -134,10 +134,10 @@ const Articles = () => {
                         {/* <!--───────────────Tabs───────────────--> */}
 
                         <section id="tabs">
-                            <div class="row">
-                                <div class="col">
+                            <div className="row">
+                                <div className="col">
                                     <nav>
-                                        <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
                                             <a id="nav-all-tab"
                                                 data-toggle="tab" href="#nav-all" role="tab"
                                                 aria-controls="nav-all" aria-selected="true"

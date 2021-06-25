@@ -17,12 +17,12 @@ const Client = () => {
                 </h1>
             </div>
         </div>
-        <div class="main presentation pt-5">
-            <div class="section section-gray-gradient section-description">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-10 col-md-offset-2" style={{ textAlign: 'center' }}>
-                            <h1 class="header-text main">Designed and developed for your business
+        <div className="main presentation pt-5">
+            <div className="section section-gray-gradient section-description">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-10 col-md-offset-2" style={{ textAlign: 'center' }}>
+                            <h1 className="header-text main">Designed and developed for your business
                             <h1>
                                     <br />
                                     <small style={{
@@ -31,12 +31,12 @@ const Client = () => {
                                     }}>Created to fit perfectly together</small> </h1>
                             </h1>
 
-                            <p class="text-center client-info">My team and I uses the latest techonology for small and mid size
+                            <p className="text-center client-info">My team and I uses the latest techonology for small and mid size
                             businesses. Intergarting the latest API's, analytics, security measures, and design
                             processes.
                             We provide you with the tools needed to be competitive on a large scale.</p>
 
-                            <div class="space-110"></div>
+                            <div className="space-110"></div>
                         </div>
                     </div>
 
@@ -44,11 +44,11 @@ const Client = () => {
             </div>
         </div>
         <SocialRing />
-        <div class="section section-gray-gradient section-cards">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="space-50"></div>
+        <div className="section section-gray-gradient section-cards">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="space-50"></div>
                         <h2 className="header-text">Personlized Components<br /><small>Object Oriented Programming Approach </small></h2>
                         <p className="client-info">Telsa, Google, Apple, Microsoft, Uber, and AirBnB are setting the ground works to good
                         design and functionality. We will lay the foundation to building your future. We build
@@ -65,17 +65,17 @@ const Client = () => {
                         </p>
 
                     </div>
-                    <div class="col-md-6">
+                    <div className="col-md-6">
 
-                        <div class="newcard-container">
-                            <div class="card">
-                                <h2 class="card__title">Code</h2>
+                        <div className="newcard-container">
+                            <div className="card">
+                                <h2 className="card__title">Code</h2>
                             </div>
-                            <div class="card">
-                                <h2 class="card__title">Design</h2>
+                            <div className="card">
+                                <h2 className="card__title">Design</h2>
                             </div>
-                            <div class="card">
-                                <h2 class="card__title">Idea</h2>
+                            <div className="card">
+                                <h2 className="card__title">Idea</h2>
                             </div>
                         </div>
                     </div>
@@ -85,16 +85,16 @@ const Client = () => {
 
 
 
-        <div class="section section-images section-cards">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="text-center">
-                            <div class="image">
+        <div className="section section-images section-cards">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-4">
+                        <div className="text-center">
+                            <div className="image">
 
                                 <img src={boostrap} />
 
-                                <div class="image-info">
+                                <div className="image-info">
                                     <h3>3.3.0</h3>
                                     <h5>Version</h5>
                                 </div>
@@ -107,11 +107,11 @@ const Client = () => {
 
                         </div>
                     </div>
-                    <div class="col-md-4 card-text-adjust">
-                        <div class="text-center">
-                            <div class="image">
+                    <div className="col-md-4 card-text-adjust">
+                        <div className="text-center">
+                            <div className="image">
                                 <img src={icon} />
-                                <div class="image-info">
+                                <div className="image-info">
                                     <h3>170</h3>
                                     <h5>Thin Icons</h5>
                                 </div>
@@ -123,11 +123,11 @@ const Client = () => {
 
                         </div>
                     </div>
-                    <div class="col-md-4 ">
-                        <div class="text-center">
-                            <div class="image">
+                    <div className="col-md-4 ">
+                        <div className="text-center">
+                            <div className="image">
                                 <img src={icon} />
-                                <div class="image-info">
+                                <div className="image-info">
                                     <h3>50+</h3>
                                     <h5>Examples</h5>
                                 </div>
@@ -142,31 +142,31 @@ const Client = () => {
         </div>
 
 
-        <div class="section section-responsive section-cards">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-5 col-md-offset-1">
-                        <div class="space-50"></div>
+        <div className="section section-responsive section-cards">
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-5 col-md-offset-1">
+                        <div className="space-50"></div>
                         <h2 className="header-text">Fully Responsive Layout</h2>
                         <p className="client-info">Building responsive website is a must nowadays, so all the elements are fully responsive.
                         Each item looks great on the whole range of devices, and more than this, it was thought
                         mobile first. From cards to typography or menus, all elements were designed for a mobile
                             web, so they are accesible to anyone.</p>
                         <legend></legend>
-                        <div class="row">
-                            <div class="col-md-7">
-                                <h6><i class="fa fa-th-list"></i> Built with Bootstrap (3.3.0)</h6>
-                                <h6><i class="fa fa-eye"></i> Retina Ready</h6>
+                        <div className="row">
+                            <div className="col-md-7">
+                                <h6><i className="fa fa-th-list"></i> Built with Bootstrap (3.3.0)</h6>
+                                <h6><i className="fa fa-eye"></i> Retina Ready</h6>
                             </div>
-                            <div class="col-md-5">
-                                <h6><i class="fa fa-align-justify"></i> Customizable Menu</h6>
-                                <h6><i class="fa fa-magic"></i> Smooth Animations</h6>
+                            <div className="col-md-5">
+                                <h6><i className="fa fa-align-justify"></i> Customizable Menu</h6>
+                                <h6><i className="fa fa-magic"></i> Smooth Animations</h6>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4 col-md-offset-1">
-                        <div class="responsive-image">
+                    <div className="col-md-4 col-md-offset-1">
+                        <div className="responsive-image">
                             <img src="https://i.imgur.com/VAcp7Js.png" height="500px" />
                         </div>
                     </div>

@@ -170,7 +170,7 @@ const Testimonials = () => {
             >
                 {steps.map((step, index) => {
                     return (
-                        <li className={`nav-item ${step.isActive ? "active" : ""}`}>
+                        <li key={index} className={`nav-item ${step.isActive ? "active" : ""}`}>
                             <button
                                 type="button"
                                 className="nav-button"

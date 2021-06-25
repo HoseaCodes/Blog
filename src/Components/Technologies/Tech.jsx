@@ -19,39 +19,39 @@ class Tech extends Component {
                 <div className="tech-container">
                     <h2 className='tech-title'>Technologies</h2>
 
-                    <div class="client-slider">
-                        <div class="client-slide-track">
-                            <div class="client-slide">
+                    <div className="client-slider">
+                        <div className="client-slide-track">
+                            <div className="client-slide">
                                 <img src={Bootstrap} height="100" width="150" alt="Social Ring" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={JS} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={Django} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={MongoDB} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={Node} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={postgresql} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={Py} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={Reactt} height="100" width="150" alt="" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={Swift} height="100" width="150" alt="Social Ring" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img className="pinklemonade" src={img[10]} height="100" width="120" alt="PinkLemonade" />
                             </div>
-                            <div class="client-slide">
+                            <div className="client-slide">
                                 <img src={img[11]} height="100" width="150" alt="" />
                             </div>
 

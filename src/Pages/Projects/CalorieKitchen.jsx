@@ -13,9 +13,9 @@ const CalorieKitchen = () => {
             <NavBar2 />
             <img src={JS} width='500' height='450' alt="JavaScript" />
             <h1 style={{ color: 'green' }}>CalorieKitchen</h1>
-            <ul class="tags">
-                <li class="tag">JavaScript</li>
-                <li class="tag">AJAX</li>
+            <ul className="tags">
+                <li className="tag">JavaScript</li>
+                <li className="tag">AJAX</li>
             </ul>
             <div className='project-box'>
                 <div className='project-description'>

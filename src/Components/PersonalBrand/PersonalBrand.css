@@ -1,207 +1,202 @@
 .personal-container {
-    display: flex;
-    flex-direction: column !important;
-    align-items: center;
-    justify-items: center;
-    background-color: #1A1E23;
-    background-color: rgb(35, 41, 47);
-    width: 80%;
-    margin: auto;
+  display: flex;
+  flex-direction: column !important;
+  align-items: center;
+  justify-items: center;
+  background-color: #1a1e23;
+  background-color: rgb(35, 41, 47);
+  width: 80%;
+  margin: auto;
 }
 .personalBrand-opener {
-    background: rgb(35, 41, 47);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: auto; 
-    width: 80%;
+  background: rgb(35, 41, 47);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+  width: 80%;
 }
 .name-title {
-    margin: auto;
-    text-align: center;
-    margin-top: 3rem;
-    letter-spacing: .2rem;
-    font-size: 3.5rem;
-    font-weight: 400;
-    color: whitesmoke;
-    text-shadow: 2px 2px 2px #204740;
-    animation: grow 1s linear infinite;
-    animation-play-state: paused;
-    animation-delay: calc(var(--scroll) * -1s);
-    animation-iteration-count: 1;
-    animation-fill-mode: both;
+  margin: auto;
+  text-align: center;
+  margin-top: 3rem;
+  letter-spacing: 0.2rem;
+  font-size: 3.5rem;
+  font-weight: 400;
+  color: whitesmoke;
+  text-shadow: 2px 2px 2px #204740;
+  animation: grow 1s linear infinite;
+  animation-play-state: paused;
+  animation-delay: calc(var(--scroll) * -1s);
+  animation-iteration-count: 1;
+  animation-fill-mode: both;
 }
 @keyframes grow {
-    to {
-      transform: scale(3);
-    }
+  to {
+    transform: scale(3);
   }
+}
 .bio-info {
-    width: 70%;
-    margin-top: 1rem;
-    font-size: 2.3rem;
-    font-weight: 600;
-    text-align: center;
-    color: rgb(235,183,65);
-    text-shadow: 2px 2px 2px #204740;
+  width: 70%;
+  margin-top: 1rem;
+  font-size: 2.3rem;
+  font-weight: 600;
+  text-align: center;
+  color: rgb(235, 183, 65);
+  text-shadow: 2px 2px 2px #204740;
 }
 
 .envelop {
-    display: none;
+  display: none;
 }
 
 .fade {
-    transition: opacity 2.15s linear !important;
+  transition: opacity 2.15s linear !important;
 }
 
 .personal-combo {
-    display: flex;
-    width: 100%;
-    height: 70vh;
+  display: flex;
+  width: 100%;
+  height: 70vh;
 }
 
 .personal-card {
-    background-color: whitesmoke;
-    margin: 0 4rem 5rem 0rem;
-    height: 55vh;
-    overflow: scroll;
+  background-color: whitesmoke;
+  margin: 0 4rem 5rem 0rem;
+  height: 55vh;
+  overflow: scroll;
 }
 
 .personal-card2 {
-    padding: 3rem;
-    color: whitesmoke;
-    font-size: 40rem;
-    margin-top: -20%;
-    overflow: scroll;
+  padding: 3rem;
+  color: whitesmoke;
+  font-size: 40rem;
+  margin-top: -10%;
+  overflow: scroll;
 }
 
 .clickHere {
-    position: absolute;
-    top: 40%;
-    left: 30%;
-    z-index: -1;
+  position: absolute;
+  top: 40%;
+  left: 30%;
+  z-index: -1;
 }
 
 .personal-card-title {
-    text-transform: uppercase;
-    font-size: 1.5rem;
-    font-weight: 400;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+  font-weight: 400;
 }
 .personal-card-info {
-    margin: 5rem 2rem 5rem 2rem;
-    height: 1vh;
+  margin: 5rem 2rem 5rem 2rem;
+  height: 1vh;
 }
-.personal-card-content{
-    overflow: scroll;
-    font-size: 1.2rem;
+.personal-card-content {
+  overflow: scroll;
+  font-size: 1.2rem;
 }
 .personal-image {
-    width: 45%;
-    height: 55vh;
-    margin-bottom: 1rem;
-    margin: 0 3rem 10rem 3rem;
-    object-fit: cover;
-    image-rendering: pixelated !important;
+  width: 45%;
+  height: 55vh;
+  margin-bottom: 1rem;
+  margin: 0 3rem 10rem 3rem;
+  object-fit: cover;
+  image-rendering: pixelated !important;
 }
 .personal-image2 {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    image-rendering: pixelated !important;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated !important;
 }
 .closed-envelop:hover {
-    filter: drop-shadow( 0 0 1.5rem gray);
+  filter: drop-shadow(0 0 1.5rem gray);
 }
 
 .personal-btn {
-    border: 2px solid #204740;
-    color: #204740;
-    box-sizing: inherit;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13pt;
-    margin-bottom: 10px;
-    padding: 10px 20px;
-    background-color: transparent;
-    transition: all 0.5s;
-    text-decoration: none;
-    left: 35%;
-    overflow: hidden;
-    animation: personal-btn 10s steps(1) -1s normal;
-
+  border: 2px solid #204740;
+  color: #204740;
+  box-sizing: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13pt;
+  margin-bottom: 10px;
+  padding: 10px 20px;
+  background-color: transparent;
+  transition: all 0.5s;
+  text-decoration: none;
+  left: 35%;
+  overflow: hidden;
+  animation: personal-btn 10s steps(1) -1s normal;
 }
-@keyframes peronal-btn{
-    0% {
-        left: 250%;
-    }
-    100% {
-        left: 0%
-    }
+@keyframes peronal-btn {
+  0% {
+    left: 250%;
+  }
+  100% {
+    left: 0%;
+  }
 }
-@media only screen 
-and (min-device-width: 375px) 
-and (max-device-width: 600px) {    
-    .bio-info {
-        width: 90%;
-        margin-top: 1rem;
-        font-size: 1.5rem;
-        font-weight: 600;
-        text-align: center;
-        color: rgb(235,183,65);
-        text-shadow: 2px 2
-    }
-    .personal-container {
-        width: 100%;
-        height: 100%;
-    }
-    .personal-combo {
-       flex-direction: column;
-       align-items: center;
-       margin: auto;
-       padding-bottom: 2rem;
-       width: 100vw;
-       background-color: rgb(35, 41, 47);
-    }
-    .personal-image {
-        width: 80%;
-        height: 80%;
-    }
+@media only screen and (min-device-width: 375px) and (max-device-width: 600px) {
+  .bio-info {
+    width: 90%;
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    color: rgb(235, 183, 65);
+    text-shadow: 2px 2;
+  }
+  .personal-container {
+    width: 100%;
+    height: 100%;
+  }
+  .personal-combo {
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+    padding-bottom: 2rem;
+    width: 100vw;
+    background-color: rgb(35, 41, 47);
+  }
+  .personal-image {
+    width: 80%;
+    height: 80%;
+  }
 
-    .personal-card {
-        width: 80%;
-        height: 50vh;
-        margin: auto;
-    }
-    .personal-card-info {
-        display: none;
-
-    }
-    .bio-info {
-        margin-top: 3rem;
-    }
-
+  .personal-card {
+    width: 80%;
+    height: 50vh;
+    margin: auto;
+  }
+  .personal-card-info {
+    display: none;
+  }
+  .bio-info {
+    margin-top: 3rem;
+  }
 }
 
 @media only screen and (max-width: 768px) {
-    .personal-container {
-        width: 100%;
-        height: 100%;
-    }
-    .personal-combo {
-        display: grid;
-       grid-template-columns: 1fr;
-    }
-    .personal-image {
-        width: 80%;
-        margin: auto;
-        padding-bottom: 2rem;
-    }
-    .personal-card {
-        width: 80%;
-        margin: auto;
-        margin-bottom: 2rem;
-    }
-    .personal-card-info {
-        margin: 2rem;
-    }
+  .personal-container {
+    width: 100%;
+    height: 100%;
+  }
+  .personal-combo {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .personal-image {
+    width: 80%;
+    margin: auto;
+    padding-bottom: 2rem;
+  }
+  .personal-card {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 2rem;
+  }
+  .personal-card-info {
+    margin: 2rem;
+  }
 }

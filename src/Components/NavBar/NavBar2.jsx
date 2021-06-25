@@ -22,13 +22,13 @@ const NavBar2 = () => {
                 <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
-                    <li class="dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navdrop" role="button" data-toggle="dropdown" data-hover="dropdown">Portfolio</a>
-                        <div class="dropdown-menu" aria-labelledby="navdrop">
-                            <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" class="dropdown-item nav-link">Backend Portfolio</a>
-                            <a href="/client" rel="noopener noreferrer" class="dropdown-item nav-link">Client Portfolio</a>
-                            <a href="#" class="dropdown-item">Service2</a>
-                            <a href="#" class="dropdown-item">Service3</a>
+                    <li className="dropdown">
+                        <a className="nav-link dropdown-toggle" href="#" id="navdrop" role="button" data-toggle="dropdown" data-hover="dropdown">Portfolio</a>
+                        <div className="dropdown-menu" aria-labelledby="navdrop">
+                            <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="dropdown-item nav-link">Backend Portfolio</a>
+                            <a href="/client" rel="noopener noreferrer" className="dropdown-item nav-link">Client Portfolio</a>
+                            <a href="#" className="dropdown-item">Service2</a>
+                            <a href="#" className="dropdown-item">Service3</a>
                         </div>
 
                     </li>

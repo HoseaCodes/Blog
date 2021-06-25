@@ -21,7 +21,7 @@ class Bash extends Component {
         return (
             <div>
                 <NavBar2 />
-                <main class="blog-content">
+                <main className="blog-content">
                     <article className='blog-main'>
                         <h2 style={{ marginTop: '5rem', fontSize: '3rem', fontWeight: '600' }}>{name}</h2>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100vw' }} />

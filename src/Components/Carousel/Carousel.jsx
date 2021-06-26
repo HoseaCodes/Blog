@@ -24,7 +24,9 @@ function Projects() {
     return (
         <div style={{ background: '#1A1E23' }}>
             <div className='p-container'>
-                <div className='p-content' data-aos="fade-right" data-aos-duration="3000" data-aos-offset="500"
+                <div className='p-content' data-aos="fade-right"
+                data-aos-offset="00"
+                data-aos-duration="3000"
                 >
                     <Carouselsocialring />
                 </div>
@@ -33,7 +35,9 @@ function Projects() {
                     <CarouselSneakerAPI />
                 </div>
 
-                <div className='p-content' data-aos="fade-left" data-aos-duration="3000" data-aos-offset="500">
+                <div className='p-content' data-aos="fade-left"
+                data-aos-offset="00"
+                data-aos-duration="3000">
                     <CarouselCareerconnect />
 
                 </div>

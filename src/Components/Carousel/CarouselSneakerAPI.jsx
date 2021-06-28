@@ -39,15 +39,6 @@ function CarouselSneakerAPI() {
                     <button className='btn-left' onClick={goLeft}> ‹ </button>
                     <button className='btn-right' onClick={goRight}> › </button>
                 </div>
-
-                <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
-                    <li className="main-tag">JavaScript</li>
-                    <li className="main-tag">Mongoose</li>
-                    <li className="main-tag">MongoDB</li>
-                    <li className="main-tag">Express.js</li>
-                    <li className="main-tag">EJS</li>
-                    <li className="main-tag">Node.js</li>
-                </ul>
                 <Modal />
                 <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href=" https://hoseacodes.github.io/Sneaker-Api/" target="_blank" rel="noopener noreferrer">View Live Site</a>

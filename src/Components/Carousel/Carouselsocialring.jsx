@@ -39,12 +39,8 @@ function Carouselsocialring() {
                     <button className='btn-left' onClick={goLeft}> ‹ </button>
                     <button className='btn-right' onClick={goRight}> › </button>
                 </div>
-
-                <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none' }}>
-                    <li className="main-tag">Swift</li>
-                </ul>
+                <div style={{ display: 'flex', flexDirection: 'row', width: '300px', justifyContent: 'space-evenly', marginTop: '30px' }}>
                 <Modal />
-                <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href="https://apps.apple.com/us/app/social-ring/id1551446005" target="_blank" rel="noopener noreferrer">View Live App</a>
                 </div>
             </div>

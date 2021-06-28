@@ -66,7 +66,7 @@ export default function SpringModal() {
 
     return (
         <div>
-            <ControlPointIcon fontSize='large' style={{ color: '#206a5d' }} type="button" onClick={handleOpen} />
+            <h3 onClick={handleOpen} className='link'>Read More</h3>
             <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"

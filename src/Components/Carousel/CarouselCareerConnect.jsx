@@ -41,14 +41,6 @@ function CarouselCareerconnect() {
                     <button className='btn-left' onClick={goLeft}> ‹ </button>
                     <button className='btn-right' onClick={goRight}> › </button>
                 </div>
-
-                <ul className='main-tag-container' style={{ display: 'flex', justifyContent: 'center', listStyle: 'none', flexWrap: 'wrap' }}>
-                    <li className="main-tag">MongoDB</li>
-                    <li className="main-tag">Express.js</li>
-                    <li className="main-tag">Node.js</li>
-                    <li className="main-tag">AJAX</li>
-                    <li className="main-tag">RESTful Routing</li>
-                </ul>
                 <Modal2 />
                 <div style={{ display: 'flex', marginTop: '30px' }}>
                     <a className='link' href="https://careerconnect.herokuapp.com/" target="_blank" rel="noopener noreferrer">View Live Site</a>

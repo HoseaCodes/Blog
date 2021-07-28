@@ -3,7 +3,6 @@ import NavBar2 from "../../Components/NavBar/NavBar2";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
-import organize from '../../icons/Py.png'
 import icon from "../../icons/icons.jpeg"
 import boostrap from "../../icons/Bootstrap.png"
 

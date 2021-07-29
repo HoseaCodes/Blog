@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 
 function ProjectCard(props) {
 
+  console.log(props)
   return (
       <>
        <section id="case-studies"  className="case-studies-section">
@@ -13,17 +14,17 @@ function ProjectCard(props) {
         <div className="case-study-content">
           <ul className="case-studies-list">
             <li>
-              <Link to={`/project/${props.project.id}`}  className="case-study">
+              <Link to={`/project/${props.project.id}`}  className="case-study" style={{backgroundImage: `url(${props.project.img})`}}>
                 <div className="case-study-mask"></div>
                 <div className="case-study-reveal-mask"></div>
                 <div className="case-study-mask-number">
-                  <div className="case-study-mask-back">01</div>
+                  <div className="case-study-mask-back">{props.project.id}</div>
                   <div className="case-study-mask-front">
-                    <div data-index="01" className="case-study-mask-overlay">01</div></div>            
+                    <div data-index="01" className="case-study-mask-overlay">{props.project.id}</div></div>            
                     </div>
                 <div className="case-study-text-section">
-                  <h3 className="h2 case-study-title">Cerasa Redesign</h3>
-                  <h5 className="case-study-subtitle">Leader in bathroom furniture since 1983.</h5>
+                  <h3 className="h2 case-study-title">{props.project.name}</h3>
+                  <h5 className="case-study-subtitle">{props.project.title}</h5>
                   <button className="case-study-button call-to-button">
                     <span className="case-study-button-text">Case Study</span>
                     <div className="case-study-button-mask"></div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import ProjectCard from '../Cards/projectCard';
+import {projectData} from '../../Pages/Projects/ProjectsData';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -21,23 +22,23 @@ function ProjectHighlight() {
     return (
         <div style={{ background: '#1A1E23' }}>
             <div className='p-container'>
-                {/* <div className='p-content' data-aos="fade-right"
+                <div className='p-content' data-aos="fade-right"
                 data-aos-offset="00"
                 data-aos-duration="3000"
                 >
-                    <ProjectCard/>
-                </div> */}
+                    <ProjectCard project={projectData[0]}/>
+                </div>
                 <div className='p-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
                     data-aos-delay="300">
-                    <ProjectCard project={1}/>
+                    <ProjectCard project={projectData[1]}/>
                 </div>
 
-                {/* <div className='p-content' data-aos="fade-left"
+                <div className='p-content' data-aos="fade-left"
                 data-aos-offset="00"
                 data-aos-duration="3000">
-                    <ProjectCard/>
+                    <ProjectCard project={projectData[2]}/>
 
-                </div> */}
+                </div>
             </div>
             <div className="portfolio-group">
                 <h2 className='p-h2'>Visit my portfolio for more</h2>

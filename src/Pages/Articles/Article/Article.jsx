@@ -2,9 +2,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import '../Blog.css'
-import BtnRender from '../BtnRender';
-import ReactHtmlParser from 'react-html-parser';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import NavBar2 from '../../../Components/NavBar/NavBar2';
@@ -26,7 +23,7 @@ const ArticleItem = (props) => {
 
     if (detailArticle.length === 0) return null;
 
-    const { title, subtitle, createdAt, description, images, checked, _id, markdown } = detailArticle;
+    const { title, subtitle, createdAt, description, images, markdown } = detailArticle;
     console.log(props)
 
     return (

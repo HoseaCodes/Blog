@@ -12,7 +12,7 @@ function ProjectCard() {
         <div className="case-study-content">
           <ul className="case-studies-list">
             <li>
-              <a href="#" className="case-study">
+              <a href="/" className="case-study">
                 <div className="case-study-mask"></div>
                 <div className="case-study-reveal-mask"></div>
                 <div className="case-study-mask-number">

@@ -6,7 +6,6 @@ import axios from 'axios';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Footer from '../../Components/Footer/Footer';
 import './CreateArticle.css';
-import ReactMarkdown from 'react-markdown'
 import marked from 'marked';
 
 const initialState = {
@@ -227,7 +226,7 @@ function CreatArticle() {
                                                     name="markdown"
                                                     required value={article.markdown}
                                                     onChange={(e) => setInput(e.target.value)}
-                                                    value={input}
+                                                    // value={input}
                                                 ></textarea>
                                             </div>
                                             <div className="col-6" id="perview">

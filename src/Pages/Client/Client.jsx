@@ -91,7 +91,7 @@ const Client = () => {
                         <div className="text-center">
                             <div className="image">
 
-                                <img src={boostrap} />
+                                <img src={boostrap} alt="" />
 
                                 <div className="image-info">
                                     <h3>3.3.0</h3>
@@ -166,7 +166,7 @@ const Client = () => {
 
                     <div className="col-md-4 col-md-offset-1">
                         <div className="responsive-image">
-                            <img src="https://i.imgur.com/VAcp7Js.png" height="500px" />
+                            <img alt="" src="https://i.imgur.com/VAcp7Js.png" height="500px" />
                         </div>
                     </div>
                 </div>

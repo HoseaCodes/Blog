@@ -148,7 +148,6 @@ export default class App extends Component {
             path="/contact"
             render={() => (
               <Contact
-
               />
             )}
           />

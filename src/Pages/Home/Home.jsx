@@ -3,7 +3,7 @@ import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Scramble from '../../Components/Scramble/Scramble';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
-import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
+import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
 import Footer from '../../Components/Footer/Footer';
 import Testomonials from '../Testimonials/Testimonials';
 import Tech from '../../Components/Technologies/Tech';

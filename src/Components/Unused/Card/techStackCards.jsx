@@ -80,7 +80,7 @@
 
 import React from 'react';
 import { Link } from "react-router-dom";
-import '../Project/Case-Study.css';
+import '../Project/techStackCards.css';
 
 const react = 'React'
 const jQuery = 'Jquery'
@@ -102,7 +102,8 @@ const python = 'Python'
 const node = 'Node.JS'
 const bEnd = 'Backend'
 
-const CaseStudy = () => {
+const TechStackCards
+ = () => {
     return (
         <section>
             <div className="services-grid">
@@ -147,4 +148,4 @@ const CaseStudy = () => {
         </section>
     )
 }
-export default CaseStudy;
+export default TechStackCards;

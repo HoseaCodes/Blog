@@ -133,10 +133,8 @@
 .footer-button:hover {
   background-color: #204740;
   text-decoration: none;
-  border-color: #204740;
-  font-size: 15pt;
   transition: 0.5s color ease;
-  color: rgb(235, 183, 65);
+  color: #fff;
 }
 
 .header-username,
@@ -286,15 +284,6 @@
   .header-button {
     margin: auto !important;
     width: 40% !important;
-  }
-  .header-button:hover,
-  .footer-button:hover {
-    background-color: transparent;
-    text-decoration: none;
-    border: 2px solid #fff;
-    font-size: 13pt;
-    transition: 0.5s color ease;
-    color: white;
   }
 
   .header-username,

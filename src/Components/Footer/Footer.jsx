@@ -41,10 +41,10 @@ const Footer = () => {
                         <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
                         {/* <!--headin5_amrc--> */}
                         <ul className="footer_ul_amrc">
-                            <li><a href="http://webenlance.com">Remove Background</a></li>
-                            <li><a href="http://webenlance.com">Shadows & Mirror Reflection</a></li>
-                            <li><a href="http://webenlance.com">Logo Design</a></li>
-                            <li><a href="http://webenlance.com">Vectorization</a></li>
+                            <li><a href="https://www.remove.bg/upload">Remove Background</a></li>
+                            <li><a href="/client">Shadows & Mirror Reflection</a></li>
+                            <li><a href="/project">Logo Design</a></li>
+                            <li><a href="/shop">Vectorization</a></li>
                             <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
                             <li><a href="http://webenlance.com">Image Cropping</a></li>
                         </ul>

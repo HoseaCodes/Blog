@@ -29,7 +29,7 @@ function ProjectHighlight() {
                 </div> */}
                 <div className='p-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
                     data-aos-delay="300">
-                    <ProjectCard/>
+                    <ProjectCard project={1}/>
                 </div>
 
                 {/* <div className='p-content' data-aos="fade-left"

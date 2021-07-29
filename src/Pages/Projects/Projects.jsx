@@ -80,8 +80,13 @@
 import React from 'react';
 import './Projects.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
+import { Link } from "react-router-dom";
 import Tags from '../../Components/Tags/Tags'
+import {projectData} from './ProjectsData';
+import ProjectCard from '../../Components/Cards/projectCard';
+
 const Projects = () => {
+
     return (
         <div>
             <NavBar2 />
@@ -90,6 +95,15 @@ const Projects = () => {
                 </div>
             </div>
             <Tags />
+            {projectData.map(project => {
+                                return (<>
+                                    <ProjectCard project={project}
+                                        key={project.id}
+                                    />
+                                    <hr className='article-line' />
+                                </>
+                                )
+                            })}
         </div>
     )
 

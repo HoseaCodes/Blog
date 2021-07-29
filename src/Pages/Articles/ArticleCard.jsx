@@ -5,6 +5,7 @@ import BtnRender from './BtnRender';
 // import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
+// Main Article Cards
 const ArticleItem = (props) => {
 
     const { title, createdAt, description, images, _id } = props.article;

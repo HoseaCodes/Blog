@@ -2,17 +2,18 @@ import React from 'react';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './projectCard.css'
+import { Link } from 'react-router-dom';
 
-function ProjectCard() {
+function ProjectCard(props) {
 
-    return (
+  return (
       <>
        <section id="case-studies"  className="case-studies-section">
         <div className="section-mask"></div>
         <div className="case-study-content">
           <ul className="case-studies-list">
             <li>
-              <a href="/" className="case-study">
+              <Link to={`/project/${props.project.id}`}  className="case-study">
                 <div className="case-study-mask"></div>
                 <div className="case-study-reveal-mask"></div>
                 <div className="case-study-mask-number">
@@ -30,7 +31,7 @@ function ProjectCard() {
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>                   </span>
                   </button>
                 </div>
-              </a>
+              </Link>
               </li>  
             </ul>
           </div>

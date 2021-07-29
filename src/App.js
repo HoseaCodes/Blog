@@ -20,6 +20,7 @@ import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
 import ArticleItem from './Pages/Articles/Article/Article';
+import ProjectItem from './Pages/Projects/Project/Project';
 
 
 export default class App extends Component {
@@ -39,14 +40,6 @@ export default class App extends Component {
             path="/"
             render={() => (
               <Home
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/projects"
-            render={() => (
-              <Projects
               />
             )}
           />
@@ -129,15 +122,14 @@ export default class App extends Component {
               />
             )}
           />
-          <Route
-            path="/client"
-            render={() => (
+          <Route path="/client" render={() => (
               <Client
               />
             )}
           />
+          <Route path="/project" exact component={Projects}/>
+          <Route path="/project/:id" exact component={ProjectItem}/>
           <DataProvider>
-
             <Route path="/blog" exact component={Articles} />
             <Route path="/blog/:id" exact component={ArticleItem} />
             <Route path="/blog/new" exact component={CreateArticle} />

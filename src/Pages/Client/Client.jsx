@@ -3,7 +3,6 @@ import NavBar2 from "../../Components/NavBar/NavBar2";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
-// import icon from "../../icons/icons.jpeg"
 import boostrap from "../../icons/Bootstrap.png"
 
 const Client = () => {
@@ -58,9 +57,6 @@ const Client = () => {
                         the inside is nice but the outside is just as important if not more so. Join the community
                         and upgrade your business today!
                             <br /><br />
-                            {/* <a href="javascript:void(0)" onclick="showModal(this)" data-target="#cards">
-                                View all Cards <i class="fa fa-angle-right"></i>
-                            </a> */}
                         </p>
 
                     </div>
@@ -108,13 +104,13 @@ const Client = () => {
                     </div>
                     <div className="col-md-4 card-text-adjust">
                         <div className="text-center">
-                            {/* <div className="image">
-                                <img src={icon} />
+                            <div className="image">
+                                <img src={"https://i.imgur.com/NpD8OUs.jpg"} alt="icons" />
                                 <div className="image-info">
                                     <h3>170</h3>
                                     <h5>Thin Icons</h5>
                                 </div>
-                            </div> */}
+                            </div>
                             <h2 className="header-text">Pixel Perfect Icons</h2>
                             <p className="client-info-group">Thanks to our friend from <a href="https://www.pixeden.com">Pixeden</a>, they made a
                                 really great job with the stroke icons. You will love the icons from the moment you see
@@ -124,13 +120,13 @@ const Client = () => {
                     </div>
                     <div className="col-md-4 ">
                         <div className="text-center">
-                            {/* <div className="image">
-                                <img src={icon} />
+                            <div className="image">
+                                <img src={"https://i.imgur.com/HknO2Av.jpg"} alt="docs"/>
                                 <div className="image-info">
                                     <h3>50+</h3>
                                     <h5>Examples</h5>
                                 </div>
-                            </div> */}
+                            </div>
                             <h2 className="header-text">Well documented</h2>
                             <p className="client-info-group">Every item from Get Shit Done is well documented and contain an example of how to use
                                 it. You will also get a quick guide to setting up and getting started.</p>

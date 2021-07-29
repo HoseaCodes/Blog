@@ -14,7 +14,7 @@
 import React from 'react';
 import './Contact.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
-import ContactForm from '../../Components/Contact/ContactForm'
+import ContactForm from '../../Components/Form/ContactForm'
 
 const Contact = () => {
     return (

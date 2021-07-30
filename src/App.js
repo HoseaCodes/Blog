@@ -20,7 +20,7 @@ import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
 import ArticleItem from './Pages/Articles/Article/Article';
-import ProjectItem from './Pages/Projects/Project/Project';
+import ProjectItem from './Pages/Projects/Project/Projects';
 
 
 export default class App extends Component {

@@ -23,7 +23,8 @@ const ProjectItem = (props) => {
                             <div class="text-loading-overlay is-reveal"></div>
                             <h1 itemprop="name" class="hero-single-work-title"> Black Paper - Crypto Learn</h1>
                         </div>
-                        <div class="text-loading-mask">                            <div class="text-loading-overlay is-reveal"></div>
+                        <div class="text-loading-mask">                            
+                            <div class="text-loading-overlay is-reveal"></div>
                             <h3 class="hero-single-work-subtitle">Learn crypto the easy way.</h3>
                         </div>
                     </div>
@@ -32,11 +33,11 @@ const ProjectItem = (props) => {
                             <ul class="context-stripe-focus-area is-loaded">
                                 <li>
                                 <strong>Role</strong> 
-                                    <span class="stripe-baffle">Consultant Software Developer</span>
+                                    <span class="stripe-baffle"> Consultant Software Developer</span>
                                 </li>
-                                <li><strong>Context</strong> <span class="stripe-baffle">IOS App Creation</span>
+                                <li><strong>Context</strong> <span class="stripe-baffle"> IOS App Creation</span>
                                 </li>
-                                <li><strong>Period</strong> <span class="stripe-baffle">Summer 2021</span>
+                                <li><strong>Period</strong> <span class="stripe-baffle"> Summer 2021</span>
                                 </li>
                             </ul>
                         </div>
@@ -82,7 +83,7 @@ const ProjectItem = (props) => {
                                 </div>
                             </div>
                             <div class="button-content single-work-anim-text">
-                                <a href="http://cerasa.it/" target="_blank" rel="noopener" class="case-study-single-button ghost no-smoothState">
+                                <a href="/" target="_blank" rel="noopener" class="case-study-single-button ghost no-smoothState">
                                     <span class="button-text">Visit Website</span>
                                     <span class="button-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
@@ -135,8 +136,8 @@ const ProjectItem = (props) => {
                                 </div>
                             </div>
                             <div class="inner-container">
-                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png');`}} class="single-work-font single-work-first-anim-blocks"></div>
-                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png');`}} class="single-work-font single-work-first-anim-blocks"></div>
+                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png')`}} class="single-work-font single-work-first-anim-blocks"></div>
+                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png')`}} class="single-work-font single-work-first-anim-blocks"></div>
                             </div>
                         </div>
                         <div class="single-work-ui">
@@ -152,7 +153,7 @@ const ProjectItem = (props) => {
                                         <img src="https://i.imgur.com/i8bkYCv.png" alt="cerasa ui description" itemprop="image"/>
                                     </div>
                                     <div class="single-work-ui-image">
-                                        <img src="ihttps://i.imgur.com/VAcp7Js.png" alt="cerasa ui pagination"/>
+                                        <img src="https://i.imgur.com/VAcp7Js.png" alt="cerasa ui pagination"/>
                                     </div>
                                 </div>
                             </div>

@@ -67,10 +67,13 @@ button:focus {
   position: relative;
   transition: all 0.3s;
 }
+
 .case-study-single-button .button-text {
   position: relative;
   z-index: 10;
+  font-size: 2rem;
 }
+
 .case-study-single-button .button-mask {
   content: "";
   position: absolute;
@@ -166,6 +169,7 @@ button:focus {
 .case-study-single-button.ghost:hover {
   background-color: #fff;
   color: #1c1d25;
+  text-decoration: none;
 }
 .button-big {
   font-size: 2em;
@@ -182,7 +186,7 @@ button:focus {
 }
 
 .hero-single-work {
-  height: 90vh;
+  height: 70vh;
   max-height: 950px;
   background-position: 50%;
   background-size: cover;
@@ -235,11 +239,12 @@ button:focus {
 .hero-single-work-title {
   font-family: League Spartan, Helvetica, Arial, sans-serif;
   margin-bottom: 13px;
+  font-size: 5rem;
 }
 .hero-single-work-subtitle {
   font-family: LibreBaskerville-Regular, Palatino Linotype, Times New Roman,
     serif;
-  font-size: 1.125em;
+  font-size: 2.5em;
   font-style: italic;
   font-weight: 400;
 }
@@ -267,7 +272,7 @@ button:focus {
   vertical-align: middle;
   font-family: League Spartan, Helvetica, Arial, sans-serif;
   text-transform: uppercase;
-  font-size: 0.75em;
+  font-size: 1.3em;
   letter-spacing: 2px;
 }
 .hero-single-context-stripe .context-stripe-focus-area li:last-child {
@@ -657,7 +662,7 @@ section:after {
   clear: both;
 }
 .button-content {
-  padding: 15px 0;
+  padding: 5px 0;
 }
 .text-center {
   text-align: center !important;
@@ -716,13 +721,14 @@ section:after {
   margin-bottom: 70px;
   color: #4a4a4a;
   transition-delay: 0.18s;
+  font-size: 2.5rem;
 }
 .section-subtitle {
   text-align: center;
   font-family: LibreBaskerville-Regular, Palatino Linotype, Times New Roman,
     serif;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 3rem;
   letter-spacing: 2px;
   color: #b19386;
   margin-bottom: 25px;
@@ -763,7 +769,7 @@ section:after {
 .single-work-giga-text {
   font-size: 11.875em;
   position: absolute;
-  bottom: -150px;
+  bottom: -190px;
   left: 6%;
   opacity: 0.1;
   font-family: League Spartan, Helvetica, Arial, sans-serif;
@@ -889,18 +895,17 @@ section:after {
 .single-work-text-content.is-left {
   padding-left: 50px;
 }
+.single-work-content-title {
+  font-size: 3rem;
+  text-transform: capitalize;
+}
 .single-work-content-separator {
   width: 27%;
   height: 4px;
   background-color: #235aa6;
   margin: 26px 0;
 }
-.single-work-content-desc a,
-.single-work-content-desc span,
-.single-work-content-desc strong {
-  color: #f06449;
-}
-.single-work-content-desc a {
+.single-work-content-desc a .single-work-content-desc a {
   text-decoration: underline;
 }
 .single-work-img-content {
@@ -920,6 +925,7 @@ section:after {
   transition: -webkit-transform 0.3s;
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
+  border-radius: 12px;
 }
 .single-work-img-content img:hover {
   -webkit-transform: scale(1.01);
@@ -952,7 +958,7 @@ section:after {
 .color-palette-section .color-palette-container .color-palette-name {
   display: block;
   padding-top: 25px;
-  font-size: 0.8125em;
+  font-size: 2em;
   font-family: Consolas, Monaco, Bitstream Vera Sans Mono, Courier, monospace;
   font-weight: 400;
   color: #4a4a4a;
@@ -1048,13 +1054,17 @@ section:after {
     serif;
   text-transform: uppercase;
   color: #b19386;
-  font-size: 0.75em;
+  font-size: 1.75em;
   font-weight: 400;
   margin-bottom: 25px;
 }
 .next-work .next-work-title {
   display: inline-block;
   position: relative;
+}
+.next-work-title {
+  color: #b19386;
+  font-size: 3.5rem;
 }
 .next-work .next-work-title:after {
   content: "";
@@ -1120,16 +1130,16 @@ section:after {
   background-color: #060c10;
 }
 .cerasa .single-work-content-separator {
-  background-color: #168dd9;
+  background-color: #ebb741;
 }
 .cerasa .single-work-content-desc a,
 .cerasa .single-work-content-desc span,
 .cerasa .single-work-content-desc strong {
-  color: #168dd9;
+  color: #ebb741;
 }
 @media only screen and (min-width: 64em) {
   .cerasa .single-work-intro-title {
-    color: #168dd9;
+    color: #ebb741;
   }
 }
 
@@ -1205,6 +1215,7 @@ section:after {
     width: 90%;
     margin: 0 auto;
     transition: none;
+    border-radius: 12px;
   }
   .single-work-content-desc {
     font-size: 13px;
@@ -1273,7 +1284,7 @@ section:after {
   font-size: 3.875em;
   color: white;
   position: absolute;
-  bottom: -210px;
+  bottom: -190px;
   left: 56%;
   opacity: 0.1;
   font-family: "Abril Fatface", cursive;

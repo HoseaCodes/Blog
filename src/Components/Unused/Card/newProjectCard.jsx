@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Articles.css'
-import BtnRender from './BtnRender';
+// import '../Articles.css'
 // import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 

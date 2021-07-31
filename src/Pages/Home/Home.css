@@ -181,6 +181,10 @@
 
 /* Image Overlay End */
 
+.projects {
+  width: 100%;
+}
+
 .projects h1,
 .technologies h1,
 .color h1,

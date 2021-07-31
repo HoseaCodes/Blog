@@ -1,10 +1,10 @@
 import React from 'react'
 import './Projects.css';
 import { Link } from "react-router-dom";
-import NavBar2 from '../../Components/NavBar/NavBar2';
-import Snippet from '../../Components/Tags/Snippet';
-import Footer from '../../Components/Footer/Footer';
-import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
+import NavBar2 from '../../NavBar/NavBar2';
+import Snippet from '../../Tags/Snippet';
+import Footer from '../../Footer/Footer';
+import SocialMediaTags from '../../SocialMediaTags/SocialMediaTags';
 import JS from '../../icons/JS.png'
 
 const CalorieKitchen = () => {

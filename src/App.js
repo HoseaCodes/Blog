@@ -8,10 +8,10 @@ import Contact from './Pages/Contact/Contact'
 import Error from './Pages/Error/Error'
 import Shop from './Pages/Shop/Shop';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import CalorieKitchen from './Pages/Projects/CalorieKitchen';
-import CareerConnect from './Pages/Projects/CareerConnect';
-import MergeImmersive from './Pages/Projects/MergeImmersive';
-import DevCenter from './Pages/Projects/DevCenter';
+// import CalorieKitchen from './Pages/Projects/CalorieKitchen';
+// import CareerConnect from './Pages/Projects/CareerConnect';
+// import MergeImmersive from './Pages/Projects/MergeImmersive';
+// import DevCenter from './Pages/Projects/DevCenter';
 import Stacks from './Pages/Articles/Stack';
 import Bash from './Pages/Articles/Bash';
 import BigO from './Pages/Articles/Big0';
@@ -20,7 +20,7 @@ import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
 import ArticleItem from './Pages/Articles/Article/Article';
-import ProjectItem from './Pages/Projects/Project/Projects';
+import ProjectItem from './Pages/Projects/Project/Project';
 
 
 export default class App extends Component {
@@ -43,7 +43,7 @@ export default class App extends Component {
               />
             )}
           />
-          <Route
+          {/* <Route
             exact
             path="/caloriekitchen"
             render={() => (
@@ -74,7 +74,7 @@ export default class App extends Component {
               <MergeImmersive
               />
             )}
-          />
+          /> */}
           <Route
             exact
             path="/bash"

@@ -94,7 +94,7 @@ const Projects = () => {
                 <div className='header-logo'>
                 </div>
             </div>
-            <Tags />
+            {/* <Tags /> */}
             {projectData.map(project => {
                                 return (<>
                                     <ProjectCard project={project}

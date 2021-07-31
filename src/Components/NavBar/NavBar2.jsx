@@ -27,7 +27,7 @@ const NavBar2 = () => {
                         <div className="dropdown-menu" aria-labelledby="navdrop">
                             <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="dropdown-item nav-link">Backend Portfolio</a>
                             <a href="/client" rel="noopener noreferrer" className="dropdown-item nav-link">Client Portfolio</a>
-                            <a href="/project" rel="noopener noreferrer" className="dropdown-item nav-link">Case Studies</a>
+                            <a href="/project" rel="noopener noreferrer" className="dropdown-item nav-link">Project Case Studies</a>
                         </div>
                     </li>
                     <Link to="/blog" className="nav-link">Blog</Link>

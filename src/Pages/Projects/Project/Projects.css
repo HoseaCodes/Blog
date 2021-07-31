@@ -235,6 +235,7 @@ button:focus {
   display: flex;
   flex-direction: row;
   padding-top: 10%;
+  background-color: #1c1d25;
 }
 
 @media only screen and (max-width: 33.75em) {
@@ -780,7 +781,7 @@ section:after {
 .single-work-giga-text {
   font-size: 11.875em;
   position: absolute;
-  bottom: -190px;
+  bottom: -140px;
   left: 6%;
   opacity: 0.1;
   font-family: League Spartan, Helvetica, Arial, sans-serif;
@@ -1297,7 +1298,7 @@ section:after {
   font-size: 5.875em;
   color: white;
   position: absolute;
-  bottom: -160px;
+  bottom: -135px;
   left: 56%;
   opacity: 0.1;
   font-family: "Abril Fatface", cursive;

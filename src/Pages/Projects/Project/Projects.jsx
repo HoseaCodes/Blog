@@ -10,14 +10,14 @@ const ProjectItem = (props) => {
 
     const newparm = parseInt(params.id)
 
-    const { headerImg, name, title, role, objectives, subHeading, source, 
+    const { headerImg, name, link, title, role, objectives, subHeading, source, 
         background, context, design, designImg, headline, date, websites, typography,
         designColor, uiDesignImg, userFlows, mainFunctions, goal, version} = projectData[params.id - 1 ];
 
         const nextProjectLink = 
         <>
         { newparm + 1 <= projectData.length && newparm !== 0 ?
-        <a href={`/project/${newparm + 1}`} className="next-work">
+        <a style={{backgroundImage: `url(${projectData[newparm].headerImg})`}} href={`/project/${newparm + 1}`} className="next-work next-work-headerimg">
             <div className="project-content">
                 <h5 className="h5 next-work-lead">Next Work</h5>
                 <h4 className="h2 next-work-title">{projectData[newparm].name}</h4>
@@ -27,7 +27,7 @@ const ProjectItem = (props) => {
             </div>
         </a>
     :
-        <a href={`/project/${newparm - 1}`} className="next-work">
+        <a style={{backgroundImage: `url(${projectData[newparm - 2].headerImg})`}} href={`/project/${newparm - 1}`} className="next-work">
             <div className="project-content">
                 <h5 className="h5 next-work-lead">Previous Work</h5>
                 <h4 className="h2 next-work-title">{projectData[newparm - 2].name}</h4>
@@ -149,7 +149,7 @@ const ProjectItem = (props) => {
                                         return (
                                             <>
                                                 <div className="color-palette-container">
-                                                    <div style={{backgroundColor: `${color}`}} className="color-palette"></div>
+                                                    <div style={{backgroundColor: `${designColor[color]}`}} className="color-palette"></div>
                                                     <h5 className="color-palette-name">{color}</h5>
                                                 </div>
                                             </>
@@ -165,13 +165,15 @@ const ProjectItem = (props) => {
                                             <h5 style={{paddingLeft: '30px'}}>{typeface}</h5>
                                             <img  style={{objectFit: 'contain', padding: '30px'}} src={typography[typeface]} alt="" srcset="" />
                                         </div>
-                                        {/* <div style={{backgroundImage: `url(${typography[typeface]})`}} className="single-work-font single-work-first-anim-blocks"></div> */}
                                         </>
                                     )
                                 })
                             }
                             </div>
-                        </div>
+                        </div>    
+                    </section>
+                    <section className="single-work-intro-section">
+                        <div className="section-mask"></div>
                         <div className="single-work-ui">
                             <div className="project-content">
                                 <div className="section-text-mask">
@@ -190,6 +192,9 @@ const ProjectItem = (props) => {
                                 </div>
                             </div>
                         </div>
+                    </section>
+                    <section className="single-work-section">
+                        <div className="section-mask"></div>
                         <div className="single-work-ui">
                             <div className="project-content">
                                 <div className="section-text-mask">

@@ -201,7 +201,7 @@ button:focus {
   display: block;
   content: " ";
   background: #000;
-  opacity: 0.55;
+  opacity: 0.75;
   transition: opacity 0.3s ease;
   z-index: 2;
 }
@@ -231,6 +231,12 @@ button:focus {
   color: #fff;
   z-index: 4;
 }
+.typography-container {
+  display: flex;
+  flex-direction: row;
+  padding-top: 10%;
+}
+
 @media only screen and (max-width: 33.75em) {
   .hero-single-work-content {
     width: 90%;
@@ -284,7 +290,11 @@ button:focus {
 .hero-single-context-stripe .context-stripe-focus-area li:last-child {
   text-align: right;
 }
-.cerasa .hero-single-context-stripe .context-stripe-focus-area li strong {
+.project-group
+  .hero-single-context-stripe
+  .context-stripe-focus-area
+  li
+  strong {
   color: #d0a93a;
 }
 
@@ -661,6 +671,7 @@ section:after {
 .inner-container:after {
   clear: both;
 }
+
 .button-content {
   padding: 5px 0;
 }
@@ -719,7 +730,7 @@ section:after {
 .section-title {
   text-align: center;
   margin-bottom: 70px;
-  color: #4a4a4a;
+  color: #b19386;
   transition-delay: 0.18s;
   font-size: 2.5rem;
 }
@@ -730,7 +741,7 @@ section:after {
   text-transform: uppercase;
   font-size: 3rem;
   letter-spacing: 2px;
-  color: #b19386;
+  color: #d0a93a;
   margin-bottom: 25px;
   transition-delay: 0.3s;
 }
@@ -961,7 +972,7 @@ section:after {
   font-size: 2em;
   font-family: Consolas, Monaco, Bitstream Vera Sans Mono, Courier, monospace;
   font-weight: 400;
-  color: #4a4a4a;
+  color: #b19386;
   transition: color 0.3s;
 }
 .color-palette-section .color-palette-container.is-hidden .color-palette {
@@ -980,7 +991,7 @@ section:after {
   box-shadow: 0 15px 25px 0 rgba(0, 0, 0, 0.23);
 }
 .color-palette-section .color-palette-container:hover .color-palette-name {
-  color: #f06449;
+  color: #d0a93a;
 }
 .single-work-font {
   float: left;
@@ -1053,7 +1064,7 @@ section:after {
   font-family: LibreBaskerville-Regular, Palatino Linotype, Times New Roman,
     serif;
   text-transform: uppercase;
-  color: #b19386;
+  color: #d0a93a;
   font-size: 1.75em;
   font-weight: 400;
   margin-bottom: 25px;
@@ -1063,7 +1074,7 @@ section:after {
   position: relative;
 }
 .next-work-title {
-  color: #b19386;
+  color: #d0a93a;
   font-size: 3.5rem;
 }
 .next-work .next-work-title:after {
@@ -1107,6 +1118,7 @@ section:after {
 .next-work:hover .next-work-lead,
 .next-work:hover .next-work-title {
   color: #fff;
+  z-index: 2;
 }
 .next-work:focus:after,
 .next-work:focus:before,
@@ -1126,31 +1138,32 @@ section:after {
   fill: #fff;
 }
 
-.cerasa .single-work-intro-section {
+.project-group .single-work-intro-section {
   background-color: #060c10;
 }
-.cerasa .single-work-content-separator {
+.project-group .single-work-content-separator {
   background-color: #ebb741;
 }
-.cerasa .single-work-content-desc a,
-.cerasa .single-work-content-desc span,
-.cerasa .single-work-content-desc strong {
+.project-group .single-work-content-desc a,
+.project-group .single-work-content-desc span,
+.project-group .single-work-content-desc strong {
   color: #ebb741;
 }
 @media only screen and (min-width: 64em) {
-  .cerasa .single-work-intro-title {
+  .project-group .single-work-intro-title {
     color: #ebb741;
   }
 }
 
-.cerasa .next-work:before {
+.project-group .next-work:before {
   background-color: #d0a93a;
 }
-.cerasa .next-work:after {
+.project-group .next-work:after {
   background-color: #060c10;
 }
-.cerasa .next-work-title:after {
+.project-group .next-work-title:after {
   background-color: #d0a93a;
+  color: #fff;
 }
 
 @media only screen and (max-width: 59.375em) {
@@ -1281,10 +1294,10 @@ section:after {
 }
 
 .single-work-giga-text {
-  font-size: 3.875em;
+  font-size: 5.875em;
   color: white;
   position: absolute;
-  bottom: -190px;
+  bottom: -160px;
   left: 56%;
   opacity: 0.1;
   font-family: "Abril Fatface", cursive;

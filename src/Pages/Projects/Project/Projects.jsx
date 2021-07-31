@@ -1,210 +1,241 @@
 import React from 'react';
-import PermIdentityIcon from '@material-ui/icons/PermIdentity';
-import EventNoteIcon from '@material-ui/icons/EventNote';
+import { useParams } from 'react-router-dom';
 import NavBar2 from '../../../Components/NavBar/NavBar2';
 import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 import  './Projects.css';
 
 const ProjectItem = (props) => {
-    const [projects] = projectData
+    const params = useParams()
 
-    const { title, type, info, description, img, id, name, date } = projects;
+    const newparm = parseInt(params.id)
 
-    console.log(props)
+    const { headerImg, name, title, role, objectives, subHeading, source, 
+        background, context, design, designImg, headline, date, websites, typography,
+        designColor, uiDesignImg, userFlows, mainFunctions, goal, version} = projectData[params.id - 1 ];
+
+        const nextProjectLink = 
+        <>
+        { newparm + 1 <= projectData.length && newparm !== 0 ?
+        <a href={`/project/${newparm + 1}`} className="next-work">
+            <div className="project-content">
+                <h5 className="h5 next-work-lead">Next Work</h5>
+                <h4 className="h2 next-work-title">{projectData[newparm].name}</h4>
+                <div className="next-work-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
+                </div>    
+            </div>
+        </a>
+    :
+        <a href={`/project/${newparm - 1}`} className="next-work">
+            <div className="project-content">
+                <h5 className="h5 next-work-lead">Previous Work</h5>
+                <h4 className="h2 next-work-title">{projectData[newparm - 2].name}</h4>
+                <div className="next-work-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
+                </div>    
+            </div>
+        </a>
+        }
+        </>
 
     return (
         <>
             <NavBar2/>
-            <div id="single-work" class="cerasa">
-                <header style={{backgroundImage: `url('https://i.imgur.com/6zFLMoK.jpg')`}} id="top" class="hero-single-work">
-                    <div class="hero-single-work-content">
-                        <div class="text-loading-mask">
-                            <div class="text-loading-overlay is-reveal"></div>
-                            <h1 itemprop="name" class="hero-single-work-title"> Black Paper - Crypto Learn</h1>
+            <div id="single-work" className="project-group">
+                <header style={{backgroundImage: `url(${headerImg})`}} id="top" className="hero-single-work">
+                    <div className="hero-single-work-content">
+                        <div className="text-loading-mask">
+                            <div className="text-loading-overlay is-reveal"></div>
+                            <h1 className="hero-single-work-title">{name}</h1>
                         </div>
-                        <div class="text-loading-mask">                            
-                            <div class="text-loading-overlay is-reveal"></div>
-                            <h3 class="hero-single-work-subtitle">Learn crypto the easy way.</h3>
+                        <div className="text-loading-mask">                            
+                            <div className="text-loading-overlay is-reveal"></div>
+                            <h3 className="hero-single-work-subtitle">{headline}</h3>
                         </div>
                     </div>
-                    <div class="hero-single-context-stripe">
-                        <div class="project-content">
-                            <ul class="context-stripe-focus-area is-loaded">
+                    <div className="hero-single-context-stripe">
+                        <div className="project-content">
+                            <ul className="context-stripe-focus-area is-loaded">
                                 <li>
                                 <strong>Role</strong> 
-                                    <span class="stripe-baffle"> Consultant Software Developer</span>
+                                    <span className="stripe-baffle">{role}</span>
                                 </li>
-                                <li><strong>Context</strong> <span class="stripe-baffle"> IOS App Creation</span>
+                                <li><strong>Context</strong> <span className="stripe-baffle"> {context}</span>
                                 </li>
-                                <li><strong>Period</strong> <span class="stripe-baffle"> Summer 2021</span>
+                                <li><strong>Period</strong> <span className="stripe-baffle"> {date}</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </header>
-                <main class="single-work">
-                    <section class="single-work-intro-section">
-                        <div class="single-work-giga-text">
-                            <p>BLACK PAPER</p>
+                <main className="single-work">
+                    <section className="single-work-intro-section">
+                        <div className="single-work-giga-text">
+                            <p>{title}</p>
                         </div>
-                        <div class="project-content">            
-                            <div class="overview-section">
-                                <div class="overview-container project-services">
-                                    <div class="sticky-labels services-label">
-                                    <h3 class="outline-title">Overview</h3>
+                        <div className="project-content">            
+                            <div className="overview-section">
+                                <div className="overview-container project-services">
+                                    <div className="sticky-labels services-label">
+                                    <h3 className="outline-title">Overview</h3>
                                     </div>
-                                    <div class="w-layout-grid services-list">
-                                        <div class="service-item">
-                                            <div class="overview-column">
-                                                <h6 class="overview-titles">Background</h6>
-                                                <div class="separation-line service-line"></div>
-                                                <p class="overview-descrp">Sphere is a premier private space travel company offering trips to Mars. Sphere is looking to sell tickets to Mars by fostering public interest and increasing transparency in space tourism. </p>
+                                    <div className="w-layout-grid services-list">
+                                        <div className="service-item">
+                                            <div className="overview-column">
+                                                <h6 className="overview-titles">Background</h6>
+                                                <div className="separation-line service-line"></div>
+                                                <p className="overview-descrp">{background}</p>
                                             </div>
-                                            <div data-w-id="d560b535-42b5-12a8-ef8c-77aab6dce6db" class="services-column">
-                                                <div class="column">
-                                                    <h6 class="overview-titles">Objectives</h6>
-                                                    <div class="separation-line service-line"></div>
-                                                    <p class="overview-descrp">Design a responsive space tourism website that not only informs the user of the mission and astronaut process, but also is visually captivating and futuristic <br/></p>
+                                            <div data-w-id="d560b535-42b5-12a8-ef8c-77aab6dce6db" className="services-column">
+                                                <div className="column">
+                                                    <h6 className="overview-titles">Objectives</h6>
+                                                    <div className="separation-line service-line"></div>
+                                                    <p className="overview-descrp">{objectives} <br/></p>
                                                 </div>
                                             </div>
-                                            <div class="column">
-                                                <h6 class="overview-titles">My role</h6>
-                                                <div class="separation-line service-line"></div>
-                                                <p class="overview-descrp">Research, UX, UI</p>
+                                            <div className="column">
+                                                <h6 className="overview-titles">My role</h6>
+                                                <div className="separation-line service-line"></div>
+                                                <p className="overview-descrp">{subHeading}</p>
                                             </div>
-                                            <div class="column">
-                                                <h6 class="overview-titles">Scope</h6>
-                                                <div class="separation-line service-line"></div>
-                                                <p class="overview-descrp">156 hours<br/>Self-started project</p>
+                                            <div className="column">
+                                                <h6 className="overview-titles">Scope</h6>
+                                                <div className="separation-line service-line"></div>
+                                                <p className="overview-descrp">
+                                                    {source.map((item) => {
+                                                        return <>{item} <br/></>
+                                                    })}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="button-content single-work-anim-text">
-                                <a href="/" target="_blank" rel="noopener" class="case-study-single-button ghost no-smoothState">
-                                    <span class="button-text">Visit Website</span>
-                                    <span class="button-icon">
+                            <div className="button-content single-work-anim-text">
+                                <a href={websites[0]} target="_blank" rel="noopener noreferrer" className="case-study-single-button ghost no-smoothState">
+                                    <span className="button-text">Visit Website</span>
+                                    <span className="button-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
                                     </span>
                                 </a>
                             </div>
                         </div>
                     </section>
-                    <section class="single-work-section">
-                        <div class="section-mask"></div>
-                        <div class="project-content">
-                            <div class="section-text-mask">
-                                <h4 class="h5 section-subtitle">Analysis &amp; Preparation</h4>
+                    <section className="single-work-section">
+                        <div className="section-mask"></div>
+                        <div className="project-content">
+                            <div className="section-text-mask">
+                                <h4 className="h5 section-subtitle">Analysis &amp; Preparation</h4>
                             </div>
-                            <div class="section-text-mask">
-                                <h2 class="h3 section-title">Branding</h2>
+                            <div className="section-text-mask">
+                                <h2 className="h3 section-title">Branding</h2>
                             </div>
-                            <div class="inner-container">
-                                <div class="single-work-text-content is-left single-work-first-anim-blocks">
-                                    <h3 class="single-work-content-title">An elegant design.</h3>
-                                    <div class="single-work-content-separator"></div>
-                                    <div class="single-work-content-desc">
-                                        <p>As the <strong>Front-end Developer</strong>, I was responsible of building the entire UI for the new website, redefining the User Experience and studying new interactions between the User and the Interface.</p><p>One of the most exciting experience was integrating the entire front-end system with the <strong>Ruby on Rails Application</strong> and the change page animation.</p>
+                            <div className="inner-container">
+                                <div className="single-work-text-content is-left single-work-first-anim-blocks">
+                                    <h3 className="single-work-content-title">An elegant design.</h3>
+                                    <div className="single-work-content-separator"></div>
+                                    <div className="single-work-content-desc">
+                                        <p>{design}</p>
                                     </div>
                                 </div>
-                                <div class="single-work-img-content single-work-first-anim-blocks">
-                                    <img src="https://i.imgur.com/9Ewbskn.png" alt="Cerasa User Interface Example"/>
+                                <div className="single-work-img-content single-work-first-anim-blocks">
+                                    <img src={designImg} alt="Cerasa User Interface Example"/>
                                 </div>
                             </div>
-                            <div class="inner-container color-palette-section">
-                                <div class="color-palette-container">
-                                    <div style={{backgroundColor: "#060c10"}} class="color-palette"></div>
-                                    <h5 class="color-palette-name">$ebony</h5>
-                                </div>
-                                <div class="color-palette-container">
-                                    <div style={{backgroundColor: "#333333"}} class="color-palette"></div>
-                                    <h5 class="color-palette-name">$mine-shaft</h5>
-                                </div>
-                                <div class="color-palette-container">
-                                    <div style={{backgroundColor: "#ededed"}} class="color-palette"></div>
-                                    <h5 class="color-palette-name">$gallery</h5>
-                                </div>
-                                <div class="color-palette-container">
-                                    <div class="color-palette"></div>
-                                    <h5 class="color-palette-name">$white</h5>
-                                </div>
-                                <div class="color-palette-container">
-                                    <div style={{backgroundColor: "#0069a6"}} class="color-palette"></div>
-                                    <h5 class="color-palette-name">$denim</h5>
-                                </div>
+                            <div className="inner-container color-palette-section">
+                                {
+                                    Object.keys(designColor).map((color) => {
+                                        return (
+                                            <>
+                                                <div className="color-palette-container">
+                                                    <div style={{backgroundColor: `${color}`}} className="color-palette"></div>
+                                                    <h5 className="color-palette-name">{color}</h5>
+                                                </div>
+                                            </>
+                                        )
+                                    })
+                                }
                             </div>
-                            <div class="inner-container">
-                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png')`}} class="single-work-font single-work-first-anim-blocks"></div>
-                                <div style={{backgroundImage: `url('https://i.imgur.com/yeC3yEc.png')`}} class="single-work-font single-work-first-anim-blocks"></div>
+                            <div className="inner-container typography-container">
+                                { Object.keys(typography).map((typeface, i) => {
+                                    return (
+                                        <>
+                                        <div className="section-title">
+                                            <h5 style={{paddingLeft: '30px'}}>{typeface}</h5>
+                                            <img  style={{objectFit: 'contain', padding: '30px'}} src={typography[typeface]} alt="" srcset="" />
+                                        </div>
+                                        {/* <div style={{backgroundImage: `url(${typography[typeface]})`}} className="single-work-font single-work-first-anim-blocks"></div> */}
+                                        </>
+                                    )
+                                })
+                            }
                             </div>
                         </div>
-                        <div class="single-work-ui">
-                            <div class="project-content">
-                                <div class="section-text-mask">
-                                    <h4 class="h5 section-subtitle">UI &amp; Components.</h4>
+                        <div className="single-work-ui">
+                            <div className="project-content">
+                                <div className="section-text-mask">
+                                    <h4 className="h5 section-subtitle">UI &amp; Components.</h4>
                                 </div>
-                                <div class="section-text-mask">
-                                        <h2 class="h3 section-title">Design</h2>
+                                <div className="section-text-mask">
+                                        <h2 className="h3 section-title">Design</h2>
                                 </div>
-                                <div class="inner-container single-work-ui-row single-work-anim-text">
-                                    <div class="single-work-ui-image">
-                                        <img src="https://i.imgur.com/i8bkYCv.png" alt="cerasa ui description" itemprop="image"/>
+                                <div className="inner-container single-work-ui-row single-work-anim-text">
+                                    <div className="single-work-ui-image">
+                                        <img src={uiDesignImg[0]} alt="cerasa ui description" />
                                     </div>
-                                    <div class="single-work-ui-image">
-                                        <img src="https://i.imgur.com/VAcp7Js.png" alt="cerasa ui pagination"/>
+                                    <div className="single-work-ui-image">
+                                        <img src={uiDesignImg[1]} alt="cerasa ui pagination"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="single-work-ui">
-                            <div class="project-content">
-                                <div class="section-text-mask">
-                                    <h4 class="h5 section-subtitle">User flows  &amp; Tasks.</h4>
+                        <div className="single-work-ui">
+                            <div className="project-content">
+                                <div className="section-text-mask">
+                                    <h4 className="h5 section-subtitle">User flows  &amp; Tasks.</h4>
                                 </div>
-                                <div class="section-text-mask">
-                                    <h2 class="h3 section-title">The Flow</h2>
+                                <div className="section-text-mask">
+                                    <h2 className="h3 section-title">The Flow</h2>
                                 </div>
-                                <div class="inner-container single-work-ui-row single-work-anim-text">
-                                    <p class="main-case-study-text"> User flows and tasks are lists of all possible actions that needs to be thoroughly considered, as well as the system behavior in each scenario. It gives us the overview of the activities user is able to perform. The user flows and the task that the children would complete were based on the schools curricula ad their resources. <br/><br/>
-                                    Together with the school board we decided to focus on 4 main functions: learning materials, consolidation of knowledge, exams and educational games. Children can first learn a specific substance, consolidate and later check and test the knowledge in an entertaining game. <br/><br/>
-                                        <ul class="case-study-flows">
-                                            <h4>4 main functions:</h4>
-                                            <li>Learning materials</li>
-                                            <li>Consolidation of knowledge</li>
+                                <div className="inner-container single-work-ui-row single-work-anim-text">
+                                    <p className="main-case-study-text"> 
+                                        {userFlows}
+                                        <br/><br/>
+                                        <ul className="case-study-flows">
+                                            <h4 className="h3 section-title">{mainFunctions.length} main functions:</h4>
+                                            {
+                                                mainFunctions.map((item) => {
+                                                    return (
+                                                        <li>{item}</li>
+                                                    )
+                                                })
+                                            }
                                         </ul>
                                     </p>
                                 </div>
                             </div>
                         </div>        
-                        <div class="single-work-ui">
-                            <div class="project-content">
-                                <div class="section-text-mask">
-                                    <h4 class="h5 section-subtitle">The Goal &amp; What's neaxt?.</h4>
+                        <div className="single-work-ui">
+                            <div className="project-content">
+                                <div className="section-text-mask">
+                                    <h4 className="h5 section-subtitle">The Goal &amp; What's neaxt?.</h4>
                                 </div>
-                                <div class="section-text-mask">
-                                    <h2 class="h3 section-title">The Black Paper v1.0</h2>
+                                <div className="section-text-mask">
+                                    <h2 className="h3 section-title">{version}</h2>
                                 </div>
-                                <div class="inner-container single-work-ui-row single-work-anim-text">
-                                    <p class="main-case-study-text"> The primary app idea is to allow users to easily create, share and count down to their moments. Whether it's a wedding, a holiday or just a night out with friends. There are many similar apps already on the market, however most of them provide a very complex, buggy solutions cluttered with ads. <br/><br/>
-                                    Our main requirements has always been to keep the app usable, reliable and functional. Aesthetically minimal, simple and clean. No ads, no tricks, but a consistent and intuitive user experience, providing value to our users, keeping them satisfied and engaged. Our reviews on App Store speak for themself:<br/><br/>
-                                    After our first launch we have closely monitored and collected feedback from customers. We have addressed and implemented all of the most requested features. Our app was growing and at the we had over 140k monthly active users. As we were identifying new opportunities to scale the app, we have decided to prepare a better foundation to support future ideas and direction. Redesigning and rebuilding the app in code was a necessary step to move forward. With releasing Days 2.0 we made the app faster, smarter and more beautiful than ever.</p>
+                                <div className="inner-container single-work-ui-row single-work-anim-text">
+                                    <p className="main-case-study-text">{goal} </p>
                                 </div>
                             </div>
                         </div> 
                     </section>
-                    <a href="/lato" data-destination="lato" class="next-work">
-                        <div class="project-content">
-                            <h5 class="h5 next-work-lead">Next Work</h5>
-                            <h4 class="h2 next-work-title">Project Lato</h4>
-                            <div class="next-work-arrow">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
-                            </div>    
-                        </div>
-                    </a>
+                    {
+                        nextProjectLink
+                    }
                 </main>
             </div>
+            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
             <Footer/>
         </>
     )

@@ -10,6 +10,7 @@ import Footer from '../../Components/Footer/Footer';
 import Testomonials from '../Testimonials/Testimonials';
 import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
+import ProjectHighlight from '../../Components/Project/projectHighlighr';
 
 class Home extends React.Component {
     render() {
@@ -45,7 +46,7 @@ class Home extends React.Component {
                     <Tech />
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                     <div className='projects'>
-                        <Projects />
+                        <ProjectHighlight />
                     </div>
                     <div className='testimonies-group'>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />

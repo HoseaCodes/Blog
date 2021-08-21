@@ -30,7 +30,7 @@ const NavBar2 = () => {
                         </div>
                     </li> */}
                     <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="nav-link">Portfolio</a>
-                    <Link to="/blog" id='article-link' className="nav-link">Blog</Link>
+                    <Link to="/blog" className="nav-link">Blog</Link>
                     <Link to="/about" className="nav-link">About</Link>
                     <Link to="/contact" className="nav-link">Contact</Link>
                 </ul>

@@ -6,6 +6,8 @@ import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import NavBar2 from '../../../Components/NavBar/NavBar2';
 import Footer from '../../../Components/Footer/Footer';
+import marked from 'marked';
+import moment from 'moment-timezone'
 
 const ArticleItem = (props) => {
     const params = useParams()
@@ -24,7 +26,8 @@ const ArticleItem = (props) => {
     if (detailArticle.length === 0) return null;
 
     const { title, subtitle, createdAt, description, images, markdown } = detailArticle;
-    console.log(props)
+    
+    const timeFormater = moment.utc(createdAt).format('MM/YYYY')
 
     return (
         <>
@@ -46,7 +49,7 @@ const ArticleItem = (props) => {
                                     <section className='blog-icon'>
                                         <PermIdentityIcon /> <span> By Dominique Hosea</span>
                                         &nbsp;&nbsp;
-                                        <EventNoteIcon /> <span> {createdAt}</span>
+                                        <EventNoteIcon /> <span> {timeFormater}</span>
                                         &nbsp;&nbsp;
                                     </section>
                                 </section>
@@ -56,7 +59,7 @@ const ArticleItem = (props) => {
                                     <p className='blog-content-info'>{description}</p>
                                     <br />     
                                     <br />
-                                    <p className='blog-content-info'>{markdown}</p>
+                                    <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
                                     <br />
                                 </section>
                                 <section>

@@ -225,13 +225,13 @@ function CreatArticle() {
                                                 <textarea className="preview d-flex jusify-self-center mauto mb"
                                                     name="markdown"
                                                     required value={article.markdown}
-                                                    onChange={(e) => setInput(e.target.value)}
+                                                    onChange={handleChangeInput}
                                                     // value={input}
                                                 ></textarea>
                                             </div>
                                             <div className="col-6" id="perview">
                                                 <h5 className="text-center">See the result</h5>
-                                                <div className="preview" dangerouslySetInnerHTML={{ __html: marked(input) }}>
+                                                <div className="preview" dangerouslySetInnerHTML={{ __html: marked(article.markdown) }}>
                                                 </div>
                                             </div>
                                         </div>

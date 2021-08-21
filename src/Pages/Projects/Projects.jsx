@@ -42,7 +42,7 @@
 //your entire project process. You can use this case study 
 //template to help guide you as you plan and craft your case 
 //study.
-//When formatting your “Portfolio” section, consider offering 
+//When formatting ur “Portfolio” section, consider offering 
 //the reader a high level, at-a-glance view of all your 
 //projects. Allow them to choose which project they would like 
 //to explore further by providing your audience with a clear 

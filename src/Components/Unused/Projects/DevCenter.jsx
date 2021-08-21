@@ -1,7 +1,7 @@
 import React from 'react'
 import './Projects.css';
 import { Link } from "react-router-dom";
-import NavBar2 from '../../Components/NavBar/NavBar2'
+import NavBar2 from '../../NavBar/NavBar2'
 import django from '../../icons/django.png'
 
 const DevCenter = () => {

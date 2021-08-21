@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Articles.css'
 import BtnRender from './BtnRender';
 // import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
+// Main Article Cards
 const ArticleItem = (props) => {
 
-    const { title, createdAt, description, images, checked, _id, sanitizedHtml } = props.article;
+    const { title, createdAt, description, images, _id } = props.article;
     console.log(props)
     return (
         <div className="article-card">

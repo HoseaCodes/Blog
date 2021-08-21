@@ -3,8 +3,6 @@ import NavBar2 from "../../Components/NavBar/NavBar2";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
-import organize from '../../icons/Py.png'
-import icon from "../../icons/icons.jpeg"
 import boostrap from "../../icons/Bootstrap.png"
 
 const Client = () => {
@@ -59,9 +57,6 @@ const Client = () => {
                         the inside is nice but the outside is just as important if not more so. Join the community
                         and upgrade your business today!
                             <br /><br />
-                            {/* <a href="javascript:void(0)" onclick="showModal(this)" data-target="#cards">
-                                View all Cards <i class="fa fa-angle-right"></i>
-                            </a> */}
                         </p>
 
                     </div>
@@ -92,7 +87,7 @@ const Client = () => {
                         <div className="text-center">
                             <div className="image">
 
-                                <img src={boostrap} />
+                                <img src={boostrap} alt="" />
 
                                 <div className="image-info">
                                     <h3>3.3.0</h3>
@@ -110,7 +105,7 @@ const Client = () => {
                     <div className="col-md-4 card-text-adjust">
                         <div className="text-center">
                             <div className="image">
-                                <img src={icon} />
+                                <img src={"https://i.imgur.com/NpD8OUs.jpg"} alt="icons" />
                                 <div className="image-info">
                                     <h3>170</h3>
                                     <h5>Thin Icons</h5>
@@ -126,7 +121,7 @@ const Client = () => {
                     <div className="col-md-4 ">
                         <div className="text-center">
                             <div className="image">
-                                <img src={icon} />
+                                <img src={"https://i.imgur.com/HknO2Av.jpg"} alt="docs"/>
                                 <div className="image-info">
                                     <h3>50+</h3>
                                     <h5>Examples</h5>
@@ -167,7 +162,7 @@ const Client = () => {
 
                     <div className="col-md-4 col-md-offset-1">
                         <div className="responsive-image">
-                            <img src="https://i.imgur.com/VAcp7Js.png" height="500px" />
+                            <img alt="" src="https://i.imgur.com/VAcp7Js.png" height="500px" />
                         </div>
                     </div>
                 </div>

@@ -26,7 +26,11 @@ const PersonalBrand = () => {
         <div className='personal-container'>
             {/* <Cards />
             <Resume /> */}
-            <div className='personalBrand-opener'>
+            <div data-aos="fade-right" 
+                data-aos-offset="500"
+                data-aos-duration="3000"
+                data-aos-easing="ease-in"
+            className='personalBrand-opener'>
 
                 <h2 className='name-title'>Dominique Hosea</h2>
                 <p className='bio-info'>A full-stack &nbsp;

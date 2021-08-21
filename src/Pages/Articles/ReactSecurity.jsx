@@ -98,7 +98,7 @@ class ReactSecurity extends Component {
                             <section className='blog-categories'>
                                 <h6>Categories</h6>
                                 {tags.map(tag => {
-                                    return (<a href="#" className="main-tag-article">{tag}</a>
+                                    return (<a href="/" className="main-tag-article">{tag}</a>
                                     )
                                 })}
                             </section>

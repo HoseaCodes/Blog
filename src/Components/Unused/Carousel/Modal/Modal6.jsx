@@ -5,7 +5,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import ControlPointIcon from '@material-ui/icons/ControlPoint';
-import '../Modal/Modal.css';
+import './Modal.css';
 
 const useStyles = makeStyles((theme) => ({
     modal: {

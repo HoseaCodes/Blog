@@ -37,9 +37,9 @@
   }
 }
 .bio-info {
-  width: 70%;
+  width: 75%;
   margin-top: 1rem;
-  font-size: 2.3rem;
+  font-size: 2.7rem;
   font-weight: 600;
   text-align: center;
   color: rgb(235, 183, 65);
@@ -84,7 +84,7 @@
 
 .personal-card-title {
   text-transform: uppercase;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 400;
 }
 .personal-card-info {
@@ -93,7 +93,7 @@
 }
 .personal-card-content {
   overflow: scroll;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
 }
 .personal-image {
   width: 45%;
@@ -129,6 +129,12 @@
   overflow: hidden;
   animation: personal-btn 10s steps(1) -1s normal;
 }
+
+.personal-btn:hover {
+  background-color: #204740;
+  color: #fff;
+}
+
 @keyframes peronal-btn {
   0% {
     left: 250%;

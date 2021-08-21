@@ -31,8 +31,6 @@ const items = [
 ]
 const Cards = () => {
     return (<>
-        <h2 className='card-click' style={{ fontSize: '2rem', color: 'white', opacity: '.8', textShadow: '2px 2px 2px #206a5d' }}>
-            Click titles below to read more about my skills, eduction and interest.</h2>
         <CardView
             items={items}
             activeColor='#206a5d'

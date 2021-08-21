@@ -1,9 +1,9 @@
 //https://hoseacodes.github.io/Project-1/
 
 import React from 'react';
-import './Option2.css'
+import './projectCardsFlip.css'
 
-const Project1 = () => {
+const ProjectCardsFlip = () => {
     return (
         <div>
             <h1> Projects</h1>
@@ -94,4 +94,4 @@ const Project1 = () => {
 
 }
 
-export default Project1;
+export default ProjectCardsFlip;

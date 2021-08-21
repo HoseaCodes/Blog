@@ -11,50 +11,34 @@ import Swift from '../../icons/swift.png';
 import JQuery from '../../icons/jquery.png';
 import './Technologies.css';
 
+
 class Tech extends Component {
+    
     render() {
-        const img = [Bootstrap, JS, Django, MongoDB, Node, postgresql, Py, Reactt, Swift, JQuery, 'https://i.imgur.com/wiEM1zo.png', 'https://i.imgur.com/NhpXJN2.png'];
+        const imgSlide = {"bootstrap": Bootstrap, "javascript": JS, "Django": Django, 
+        "mongodb": MongoDB, "nodejs": Node, "postgresql": postgresql, "python": Py, "react": Reactt, 
+        "swift": Swift,"jquery": JQuery, "java": 'https://i.imgur.com/wiEM1zo.png',"solidity": 'https://i.imgur.com/NhpXJN2.png'};
         return (
             <>
                 <div className="tech-container">
-                    <h2 className='tech-title'>Technologies</h2>
-
+                    <h2 
+                    data-aos="fade-down" 
+                    data-aos-offset="500"
+                    data-aos-duration="3000"
+                    data-aos-easing="ease-in"
+                    className='tech-title'>Technologies</h2>
+                   
                     <div className="client-slider">
                         <div className="client-slide-track">
-                            <div className="client-slide">
-                                <img src={Bootstrap} height="100" width="150" alt="Social Ring" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={JS} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={Django} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={MongoDB} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={Node} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={postgresql} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={Py} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={Reactt} height="100" width="150" alt="" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={Swift} height="100" width="150" alt="Social Ring" />
-                            </div>
-                            <div className="client-slide">
-                                <img className="pinklemonade" src={img[10]} height="100" width="120" alt="PinkLemonade" />
-                            </div>
-                            <div className="client-slide">
-                                <img src={img[11]} height="100" width="150" alt="" />
-                            </div>
-
+                            {Object.keys(imgSlide).map((img) => {
+                                return (
+                                    <>
+                                     <div className="client-slide">
+                                        <img src={imgSlide[img]} height="100" width="150" alt={img} />
+                                    </div>
+                                    </>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

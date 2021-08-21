@@ -1,9 +1,9 @@
 //http://webfiver.com/
 
 import React from 'react';
-import './Option1.css'
+import './projectCards.css'
 
-const WebFiver = () => {
+const ProjectCards = () => {
     return (
         <div>
             <h1>Webfiver</h1>
@@ -95,4 +95,4 @@ const WebFiver = () => {
 
 }
 
-export default WebFiver;
+export default ProjectCards;

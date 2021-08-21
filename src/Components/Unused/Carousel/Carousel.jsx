@@ -1,5 +1,4 @@
 import React from 'react';
-import CarouselCalorieKitchen from '../Carousel/CarouselCalorieKitchen';
 import CarouselCareerconnect from '../Carousel/CarouselCareerConnect';
 import CarouselSneakerAPI from './CarouselSneakerAPI';
 import AOS from 'aos';

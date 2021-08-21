@@ -3,9 +3,9 @@ import React, { useState, useContext } from 'react';
 import './Articles.css'
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Subscribe from '../../Components/Subscribe/Subscribe'
-import { articleData, categoryTags } from './ArticleData';
+// import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
-import { auth, login, logout } from '../../services/firebase';
+// import { auth, login, logout } from '../../services/firebase';
 import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import axios from 'axios';
@@ -14,10 +14,10 @@ const Articles = () => {
 
     const state = useContext(GlobalState)
     const [articles, setArticles] = state.articlesAPI.articles
-    const [token] = state.token
+    // const [token] = state.token
     const [callback, setCallback] = state.articlesAPI.callback
     const [loading, setLoading] = useState(false)
-    const [isCheck, setIsCheck] = useState(false)
+    // const [isCheck, setIsCheck] = useState(false)
     const [tagsShow, setTagsShow] = useState('All')
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
@@ -43,19 +43,20 @@ const Articles = () => {
         setArticles([...articles])
     }
 
-    const checkAll = () => {
-        articles.forEach(article => {
-            article.checked = !isCheck
-        })
-        setArticles([...articles])
-        setIsCheck(!isCheck)
-    }
+    // const checkAll = () => {
+    //     articles.forEach(article => {
+    //         article.checked = !isCheck
+    //     })
+    //     setArticles([...articles])
+    //     setIsCheck(!isCheck)
+    // }
 
-    const deleteAll = () => {
-        articles.forEach(article => {
-            if (article.checked) deleteArticle(article._id, article.images.public_id)
-        })
-    }
+    // const deleteAll = () => {
+    //     articles.forEach(article => {
+    //         if (article.checked) deleteArticle(article._id, article.images.public_id)
+    //     })
+    // }
+
     const filteredArticles = articles.filter(
         (article) => {
             return article.title.toLowerCase().indexOf(
@@ -120,7 +121,7 @@ const Articles = () => {
                 <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
-                    <p style={{ color: 'white', fontSize: '1.5rem', color: 'lightgray' }}>Here are some of my articles you may like.</p>
+                    <p style={{ fontSize: '1.5rem', color: 'lightgray' }}>Here are some of my articles you may like.</p>
                     <input type="text"
                         className='article-search'
                         label="Search Articles"
@@ -187,7 +188,7 @@ const Articles = () => {
                                     <section className='popular-articles'>
                                         {articles.map(article => {
                                             return (<>
-                                                <a href={`/blog/${article.id}`} target="_blank">
+                                                <a href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
                                             </>)
                                         })}

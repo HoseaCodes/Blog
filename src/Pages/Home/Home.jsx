@@ -3,14 +3,12 @@ import '../Home/Home.css';
 import NavBar2 from '../../Components/NavBar/NavBar2';
 import Scramble from '../../Components/Scramble/Scramble';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
-import Projects from '../../Components/Carousel/Carousel';
-import PersonalBrand from '../../Components/PersonalBrand/PersonalBrand';
-import SocialMediaTags from '../../Components/SocialMediaTags/SocialMediaTags';
+import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
 import Footer from '../../Components/Footer/Footer';
-import Testomonials from '../Testimonials/Testimonials';
+import Testimonial from '../../Components/Testimonials/testimonial';
 import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
-import ProjectHighlight from '../../Components/Project/projectHighlighr';
+import ProjectHighlight from '../../Components/Project/projectHighlight';
 
 class Home extends React.Component {
     render() {
@@ -51,7 +49,12 @@ class Home extends React.Component {
                     <div className='testimonies-group'>
                         <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
 
-                        <h2 className="subTitle" >
+                        <h2 
+                        data-aos="fade-down" 
+                        data-aos-offset="500"
+                        data-aos-duration="3000"
+                        data-aos-easing="ease-in"
+                        className="subTitle" >
                             Testimonies
                         </h2>
                     </div>
@@ -65,7 +68,7 @@ class Home extends React.Component {
                             <SocialMedia />
                         </div>
                         <div className='testomonies mobile'>
-                            <Testomonials />
+                            <Testimonial/>
                         </div>
                     </div>
                     <div className='contact'>

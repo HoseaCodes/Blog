@@ -17,6 +17,11 @@
 .section-images {
   background-color: #435b69;
 }
+.image img {
+  height: 200px;
+  border-radius: 12px;
+}
+
 .section {
   padding: 40px 0;
   position: relative;

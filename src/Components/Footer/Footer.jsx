@@ -1,7 +1,6 @@
 import React from 'react';
 import "./Footer.css";
-import PhoneIphoneIcon from '@material-ui/icons/PhoneIphone';
-import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
+
 import SocialMediaTags from '../SocialMediaTags/SocialMediaTags';
 
 const Footer = () => {
@@ -16,7 +15,7 @@ const Footer = () => {
                         <p className="mb10">HoseaCodes’ mission statement is to build the future while empowering every person and every organization on the planet to achieve more. </p>
                         <p><i className="fa fa-location-arrow"></i> Houston, TX </p>
                         <p><i className="fa fa-phone"></i>  +1-281-780-8424</p>
-                        <p><i className="fa fa fa-envelope"></i> <a href="mailto:mr.dhosea@gmail.com"></a> mr.dhosea@gmail.com </p>
+                        <p><i className="fa fa fa-envelope"></i> <a href="mailto:mr.dhosea@gmail.com"> mr.dhosea@gmail.com </a> </p>
 
 
                     </div>
@@ -42,10 +41,10 @@ const Footer = () => {
                         <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
                         {/* <!--headin5_amrc--> */}
                         <ul className="footer_ul_amrc">
-                            <li><a href="http://webenlance.com">Remove Background</a></li>
-                            <li><a href="http://webenlance.com">Shadows & Mirror Reflection</a></li>
-                            <li><a href="http://webenlance.com">Logo Design</a></li>
-                            <li><a href="http://webenlance.com">Vectorization</a></li>
+                            <li><a href="https://www.remove.bg/upload">Remove Background</a></li>
+                            <li><a href="/client">Shadows & Mirror Reflection</a></li>
+                            <li><a href="/project">Logo Design</a></li>
+                            <li><a href="/shop">Vectorization</a></li>
                             <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
                             <li><a href="http://webenlance.com">Image Cropping</a></li>
                         </ul>
@@ -57,9 +56,9 @@ const Footer = () => {
                         <h5 className="headin5_amrc col_white_amrc pt2">Follow Me On</h5>
                         {/* Twitter Profile Tweets */}
                         <ul className="footer_ul2_amrc">
-                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 56 #100DaysOfCode I added a markdown preview...<a href="https://twitter.com/DominiqueRHosea/status/1382724497954930693">twitter.com/status/Day56</a></p></li>
-                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 55 #100DaysOfCode I revisted solidity smart ...<a href="https://twitter.com/DominiqueRHosea/status/1382215669115080705">twitter.com/status/Day55</a></p></li>
-                            <li><a href="#"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Received my work laptop. I’m so excited!...<a href="https://twitter.com/DominiqueRHosea/status/1381995531375890437">twitter.com/status/startjob</a></p></li>
+                            <li><a href="/"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 56 #100DaysOfCode I added a markdown preview...<a href="https://twitter.com/DominiqueRHosea/status/1382724497954930693">twitter.com/status/Day56</a></p></li>
+                            <li><a href="/"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Day 55 #100DaysOfCode I revisted solidity smart ...<a href="https://twitter.com/DominiqueRHosea/status/1382215669115080705">twitter.com/status/Day55</a></p></li>
+                            <li><a href="/"><i className="fab fa-twitter fleft padding-right"></i> </a><p>Received my work laptop. I’m so excited!...<a href="https://twitter.com/DominiqueRHosea/status/1381995531375890437">twitter.com/status/startjob</a></p></li>
                         </ul>
                     </div>
                 </div>

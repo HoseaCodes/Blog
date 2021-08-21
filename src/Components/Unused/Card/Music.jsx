@@ -8,6 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
+import PhotoAlbumIcon from '@material-ui/icons/PhotoAlbum';
+import PlaceIcon from '@material-ui/icons/Place';
+import PublicIcon from '@material-ui/icons/Public';
+import QueueMusicIcon from '@material-ui/icons/QueueMusic';
+import ScoreIcon from '@material-ui/icons/Score';
+import SportsEsportsIcon from '@material-ui/icons/SportsEsports';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -40,6 +46,7 @@ export default function MediaControlCard() {
     const theme = useTheme();
 
     return (
+        <>
         <Card className={classes.root}>
             <div className={classes.details}>
                 <CardContent className={classes.content}>
@@ -68,5 +75,13 @@ export default function MediaControlCard() {
                 title="Live from space album cover"
             />
         </Card>
+
+        <PhotoAlbumIcon></PhotoAlbumIcon>
+            <PlaceIcon></PlaceIcon>
+            <PublicIcon></PublicIcon>
+            <QueueMusicIcon></QueueMusicIcon>
+            <ScoreIcon></ScoreIcon>
+            <SportsEsportsIcon></SportsEsportsIcon>
+        </>
     );
 }

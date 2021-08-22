@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import NavBar2 from '../../../Components/NavBar/NavBar2';
+import NavBar from '../../../Components/NavBar/NavBar';
 import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 import  './Project.css';
@@ -41,9 +41,9 @@ const ProjectItem = (props) => {
 
     return (
         <>
-            <NavBar2/>
+            <NavBar/>
             <div id="single-work" className="project-group">
-                <header style={{backgroundImage: `url(${headerImg})`}} id="top" className="hero-single-work">
+                <div style={{backgroundImage: `url(${headerImg})`}} id="top" className="hero-single-work">
                     <div className="hero-single-work-content">
                         <div className="text-loading-mask">
                             <div className="text-loading-overlay is-reveal"></div>
@@ -68,7 +68,8 @@ const ProjectItem = (props) => {
                             </ul>
                         </div>
                     </div>
-                </header>
+                </div>
+                <hr className="header-hr"/>
                 <main className="single-work">
                     <section className="single-work-intro-section">
                         <div className="single-work-giga-text">
@@ -240,7 +241,7 @@ const ProjectItem = (props) => {
                     }
                 </main>
             </div>
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+            <hr className="header-hr"/>
             <Footer/>
         </>
     )

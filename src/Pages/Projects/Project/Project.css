@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
 
+.project-group {
+  background-color: #1a1e23;
+}
+
 audio,
 embed,
 iframe,
@@ -266,7 +270,7 @@ button:focus {
 }
 .hero-single-context-stripe .context-stripe-focus-area {
   margin: 0;
-  padding: 0;
+  padding: 2%;
   list-style: none;
 }
 .hero-single-context-stripe .context-stripe-focus-area li {
@@ -297,6 +301,7 @@ button:focus {
   li
   strong {
   color: #d0a93a;
+  background-color: #1a1e23;
 }
 
 @media only screen and (max-width: 56.25em) {
@@ -354,7 +359,7 @@ button:focus {
 }
 .case-studies-list .case-study {
   display: block;
-  width: 80%;
+  width: 90%;
   opacity: 1;
   height: 480px;
   background-color: #1c1d25;
@@ -696,6 +701,7 @@ section:after {
   left: 0;
   width: 100%;
   z-index: -1;
+  background-color: #1a1e23;
 }
 .section-mask,
 .section-mask:after {

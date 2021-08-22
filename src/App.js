@@ -134,15 +134,9 @@ export default class App extends Component {
             <Route path="/blog/:id" exact component={ArticleItem} />
             <Route path="/blog/new" exact component={CreateArticle} />
             <Route path="/blog/edit" exact component={CreateArticle} />
+            <Route path="/contact" exact component={Contact} />
           </DataProvider>
 
-          <Route
-            path="/contact"
-            render={() => (
-              <Contact
-              />
-            )}
-          />
 
           <Error />
         </Switch>

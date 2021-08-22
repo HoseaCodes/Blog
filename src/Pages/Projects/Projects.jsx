@@ -79,31 +79,35 @@
 
 import React from 'react';
 import './Projects.css';
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar from '../../Components/NavBar/NavBar';
 import { Link } from "react-router-dom";
 import Tags from '../../Components/Tags/Tags'
 import {projectData} from './ProjectsData';
 import ProjectCard from '../../Components/Cards/projectCard';
+import Footer from '../../Components/Footer/Footer';
 
 const Projects = () => {
 
     return (
         <div>
-            <NavBar2 />
+            <NavBar />
             <div className='header2'>
                 <div className='header-logo'>
                 </div>
             </div>
+            <hr className="header-hr"/>
+
             {/* <Tags /> */}
             {projectData.map(project => {
                                 return (<>
                                     <ProjectCard project={project}
                                         key={project.id}
                                     />
-                                    <hr className='article-line' />
+                                    <hr className="header-hr"/>
                                 </>
                                 )
                             })}
+            <Footer/>
         </div>
     )
 

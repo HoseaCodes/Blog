@@ -25,6 +25,7 @@ const ProjectCardsFlip = () => {
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                     {/* <div className="col" ontouchstart="this.classList.toggle('hover');">
                         <div className="container">
                             <div className="front1" >
@@ -87,6 +88,8 @@ const ProjectCardsFlip = () => {
                     </div> */}
 
 
+=======
+>>>>>>> test
                 </div>
             </div>
         </div>

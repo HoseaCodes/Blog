@@ -13,13 +13,13 @@
 
 import React from 'react';
 import './Contact.css'
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar from '../../Components/NavBar/NavBar';
 import ContactForm from '../../Components/Form/ContactForm'
 
 const Contact = () => {
     return (
         <div >
-            <NavBar2 />
+            <NavBar />
             <div className='cHeader'>
                 <div className='header-logo'>
                     <h1 className='heading-primary'>
@@ -27,9 +27,8 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+            <hr className="header-hr "/>
             <h2 className='contacth2'>Contact Me</h2>
-
             <ContactForm />
         </div >
     )

@@ -32,11 +32,9 @@ class Tech extends Component {
                         <div className="client-slide-track">
                             {Object.keys(imgSlide).map((img) => {
                                 return (
-                                    <>
-                                     <div className="client-slide">
+                                    <div  className="client-slide" key={img}>
                                         <img src={imgSlide[img]} height="100" width="150" alt={img} />
                                     </div>
-                                    </>
                                 )
                             })}
                         </div>

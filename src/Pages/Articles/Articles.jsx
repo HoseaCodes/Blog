@@ -1,7 +1,7 @@
 
 import React, { useState, useContext } from 'react';
 import './Articles.css'
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar2 from '../../Components/NavBar/NavBar';
 import Subscribe from '../../Components/Subscribe/Subscribe'
 // import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
@@ -9,6 +9,7 @@ import ArticleCard from './ArticleCard';
 import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import axios from 'axios';
+import Footer from '../../Components/Footer/Footer';
 
 const Articles = () => {
 
@@ -118,7 +119,7 @@ const Articles = () => {
                     <div className='artcile-header-logo'>
                     </div>
                 </div>
-                <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                <hr className="header-hr "/>
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
                     <p style={{ fontSize: '1.5rem', color: 'lightgray' }}>Here are some of my articles you may like.</p>
@@ -201,7 +202,8 @@ const Articles = () => {
                     </div>
                 </div>
             </div>
-
+            <hr className="header-hr "/>
+            <Footer/>
         </>
     )
 }

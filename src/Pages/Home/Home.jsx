@@ -1,6 +1,6 @@
 import React from 'react';
 import '../Home/Home.css';
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar from '../../Components/NavBar/NavBar';
 import Scramble from '../../Components/Scramble/Scramble';
 import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
@@ -15,7 +15,7 @@ class Home extends React.Component {
         return (
             <>
                 <main className='home-page'>
-                    <NavBar2 id='top' />
+                    <NavBar id='top' />
                     <div className='header'>
                         <div className='header-logo' id='header-logo'>
                             <h1 className='heading-primary'>
@@ -38,16 +38,16 @@ class Home extends React.Component {
                             </h1>
                         </div>
                     </div>
-                    <hr className="header-hr" style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                    <hr className="header-hr"/>
                     <PersonalBrand />
-                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                    <hr className="header-hr"/>
                     <Tech />
-                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                    <hr className="header-hr"/>
                     <div className='projects'>
                         <ProjectHighlight />
                     </div>
                     <div className='testimonies-group'>
-                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                        <hr className="header-hr"/>
 
                         <h2 
                         data-aos="fade-down" 
@@ -59,7 +59,7 @@ class Home extends React.Component {
                         </h2>
                     </div>
 
-                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                    <hr className="header-hr"/>
 
                     <br />
                     <br />
@@ -72,7 +72,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='contact'>
-                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                        <hr className="header-hr"/>
                         <div className='contact-group'>
                             <h2 style={{
                                 fontSize: '5rem', textAlign: 'center',
@@ -87,7 +87,7 @@ class Home extends React.Component {
                             </a>
 
                         </div>
-                        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                        <hr className="header-hr"/>
                         <br />
                         <div style={{ width: '10%', margin: '0 auto' }}>
                             <a href='#top' className='footer-button'

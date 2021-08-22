@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar2 from "../../Components/NavBar/NavBar2";
+import NavBar2 from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
@@ -15,12 +15,12 @@ const Client = () => {
                 </h1>
             </div>
         </div>
-        <div className="main presentation pt-5">
+        <div className="presentation pt-5">
             <div className="section section-gray-gradient section-description">
                 <div className="container">
                     <div className="row">
                         <div className="col-md-10 col-md-offset-2" style={{ textAlign: 'center' }}>
-                            <h1 className="header-text main">Designed and developed for your business
+                            <h1 className="header-text ">Designed and developed for your business
                             <h1>
                                     <br />
                                     <small style={{
@@ -168,7 +168,7 @@ const Client = () => {
                 </div>
             </div>
         </div>
-        <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+        <hr className="header-hr"/>
         <Footer />
     </>
     )

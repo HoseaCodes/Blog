@@ -13,7 +13,9 @@
   height: 40vh !important;
   padding-bottom: 55px;
 }
-
+.presentation {
+  background-color: #1a1e23;
+}
 .section-images {
   background-color: #435b69;
 }
@@ -27,10 +29,7 @@
   position: relative;
   color: whitesmoke;
   font-size: 18px;
-}
-
-.main {
-  font-size: 4rem;
+  background-color: #1a1e23;
 }
 
 .section-cards {

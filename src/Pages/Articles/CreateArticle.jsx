@@ -3,7 +3,7 @@ import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar2 from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 import './CreateArticle.css';
 import marked from 'marked';

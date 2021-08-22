@@ -15,7 +15,11 @@ const ProjectItem = (props) => {
     return (
         <>
             <NavBar2/>
+<<<<<<< HEAD
             <main class="blog-content">
+=======
+            <main className="blog-content">
+>>>>>>> test
                 <article className='blog-main'>
                     <h2 style={{ marginTop: '5rem', fontSize: '3rem', fontWeight: '600' }}>{name}</h2>
                     <hr style={{ background: 'rgb(235,183,65)', width: '100vw' }} />

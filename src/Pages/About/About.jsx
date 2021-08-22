@@ -45,7 +45,8 @@
 
 import React from 'react';
 import './About.css';
-import NavBar2 from '../../Components/NavBar/NavBar2';
+import NavBar2 from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 
 const About = () => {
@@ -58,7 +59,7 @@ const About = () => {
                 </h1>
                 <img className='about-img' src="https://i.imgur.com/dj1vhqzm.png?1" alt="Hosea" />
             </div>
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+            <hr className="header-hr "/>
             <div className="quote">
                 <q>
                     What you think, you become. What you feel, you attract. What you imagine, you create.
@@ -68,7 +69,7 @@ const About = () => {
             {/* <!-- Quote/Highlight End  --> */}
 
             {/* <!-- Timeline  -->  */}
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+            <hr className="header-hr "/>
             <div className="timeline">
                 <div id="timeline" className="about-container left">
                     <div className="content">
@@ -96,6 +97,8 @@ const About = () => {
                 </div>
             </div>
             {/* <!-- Timeline End  --> */}
+            <hr className="header-hr "/>
+            <Footer/>
         </div>
     )
 }

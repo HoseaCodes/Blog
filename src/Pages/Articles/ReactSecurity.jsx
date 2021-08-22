@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import { articleData } from './ArticleData';
-import NavBar2 from '../../Components/NavBar/NavBar2'
+import NavBar2 from '../../Components/NavBar/NavBar'
 import './Blog.css'
 import Footer from '../../Components/Footer/Footer';
 

@@ -32,36 +32,34 @@ const steps = [
 ];
 const Testimonial = () => {
     return (
-        <div id="myTestimonial" class="testimonial-carousel slide" data-ride="carousel"
+        <div id="myTestimonial" className="testimonial-carousel slide" data-ride="carousel"
         data-aos="fade-left"
         data-aos-offset="00"
         data-aos-duration="3000"
         >
-            <ol class="carousel-indicators">
-                <li data-target="#myTestimonial" data-slide-to="0" class="active"></li>
+            <ol className="carousel-indicators">
+                <li data-target="#myTestimonial" data-slide-to="0" className="active"></li>
                 <li data-target="#myTestimonial" data-slide-to="1"></li>
                 <li data-target="#myTestimonial" data-slide-to="2"></li>
             </ol>
-            <div class="carousel-inner">
-                <div class="testimonial-item carousel-item active">
-                    <div class="img-box"><img src={Nathan} alt="Nathan Childress"/></div>
-                    <p class="testimonial-descp">"Liked the color scheme and how you made full use of everything your api collection had to offer. The joke addition adds a little personal connect feeling for the user and all the recipe info is not hidden behind a wall of filter choices."</p>
-                    <p class="testimonial-title"><b>Nathan Childress</b>Seo Analyst </p>
+            <div className="carousel-inner">
+                <div className="testimonial-item carousel-item active">
+                    <div className="img-box"><img src={Nathan} alt="Nathan Childress"/></div>
+                    <p className="testimonial-descp">"Liked the color scheme and how you made full use of everything your api collection had to offer. The joke addition adds a little personal connect feeling for the user and all the recipe info is not hidden behind a wall of filter choices."</p>
+                    <p className="testimonial-title"><b>Nathan Childress</b>Seo Analyst </p>
                 </div>
             {steps.map((step) => {
                 return (
-                    <>
-                     <div class="testimonial-item carousel-item">
-                        <div class="img-box"><img src={step.imageUrl} alt=""/></div>
-                        <p class="testimonial-descp">{step.description}</p>
-                        <p class="testimonial-title"><b>{step.title}</b>Seo Analyst </p>
+                     <div className="testimonial-item carousel-item" key={step.title}>
+                        <div className="img-box"><img src={step.imageUrl} alt=""/></div>
+                        <p className="testimonial-descp">{step.description}</p>
+                        <p className="testimonial-title"><b>{step.title}</b>Seo Analyst </p>
                     </div>
-                    </>
                 )
             })}
             </div>  
-            <a class="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev"> <i class="fa fa-angle-left"></i> </a> 
-            <a class="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next"> <i class="fa fa-angle-right"></i> </a>
+            <a className="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev"> <i className="fa fa-angle-left"></i> </a> 
+            <a className="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next"> <i className="fa fa-angle-right"></i> </a>
         </div>
     )
 }

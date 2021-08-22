@@ -12,15 +12,14 @@ function ProjectCard(props) {
        <section id="case-studies"  className="case-studies-section">
         <div className="section-mask"></div>
         <div className="case-study-content">
-          <ul className="case-studies-list">
-            <li>
+          <div className="case-studies-list">
               <Link to={`/project/${props.project.id}`}  className="case-study" style={{backgroundImage: `url(${props.project.img})`}}>
                 <div className="case-study-mask"></div>
                 <div className="case-study-reveal-mask"></div>
                 <div className="case-study-mask-number">
-                  <div className="case-study-mask-back">{props.project.id}</div>
+                  <div className="case-study-mask-back">0{props.project.id}</div>
                   <div className="case-study-mask-front">
-                    <div data-index="01" className="case-study-mask-overlay">{props.project.id}</div></div>            
+                    <div data-index={`0${props.project.id}`} className="case-study-mask-overlay">{props.project.id}</div></div>            
                     </div>
                 <div className="case-study-text-section">
                   <h3 className="h2 case-study-title">{props.project.name}</h3>
@@ -33,8 +32,7 @@ function ProjectCard(props) {
                   </button>
                 </div>
               </Link>
-              </li>  
-            </ul>
+            </div>
           </div>
         </section>
       </>

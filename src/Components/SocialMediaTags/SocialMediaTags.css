@@ -1,0 +1,40 @@
+.social_footer_ul {
+  display: table;
+  margin: 15px auto 0 auto;
+  list-style-type: none;
+}
+
+.social_footer_ul li {
+  padding-left: 20px;
+  padding-top: 10px;
+  float: left;
+  font-size: 17px;
+  margin: 0 auto;
+}
+
+.social_footer_ul li a {
+  color: #ccc;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.social_footer_ul li i {
+  width: 24px;
+  height: 24px;
+  text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .social_footer_ul li i {
+    width: 16px;
+    height: 16px;
+  }
+  .social_footer_ul li {
+    padding-left: 16px;
+  }
+  .social_footer_ul {
+    padding: 0;
+  }
+}

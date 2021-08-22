@@ -1,0 +1,27 @@
+#spring-modal-description{
+    margin: 1rem 5rem 1rem 5rem !important;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.makeStyles-paper-1, .makeStyles-paper-2, .makeStyles-paper-8,
+.makeStyles-paper-4, .makeStyles-paper-10, .makeStyles-paper-6 {
+    width: 70%;
+    box-shadow: none !important;
+    border: 5px solid black !important;
+    position: relative;
+    left: 15%;
+    border-radius: 5%;
+    overflow: auto;
+    height: 60vh !important;
+    outline: none;
+}
+
+#spring-modal-title {
+    font-size: 3.5rem !important;
+    color: gray !important;
+    text-shadow: 2px 2px 2px #206a5d;
+    margin: 0%;
+    margin-bottom: 10px;
+    text-align: center;
+}

@@ -1,0 +1,26 @@
+.header-career {
+  color: white;
+  display: block;
+  font-family: Lato, sans-serif;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 20px;
+  font-size: 5rem;
+  letter-spacing: 1.5rem;
+  line-height: 40px;
+}
+/* ------------------------------------------ */
+
+@media only screen and (min-width: 768px) {
+  .header-career {
+    font-size: 2.5rem;
+    letter-spacing: 1.5rem;
+    line-height: 40px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .header-career {
+    color: transparent !important;
+  }
+}

@@ -1,0 +1,278 @@
+
+  .about-background {
+    background-image: linear-gradient(to right bottom, rgba(119,119,119,0.6), rgba(119,119,119,0.6)), url('../../icons/besomeone.jpg');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    height: 40vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.about-title {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    font-family: Lato, sans-serif;
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 4rem;
+    letter-spacing: 1rem;
+    line-height: 40px;
+    margin: 0;
+}
+.about-img {
+  border-radius: 50%;
+}
+/* Quote */
+  .quote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 25px;
+    background-color: #fff;
+  }
+q {
+    line-height: 2;
+    font-size: 30px;
+    width: 40%;
+    color: #000;
+  }
+
+  .quoteAuthor {
+    margin-top: 30px;
+    color: #000;
+    font-size: 1.5rem;
+  }
+
+  /* Quote End */
+
+  /* Logos  */
+  .imageHiglights {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    
+
+  }
+/* Logos End */
+
+  /*Timeline  */
+  .timeline {
+    position: relative;
+    background-color: #1A1E23;
+    overflow: hidden;
+  }
+
+  .timelineP {
+      line-height: 3rem;
+  }
+  
+  /* The timeline line */
+  .timeline::after {
+    content: '';
+    position: absolute;
+    width: 1%;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+  }
+  
+  /* Container around content */
+  .about-container {
+    padding: 10px 40px;
+    position: relative;
+    background-color: inherit;
+    width: 100vw;
+  }
+  .left {
+    margin-left: 4rem;
+  }
+   */
+  /* Place the container to the left */
+  .left {
+    left: 0%;
+  }
+  
+  /* Place the container to the right */
+  .right {
+    left: 55%;
+  }
+  
+  /* The actual content */
+  .content {
+    padding: 20px 30px;
+    background-color: white;
+    position: relative;
+    border-radius: 12px;
+    left: 0%;
+    width: 35.6vw;
+  }
+   /* About  */
+
+.a-content {
+  color: black;
+  width: 80%;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+  /* Media queries - Responsive timeline on screens less than 600px wide */
+  @media only screen and (max-width: 480px) {
+
+    /* Quote */
+q {
+    line-height: 1;
+    font-size: 35px;
+    width: 80%;
+  }
+.pQuote {
+  font-size: 20px;
+}
+  /* Quote End */
+  
+
+  /* Logo  */
+  .imageHiglights {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0px;
+
+  }
+  .middleHightlights {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    line-height: 1;
+    margin-top: 20px;
+  }
+  .a-content {
+    color: black;
+    width: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+    line-height: 30px;
+  }
+  
+  .middleHightlights h2 {
+    font-size: 35px;
+    text-align: center;
+  }
+  .breakdown {
+    width: 90%;
+    font-size: 20px;
+  }
+  .rightHighlights, .leftHighlights {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60%;
+  }
+/* Logo End */
+
+  /*Timeline  */
+
+  .timeline {
+    margin: 0;
+    width: 100%;
+  }
+ 
+  .timelineP {
+    font-size: 20px;
+  }
+
+  /* The timeline line and bullet points */
+  .timeline::after {
+    display: none;
+  }
+  
+  /* Container around content */
+  .container {
+    padding: 10px 40px;
+    position: relative;
+    width: 100%;
+  }
+  
+
+  
+  /* Place the container to the left */
+  .left {
+    left: 0;
+  }
+  
+  /* Place the container to the right */
+  .right {
+    left: 0%;
+  }
+  
+  /* Add arrows to the left container (pointing right) */
+  .left::before, .right::after,  .right::before {
+    display: none;
+  }
+
+  .about-container::after {
+    display: none;
+  }
+ /* About  */
+ .about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding-top: 50px;
+  background-color: #1A1E23;
+
+}
+.about-container {
+  width: 80%;
+  
+}
+
+.aboutHeader {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: white;
+}
+.aboutImage {
+  width: 100%;
+  height: 50vh;
+}
+.aboutP {
+  font-size: 1.5rem;
+  color: white; 
+  text-align: center;
+}
+.leftAbout {
+  margin: 0;
+  font-family: 'Times New Roman', Times, serif;
+  line-height: 2;
+}
+.rightAbout {
+  opacity: 0.7;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+  }
+
+ 
+

@@ -7,8 +7,9 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-const articleRouter = require('./routes/articles')
-const uploadRouter = require('./routes/upload')
+const articleRouter = require('./routes/articles');
+const uploadRouter = require('./routes/upload');
+const userRouter = require('./routes/user.js');
 
 const app = express();
 app.use(logger('dev'));
@@ -30,6 +31,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);
 app.use('/api', uploadRouter);
+app.use('/api/user', userRouter);
+
 
 const URI = process.env.MONGODB_URL
 mongoose.connect(URI, {

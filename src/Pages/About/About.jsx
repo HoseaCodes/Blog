@@ -71,6 +71,12 @@ const About = () => {
             {/* <!-- Timeline  -->  */}
             <hr className="header-hr "/>
             <div className="timeline">
+                <div id="timeline" className="about-container right">
+                    <div className="content">
+                        <h2>2021</h2>
+                        <p className="timelineP a-content">I secured my first position as a Full-Stack Java Software Engineer at State Farm in March of 2021. Working in a full agile software development process including mining technical business features and utilizing Java Spring Boot with Maven to create a REST micro-service applications. </p>
+                    </div>
+                </div>
                 <div id="timeline" className="about-container left">
                     <div className="content">
                         <h2>2020</h2>

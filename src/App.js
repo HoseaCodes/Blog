@@ -21,6 +21,8 @@ import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
 import ArticleItem from './Pages/Articles/Article/Article';
 import ProjectItem from './Pages/Projects/Project/Project';
+import Login from './Pages/Auth/login';
+import Register from './Pages/Auth/register';
 
 
 export default class App extends Component {
@@ -130,6 +132,8 @@ export default class App extends Component {
           <Route path="/project" exact component={Projects}/>
           <Route path="/project/:id" exact component={ProjectItem}/>
           <DataProvider>
+            <Route path="/login" exact component={Login} />
+            <Route path="/register" exact component={Register} />
             <Route path="/blog" exact component={Articles} />
             <Route path="/blog/:id" exact component={ArticleItem} />
             <Route path="/blog/new" exact component={CreateArticle} />

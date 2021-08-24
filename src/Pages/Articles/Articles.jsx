@@ -139,7 +139,7 @@ const Articles = () => {
                             <div className="row">
                                 <div className="col">
                                     <nav>
-                                        <div className="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                        <div className="nav nav-tabs nav-fill blog-tabs" id="nav-tab" role="tablist">
                                             <a id="nav-all-tab"
                                                 data-toggle="tab" href="#nav-all" role="tab"
                                                 aria-controls="nav-all" aria-selected="true"

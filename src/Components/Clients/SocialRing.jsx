@@ -6,7 +6,7 @@ const SocialRing = () => {
         <>
             <div className="socialring section-presentation section-cards">
                 <div className="container">
-                    <div className="row">
+                    <div className="row socailring-row">
                         <div className="col-md-6">
                             <div className="description">
                                 <h4 className="header-text">Social Ring</h4>

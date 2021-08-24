@@ -54,9 +54,6 @@ const About = () => {
         <div>
             <NavBar2 />
             <div className='about-background'>
-                <h1 className='about-title'>
-                    More About Me
-                </h1>
                 <img className='about-img' src="https://i.imgur.com/dj1vhqzm.png?1" alt="Hosea" />
             </div>
             <hr className="header-hr "/>

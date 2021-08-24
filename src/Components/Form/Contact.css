@@ -8,6 +8,11 @@
 .contact-container form {
   display: flex;
   flex-direction: column;
+  width: 40% !important;
+}
+.contact-input,
+.area {
+  width: 100% !important;
 }
 
 .btn {

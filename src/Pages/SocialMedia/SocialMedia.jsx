@@ -3,7 +3,7 @@ import TweeterTimeline from '../../Components/Twitter/Timeline';
 
 const SocialMedia = () => {
     return (<div style={{ background: '#1A1E23', margin: '0' }}>
-        {/* <TweeterTimeline /> */}
+        <TweeterTimeline />
         {/* <Github login='hoseacodes' /> */}
     </div>
     )

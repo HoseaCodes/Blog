@@ -18,6 +18,8 @@
 
 .testomonies,
 .socialmedia {
+  display: flex;
+  align-items: center;
   width: 50%;
   background-color: #1a1e23;
 }

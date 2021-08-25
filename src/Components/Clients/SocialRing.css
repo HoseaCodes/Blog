@@ -13,25 +13,12 @@
   padding: 50px 5px 0;
 }
 
-.section-presentation img {
+.socailring-row img {
   position: absolute;
-  top: 0;
-  left: -300px;
-  height: 600px;
-}
-
-.section-presentation {
-  position: relative;
-  margin: 0 auto;
+  top: 20%;
+  left: 0;
+  height: 50rem;
   width: 100%;
-  height: auto;
-}
-
-.section-presentation {
-  margin: 0;
-}
-.section-presentation {
-  height: auto;
 }
 
 .socialring p {
@@ -58,13 +45,12 @@
 .sr-info {
   margin-bottom: 30px;
 }
-.description {
-  padding: 50px 5px 0;
-}
 
 .description {
+  padding: 50px 5px 0;
   margin-top: 65px;
 }
+
 .header-text {
   text-transform: uppercase;
   font-weight: 200;

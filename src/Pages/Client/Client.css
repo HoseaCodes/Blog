@@ -10,7 +10,7 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   position: relative;
-  height: 40vh !important;
+  height: 50vh !important;
   padding-bottom: 55px;
 }
 .presentation {
@@ -34,10 +34,16 @@
 
 .section-cards {
   overflow: hidden;
-  padding-bottom: 0;
+  padding-top: 10rem;
+  padding-bottom: 10rem;
   border-top: 1px solid #dddddd;
   z-index: 3;
 }
+
+.socialring .client-info {
+  color: white;
+}
+
 .client-info {
   margin-top: 30px;
   line-height: 1.7;

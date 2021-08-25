@@ -15,6 +15,7 @@ const Client = () => {
                 </h1>
             </div>
         </div>
+        <hr className="header-hr" />
         <div className="presentation pt-5">
             <div className="section section-gray-gradient section-description">
                 <div className="container">
@@ -42,44 +43,6 @@ const Client = () => {
             </div>
         </div>
         <SocialRing />
-        <div className="section section-gray-gradient section-cards">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-6">
-                        <div className="space-50"></div>
-                        <h2 className="header-text">Personlized Components<br /><small>Object Oriented Programming Approach </small></h2>
-                        <p className="client-info">Telsa, Google, Apple, Microsoft, Uber, and AirBnB are setting the ground works to good
-                        design and functionality. We will lay the foundation to building your future. We build
-                        responsive applications that are specialized for all devices.
-                        </p>
-                        <p className="client-info"> Tell us about about your business and we will provide a digital business approach to
-                        enhance your users experience and overall profitiability. With software being beautiful on
-                        the inside is nice but the outside is just as important if not more so. Join the community
-                        and upgrade your business today!
-                            <br /><br />
-                        </p>
-
-                    </div>
-                    <div className="col-md-6">
-
-                        <div className="newcard-container">
-                            <div className="card">
-                                <h2 className="card__title">Code</h2>
-                            </div>
-                            <div className="card">
-                                <h2 className="card__title">Design</h2>
-                            </div>
-                            <div className="card">
-                                <h2 className="card__title">Idea</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
         <div className="section section-images section-cards">
             <div className="container">
                 <div className="row">
@@ -135,9 +98,7 @@ const Client = () => {
                 </div>
             </div>
         </div>
-
-
-        <div className="section section-responsive section-cards">
+        <div className="socialring section-responsive section-cards">
             <div className="container">
                 <div className="row">
                     <div className="col-md-5 col-md-offset-1">
@@ -168,6 +129,42 @@ const Client = () => {
                 </div>
             </div>
         </div>
+        <div className="section pb-5 section-gray-gradient section-cards">
+            <div className="container">
+                <div className="row">
+                <div className="col-md-6">
+                    <div className="newcard-container">
+                        <div className="card">
+                            <h2 className="card__title">Code</h2>
+                        </div>
+                        <div className="card">
+                            <h2 className="card__title">Design</h2>
+                        </div>
+                        <div className="card">
+                            <h2 className="card__title">Idea</h2>
+                        </div>
+                    </div>
+                </div>
+                    <div className="col-md-6">
+                        <div className="space-50"></div>
+                        <h2 className="header-text">Personlized Components<br /><small>Object Oriented Programming Approach </small></h2>
+                        <p className="client-info">Telsa, Google, Apple, Microsoft, Uber, and AirBnB are setting the ground works to good
+                        design and functionality. We will lay the foundation to building your future. We build
+                        responsive applications that are specialized for all devices.
+                        </p>
+                        <p className="client-info"> Tell us about about your business and we will provide a digital business approach to
+                        enhance your users experience and overall profitiability. With software being beautiful on
+                        the inside is nice but the outside is just as important if not more so. Join the community
+                        and upgrade your business today!
+                            <br /><br />
+                        </p>
+
+                    </div>
+                 
+                </div>
+            </div>
+        </div>
+      
         <hr className="header-hr"/>
         <Footer />
     </>

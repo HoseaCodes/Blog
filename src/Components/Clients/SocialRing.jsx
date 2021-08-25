@@ -4,7 +4,7 @@ import './SocialRing.css';
 const SocialRing = () => {
     return (
         <>
-            <div className="socialring section-presentation section-cards">
+            <div className="socialring ">
                 <div className="container">
                     <div className="row socailring-row">
                         <div className="col-md-6">
@@ -15,7 +15,7 @@ const SocialRing = () => {
                                 <a href="https://apps.apple.com/us/app/social-ring/id1551446005" target="_blank" rel="noopener noreferrer" className="button highlight"><i className="fa fa-apple fa-lg"></i>Get The App</a>
                             </div>
                         </div>
-                        <div className="col-md-5 col-md-offset-1 hidden-xs">
+                        <div className="col-md-6">
                             <img alt="" src="https://i.imgur.com/i8bkYCv.png" />
                         </div>
                     </div>

@@ -10,6 +10,7 @@ import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import axios from 'axios';
 import Footer from '../../Components/Footer/Footer';
+import { CompareArrowsOutlined } from '@material-ui/icons';
 
 const Articles = () => {
 
@@ -64,9 +65,13 @@ const Articles = () => {
                 search.toLowerCase()) !== -1;
         }
     );
+    
+    console.log(filteredArticles)
+    console.log(search)
 
     const updateSearch = event => {
-        setSearch({ search: event.target.value.substr(0, 20) })
+        const { value } = event.target
+        setSearch(value.substr(0, 20))
     }
 
 
@@ -126,7 +131,7 @@ const Articles = () => {
                         label="Search Articles"
                         placeholder="Find a Post"
                         value={search}
-                        onChange={(e) => updateSearch(e)}
+                        onChange={updateSearch}
                     />
 
                     <div className="article-box">

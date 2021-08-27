@@ -2,7 +2,7 @@ import React from 'react';
 import '../Home/Home.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import Scramble from '../../Components/Scramble/Scramble';
-import SocialMedia from '../../Pages/SocialMedia/SocialMedia';
+import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
 import Footer from '../../Components/Footer/Footer';
 import Testimonial from '../../Components/Testimonials/testimonial';

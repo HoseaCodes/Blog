@@ -8,10 +8,6 @@ import Contact from './Pages/Contact/Contact'
 import Error from './Pages/Error/Error'
 import Shop from './Pages/Shop/Shop';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import CalorieKitchen from './Pages/Projects/CalorieKitchen';
-// import CareerConnect from './Pages/Projects/CareerConnect';
-// import MergeImmersive from './Pages/Projects/MergeImmersive';
-// import DevCenter from './Pages/Projects/DevCenter';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
@@ -34,47 +30,16 @@ export default class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route
-            exact
             path="/"
+            exact
             render={() => (
               <Home
               />
             )}
           />
-          {/* <Route
-            exact
-            path="/caloriekitchen"
-            render={() => (
-              <CalorieKitchen
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/devcenter"
-            render={() => (
-              <DevCenter
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/careerconnect"
-            render={() => (
-              <CareerConnect
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/mergeimmersive"
-            render={() => (
-              <MergeImmersive
-              />
-            )}
-          /> */}
           <Route
             path="/about"
+            exact
             render={() => (
               <About
 
@@ -83,12 +48,13 @@ export default class App extends Component {
           />
           <Route
             path="/shop"
+            exact
             render={() => (
               <Shop
               />
             )}
           />
-          <Route path="/client" render={() => (
+          <Route path="/client" exact render={() => (
               <Client
               />
             )}
@@ -104,18 +70,8 @@ export default class App extends Component {
             <Route path="/blog/edit" exact component={CreateArticle} />
             <Route path="/contact" exact component={Contact} />
           </DataProvider>
-
-
           <Error />
         </Switch>
-        {/* // <div className="App">
-      //   <Route exact path="/" component={Projects} />
-      //   <Route exact path="/articles" component={Articles} />
-      //   <Route exact path="/about" component={About} />
-      //   <h1>App JS</h1>
-
-      //   <Home />
-      // </div> */}
       </BrowserRouter>
     );
   }

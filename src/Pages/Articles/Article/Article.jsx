@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
-import '../Blog.css'
+import '../Articles.css'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import NavBar from '../../../Components/NavBar/NavBar';

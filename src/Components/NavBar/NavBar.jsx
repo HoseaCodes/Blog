@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import Logo from '../../icons/logo.png';
 
 
-const NavBar2 = () => {
+const NavBar = () => {
     const [isActive, setActive] = useState("false");
 
     const handleToggle = () => {
@@ -26,7 +26,7 @@ const NavBar2 = () => {
                         <a className="nav-link dropdown-toggle" href="/" id="navdrop" role="button" data-toggle="dropdown" data-hover="dropdown">Portfolio</a>
                         <div className="dropdown-menu" aria-labelledby="navdrop">
                             <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="dropdown-item nav-link">Backend Portfolio</a>
-                            <a href="/client" rel="noopener noreferrer" className="dropdown-item nav-link">Client Portfolio</a>
+                            {/* <a href="/client" rel="noopener noreferrer" className="dropdown-item nav-link">Client Portfolio</a> */}
                             <a href="/project" rel="noopener noreferrer" className="dropdown-item nav-link">Project Case Studies</a>
                         </div>
                     </li>
@@ -42,4 +42,4 @@ const NavBar2 = () => {
 }
 
 
-export default NavBar2;
+export default NavBar;

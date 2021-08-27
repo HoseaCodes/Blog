@@ -1,7 +1,7 @@
 import React from 'react';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import NavBar2 from '../../../Components/NavBar/NavBar2';
+import NavBar from '../../../Components/NavBar/NavBar';
 import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 
@@ -14,12 +14,8 @@ const ProjectItem = (props) => {
 
     return (
         <>
-            <NavBar2/>
-<<<<<<< HEAD
-            <main class="blog-content">
-=======
+            <NavBar/>
             <main className="blog-content">
->>>>>>> test
                 <article className='blog-main'>
                     <h2 style={{ marginTop: '5rem', fontSize: '3rem', fontWeight: '600' }}>{name}</h2>
                     <hr style={{ background: 'rgb(235,183,65)', width: '100vw' }} />

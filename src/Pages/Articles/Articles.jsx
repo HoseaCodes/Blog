@@ -1,7 +1,7 @@
 
 import React, { useState, useContext } from 'react';
 import './Articles.css'
-import NavBar2 from '../../Components/NavBar/NavBar';
+import NavBar from '../../Components/NavBar/NavBar';
 import Subscribe from '../../Components/Subscribe/Subscribe'
 // import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
@@ -114,7 +114,7 @@ const Articles = () => {
 
 
             <div className='article-container'>
-                <NavBar2 />
+                <NavBar />
                 <div className='article-header'>
                     <div className='artcile-header-logo'>
                     </div>

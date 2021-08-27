@@ -1,13 +1,13 @@
 import React from 'react'
 import './Projects.css';
 import { Link } from "react-router-dom";
-import NavBar2 from '../../NavBar/NavBar2'
+import NavBar from '../../NavBar/NavBar'
 import Node from '../../icons/Node.png'
 
 const CareerConnect = () => {
     return (
         <>
-            <NavBar2 />
+            <NavBar />
             <img src={Node} width='300' height='250' alt="" />
             <ul className="tags">
                 <li className="tag">JavaScript</li>

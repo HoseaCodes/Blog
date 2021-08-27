@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
 import { articleData } from './ArticleData';
-import NavBar2 from '../../Components/NavBar/NavBar'
+import NavBar from '../../Components/NavBar/NavBar'
 import './Blog.css'
 import Footer from '../../Components/Footer/Footer';
 
@@ -20,7 +20,7 @@ class Bash extends Component {
         const { name, date, info, title, img, tags, lists, subHeading } = this.state.article;
         return (
             <div>
-                <NavBar2 />
+                <NavBar />
                 <main className="blog-content">
                     <article className='blog-main'>
                         <h2 style={{ marginTop: '5rem', fontSize: '3rem', fontWeight: '600' }}>{name}</h2>

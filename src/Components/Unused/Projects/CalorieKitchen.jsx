@@ -1,7 +1,7 @@
 import React from 'react'
 import './Projects.css';
 import { Link } from "react-router-dom";
-import NavBar2 from '../../NavBar/NavBar2';
+import NavBar from '../../NavBar/NavBar';
 import Snippet from '../../Tags/Snippet';
 import Footer from '../../Footer/Footer';
 import SocialMediaTags from '../../SocialMediaTags/SocialMediaTags';
@@ -10,7 +10,7 @@ import JS from '../../icons/JS.png'
 const CalorieKitchen = () => {
     return (
         <div className='project-container'>
-            <NavBar2 />
+            <NavBar />
             <img src={JS} width='500' height='450' alt="JavaScript" />
             <h1 style={{ color: 'green' }}>CalorieKitchen</h1>
             <ul className="tags">

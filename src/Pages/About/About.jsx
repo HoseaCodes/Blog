@@ -45,14 +45,14 @@
 
 import React from 'react';
 import './About.css';
-import NavBar2 from '../../Components/NavBar/NavBar';
+import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 
 
 const About = () => {
     return (
         <div>
-            <NavBar2 />
+            <NavBar />
             <div className='about-background'>
                 <img className='about-img' src="https://i.imgur.com/dj1vhqzm.png?1" alt="Hosea" />
             </div>

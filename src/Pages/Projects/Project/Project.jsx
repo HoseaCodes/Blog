@@ -12,32 +12,32 @@ const ProjectItem = (props) => {
 
     const { headerImg, name, link, title, role, objectives, subHeading, source, 
         background, context, design, designImg, headline, date, websites, typography,
-        designColor, uiDesignImg, userFlows, mainFunctions, goal, version} = projectData[params.id - 1 ];
-
-        const nextProjectLink = 
-        <>
-        { newparm + 1 <= projectData.length && newparm !== 0 ?
-        <a style={{backgroundImage: `url(${projectData[newparm].headerImg})`}} href={`/project/${newparm + 1}`} className="next-work next-work-headerimg">
-            <div className="project-content">
-                <h5 className="h5 next-work-lead">Next Work</h5>
-                <h4 className="h2 next-work-title">{projectData[newparm].name}</h4>
-                <div className="next-work-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
-                </div>    
-            </div>
-        </a>
-    :
-        <a style={{backgroundImage: `url(${projectData[newparm - 2].headerImg})`}} href={`/project/${newparm - 1}`} className="next-work">
-            <div className="project-content">
-                <h5 className="h5 next-work-lead">Previous Work</h5>
-                <h4 className="h2 next-work-title">{projectData[newparm - 2].name}</h4>
-                <div className="next-work-arrow">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
-                </div>    
-            </div>
-        </a>
-        }
-        </>
+        designColor, uiDesignImg, userFlows, mainFunctions, goal, version, prototype} = projectData[params.id - 1 ];
+        
+    //     const nextProjectLink = 
+    //     <>
+    //     { newparm + 1 <= projectData.length && newparm !== 0 ?
+    //     <a style={{backgroundImage: `url(${projectData[newparm].headerImg})`}} href={`/project/${newparm + 1}`} className="next-work next-work-headerimg">
+    //         <div className="project-content">
+    //             <h5 className="h5 next-work-lead">Next Work</h5>
+    //             <h4 className="h2 next-work-title">{projectData[newparm].name}</h4>
+    //             <div className="next-work-arrow">
+    //                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
+    //             </div>    
+    //         </div>
+    //     </a>
+    // :
+    //     <a style={{backgroundImage: `url(${projectData[newparm - 2].headerImg})`}} href={`/project/${newparm - 1}`} className="next-work">
+    //         <div className="project-content">
+    //             <h5 className="h5 next-work-lead">Previous Work</h5>
+    //             <h4 className="h2 next-work-title">{projectData[newparm - 2].name}</h4>
+    //             <div className="next-work-arrow">
+    //                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
+    //             </div>    
+    //         </div>
+    //     </a>
+    //     }
+    //     </>
 
     return (
         <>
@@ -120,6 +120,14 @@ const ProjectItem = (props) => {
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
                                     </span>
                                 </a>
+                                <br />
+                                <br />
+                                <a href={prototype} target="_blank" rel="noopener noreferrer" className="case-study-single-button ghost no-smoothState">
+                                    <span className="button-text">View Prototye</span>
+                                    <span className="button-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
+                                    </span>
+                                </a>
                             </div>
                         </div>
                     </section>
@@ -132,6 +140,7 @@ const ProjectItem = (props) => {
                             <div className="section-text-mask">
                                 <h2 className="h3 section-title">Branding</h2>
                             </div>
+
                             <div className="inner-container">
                                 <div className="single-work-text-content is-left single-work-first-anim-blocks">
                                     <h3 className="single-work-content-title">An elegant design.</h3>
@@ -171,6 +180,49 @@ const ProjectItem = (props) => {
                                 })
                             }
                             </div>
+                            
+                            <div className="section-text-mask pb-5">
+                                <h2 className="h3 section-title">Key Problems to Address</h2>
+                                <div className="inner-container" style={{marginLeft: '20%'}}>
+                                <div className="single-work-text-content is-left single-work-first-anim-blocks">
+                                    <h3 className="single-work-content-title">Leadership</h3>
+                                    <div className="single-work-content-separator"></div>
+                                    <div className="single-work-content-desc">
+                                        <ul>
+                                            <p>1.) Show the impact of the program</p>
+                                            <p>2.) Export and share clean data</p>
+                                            <p>3.) Track metrics on a regular basis</p>
+                                            <p>4.) Inaccurate data being reported</p>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="single-work-img-content single-work-first-anim-blocks">
+                                <h3 className="single-work-content-title">Team Leads</h3>
+                                    <div className="single-work-content-separator"></div>
+                                        <div className="single-work-content-desc">
+                                            <ul>
+                                                <p>1.) Keep their teams accountable</p>
+                                                <p>2.) Track daily/weekly performance</p>
+                                                <p>3.) More detail about interactions</p>
+                                                <p>4.) Inaccurate data being reported</p>
+                                            </ul>
+                                        </div>                                
+                                    </div>
+                            </div>
+                            </div>
+                            <div className="section-text-mask pt-5" >
+                                <h2 className="h3 section-title">Opportunities for Improvement</h2>
+                                <div className="single-work-text-content is-left single-work-first-anim-blocks text-center" style={{marginLeft: '30%'}}>
+                                <h3 className="single-work-content-title pb-5">Task flows are too long.</h3>
+                                    <div className="single-work-content-desc pb-5">
+                                        <p>We want to decrease the number of pages required to record an interaction.</p>
+                                    </div>
+                                <h3 className="single-work-content-title pb-5">Too much mobile scrolling.</h3>
+                                    <div className="single-work-content-desc pb-5">
+                                        <p>We want to shorten the time spent on each page.</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>    
                     </section>
                     <section className="single-work-intro-section">
@@ -208,12 +260,12 @@ const ProjectItem = (props) => {
                                     <p className="main-case-study-text"> 
                                         {userFlows}
                                         <br/><br/>
-                                        <ul className="case-study-flows">
-                                            <h4 className="h3 section-title">{mainFunctions.length} main functions:</h4>
+                                        <h4 className="h3 section-title">{mainFunctions.length} Main Functions:</h4>
+                                        <ul className="case-study-flows text-center" style={{marginLeft: '17%'}}>
                                             {
                                                 mainFunctions.map((item) => {
                                                     return (
-                                                        <li>{item}</li>
+                                                        <p>{item}</p>
                                                     )
                                                 })
                                             }
@@ -236,9 +288,7 @@ const ProjectItem = (props) => {
                             </div>
                         </div> 
                     </section>
-                    {
-                        nextProjectLink
-                    }
+                    {/* { projectData.length >= 1 ? nextProjectLink : null} */}
                 </main>
             </div>
             <hr className="header-hr"/>

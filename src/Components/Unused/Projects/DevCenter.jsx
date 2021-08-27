@@ -1,13 +1,13 @@
 import React from 'react'
 import './Projects.css';
 import { Link } from "react-router-dom";
-import NavBar2 from '../../NavBar/NavBar2'
+import NavBar from '../../NavBar/NavBar'
 import django from '../../icons/django.png'
 
 const DevCenter = () => {
     return (
         <>
-            <NavBar2 />
+            <NavBar />
             <img src={django} width='400' height='350' alt="JavaScript" />
             <ul className="tags">
                 <li className="tag">Python</li>

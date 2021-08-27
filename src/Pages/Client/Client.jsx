@@ -1,5 +1,5 @@
 import React from "react";
-import NavBar2 from "../../Components/NavBar/NavBar";
+import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
@@ -7,7 +7,7 @@ import boostrap from "../../icons/Bootstrap.png"
 
 const Client = () => {
     return (<>
-        <NavBar2 />
+        <NavBar />
         <div className='client-header'>
             <div className='client-logo' id='client-logo'>
                 <h1 className='heading-client'>

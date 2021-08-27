@@ -62,7 +62,7 @@ const ArticleItem = (props) => {
                                     <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
                                     <br />
                                 </section>
-                                <section>
+                                {/* <section>
                                     <h4 className='blog-subtitle'>Reference Guide</h4>
                                     <h5>
                                     <a href="https://www.geeksforgeeks.org/analysis-algorithms-big-o-analysis/" target="_blank" rel="noopener noreferrer">GeeksforGeeks</a>
@@ -73,7 +73,7 @@ const ArticleItem = (props) => {
                                     <h5>
                                     <a href="https://web.mit.edu/16.070/www/lecture/big_o.pdf" target="_blank" rel="noopener noreferrer">MIT</a>
                                     </h5>
-                                </section>
+                                </section> */}
                                 {/* <input type="checkbox" checked={checked}
                                     onChange={() => props.handleCheck(_id)} /> */}
                                     {/* <BtnRender article={props.article} deleteArticle={props.deleteArticle} /> */}

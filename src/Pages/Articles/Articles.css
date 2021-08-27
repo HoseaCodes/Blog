@@ -42,6 +42,9 @@
   color: #eee;
   font-size: 20px;
 }
+.blog-img {
+  max-height: 90rem;
+}
 
 .blog-tabs {
   display: flex;
@@ -153,6 +156,7 @@
   text-overflow: ellipsis;
   height: 20vh;
   overflow: hidden;
+  font-size: 3rem !important;
 }
 
 .article-line {
@@ -187,8 +191,14 @@
 
 .article-card-header {
   color: white;
-  font-size: 3rem !important;
+  font-size: 4rem !important;
   text-decoration: none;
+}
+
+.article-card-header:hover {
+  text-decoration: none;
+  transition: 0.25s;
+  color: #204740;
 }
 
 .article-card:hover {
@@ -196,7 +206,7 @@
 }
 
 .article-card-meta {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 .popular-link,
@@ -296,7 +306,7 @@
 
 .article-img {
   width: 100%;
-  height: 100%;
+  height: 40rem;
   object-fit: fill;
   border-radius: 12px;
 }

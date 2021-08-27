@@ -13,7 +13,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // import MergeImmersive from './Pages/Projects/MergeImmersive';
 // import DevCenter from './Pages/Projects/DevCenter';
 import Stacks from './Pages/Articles/Stack';
-import Bash from './Pages/Articles/Bash';
 import BigO from './Pages/Articles/Big0';
 import ReactSecurity from './Pages/Articles/ReactSecurity';
 import CreateArticle from './Pages/Articles/CreateArticle'
@@ -77,14 +76,6 @@ export default class App extends Component {
               />
             )}
           /> */}
-          <Route
-            exact
-            path="/bash"
-            render={() => (
-              <Bash
-              />
-            )}
-          />
           <Route
             exact
             path="/bigo"

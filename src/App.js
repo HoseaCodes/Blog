@@ -12,7 +12,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // import CareerConnect from './Pages/Projects/CareerConnect';
 // import MergeImmersive from './Pages/Projects/MergeImmersive';
 // import DevCenter from './Pages/Projects/DevCenter';
-import ReactSecurity from './Pages/Articles/ReactSecurity';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import Client from './Pages/Client/Client';
@@ -74,14 +73,6 @@ export default class App extends Component {
               />
             )}
           /> */}
-          <Route
-            exact
-            path="/reactsecurity"
-            render={() => (
-              <ReactSecurity
-              />
-            )}
-          />
           <Route
             path="/about"
             render={() => (

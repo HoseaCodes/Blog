@@ -12,7 +12,6 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // import CareerConnect from './Pages/Projects/CareerConnect';
 // import MergeImmersive from './Pages/Projects/MergeImmersive';
 // import DevCenter from './Pages/Projects/DevCenter';
-import Stacks from './Pages/Articles/Stack';
 import BigO from './Pages/Articles/Big0';
 import ReactSecurity from './Pages/Articles/ReactSecurity';
 import CreateArticle from './Pages/Articles/CreateArticle'
@@ -89,14 +88,6 @@ export default class App extends Component {
             path="/reactsecurity"
             render={() => (
               <ReactSecurity
-              />
-            )}
-          />
-          <Route
-            exact
-            path="/stack"
-            render={() => (
-              <Stacks
               />
             )}
           />

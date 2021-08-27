@@ -89,8 +89,6 @@ const Articles = () => {
     else if (tagsShow === "Software Engineer") {
         items = filteredArticles.filter(item => item.type.includes("Software Engineer"))
     }
-    console.log(filteredArticles + "filtered")
-
 
     if (loading) return <div className="products"><Loading /></div>
     return (

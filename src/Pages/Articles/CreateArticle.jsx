@@ -67,7 +67,6 @@ function CreatArticle() {
             })
             setLoading(false)
             setImages(res.data.result)
-            console.log(res.data.result)
 
         } catch (err) {
             alert(err.response.data.msg)

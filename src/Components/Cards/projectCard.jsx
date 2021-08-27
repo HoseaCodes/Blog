@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 
 function ProjectCard(props) {
 
-  console.log(props)
   return (
       <>
        <section id="case-studies"  className="case-studies-section">

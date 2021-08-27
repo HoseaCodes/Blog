@@ -13,7 +13,6 @@ function ArticlesAPI() {
             const res = await axios.get(`/api/articles`)
             setArticles(res.data.articles)
             setResult(res.data.result)
-            console.log(res.data)
         }
         getArticles()
     }, [callback, category])

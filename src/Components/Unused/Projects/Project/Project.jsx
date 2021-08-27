@@ -10,8 +10,6 @@ const ProjectItem = (props) => {
 
     const { title, type, info, description, img, id, name, date } = projects;
 
-    console.log(props)
-
     return (
         <>
             <NavBar/>

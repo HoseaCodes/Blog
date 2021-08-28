@@ -32,8 +32,14 @@ const Articles = () => {
     const currentPosts = articles.slice(indexOfFirstPost, indexOfLastPost)
     
     const paginate = pageNum => setCurrentPage(pageNum);
-    const nextPage = pageNum => setCurrentPage(currentPage + 1);
-    const prevPage = pageNum => setCurrentPage(currentPage - 1);
+    const nextPage = () => {
+        if (currentPage > articles.length) return;
+        setCurrentPage(currentPage + 1);
+    } 
+    const prevPage = () => {
+        if (currentPage < 1) return;
+        setCurrentPage(currentPage - 1);
+    }
 
     const deleteArticle = async (id, public_id) => {
         try {
@@ -76,15 +82,11 @@ const Articles = () => {
                 search.toLowerCase()) !== -1;
         }
     );
-    
-    console.log(filteredArticles)
-    console.log(search)
 
     const updateSearch = event => {
         const { value } = event.target
         setSearch(value.substr(0, 20))
     }
-
 
     const updateItemsShow = (str) => {
         setTagsShow(str)
@@ -195,7 +197,7 @@ const Articles = () => {
                                 </>
                                 )
                             })}
-                            <Pagination paginate={paginate} nextPage={nextPage} prevPage={prevPage}
+                            <Pagination currentPage={currentPage} paginate={paginate} nextPage={nextPage} prevPage={prevPage}
                             postsPerPage={postsPerPage} totalPosts={articles.length} />
                         </section>
                         <div>

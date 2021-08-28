@@ -11,6 +11,7 @@ import Loading from '../../Loading';
 import axios from 'axios';
 import Footer from '../../Components/Footer/Footer';
 import { CompareArrowsOutlined } from '@material-ui/icons';
+import Pagination from '../../Components/Pagination/pagination';
 
 const Articles = () => {
 
@@ -23,6 +24,16 @@ const Articles = () => {
     const [tagsShow, setTagsShow] = useState('All')
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
+    const [currentPage, setCurrentPage] = useState(1)
+    const [postsPerPage, setPostPerPage] = useState(3)
+
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = articles.slice(indexOfFirstPost, indexOfLastPost)
+    
+    const paginate = pageNum => setCurrentPage(pageNum);
+    const nextPage = pageNum => setCurrentPage(currentPage + 1);
+    const prevPage = pageNum => setCurrentPage(currentPage - 1);
 
     const deleteArticle = async (id, public_id) => {
         try {
@@ -175,7 +186,7 @@ const Articles = () => {
                         </section>
                         {/* <!--───────────────card───────────────--> */}
                         <section className='articleList'>
-                            {items.map(article => {
+                            {currentPosts.map(article => {
                                 return (<>
                                     <ArticleCard deleteArticle={deleteArticle} handleCheck={handleCheck} article={article}
                                         key={article.id}
@@ -184,6 +195,8 @@ const Articles = () => {
                                 </>
                                 )
                             })}
+                            <Pagination paginate={paginate} nextPage={nextPage} prevPage={prevPage}
+                            postsPerPage={postsPerPage} totalPosts={articles.length} />
                         </section>
                         <div>
                             <section className='article-sidebar'>

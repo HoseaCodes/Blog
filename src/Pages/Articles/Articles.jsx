@@ -25,7 +25,7 @@ const Articles = () => {
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
     const [currentPage, setCurrentPage] = useState(1)
-    const [postsPerPage, setPostPerPage] = useState(3)
+    const [postsPerPage] = useState(3)
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -34,10 +34,12 @@ const Articles = () => {
     const paginate = pageNum => setCurrentPage(pageNum);
     const nextPage = () => {
         if (currentPage > articles.length) return;
+        setSearch('')
         setCurrentPage(currentPage + 1);
     } 
     const prevPage = () => {
         if (currentPage < 1) return;
+        setSearch('')
         setCurrentPage(currentPage - 1);
     }
 

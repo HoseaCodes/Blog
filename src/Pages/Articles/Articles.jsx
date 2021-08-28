@@ -76,7 +76,7 @@ const Articles = () => {
     //     })
     // }
 
-    const filteredArticles = articles.filter(
+    const filteredArticles = currentPosts.filter(
         (article) => {
             return article.title.toLowerCase().indexOf(
                 search.toLowerCase()) !== -1;
@@ -188,7 +188,7 @@ const Articles = () => {
                         </section>
                         {/* <!--───────────────card───────────────--> */}
                         <section className='articleList'>
-                            {currentPosts.map(article => {
+                            {filteredArticles.map(article => {
                                 return (<>
                                     <ArticleCard deleteArticle={deleteArticle} handleCheck={handleCheck} article={article}
                                         key={article.id}

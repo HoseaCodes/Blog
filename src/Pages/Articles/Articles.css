@@ -245,8 +245,8 @@
   font-size: 3rem;
   margin-top: 5rem;
   color: white;
-  text-transform: uppercase;
 }
+
 .article-search:focus {
   outline: none;
 }

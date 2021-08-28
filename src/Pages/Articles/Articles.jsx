@@ -10,7 +10,6 @@ import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import axios from 'axios';
 import Footer from '../../Components/Footer/Footer';
-import { CompareArrowsOutlined } from '@material-ui/icons';
 import Pagination from '../../Components/Pagination/pagination';
 
 const Articles = () => {
@@ -20,7 +19,6 @@ const Articles = () => {
     // const [token] = state.token
     const [callback, setCallback] = state.articlesAPI.callback
     const [loading, setLoading] = useState(false)
-    // const [isCheck, setIsCheck] = useState(false)
     const [tagsShow, setTagsShow] = useState('All')
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
@@ -64,20 +62,6 @@ const Articles = () => {
         setArticles([...articles])
     }
 
-    // const checkAll = () => {
-    //     articles.forEach(article => {
-    //         article.checked = !isCheck
-    //     })
-    //     setArticles([...articles])
-    //     setIsCheck(!isCheck)
-    // }
-
-    // const deleteAll = () => {
-    //     articles.forEach(article => {
-    //         if (article.checked) deleteArticle(article._id, article.images.public_id)
-    //     })
-    // }
-
     const filteredArticles = currentPosts.filter(
         (article) => {
             return article.title.toLowerCase().indexOf(
@@ -93,44 +77,25 @@ const Articles = () => {
     const updateItemsShow = (str) => {
         setTagsShow(str)
         setStatus("active")
-
     }
 
-    let items = []
+    let taggedArticles = []
     if (tagsShow === "All") {
-        items = filteredArticles
+        taggedArticles = filteredArticles
     }
     else if (tagsShow === "JavaScript") {
-        items = filteredArticles.filter(item => item.type.includes("JavaScript"))
+        taggedArticles = filteredArticles.filter(item => item.type.includes("JavaScript"))
     }
     else if (tagsShow === "Python") {
-        items = filteredArticles.filter(item => item.type.includes("Python"))
+        taggedArticles = filteredArticles.filter(item => item.type.includes("Python"))
     }
     else if (tagsShow === "Software Engineer") {
-        items = filteredArticles.filter(item => item.type.includes("Software Engineer"))
+        taggedArticles = filteredArticles.filter(item => item.type.includes("Software Engineer"))
     }
 
     if (loading) return <div className="products"><Loading /></div>
     return (
         <>
-
-            {/* <div className="delete-all">
-                <span>Select All</span>
-                <input type="checkbox" checked={isCheck} onChange={checkAll} />
-                <button onClick={deleteAll}>Delete All</button>
-            </div>
-            <div className="products">
-                {
-                    articles.map(article => {
-                        return <ArticleItem key={article._id} article={article}
-                            deleteArticle={deleteArticle} handleCheck={handleCheck} />
-                    })
-                }
-
-            </div> */}
-
-
-
             <div className='article-container'>
                 <NavBar />
                 <div className='article-header'>
@@ -148,7 +113,6 @@ const Articles = () => {
                         value={search}
                         onChange={updateSearch}
                     />
-
                     <div className="article-box">
 
                         {/* <!--───────────────Tabs───────────────--> */}

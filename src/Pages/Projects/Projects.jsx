@@ -81,7 +81,6 @@ import React from 'react';
 import './Projects.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import { Link } from "react-router-dom";
-import Tags from '../../Components/Tags/Tags'
 import {projectData} from './ProjectsData';
 import ProjectCard from '../../Components/Cards/projectCard';
 import Footer from '../../Components/Footer/Footer';
@@ -96,8 +95,6 @@ const Projects = () => {
                 </div>
             </div>
             <hr className="header-hr"/>
-
-            {/* <Tags /> */}
             {projectData.map(project => {
                                 return (<>
                                     <ProjectCard project={project}

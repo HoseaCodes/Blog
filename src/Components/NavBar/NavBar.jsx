@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import "./NavBar.css";
 import burger from '../../icons/burger.jpg';
 import { Link } from "react-router-dom";
@@ -6,16 +6,15 @@ import Logo from '../../icons/logo.png';
 
 
 const NavBar = () => {
-    const [isActive, setActive] = useState("false");
-
-    const handleToggle = () => {
-        setActive(!isActive);
-    };
+    const [isActive, toggle] = useReducer(
+        (isActive) => !isActive,
+        false
+        );
     return (
         <header className="header-nav">
             <div className='burger-nav'>
                 <img className='nav-img' src={burger} alt="menu" width='50px' height='50px'
-                    onClick={handleToggle}
+                    onClick={toggle}
                 />
             </div>
             <nav className='nav-combo'>

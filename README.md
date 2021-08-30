@@ -50,6 +50,10 @@ The user is brought to the home page where they can navigate to my [portfolio](w
 - /login
 - /refresh_token
 
+### Logger
+
+- [Winston](https://github.com/winstonjs/winston)
+
 ## APIs
 
 - [Send Grid](https://app.sendgrid.com/)

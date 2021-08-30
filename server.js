@@ -27,7 +27,6 @@ app.use(fileUpload({
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
 
-
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);
 app.use('/api', uploadRouter);

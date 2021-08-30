@@ -1,0 +1,148 @@
+openapi: 3.0.0
+info:
+  title: Hoseacodes API
+  description: 'This is the hoseacodes api '
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/HoseaCodes/Hoseacodes/1.0.0
+  description: SwaggerHub API Auto Mocking
+- url: https://www.hoseacodes.com/api
+  description: Production server
+- url: https://sandbox-api.example.com:8443/v1
+  description: Sandbox server (uses test data)
+- url: http://localhost:3000/api
+  description: Localhost server
+paths:
+  /articles/{articleId}:
+    get:
+      summary: Returns a article by ID
+      operationId: articlesArticleIdGET
+      parameters:
+      - name: articleId
+        in: path
+        description: The ID of the article to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: The specified user ID is invalid (not a number).
+        "404":
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: Default
+    put:
+      summary: Update an article by ID
+      operationId: articlesArticleIdPUT
+      parameters:
+      - name: articleId
+        in: path
+        description: The ID of the article to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: The specified user ID is invalid (not a number).
+        "404":
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: Default
+    delete:
+      summary: Removes an article by ID
+      operationId: articlesArticleIdDELETE
+      parameters:
+      - name: articleId
+        in: path
+        description: The ID of the article to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        "400":
+          description: The specified user ID is invalid (not a number).
+        "404":
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: Default
+  /articles:
+    get:
+      summary: Returns all articles
+      operationId: articlesGET
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    inline_response_200:
+      type: object
+      properties:
+        article_id:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: string
+        description:
+          type: string
+        images:
+          type: object
+        category:
+          type: array
+          items:
+            type: string
+        checked:
+          type: boolean
+        markdown:
+          type: string
+        createdAt:
+          type: number
+        sanitizedHtml:
+          type: string
+      example:
+        article_id: article_id
+        createdAt: 0.80082819046101150206595775671303272247314453125
+        images: {}
+        sanitizedHtml: sanitizedHtml
+        subtitle: subtitle
+        markdown: markdown
+        description: description
+        checked: true
+        title: title
+        category:
+        - category
+        - category

@@ -42,6 +42,26 @@ The user is brought to the home page where they can navigate to my [portfolio](w
 
 ### Enpoints
 
+Test enpoints on test server:
+
+Simply visit [testServer](https://app.swaggerhub.com/apis/HoseaCodes/Hoseacodes/1.0.0)
+
+Test endpoints locally by:
+
+```js
+/* Change directories into Swagger Server */
+
+cd swagger-server
+
+/* Run Server */
+
+npm start
+
+/* The server will be live on http://localhost:8080/docs */
+```
+
+After completing the instructions to run locally click here: [Local Server](http://localhost:8080/docs)
+
 - /articles
 - /articles/:id
 - /upload

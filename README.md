@@ -79,6 +79,7 @@ After completing the instructions to run locally click here: [Local Server](http
 
 - [Send Grid](https://app.sendgrid.com/)
 - [Get Form](https://getform.io/)
+- [Swagger API](https://support.smartbear.com/swaggerhub/docs/about.html)
 
 ## Unsolved Problems
 

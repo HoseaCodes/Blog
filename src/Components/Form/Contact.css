@@ -10,6 +10,11 @@
   flex-direction: column;
   width: 40% !important;
 }
+
+.contact-container p {
+  opacity: 0.6;
+}
+
 .contact-input,
 .area {
   width: 100% !important;

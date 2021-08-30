@@ -34,22 +34,11 @@ const PersonalBrand = () => {
 
                 <h2 className='name-title'>Dominique Hosea</h2>
                 <p className='bio-info'>A full-stack &nbsp;
-                <span className="personalBrand-p" style={{
-                        color: 'white', textShadow: '2px 2px 2px black',
-                        textDecoration: 'underline', textDecorationStyle: 'dashed',
-                        textDecorationColor: 'rgb(235,183,65)'
-
-                    }}>
+                <span className="personalBrand-p" >
                         Software Engineer </span>
                         driven by a passion for knowledge. I am focused on building software that
                         improves user engagement and experience through &nbsp;
-                <span style={{
-                        color: 'white', textShadow: '2px 2px 2px black',
-                        textDecoration: 'underline', textDecorationStyle: 'dashed',
-                        textDecorationColor: 'rgb(235,183,65)'
-
-                    }}>
-                        developing fast solutions </span>
+                <span>developing fast solutions </span>
                         to complex problems that allow users to excel.
             </p>
                 <hr id='aboutme' style={{ background: 'white', margin: '50px', width: '80vw' }} />

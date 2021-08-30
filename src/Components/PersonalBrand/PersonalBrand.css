@@ -8,6 +8,7 @@
   width: 80%;
   margin: auto;
 }
+
 .personalBrand-opener {
   background: rgb(35, 41, 47);
   display: flex;
@@ -16,7 +17,16 @@
   margin: auto;
   width: 80%;
 }
-.name-title {
+
+.personalBrand-opener span {
+  color: white;
+  text-shadow: 2px 2px 2px black;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-color: rgb(235, 183, 65);
+}
+
+.personalBrand-opener .name-title {
   margin: auto;
   text-align: center;
   margin-top: 3rem;

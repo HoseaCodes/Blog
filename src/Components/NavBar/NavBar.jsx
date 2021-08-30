@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, {useReducer } from "react";
 import "./NavBar.css";
 import burger from '../../icons/burger.jpg';
 import { Link } from "react-router-dom";
@@ -13,7 +13,8 @@ const NavBar = () => {
     return (
         <header className="header-nav">
             <div className='burger-nav'>
-                <img className='nav-img' src={burger} alt="menu" width='50px' height='50px'
+                <img className='nav-img' src={burger} alt="menu" 
+                    width='50px' height='50px'
                     onClick={toggle}
                 />
             </div>
@@ -22,11 +23,15 @@ const NavBar = () => {
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     <Link to="/" className="nav-link active">Home</Link>
                     <li className="dropdown">
-                        <a className="nav-link dropdown-toggle" href="/" id="navdrop" role="button" data-toggle="dropdown" data-hover="dropdown">Portfolio</a>
+                        <a className="nav-link dropdown-toggle" href="/" 
+                        id="navdrop" role="button" data-toggle="dropdown" 
+                        data-hover="dropdown">Portfolio</a>
                         <div className="dropdown-menu" aria-labelledby="navdrop">
-                            <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank" className="dropdown-item nav-link">Backend Portfolio</a>
+                            <a href="http://www.dominiquehosea.com" rel="noopener noreferrer" 
+                            target="_blank" className="dropdown-item nav-link">Backend Portfolio</a>
                             {/* <a href="/client" rel="noopener noreferrer" className="dropdown-item nav-link">Client Portfolio</a> */}
-                            <a href="/project" rel="noopener noreferrer" className="dropdown-item nav-link">Project Case Studies</a>
+                            <a href="/project" rel="noopener noreferrer" 
+                            className="dropdown-item nav-link">Project Case Studies</a>
                         </div>
                     </li>
                     <Link to="/blog" className="nav-link">Blog</Link>

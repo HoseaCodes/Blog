@@ -11,7 +11,7 @@ const Resume = () => {
                 data-aos-easing="ease-in"
             >
                 Download Resume
-    </a>
+            </a>
             {/* <br />
             <a className="btn-input" href='#btn'
                 data-aos="fade-left"

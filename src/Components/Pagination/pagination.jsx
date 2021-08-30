@@ -20,7 +20,6 @@ const Pagination = ({currentPage, paginate, nextPage, prevPage, postsPerPage, to
                 <li className="page-item">
                     <a className="page-link" href="#!" onClick={(() => prevPage())}>Pervious</a>
                 </li>}
-               
                 {pageNumbers.map((num) => {
                     if (currentPage === num) {
                         return (

@@ -4,7 +4,9 @@ import "./Footer.css";
 import SocialMediaTags from '../SocialMediaTags/SocialMediaTags';
 
 const Footer = () => {
+
     const year = new Date().getFullYear()
+    
     return (
         <footer className="footer">
             <div className="container bottom_border">
@@ -16,11 +18,7 @@ const Footer = () => {
                         <p><i className="fa fa-location-arrow"></i> Houston, TX </p>
                         <p><i className="fa fa-phone"></i>  +1-281-780-8424</p>
                         <p><i className="fa fa fa-envelope"></i> <a href="mailto:mr.dhosea@gmail.com"> mr.dhosea@gmail.com </a> </p>
-
-
                     </div>
-
-
                     <div className=" col-sm-4 col-md  col-6 col dompl">
                         <h5 className="headin5_amrc col_white_amrc pt2">Built With</h5>
                         {/* <!--headin5_amrc--> */}
@@ -31,27 +29,21 @@ const Footer = () => {
                             <li><a href="https://react-bootstrap.github.io/">Bootstrap</a></li>
                             <li><a href="https://sass-lang.com/">SCSS</a></li>
                             <li><a href="https://styled-components.com/">Styled Components</a></li>
-
                         </ul>
                         {/* <!--footer_ul_amrc ends here--> */}
                     </div>
-
-
                     <div className=" col-sm-4 col-md  col-6 col">
                         <h5 className="headin5_amrc col_white_amrc pt2">Quick links</h5>
                         {/* <!--headin5_amrc--> */}
                         <ul className="footer_ul_amrc">
                             <li><a href="https://www.remove.bg/upload">Remove Background</a></li>
-                            <li><a href="/client">Shadows & Mirror Reflection</a></li>
-                            <li><a href="/project">Logo Design</a></li>
-                            <li><a href="/shop">Vectorization</a></li>
-                            <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                            <li><a href="/client">Client Details</a></li>
+                            <li><a href="/project">Project Details</a></li>
+                            <li><a href="/shop">Hoseacodes Shop</a></li>
                             <li><a href="http://webenlance.com">Image Cropping</a></li>
                         </ul>
                         {/* <!--footer_ul_amrc ends here--> */}
                     </div>
-
-
                     <div className=" col-sm-4 col-md  col-12 col">
                         <h5 className="headin5_amrc col_white_amrc pt2">Follow Me On</h5>
                         {/* Twitter Profile Tweets */}
@@ -63,8 +55,6 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-
-
             <div className="container">
                 <ul className="foote_bottom_ul_amrc">
                     <li><a href="/">Home</a></li>
@@ -75,9 +65,7 @@ const Footer = () => {
                 {/* <!--foote_bottom_ul_amrc ends here--> */}
                 <p className="text-center">All Rights Reserved, &copy; {year} Hosea Codes</p>
                 <SocialMediaTags />
-
             </div>
-
         </footer>
     )
 };

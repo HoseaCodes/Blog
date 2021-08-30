@@ -62,18 +62,6 @@ const ArticleItem = (props) => {
                                     <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
                                     <br />
                                 </section>
-                                {/* <section>
-                                    <h4 className='blog-subtitle'>Reference Guide</h4>
-                                    <h5>
-                                    <a href="https://www.geeksforgeeks.org/analysis-algorithms-big-o-analysis/" target="_blank" rel="noopener noreferrer">GeeksforGeeks</a>
-                                    </h5>
-                                    <h5>
-                                    <a href="https://www.freecodecamp.org/news/big-o-notation-explained-with-examples/" target="_blank" rel="noopener noreferrer">Freecodecamp</a>
-                                    </h5>
-                                    <h5>
-                                    <a href="https://web.mit.edu/16.070/www/lecture/big_o.pdf" target="_blank" rel="noopener noreferrer">MIT</a>
-                                    </h5>
-                                </section> */}
                                 {/* <input type="checkbox" checked={checked}
                                     onChange={() => props.handleCheck(_id)} /> */}
                                     {/* <BtnRender article={props.article} deleteArticle={props.deleteArticle} /> */}

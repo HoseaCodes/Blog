@@ -45,7 +45,7 @@ The user is brought to the home page where they can navigate to my [portfolio](w
 
 Test enpoints on test server:
 
-Simply visit [Test Server](https://app.swaggerhub.com/apis/HoseaCodes/Hoseacodes/1.0.0)
+Simply visit [Test Server](https://app.swaggerhub.com/apis-docs/HoseaCodes/Hoseacodes/1.0.0#/)
 
 Test endpoints locally by:
 

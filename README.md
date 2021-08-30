@@ -20,7 +20,7 @@ Welcome, to my personal blog and portfolio. Sharing information is vital and esp
 
 This application was developed with a full MERN stack. and written in JavaScript. Styling done with Bootstrap, Material UI, SASS or SCSS and CSS.
 
-M - MongoDB, NoSQL database
+M - MongoDB, NoSQL database  
 E - Express, a back-end framework  
 R - React, a client side framework  
 N - NodeJS - to run back end service

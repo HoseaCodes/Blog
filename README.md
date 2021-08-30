@@ -49,7 +49,7 @@ Simply visit [Test Server](https://app.swaggerhub.com/apis-docs/HoseaCodes/Hosea
 
 Test endpoints locally by:
 
-```js
+```bash
 /* Change directories into Swagger Server */
 
 cd swagger-server
@@ -75,7 +75,23 @@ After completing the instructions to run locally click here: [Local Server](http
 
 - [Winston](https://github.com/winstonjs/winston)
 
-## APIs
+## Development
+
+This project uses EditorConfig to standardize text editor configuration. Visit https://editorconfig.org for details.
+
+This project uses ESLint to detect suspicious code in JavaScript files. Visit https://eslint.org for details.
+
+### Testing
+
+This project uses Jest for testing. Visit https://jestjs.io for details.
+
+To execute tests:
+
+```bash
+npm test
+```
+
+## External APIs
 
 - [Send Grid](https://app.sendgrid.com/)
 - [Get Form](https://getform.io/)

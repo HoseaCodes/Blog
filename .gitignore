@@ -13,6 +13,7 @@
 /logs
 swagger-server/node_modules
 swagger-server/package-lock.json
+
 # misc
 .DS_Store
 .env.local
@@ -29,3 +30,4 @@ yarn-error.log*
 src/icons
 .env
 index.js
+.eslintignore

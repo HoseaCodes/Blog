@@ -73,7 +73,9 @@ After completing the instructions to run locally click here: [Local Server](http
 
 ### Logger
 
-- [Winston](https://github.com/winstonjs/winston)
+This project uses Winston to log events into our log manager. Visit https://github.com/winstonjs/winston for details.
+
+This project uses Morgan to log events inside of the terminal. Visit https://github.com/expressjs/morgan for details.
 
 ## Development
 

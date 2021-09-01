@@ -31,3 +31,5 @@ src/icons
 .env
 index.js
 .eslintignore
+testing.md
+test/db.js

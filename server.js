@@ -6,10 +6,10 @@ const logger = require('morgan');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const bodyParser = require("body-parser");
-const mongoose = require('mongoose');
 const articleRouter = require('./routes/articles');
 const uploadRouter = require('./routes/upload');
 const userRouter = require('./routes/user.js');
+require('./config/db');
 
 const app = express();
 app.use(logger('dev'));
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(fileUpload({
     useTempFiles: true
-}))
+}));
 
 // Configure both serve-favicon & static middlewares
 // to serve from the production 'build' folder
@@ -31,18 +31,6 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use('/api', articleRouter);
 app.use('/api', uploadRouter);
 app.use('/api/user', userRouter);
-
-
-const URI = process.env.MONGODB_URL
-mongoose.connect(URI, {
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}, err => {
-    if (err) throw err;
-    console.log('Connected to MongoDB')
-})
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

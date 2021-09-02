@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import Footer from "../../Components/Footer/Footer";
-import Logo from "../../icons/logo.png";
 import "./login.css";
 
 const Login = () => {

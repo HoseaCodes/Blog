@@ -22,7 +22,7 @@ function CreatArticle() {
     const state = useContext(GlobalState)
     const [article, setArticle] = useState(initialState)
     const [images, setImages] = useState(false)
-    const [input, setInput] = useState('')
+    // const [input, setInput] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
     const param = useParams()
@@ -57,7 +57,7 @@ function CreatArticle() {
             if (file.size > 1024 * 1024) return alert("Size too large")
             if (file.type !== 'image/jpeg' && file.type !== 'image/png') return alert("File format is incorrect")
 
-            let formData = new FormData()
+            const formData = new FormData()
             formData.append('file', file)
 
             setLoading(true)
@@ -73,7 +73,7 @@ function CreatArticle() {
         }
     }
 
-    const handleDestory = async e => {
+    const handleDestory = async () => {
         try {
             setLoading(true)
             await axios.post('/api/destroy', { public_id: images.public_id })
@@ -126,7 +126,7 @@ function CreatArticle() {
                                             <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                    name="title" 
+                                                    name="title"
                                                     required value={article.title}
                                                     onChange={handleChangeInput}
                                                 // disabled={onEdit}
@@ -139,7 +139,7 @@ function CreatArticle() {
                                             <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                    name="subtitle" 
+                                                    name="subtitle"
                                                     required value={article.subtitle}
                                                     onChange={handleChangeInput}
                                                 // disabled={onEdit}

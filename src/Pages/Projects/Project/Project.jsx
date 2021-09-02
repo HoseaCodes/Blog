@@ -5,16 +5,16 @@ import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 import  './Project.css';
 
-const ProjectItem = (props) => {
+const ProjectItem = () => {
     const params = useParams()
 
-    const newparm = parseInt(params.id)
+    // const newparm = parseInt(params.id)
 
-    const { headerImg, name, link, title, role, objectives, subHeading, source, 
+    const { headerImg, name, title, role, objectives, subHeading, source,
         background, context, design, designImg, headline, date, websites, typography,
         designColor, uiDesignImg, userFlows, mainFunctions, goal, version, prototype} = projectData[params.id - 1 ];
-        
-    //     const nextProjectLink = 
+
+    //     const nextProjectLink =
     //     <>
     //     { newparm + 1 <= projectData.length && newparm !== 0 ?
     //     <a style={{backgroundImage: `url(${projectData[newparm].headerImg})`}} href={`/project/${newparm + 1}`} className="next-work next-work-headerimg">
@@ -23,7 +23,7 @@ const ProjectItem = (props) => {
     //             <h4 className="h2 next-work-title">{projectData[newparm].name}</h4>
     //             <div className="next-work-arrow">
     //                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
-    //             </div>    
+    //             </div>
     //         </div>
     //     </a>
     // :
@@ -33,7 +33,7 @@ const ProjectItem = (props) => {
     //             <h4 className="h2 next-work-title">{projectData[newparm - 2].name}</h4>
     //             <div className="next-work-arrow">
     //                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><path d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></path></svg>
-    //             </div>    
+    //             </div>
     //         </div>
     //     </a>
     //     }
@@ -49,7 +49,7 @@ const ProjectItem = (props) => {
                             <div className="text-loading-overlay is-reveal"></div>
                             <h1 className="hero-single-work-title">{name}</h1>
                         </div>
-                        <div className="text-loading-mask">                            
+                        <div className="text-loading-mask">
                             <div className="text-loading-overlay is-reveal"></div>
                             <h3 className="hero-single-work-subtitle">{headline}</h3>
                         </div>
@@ -58,7 +58,7 @@ const ProjectItem = (props) => {
                         <div className="project-content">
                             <ul className="context-stripe-focus-area is-loaded">
                                 <li>
-                                <strong>Role</strong> 
+                                <strong>Role</strong>
                                     <span className="stripe-baffle">{role}</span>
                                 </li>
                                 <li><strong>Context</strong> <span className="stripe-baffle"> {context}</span>
@@ -75,7 +75,7 @@ const ProjectItem = (props) => {
                         <div className="single-work-giga-text">
                             <p>{title}</p>
                         </div>
-                        <div className="project-content">            
+                        <div className="project-content">
                             <div className="overview-section">
                                 <div className="overview-container project-services">
                                     <div className="sticky-labels services-label">
@@ -171,7 +171,7 @@ const ProjectItem = (props) => {
                                 { Object.keys(typography).map((typeface, i) => {
                                     return (
                                         <>
-                                        <div className="section-title">
+                                        <div key={i} className="section-title">
                                             <h5 style={{paddingLeft: '30px'}}>{typeface}</h5>
                                             <img  style={{objectFit: 'contain', padding: '30px'}} src={typography[typeface]} alt="" srcset="" />
                                         </div>
@@ -180,7 +180,7 @@ const ProjectItem = (props) => {
                                 })
                             }
                             </div>
-                            
+
                             <div className="section-text-mask pb-5">
                                 <h2 className="h3 section-title">Key Problems to Address</h2>
                                 <div className="inner-container" style={{marginLeft: '20%'}}>
@@ -206,7 +206,7 @@ const ProjectItem = (props) => {
                                                 <p>3.) More detail about interactions</p>
                                                 <p>4.) Inaccurate data being reported</p>
                                             </ul>
-                                        </div>                                
+                                        </div>
                                     </div>
                             </div>
                             </div>
@@ -223,7 +223,7 @@ const ProjectItem = (props) => {
                                     </div>
                                 </div>
                             </div>
-                        </div>    
+                        </div>
                     </section>
                     <section className="single-work-intro-section">
                         <div className="section-mask"></div>
@@ -257,7 +257,7 @@ const ProjectItem = (props) => {
                                     <h2 className="h3 section-title">The Flow</h2>
                                 </div>
                                 <div className="inner-container single-work-ui-row single-work-anim-text">
-                                    <p className="main-case-study-text"> 
+                                    <p className="main-case-study-text">
                                         {userFlows}
                                         <br/><br/>
                                         <h4 className="h3 section-title">{mainFunctions.length} Main Functions:</h4>
@@ -273,7 +273,7 @@ const ProjectItem = (props) => {
                                     </p>
                                 </div>
                             </div>
-                        </div>        
+                        </div>
                         <div className="single-work-ui">
                             <div className="project-content">
                                 <div className="section-text-mask">
@@ -286,7 +286,7 @@ const ProjectItem = (props) => {
                                     <p className="main-case-study-text">{goal} </p>
                                 </div>
                             </div>
-                        </div> 
+                        </div>
                     </section>
                     {/* { projectData.length >= 1 ? nextProjectLink : null} */}
                 </main>

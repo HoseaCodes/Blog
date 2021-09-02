@@ -9,7 +9,7 @@ import Footer from '../../../Components/Footer/Footer';
 import marked from 'marked';
 import moment from 'moment-timezone'
 
-const ArticleItem = (props) => {
+const ArticleItem = () => {
     const params = useParams()
     const state = useContext(GlobalState)
     const [articles] = state.articlesAPI.articles
@@ -26,7 +26,7 @@ const ArticleItem = (props) => {
     if (detailArticle.length === 0) return null;
 
     const { title, subtitle, createdAt, description, images, markdown } = detailArticle;
-    
+
     const timeFormater = moment.utc(createdAt).format('MM/YYYY')
 
     return (
@@ -57,7 +57,7 @@ const ArticleItem = (props) => {
                                 <section className='blog-post'>
                                     <br />
                                     <p className='blog-content-info'>{description}</p>
-                                    <br />     
+                                    <br />
                                     <br />
                                     <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
                                     <br />

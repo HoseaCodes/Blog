@@ -19,7 +19,7 @@ const Articles = () => {
     // const [token] = state.token
     const [callback, setCallback] = state.articlesAPI.callback
     const [loading, setLoading] = useState(false)
-    const [tagsShow, setTagsShow] = useState('All')
+    // const [tagsShow, setTagsShow] = useState('All')
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
     const [currentPage, setCurrentPage] = useState(1)
@@ -27,14 +27,15 @@ const Articles = () => {
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = articles.slice(indexOfFirstPost, indexOfLastPost)
-    
+    const mainPosts = articles.map((article) => { return article.archived === true ? articles.pop(article) : article})
+    const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
+
     const paginate = pageNum => setCurrentPage(pageNum);
     const nextPage = () => {
         if (currentPage > articles.length) return;
         setSearch('')
         setCurrentPage(currentPage + 1);
-    } 
+    }
     const prevPage = () => {
         if (currentPage < 1) return;
         setSearch('')
@@ -48,6 +49,19 @@ const Articles = () => {
             const deleteArticle = axios.delete(`/api/articles/${id}`)
             await destroyImg
             await deleteArticle
+            setLoading(false)
+            setCallback(!callback)
+        } catch (err) {
+            alert(err.response.data.msg)
+        }
+    }
+    const archiveArticle = async (id, archived) => {
+        try {
+          console.log('clicks')
+          const archive = !archived
+            setLoading(true)
+            const archiveArticle = axios.patch(`/api/articles/${id}`, {archive})
+            await archiveArticle
             setLoading(false)
             setCallback(!callback)
         } catch (err) {
@@ -74,24 +88,24 @@ const Articles = () => {
         setSearch(value.substr(0, 20))
     }
 
-    const updateItemsShow = (str) => {
-        setTagsShow(str)
+    const updateItemsShow = (/*str*/) => {
+        // setTagsShow(str)
         setStatus("active")
     }
 
-    let taggedArticles = []
-    if (tagsShow === "All") {
-        taggedArticles = filteredArticles
-    }
-    else if (tagsShow === "JavaScript") {
-        taggedArticles = filteredArticles.filter(item => item.type.includes("JavaScript"))
-    }
-    else if (tagsShow === "Python") {
-        taggedArticles = filteredArticles.filter(item => item.type.includes("Python"))
-    }
-    else if (tagsShow === "Software Engineer") {
-        taggedArticles = filteredArticles.filter(item => item.type.includes("Software Engineer"))
-    }
+    // let taggedArticles = []
+    // if (tagsShow === "All") {
+    //     taggedArticles = filteredArticles
+    // }
+    // else if (tagsShow === "JavaScript") {
+    //     taggedArticles = filteredArticles.filter(item => item.type.includes("JavaScript"))
+    // }
+    // else if (tagsShow === "Python") {
+    //     taggedArticles = filteredArticles.filter(item => item.type.includes("Python"))
+    // }
+    // else if (tagsShow === "Software Engineer") {
+    //     taggedArticles = filteredArticles.filter(item => item.type.includes("Software Engineer"))
+    // }
 
     if (loading) return <div className="products"><Loading /></div>
     return (
@@ -156,7 +170,7 @@ const Articles = () => {
                         <section className='articleList'>
                             {filteredArticles.map(article => {
                                 return (<>
-                                    <ArticleCard deleteArticle={deleteArticle} handleCheck={handleCheck} article={article}
+                                    <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={handleCheck} article={article}
                                         key={article.id}
                                     />
                                     <hr className='article-line' />

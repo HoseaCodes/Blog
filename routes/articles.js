@@ -6,6 +6,7 @@ router.route('/articles')
     .post(articleCrtl.createArticle)
 
 router.route('/articles/:id')
+    .patch(articleCrtl.archiveArticle)
     .delete(articleCrtl.deleteArticle)
     .put(articleCrtl.updateArticle)
 

@@ -22,16 +22,9 @@ const articleSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    // subtitle: {
-    //     type: String,
-    //     trim: true,
-    // },
     description: {
         type: String,
     },
-    // content: {
-    //     type: String,
-    // },
     images: {
         type: Object,
         required: true,
@@ -39,6 +32,10 @@ const articleSchema = new mongoose.Schema({
     },
     category: {
         type: [String],
+    },
+    archived: {
+        type: Boolean,
+        default: false,
     },
     checked: {
         type: Boolean,

@@ -7,7 +7,8 @@ const articleCrtl = {
     getArticle,
     createArticle,
     deleteArticle,
-    updateArticle
+    updateArticle,
+    archiveArticle
 }
 
 async function getArticle(req, res) {
@@ -107,10 +108,34 @@ async function updateArticle(req, res) {
         res.json({ msg: 'Updated a article' })
     } catch (err) {
 
-        logger.error(err)
+        logger.error(err);
 
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ msg: err.message });
     }
+}
+
+async function archiveArticle(req, res) {
+  try {
+    const { archive } = req.body;
+    console.log(archive)
+
+    const originalBody = req.body
+
+    await Articles.findOneAndUpdate({ _id: req.params.id }, {
+      archived: archive
+    })
+
+    const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${archive}`;
+
+    logger.info(preparedLog);
+
+    res.json({ msg: `Moved ${req.params.id} to archive`})
+  } catch (err) {
+
+    logger.error(err);
+
+    return res.status(500).json({msg: err.message});
+  }
 }
 
 module.exports = articleCrtl

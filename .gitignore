@@ -34,3 +34,4 @@ index.js
 testing.md
 test/db.js
 images
+.eslintrc.cjs

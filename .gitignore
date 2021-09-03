@@ -35,3 +35,4 @@ testing.md
 test/db.js
 images
 .eslintrc.cjs
+src/.eslintrc.js

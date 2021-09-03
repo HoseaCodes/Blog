@@ -1,7 +1,11 @@
-const router = require('express').Router();
-const cloudinary = require('cloudinary');
-const fs = require('fs');
-require('dotenv').config()
+import fs from 'fs';
+import dotenv from 'dotenv';
+import express from 'express';
+import cloudinary from 'cloudinary';
+
+dotenv.config();
+
+const router = express.Router();
 
 cloudinary.config({
     cloud_name: process.env.CLOUND_NAME,
@@ -64,4 +68,4 @@ const removeTmp = (path) => {
     })
 }
 
-module.exports = router
+export default router;

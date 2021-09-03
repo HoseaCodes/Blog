@@ -1,15 +1,7 @@
-const Articles = require("../models/article");
-const Logger = require('../logger');
+import Articles from '../models/article.js';
+import Logger from '../logger.js';
+
 const logger = new Logger('articles')
-
-
-const articleCrtl = {
-    getArticle,
-    createArticle,
-    deleteArticle,
-    updateArticle,
-    archiveArticle
-}
 
 async function getArticle(req, res) {
     try {
@@ -138,4 +130,8 @@ async function archiveArticle(req, res) {
   }
 }
 
-module.exports = articleCrtl
+export {   getArticle,
+  createArticle,
+  archiveArticle,
+  deleteArticle,
+  updateArticle };

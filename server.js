@@ -1,15 +1,20 @@
-require('dotenv').config()
-const express = require('express');
-const path = require('path');
-const favicon = require('serve-favicon');
-const logger = require('morgan');
-const fileUpload = require('express-fileupload');
-const cors = require('cors');
-const bodyParser = require("body-parser");
-const articleRouter = require('./routes/articles');
-const uploadRouter = require('./routes/upload');
-const userRouter = require('./routes/user.js');
-require('./config/db');
+import dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import favicon from 'serve-favicon';
+import logger from 'morgan';
+import fileUpload from 'express-fileupload';
+import cors from 'cors';
+import bodyParser from "body-parser";
+import articleRouter from './routes/articles.js';
+import uploadRouter from './routes/upload.js';
+import userRouter from './routes/user.js';
+import connectDB from './config/db.js';
+import {imageOp} from './config/imageOp.js';
+
+dotenv.config();
+imageOp();
+connectDB()
 
 const app = express();
 app.use(logger('dev'));
@@ -22,6 +27,7 @@ app.use(fileUpload({
     useTempFiles: true
 }));
 
+const __dirname = path.resolve(path.dirname(''));
 // Configure both serve-favicon & static middlewares
 // to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
@@ -41,7 +47,11 @@ app.get('/*', function (req, res) {
 // Configure to use port 3001 instead of 3000 during
 // development to avoid collision with React's dev server
 const port = process.env.PORT || 3001;
+const startServer = async () => {
 
-app.listen(port, function () {
-    console.log(`Express app running on port: ${port}`)
-});
+  app.listen(port, function () {
+      console.log(`Express app running on port: ${port}`)
+  });
+};
+
+startServer();

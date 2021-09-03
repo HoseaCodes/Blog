@@ -1,13 +1,21 @@
-const router = require('express').Router();
-const articleCrtl = require('../controllers/article');
+import express from 'express';
+import {
+  getArticle,
+  createArticle,
+  archiveArticle,
+  deleteArticle,
+  updateArticle
+} from '../controllers/article.js';
+
+const router = express.Router();
 
 router.route('/articles')
-    .get(articleCrtl.getArticle)
-    .post(articleCrtl.createArticle)
+    .get(getArticle)
+    .post(createArticle)
 
 router.route('/articles/:id')
-    .patch(articleCrtl.archiveArticle)
-    .delete(articleCrtl.deleteArticle)
-    .put(articleCrtl.updateArticle)
+    .patch(archiveArticle)
+    .delete(deleteArticle)
+    .put(updateArticle)
 
-module.exports = router
+export default router;

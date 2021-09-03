@@ -1,5 +1,5 @@
 //Bringing Winston in
-const winston = require("winston");
+import winston from "winston";
 
 //Simple function to return the current date and time
 const timeStamp = () => {
@@ -26,7 +26,7 @@ class CustomLogger {
 
     //Here is our custom message
     let message = `${timeStamp()} | ${info.level} |  ${info.message} | From: ${service} controller `;
-    
+
     return message;
     }),
 });
@@ -68,4 +68,4 @@ class CustomLogger {
     }
 }
 
-module.exports = CustomLogger;
+export default CustomLogger;

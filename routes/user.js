@@ -1,10 +1,16 @@
-const router = require('express').Router();
-const userCtrl = require('../controllers/user')
+import express from 'express';
+import {
+  register,
+  refreshToken,
+  login,
+} from '../controllers/user.js';
 
-router.post('/register', userCtrl.register);
+const router = express.Router();
 
-router.post('/login', userCtrl.login);
+router.post('/register', register);
 
-router.get('/refresh_token', userCtrl.refreshToken);
+router.post('/login', login);
 
-module.exports = router;
+router.get('/refresh_token', refreshToken);
+
+export default router;

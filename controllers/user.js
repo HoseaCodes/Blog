@@ -1,12 +1,4 @@
-const Users = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-
-const userCtrl = {
-    register,
-    refreshToken,
-    login
-}
+import Articles from '../models/user.js';
 
 async function register(req, res) {
     try {
@@ -98,4 +90,7 @@ const createRefreshToken = (user) => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 
-module.exports = userCtrl
+
+export {     register,
+  refreshToken,
+  login };

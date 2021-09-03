@@ -71,6 +71,12 @@ After completing the instructions to run locally click here: [Local Server](http
 - /login
 - /refresh_token
 
+## Ops
+
+### Process Manager
+
+This project uses PM2 to keep the application alive due to faulty errors, server changes or file changes. Visit https://pm2.io/docs/plus/overview/ for details.
+
 ### Logger
 
 This project uses Winston to log events into our log manager. Visit https://github.com/winstonjs/winston for details.

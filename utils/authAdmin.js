@@ -1,4 +1,4 @@
-const Users = require("../models/user");
+import Users from "../models/user.js";
 
 const authAdmin = async (req, res, next) => {
     try {
@@ -15,4 +15,4 @@ const authAdmin = async (req, res, next) => {
 }
 
 
-module.exports = authAdmin
+export default authAdmin;

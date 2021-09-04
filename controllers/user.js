@@ -1,12 +1,12 @@
-import Articles from '../models/user.js';
+import Users from '../models/user.js';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 async function register(req, res) {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, role } = req.body;
         console.log(req.body)
-        console.log(name)
-        console.log(email)
-        console.log(password)
+
         const user = await Users.findOne({ email })
         if (user) return res.status(400).json({ msg: "The email already exists" })
 
@@ -18,7 +18,7 @@ async function register(req, res) {
 
         //Create new user instance
         const newUser = new Users({
-            name, email, password: passwordHash
+            name, email, password: passwordHash, role
         })
         // Save mongodb
         await newUser.save()
@@ -33,8 +33,6 @@ async function register(req, res) {
         })
         // res.json({ password, passwordHash })
         res.json({ accesstoken })
-        // res.json({ msg: "Register Successful" })
-
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
@@ -42,7 +40,8 @@ async function register(req, res) {
 
 function refreshToken(req, res) {
     try {
-        const rf_token = req.cookies.refreshtoken;
+      console.log(req.cookies)
+      const rf_token = req.cookies.refreshtoken;
         if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 
         jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -52,7 +51,6 @@ function refreshToken(req, res) {
 
             res.json({ accesstoken })
         })
-        res.json({ rf_token })
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
@@ -75,12 +73,21 @@ async function login(req, res) {
             httpOnly: true,
             path: '/api/user/refresh_token'
         })
-        res.json({ accesstoken })
-        // res.json({ msg: "Login successful" })
+        res.json({ msg: "Login successful", accesstoken })
 
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
+}
+
+async function getUser(req, res) {
+	try {
+		const user = await Users.findById(req.user.id).select("-password");
+		if (!user) return res.status(400).json({ msg: "User does not exist" });
+		res.json(user);
+	} catch (err) {
+		return res.status(500).json({ msg: err.message });
+	}
 }
 
 const createAccessToken = (user) => {
@@ -91,6 +98,9 @@ const createRefreshToken = (user) => {
 }
 
 
-export {     register,
+export {
+  register,
   refreshToken,
-  login };
+  login,
+  getUser
+ };

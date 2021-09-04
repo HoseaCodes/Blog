@@ -6,12 +6,12 @@ import logger from 'morgan';
 import fileUpload from 'express-fileupload';
 import cors from 'cors';
 import bodyParser from "body-parser";
+import cookieParser from 'cookie-parser'
 import articleRouter from './routes/articles.js';
 import uploadRouter from './routes/upload.js';
 import userRouter from './routes/user.js';
 import connectDB from './config/db.js';
-import {imageOp} from './config/imageOp.js';
-
+import {imageOp} from './utils/imageOp.js';
 dotenv.config();
 imageOp();
 connectDB()
@@ -20,6 +20,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({
     extended: true
 }));

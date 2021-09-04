@@ -1,5 +1,5 @@
 import Articles from '../models/article.js';
-import Logger from '../logger.js';
+import Logger from '../utils/logger.js';
 
 const logger = new Logger('articles')
 

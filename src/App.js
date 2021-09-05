@@ -14,13 +14,10 @@ import ArticleItem from './Pages/Articles/Article/Article';
 import ProjectItem from './Pages/Projects/Project/Project';
 import Login from './Pages/Auth/login';
 import Register from './Pages/Auth/register';
-
+import Profile from './Pages/User/profile';
+import Editprofile from './Pages/User/editProfile';
 
 export default class App extends Component {
-  state = {
-    user: null,
-    authenticated: false
-  }
 
   render() {
 
@@ -28,39 +25,15 @@ export default class App extends Component {
 
       <BrowserRouter>
         <Switch>
-          <Route
-            path="/"
-            exact
-            render={() => (
-              <Home
-              />
-            )}
-          />
-          <Route
-            path="/about"
-            exact
-            render={() => (
-              <About
-
-              />
-            )}
-          />
-          <Route
-            path="/shop"
-            exact
-            render={() => (
-              <Shop
-              />
-            )}
-          />
-          <Route path="/client" exact render={() => (
-              <Client
-              />
-            )}
-          />
-          <Route path="/project" exact component={Projects}/>
-          <Route path="/project/:id" exact component={ProjectItem}/>
           <DataProvider>
+            <Route path="/" exact render={() => (<Home/>)}/>
+            <Route path="/about" exact render={() => ( <About/>)}/>
+            <Route path="/shop" exact render={() => (<Shop/>)}/>
+            <Route path="/profile" exact component={Profile}/>
+            <Route path="/edit" exact component={Editprofile}/>
+            <Route path="/client" exact component={Client}/>
+            <Route path="/project" exact component={Projects}/>
+            <Route path="/project/:id" exact component={ProjectItem}/>
             <Route path="/login" exact component={Login} />
             <Route path="/register" exact component={Register} />
             <Route path="/blog" exact component={Articles} />

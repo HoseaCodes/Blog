@@ -90,6 +90,23 @@ async function getUser(req, res) {
 	}
 }
 
+async function updateProfile(req, res) {
+  try {
+      const { name, avatar, title, work, education, skills, location, phone, socialMedia, websites } = req.body;
+
+      await Users.findOneAndUpdate({ _id: req.params.id }, {
+        name, avatar, title, work, education, skills, location, phone, socialMedia, websites
+      })
+
+      res.json({ msg: 'Updated profile' })
+  } catch (err) {
+
+      logger.error(err);
+
+      return res.status(500).json({ msg: err.message });
+  }
+}
+
 const createAccessToken = (user) => {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
 }
@@ -102,5 +119,6 @@ export {
   register,
   refreshToken,
   login,
-  getUser
+  getUser,
+  updateProfile
  };

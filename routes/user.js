@@ -4,7 +4,8 @@ import {
   register,
   refreshToken,
   login,
-  getUser
+  getUser,
+  updateProfile
 } from '../controllers/user.js';
 
 const router = express.Router();
@@ -16,5 +17,7 @@ router.post('/login', login);
 router.get('/refresh_token', refreshToken);
 
 router.get('/info', auth, getUser);
+
+router.post('/update', auth, updateProfile);
 
 export default router;

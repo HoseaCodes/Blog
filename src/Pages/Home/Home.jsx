@@ -1,7 +1,6 @@
 import React from 'react';
 import '../Home/Home.css';
 import NavBar from '../../Components/NavBar/NavBar';
-import Scramble from '../../Components/Scramble/Scramble';
 import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
 import Footer from '../../Components/Footer/Footer';
@@ -9,6 +8,8 @@ import Testimonial from '../../Components/Testimonials/testimonial';
 import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
 import ProjectHighlight from '../../Components/Project/projectHighlight';
+import Hero from '../../Components/Hero/hero';
+import {StyledHr} from '../../Layout/Hr/styledHr';
 
 class Home extends React.Component {
     render() {
@@ -16,41 +17,19 @@ class Home extends React.Component {
             <>
                 <main className='home-page'>
                     <NavBar id='top' />
-                    <div className='header'>
-                        <div className='header-logo' id='header-logo'>
-                            <h1 className='heading-primary'>
-                                <span className="header-username">Hosea</span>
-                                <span className="header-username2">Codes</span>
-                                {/*
-                                <div style={{ width: "50%", margin: "0 auto" }}>
-
-                                    <a href='#aboutme' className='header-button'
-                                        data-aos="fade-right"
-                                        data-aos-offset="200"
-                                        data-aos-duration="3000"
-                                        data-aos-easing="ease-in"
-                                    >Find Out More</a>
-                                </div> */}
-
-                                <div>
-                                    <Scramble />
-                                </div>
-                            </h1>
-                        </div>
-                    </div>
-                    <hr className="header-hr"/>
+                    <Hero username={{firstName: 'Hosea', lastName: 'Codes'}}/>
+                    <StyledHr Primary/>
                     <PersonalBrand />
-                    <hr className="header-hr"/>
+                    <StyledHr Primary/>
                     <Tech />
-                    <hr className="header-hr"/>
+                    <StyledHr Primary/>
                     <div className='projects'>
                         <ProjectHighlight />
                     </div>
                     <div className='testimonies-group'>
-                        <hr className="header-hr"/>
-
-                        <h2 
-                        data-aos="fade-down" 
+                      <StyledHr Primary/>
+                        <h2
+                        data-aos="fade-down"
                         data-aos-offset="500"
                         data-aos-duration="3000"
                         data-aos-easing="ease-in"
@@ -58,9 +37,7 @@ class Home extends React.Component {
                             Testimonies
                         </h2>
                     </div>
-
-                    <hr className="header-hr"/>
-
+                    <StyledHr Primary/>
                     <br />
                     <br />
                     <div className='homepage-combo'>
@@ -72,7 +49,7 @@ class Home extends React.Component {
                         </div>
                     </div>
                     <div className='contact'>
-                        <hr className="header-hr"/>
+                        <StyledHr Primary/>
                         <div className='contact-group'>
                             <h2 style={{
                                 fontSize: '5rem', textAlign: 'center',
@@ -87,7 +64,7 @@ class Home extends React.Component {
                             </a>
 
                         </div>
-                        <hr className="header-hr"/>
+                        <StyledHr Primary/>
                         <br />
                         <div style={{ width: '10%', margin: '0 auto' }}>
                             <a href='#top' className='footer-button'

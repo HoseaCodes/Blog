@@ -5,10 +5,19 @@ import {
   refreshToken,
   login,
   getUser,
-  updateProfile
+  updateProfile,
+  deleteProfile,
+  getAllUsers
 } from '../controllers/user.js';
 
 const router = express.Router();
+
+router.route('/')
+    .get(getAllUsers)
+
+router.route('/:id')
+    .put(updateProfile)
+    .delete(deleteProfile)
 
 router.post('/register', register);
 
@@ -18,6 +27,8 @@ router.get('/refresh_token', refreshToken);
 
 router.get('/info', auth, getUser);
 
-router.post('/update', auth, updateProfile);
+
+
+
 
 export default router;

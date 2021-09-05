@@ -1,6 +1,17 @@
 import Users from '../models/user.js';
+import Logger from '../utils/logger.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+
+const logger = new Logger('articles');
+
+const createAccessToken = (user) => {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+}
+
+const createRefreshToken = (user) => {
+  return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
+}
 
 async function register(req, res) {
     try {
@@ -80,6 +91,25 @@ async function login(req, res) {
     }
 }
 
+async function getAllUsers(req, res) {
+  try {
+      const users = await Users.find()
+
+      logger.info("Returning all of the users");
+
+      res.json({
+          status: 'success',
+          users: users,
+          result: users.length,
+      })
+  } catch (err) {
+
+      logger.error(err);
+
+      return res.status(500).json({ msg: err.message })
+  }
+}
+
 async function getUser(req, res) {
 	try {
 		const user = await Users.findById(req.user.id).select("-password");
@@ -93,7 +123,7 @@ async function getUser(req, res) {
 async function updateProfile(req, res) {
   try {
       const { name, avatar, title, work, education, skills, location, phone, socialMedia, websites } = req.body;
-
+    console.log(req.body)
       await Users.findOneAndUpdate({ _id: req.params.id }, {
         name, avatar, title, work, education, skills, location, phone, socialMedia, websites
       })
@@ -107,18 +137,28 @@ async function updateProfile(req, res) {
   }
 }
 
-const createAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
-}
-const createRefreshToken = (user) => {
-    return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
-}
+async function deleteProfile(req, res) {
+  try {
 
+      logger.info(`Deleted user ${req.params.id} has been deleted`);
+
+      await Users.findByIdAndDelete(req.params.id)
+
+      res.json({ msg: "Deleted user" })
+  } catch (err) {
+
+      logger.error(err)
+
+      return res.status(500).json({ msg: err.message })
+  }
+}
 
 export {
   register,
   refreshToken,
   login,
   getUser,
-  updateProfile
+  updateProfile,
+  deleteProfile,
+  getAllUsers
  };

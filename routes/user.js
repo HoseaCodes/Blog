@@ -1,5 +1,6 @@
 import express from 'express';
 import auth from '../utils/auth.js';
+import loginRequired from '../utils/loginRequired.js';
 import {
   register,
   refreshToken,
@@ -9,17 +10,16 @@ import {
   deleteProfile,
   getAllUsers
 } from '../controllers/user.js';
-
 const router = express.Router();
 
 router.route('/')
-    .get(getAllUsers)
+    .get(loginRequired, getAllUsers)
 
 router.route('/:id')
-    .put(updateProfile)
-    .delete(deleteProfile)
+    .put(loginRequired, updateProfile)
+    .delete(loginRequired, deleteProfile)
 
-router.post('/register', register);
+router.post('/register', loginRequired, register);
 
 router.post('/login', login);
 

@@ -22,7 +22,6 @@ export default class App extends Component {
   render() {
 
     return (
-
       <BrowserRouter>
         <Switch>
           <DataProvider>
@@ -41,8 +40,8 @@ export default class App extends Component {
             <Route path="/blog/new" exact component={CreateArticle} />
             <Route path="/blog/edit" exact component={CreateArticle} />
             <Route path="/contact" exact component={Contact} />
+            <Route path="*" exact component={Error} />
           </DataProvider>
-          <Error />
         </Switch>
       </BrowserRouter>
     );

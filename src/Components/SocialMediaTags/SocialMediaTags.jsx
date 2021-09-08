@@ -1,6 +1,6 @@
 import React from 'react';
 import './SocialMediaTags.css'
-import Resume2020 from '../../icons/Resume2020.pdf'
+import Resume2020 from '../../Assets/Files/Resume2020.pdf'
 
 const SocialMediaTags = () => {
     return (

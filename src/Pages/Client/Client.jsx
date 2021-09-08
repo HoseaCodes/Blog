@@ -3,7 +3,7 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
-import boostrap from "../../icons/Bootstrap.png"
+import bootstrap from '../../Assets/Images/Bootstrap-min.png';
 
 const Client = () => {
     return (<>
@@ -50,7 +50,7 @@ const Client = () => {
                         <div className="text-center">
                             <div className="image">
 
-                                <img src={boostrap} alt="" />
+                                <img src={bootstrap} alt="" />
 
                                 <div className="image-info">
                                     <h3>3.3.0</h3>
@@ -160,11 +160,11 @@ const Client = () => {
                         </p>
 
                     </div>
-                 
+
                 </div>
             </div>
         </div>
-      
+
         <hr className="header-hr"/>
         <Footer />
     </>

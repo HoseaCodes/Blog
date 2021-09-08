@@ -29,7 +29,7 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../icons/cpu.jpeg");
+    url("../../Assets/Images/cpu-min.jpeg");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
@@ -48,7 +48,7 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../icons/projects.jpg");
+    url("../../Assets/Images/cpu-min.jpeg");
   background-position: center;
   display: flex;
   flex-direction: column;

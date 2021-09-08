@@ -27,14 +27,14 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../icons/besomeone.jpg");
+    url("../../Assets/Images/besomeone-min.jpg");
   background-size: cover;
   background-position: center;
   position: relative;
   height: 40vh;
   margin: 0;
 }
-/* 
+/*
 form {
     display: flex;
     flex-direction: column;

@@ -1,8 +1,7 @@
 import React from 'react';
 import './PersonalBrand.css';
-import nique from '../../icons/nique.jpg'
-import Resume2020 from '../../icons/Resume2020.pdf'
-
+import nique from '../../Assets/Images/nique-min.jpg'
+import Resume2020 from '../../Assets/Files/Resume2020.pdf'
 
 
 const PersonalBrand = () => {
@@ -26,7 +25,7 @@ const PersonalBrand = () => {
         <div className='personal-container'>
             {/* <Cards />
             <Resume /> */}
-            <div data-aos="fade-right" 
+            <div data-aos="fade-right"
                 data-aos-offset="500"
                 data-aos-duration="3000"
                 data-aos-easing="ease-in"

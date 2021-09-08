@@ -1,7 +1,7 @@
 import React from 'react';
-import Aaron from '../../icons/aaron.png'
-import Chengu from '../../icons/Chengu.png'
-import Nathan from '../../icons/Nathan.png'
+import Aaron from '../../Assets/Images/aaron-min.png'
+import Chengu from '../../Assets/Images/Chengu-min.png'
+import Nathan from '../../Assets/Images/Nathan-min.png'
 import './testimonial.css'
 
 const steps = [
@@ -57,8 +57,8 @@ const Testimonial = () => {
                     </div>
                 )
             })}
-            </div>  
-            <a className="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev"> <i className="fa fa-angle-left"></i> </a> 
+            </div>
+            <a className="carousel-control left carousel-control-prev" href="#myCarousel" data-slide="prev"> <i className="fa fa-angle-left"></i> </a>
             <a className="carousel-control right carousel-control-next" href="#myCarousel" data-slide="next"> <i className="fa fa-angle-right"></i> </a>
         </div>
     )

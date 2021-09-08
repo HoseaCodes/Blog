@@ -100,8 +100,6 @@ export const projectData = [
     //     mainFunctions: ['Learning materials', 'Consolidation of knowledge'],
     //     goal: 'The primary app idea is to allow users to easily create, share and count down to their moments. Whether it\'s a wedding, a holiday or just a night out with friends. There are many similar apps already on the market, however most of them provide a very complex, buggy solutions cluttered with ads.\n\nOur main requirements has always been to keep the app usable, reliable and functional. Aesthetically minimal, simple and clean. No ads, no tricks, but a consistent and intuitive user experience, providing value to our users, keeping them satisfied and engaged. Our reviews on App Store speak for themself:\n\nAfter our first launch we have closely monitored and collected feedback from customers. We have addressed and implemented all of the most requested features. Our app was growing and at the we had over 140k monthly active users. As we were identifying new opportunities to scale the app, we have decided to prepare a better foundation to support future ideas and direction. Redesigning and rebuilding the app in code was a necessary step to move forward. With releasing Days 2.0 we made the app faster, smarter and more beautiful than ever.'
     // },
-   
-   
 
 ]
 

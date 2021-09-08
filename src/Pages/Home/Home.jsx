@@ -17,7 +17,7 @@ class Home extends React.Component {
             <>
                 <main className='home-page'>
                     <NavBar id='top' />
-                    <Hero username={{firstName: 'Hosea', lastName: 'Codes'}}/>
+                    <Hero Home username={{firstName: 'Hosea', lastName: 'Codes'}}/>
                     <StyledHr Primary/>
                     <PersonalBrand />
                     <StyledHr Primary/>

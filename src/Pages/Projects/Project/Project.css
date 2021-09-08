@@ -1238,7 +1238,7 @@ section:after {
     border-radius: 12px;
   }
   .single-work-content-desc {
-    font-size: 13px;
+    font-size: 0.9em;
   }
   .single-work-content-separator {
     display: none;
@@ -1366,7 +1366,7 @@ section:after {
   margin-top: 0px;
   margin-bottom: 25px;
   font-family: Quark, sans-serif;
-  font-size: 28px;
+  font-size: 1.6em;
   line-height: 1em;
   font-weight: 700;
   letter-spacing: 2px;
@@ -1390,7 +1390,7 @@ section:after {
   margin-bottom: 30px;
   padding-top: 0px;
   font-family: Lato, sans-serif;
-  font-size: 18px;
+  font-size: 1em;
   line-height: 1.6em;
   font-weight: 300;
   color: #fff;
@@ -1465,7 +1465,7 @@ section:after {
   flex: 0 0 auto;
   font-family: Quark, sans-serif;
   color: #d9d9d9;
-  font-size: 70px;
+  font-size: 4.4em;
   font-weight: 700;
   margin-top: 0px;
   margin-bottom: 30px;

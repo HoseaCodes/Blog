@@ -28,7 +28,7 @@
   padding: 40px 0;
   position: relative;
   color: whitesmoke;
-  font-size: 18px;
+  font-size: 1.1em;
   background-color: #1a1e23;
 }
 
@@ -99,11 +99,11 @@
   font-weight: 300;
 }
 .presentation h4 {
-  font-size: 18px;
+  font-size: 1.1em;
   line-height: 28px;
 }
 .card-info h4 {
-  font-size: 22px;
+  font-size: 1.1em;
   line-height: 28px;
   font-weight: 500;
   margin-top: 5px;
@@ -145,7 +145,7 @@ small {
   transition: all 200ms ease-in;
 }
 .presentation .section-images .image .image-info h3 {
-  font-size: 32px;
+  font-size: 2em;
 }
 .presentation .section-images .image:hover .image-info {
   opacity: 1;
@@ -166,7 +166,7 @@ small {
 .section-responsive h6 {
   font-weight: 500;
   color: whitesmoke;
-  font-size: 12px;
+  font-size: 0.8em;
 }
 .presentation .section-responsive {
   border-top: 1px solid #dddddd;
@@ -219,7 +219,7 @@ small {
 }
 
 .card__title {
-  font-size: 30px;
+  font-size: 1.8em;
   font-weight: normal;
   color: #fffbe1;
   position: absolute;

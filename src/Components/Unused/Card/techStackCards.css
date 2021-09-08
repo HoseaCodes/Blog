@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans");
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   -webkit-box-sizing: inherit;
   -moz-box-sizing: inherit;
   box-sizing: inherit;
 }
-
-
 
 /* section {
   max-width: 1000px;
@@ -15,8 +15,6 @@
   padding: 10px;
 } */
 
-
-
 .services-grid {
   display: -webkit-box;
   display: flex;
@@ -52,17 +50,16 @@
 }
 
 .skills {
-list-style-type: none;
-text-align: center;
-font-size: 15px;
-margin: 1rem 0;
-line-height: 1.5;
-color: white;
+  list-style-type: none;
+  text-align: center;
+  font-size: 1em;
+  margin: 1rem 0;
+  line-height: 1.5;
+  color: white;
 }
 
-
 .service .cta span {
-  font-size: 10px;
+  font-size: 0.6em;
 }
 
 .service > * {
@@ -75,101 +72,98 @@ color: white;
 }
 .cta:hover {
   text-decoration: underline;
-  font-size: 18px;
+  font-size: 1.1em;
 }
 
 .service-title {
   color: #206a5d;
-  font-size: 20px;
+  font-size: 1.3em;
 }
 @media only screen and (min-width: 768px) {
-  @import url('https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans');
+  @import url("https://fonts.googleapis.com/css?family=Montserrat:600|Open+Sans");
 
-*, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
+  *,
+  *:before,
+  *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+  }
+
+  section {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .services-grid {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+  }
+
+  .service {
+    background-color: #1f4068;
+    margin: 20px;
+    padding: 20px;
+    height: 35vh;
+    width: 35vw;
+    border-radius: 4px;
+    text-align: center;
+    -webkit-box-flex: 1;
+    flex: 1;
+    display: -webkit-box;
+    display: flex;
+    flex-wrap: wrap;
+    border: 2px solid #e7e7e7;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .service1 .cta {
+    color: #206a5d;
+    text-transform: uppercase;
+  }
+
+  .service1:hover {
+    border: 3px solid #206a5d;
+  }
+
+  .skills {
+    list-style-type: none;
+    text-align: center;
+    font-size: 1em;
+    margin: 1rem 0;
+    line-height: 1.5;
+    color: white;
+  }
+
+  .service .cta span {
+    font-size: 0.7em;
+  }
+
+  .service > * {
+    flex: 1 1 100%;
+  }
+
+  .service .cta {
+    align-self: flex-end;
+    text-decoration: none;
+  }
+  .cta:hover {
+    text-decoration: underline;
+    font-size: 1.1em;
+  }
+
+  .service-title {
+    color: #206a5d;
+    font-size: 1.4em;
+  }
 }
-
-
-
-section {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-  padding: 10px;
-}
-
-
-
-.services-grid {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-}
-
-.service {
-  background-color: #1f4068;
-  margin: 20px;
-  padding: 20px;
-  height: 35vh;
-  width: 35vw;
-  border-radius: 4px;
-  text-align: center;
-  -webkit-box-flex: 1;
-  flex: 1;
-  display: -webkit-box;
-  display: flex;
-  flex-wrap: wrap;
-  border: 2px solid #e7e7e7;
-  -webkit-transition: all 0.3s ease;
-  -moz-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-}
-
-.service1 .cta {
-  color: #206a5d;
-  text-transform: uppercase;
-}
-
-.service1:hover {
-  border: 3px solid #206a5d;
-}
-
-.skills {
-list-style-type: none;
-text-align: center;
-font-size: 15px;
-margin: 1rem 0;
-line-height: 1.5;
-color: white;
-}
-
-
-.service .cta span {
-  font-size: 10px;
-}
-
-.service > * {
-  flex: 1 1 100%;
-}
-
-.service .cta {
-  align-self: flex-end;
-  text-decoration: none;
-}
-.cta:hover {
-  text-decoration: underline;
-  font-size: 18px;
-}
-
-.service-title {
-  color: #206a5d;
-  font-size: 20px;
-}
-}
-@media all and (max-width:900px) {
+@media all and (max-width: 900px) {
   .services-grid {
     display: -webkit-box;
     display: flex;

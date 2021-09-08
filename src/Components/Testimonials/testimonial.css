@@ -6,7 +6,7 @@
 
 .testimonial-carousel .item {
   color: #999;
-  font-size: 14px;
+  font-size: 1em;
   text-align: center;
   overflow: hidden;
   min-height: 340px;
@@ -61,7 +61,7 @@
 }
 
 .testimonial-carousel-control i {
-  font-size: 20px;
+  font-size: 1.3em;
   margin-right: 2px;
 }
 

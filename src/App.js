@@ -25,7 +25,7 @@ export default class App extends Component {
       <BrowserRouter>
         <Switch>
           <DataProvider>
-            <Route path="/" exact render={() => (<Home/>)}/>
+            <Route exact path="/" render={() => (<Home/>)}/>
             <Route path="/about" exact render={() => ( <About/>)}/>
             <Route path="/shop" exact render={() => (<Shop/>)}/>
             <Route path="/profile" exact component={Profile}/>
@@ -40,8 +40,8 @@ export default class App extends Component {
             <Route path="/blog/new" exact component={CreateArticle} />
             <Route path="/blog/edit" exact component={CreateArticle} />
             <Route path="/contact" exact component={Contact} />
-            <Route path="*" exact component={Error} />
           </DataProvider>
+            <Route path="*" component={Error} />
         </Switch>
       </BrowserRouter>
     );

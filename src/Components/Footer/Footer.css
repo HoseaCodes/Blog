@@ -15,7 +15,7 @@ footer {
 }
 
 footer p {
-  font-size: 0.8em;
+  font-size: 1.8em;
   color: #ccc;
   padding-bottom: 0px;
   margin-bottom: 8px;
@@ -25,10 +25,14 @@ footer p {
   padding-bottom: 15px;
 }
 
+.footer_h5 {
+  font-size: 2.5rem;
+}
+
 .footer_ul_amrc {
   margin: 0px;
   list-style-type: none;
-  font-size: 0.9em;
+  font-size: 1.5em;
   padding: 0px 0px 10px 0px;
 }
 
@@ -87,6 +91,7 @@ footer p {
 }
 .foote_bottom_ul_amrc li {
   display: inline;
+  font-size: 1.5rem;
 }
 
 .foote_bottom_ul_amrc li a {

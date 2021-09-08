@@ -55,6 +55,7 @@ const Articles = () => {
             alert(err.response.data.msg)
         }
     }
+
     const archiveArticle = async (id, archived) => {
         try {
           console.log('clicks')
@@ -205,7 +206,5 @@ const Articles = () => {
         </>
     )
 }
-
-
 
 export default Articles;

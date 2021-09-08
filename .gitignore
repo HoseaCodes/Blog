@@ -28,6 +28,7 @@ yarn-error.log*
 /config.js
 
 src/icons
+src/Assets
 .env
 index.js
 .eslintignore

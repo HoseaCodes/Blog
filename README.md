@@ -39,6 +39,20 @@ Dependencies used:
 
 The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
 
+## Frontend
+
+### Typography
+
+Fluid font sizes - The body is set to 100% causing the font to adjust the font sizes to the browser defaults.
+Best Practices:
+
+- No pixels are used to calculate sizes
+- `em` or `rem` are used to calculate font-sizes
+
+### Images
+
+Width - Set max-width to 100% causing the images to grow or shrink depending on the size of the parent column.
+
 ## Business Logic
 
 ### Enpoints

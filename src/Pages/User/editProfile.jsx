@@ -33,6 +33,7 @@ function Editprofile() {
         display: avatar ? "block" : "none"
     }
 console.log(user)
+console.log(avatar)
     const handleUpload = async e => {
         e.preventDefault()
         try {
@@ -81,13 +82,18 @@ console.log(user)
 
 
     const handleSubmit = async e => {
-        e.preventDefault()
-        try {
-            if (!avatar) return alert("No Image Upload")
-            await axios.post('/api/user/update', { ...profile, avatar })
-            history.push('/profile')
-        } catch (err) {
-            alert(err.response.data.msg)
+      console.log('clicks')
+      console.log('submit profile', ...profile, avatar)
+      e.preventDefault()
+      try {
+        console.log('submit profile', ...profile, avatar)
+        // if (!avatar) return alert("No Image Upload")
+        // await axios.put(`/api/user/${user._id}`, { ...profile, avatar })
+        // history.push('/profile')
+      } catch (err) {
+          console.log('error')
+          console.log(err)
+            alert(err)
         }
     }
 
@@ -99,15 +105,15 @@ console.log(user)
                     <div id="signupbox" >
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                                <div className="panel-title text-center"><h3>Edit Profile</h3></div>
+                            <a href="/edit"><div className="panel-title text-center"> Edit Profile</div></a>
                             </div>
                             <div className="panel-body" >
-                                <form className="row g-3" onSubmit={handleSubmit}>
+                                <form onSubmit={handleSubmit} className="row g-3" >
                                     <div className="col-md-6">
                                         <div id="div_p_name" className="form-group required">
                                             <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
-                                                <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
+                                                <input className="input-md emailinput form-control mb" placeholder="Enter Your Title" type="text"
                                                     name="title"
                                                     required value={user.title}
                                                     onChange={handleChangeInput}
@@ -119,7 +125,7 @@ console.log(user)
                                         <div id="div_p_name" className="form-group required">
                                             <label for="p_name" className="control-label col-md-4  requiredField">Name<span className="asteriskField">*</span> </label>
                                             <div className="controls col-md-8 ">
-                                                <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
+                                                <input className="input-md emailinput form-control mb" placeholder="Enter Name" type="text"
                                                     name="name"
                                                     required value={user.name}
                                                     onChange={handleChangeInput}
@@ -136,7 +142,7 @@ console.log(user)
                                                     name="email"
                                                     required value={user.email}
                                                     onChange={handleChangeInput}
-                                                    placeholder="Enter Project Id" type="text" />
+                                                    placeholder="Enter your email" type="text" />
                                             </div>
                                         </div>
                                     </div>
@@ -149,7 +155,7 @@ console.log(user)
                                                     name="phone"
                                                     required value={user.phone}
                                                     onChange={handleChangeInput}
-                                                    placeholder="Enter Project Id" type="text" />
+                                                    placeholder="Enter Phone Number" type="text" />
                                             </div>
                                         </div>
                                     </div>
@@ -160,7 +166,7 @@ console.log(user)
                                               <label htmlFor="">Separate by comma</label>
                                                 <textarea className="mb"
                                                     name="skills"
-                                                    required value={user.skills}
+                                                    value={user.skills}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
                                                     rows="5"
@@ -176,7 +182,7 @@ console.log(user)
                                               <label htmlFor="">Separate by comma</label>
                                                 <textarea className="mb"
                                                     name="websites"
-                                                    required value={user.websites}
+                                                    value={user.websites}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
                                                     rows="5"
@@ -191,7 +197,7 @@ console.log(user)
                                             <div className="controls col-md-8 ">
                                                 <textarea className="mb"
                                                     name="socialMedia"
-                                                    required value={user.socialMedia}
+                                                    value={user.socialMedia}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
                                                     rows="5"
@@ -206,7 +212,7 @@ console.log(user)
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb"
                                                      name="location"
-                                                     required value={user.location}
+                                                     value={user.location}
                                                      onChange={handleChangeInput}
                                                      placeholder="Enter City State" type="text" />
                                             </div>
@@ -218,7 +224,7 @@ console.log(user)
                                             <div className="controls col-md-8 ">
                                                 <textarea className="mb"
                                                     name="work"
-                                                    required value={user.work}
+                                                    value={user.work}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
                                                     rows="5"
@@ -233,7 +239,7 @@ console.log(user)
                                             <div className="controls col-md-8 ">
                                                 <textarea className="mb"
                                                     name="education"
-                                                    required value={user.education}
+                                                    value={user.education}
                                                     onChange={handleChangeInput}
                                                     style={{ width: '100%' }}
                                                     rows="5"
@@ -270,7 +276,7 @@ console.log(user)
                                     <div className="form-group">
                                         <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
                                             <br />
-                                            <button className="btn btn-info btn-md" type="submit">Update Profile</button>
+                                            <button className="btn btn-info btn-md">Update Profile</button>
                                             <button className="btn btn-danger btn-md" type="reset"><a href="/blog">Cancel</a> </button>
                                         </div>
                                     </div>

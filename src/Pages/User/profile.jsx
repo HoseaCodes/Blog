@@ -3,6 +3,7 @@ import './profile.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 import { GlobalState } from '../../GlobalState';
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
   const state = useContext(GlobalState);
@@ -11,7 +12,7 @@ const Profile = () => {
   return (
     <>
     <NavBar/>
-      <div className="container">
+      <div className="container-fluid">
         <div class="profile-content p-0">
             <div class="profile-header">
                 <div class="profile-header-cover"></div>
@@ -23,7 +24,7 @@ const Profile = () => {
                     <div class="profile-header-info">
                         <h4 class="m-t-sm">{user.name}</h4>
                         <p class="m-b-sm">{user.title}</p>
-                        <a href="#" class="btn btn-xs btn-primary mb-3">Edit Profile</a>
+                        <Link to="/edit" className="btn btn-xs btn-primary mb-3">Edit</Link>
                     </div>
                 </div>
 

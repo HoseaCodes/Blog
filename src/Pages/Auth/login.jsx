@@ -1,21 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+import { GlobalState } from '../../GlobalState';
 import Footer from "../../Components/Footer/Footer";
 import "./login.css";
 
 const Login = () => {
-	const [user, setUser] = useState({
-		email: "",
-		password: "",
-	});
+  const state = useContext(GlobalState)
+  const [user, setUser] = state.userAPI.user
 
-	const onChangeInput = (e) => {
+  const onChangeInput = (e) => {
 		const { name, value } = e.target;
 		setUser({ ...user, [name]: value });
 	};
+  // console.log(user)
 
 	const loginSubmit = async (e) => {
 		e.preventDefault();

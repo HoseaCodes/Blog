@@ -44,6 +44,7 @@ The user is brought to the home page where they can navigate to my [portfolio](w
 ### Typography
 
 Fluid font sizes - The body is set to 100% causing the font to adjust the font sizes to the browser defaults.
+
 Best Practices:
 
 - No pixels are used to calculate sizes
@@ -52,6 +53,23 @@ Best Practices:
 ### Images
 
 Width - Set max-width to 100% causing the images to grow or shrink depending on the size of the parent column.
+
+Best Practices:
+
+- Have at least 150 ppi at least 300 is recommended
+
+  How to find ppi for Mac users:
+
+  - Open your image in Preview.
+  - Up at the top, click "Tools" > "Adjust Size"
+  - Uncheck the box labeled "Resample Image"
+  - Next, using inches, change the size of your artwork to your desired print size.
+  - The resolution should be at least 300 pixels per inch.
+
+- Compress the images
+  You can use tools like https://compresspng.com/ to compress the image
+  - The browser will optimize the image due to image being so large. They will size the image down to shrink it to the webpage.
+- Alterantively, you can look into srcset
 
 ## Business Logic
 

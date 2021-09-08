@@ -24,7 +24,7 @@
 .socialring p {
   margin-top: 30px;
   line-height: 28px;
-  font-size: 18px;
+  font-size: 1.1em;
   font-weight: 200;
 }
 
@@ -56,7 +56,7 @@
   font-weight: 200;
   color: white;
   margin-bottom: 20px;
-  font-size: 30px;
+  font-size: 1.8em;
   position: relative;
   line-height: inherit;
 }

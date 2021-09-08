@@ -6,7 +6,7 @@ const Hero = (props) => {
   const {firstName, lastName} = props.username
   return (
     <>
-      <HeroContainer>
+      <HeroContainer Home>
         <HeroPositioning >
             <h1>
               <HeroText Left>{firstName}</HeroText>

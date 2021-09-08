@@ -1,13 +1,9 @@
 import styled, {css} from 'styled-components';
 import breakpoint from '../../Utils/breakpoints.js';
+import wireframe from '../../Assets/Images/wireframe-min.jpg';
+import houston from '../../Assets/Images/besomeone-min.jpg';
 
 const HeroContainer = styled.div`
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(119, 119, 119, 0.6),
-      rgba(119, 119, 119, 0.6)
-    ),
-    url("../../icons/wireframe.jpg");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
@@ -15,7 +11,28 @@ const HeroContainer = styled.div`
   position: relative;
   height: 70vh;
   padding-bottom: 55px;
-
+  ${props => props.Home && css`
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(119, 119, 119, 0.6),
+    rgba(119, 119, 119, 0.6)
+  ),
+  url(${wireframe});  `}
+  ${props => props.About && css`
+    background-image: linear-gradient(
+        to right bottom,
+        rgba(119, 119, 119, 0.6),
+        rgba(119, 119, 119, 0.6)
+      ),
+      url(${houston});
+      background-position: center;
+    height: 40vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    `}
   @media only screen and ${breakpoint.devicemin.xs} and ${breakpoint.devicemax.lg} {
     height: 40vh;
     width: 100%;
@@ -76,4 +93,8 @@ const HeroText = styled.span`
   }
 `;
 
-export {HeroContainer, HeroPositioning, HeroText};
+const HeroCircleImage = styled.img.attrs({src: `${'https://i.imgur.com/dj1vhqzm.png?1'}`})`
+  border-radius: 50%;
+`;
+
+export {HeroContainer, HeroPositioning, HeroText, HeroCircleImage};

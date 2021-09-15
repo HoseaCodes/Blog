@@ -71,7 +71,9 @@ Best Practices:
   - The browser will optimize the image due to image being so large. They will size the image down to shrink it to the webpage.
 - Alterantively, you can look into srcset
 
-## Business Logic
+## Backend
+
+### Business Logic
 
 ### Enpoints
 
@@ -103,7 +105,7 @@ After completing the instructions to run locally click here: [Local Server](http
 - /login
 - /refresh_token
 
-## Ops
+## Dev Ops
 
 ### Process Manager
 
@@ -115,7 +117,15 @@ This project uses Winston to log events into our log manager. Visit https://gith
 
 This project uses Morgan to log events inside of the terminal. Visit https://github.com/expressjs/morgan for details.
 
-## Development
+## Enviornments
+
+### Local
+
+### Staging
+
+### Production
+
+### Development
 
 This project uses EditorConfig to standardize text editor configuration. Visit https://editorconfig.org for details.
 

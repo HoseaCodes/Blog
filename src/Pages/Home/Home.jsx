@@ -66,7 +66,7 @@ class Home extends React.Component {
                         </div>
                         <StyledHr Primary/>
                         <br />
-                        <div style={{ width: '10%', margin: '0 auto' }}>
+                        <div>
                             <a href='#top' className='footer-button'
                                 data-aos="fade-right"
                                 data-aos-offset="200"

@@ -109,8 +109,19 @@
   padding-right: 0.5%;
 }
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 600px) {
+@media only screen and (min-device-width: 375px) and (max-device-width: 768px) {
   .tech-title {
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
+  }
+}
+
+@media only screen and (max-device-width: 1024px) {
+  .client-slider {
+    top: 50%;
+  }
+}
+@media only screen and (max-device-width: 768px) {
+  .client-slider {
+    top: 35%;
   }
 }

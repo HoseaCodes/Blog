@@ -103,7 +103,7 @@
 }
 .personal-card-content {
   overflow: scroll;
-  font-size: 1.8rem;
+  font-size: 2.2rem;
 }
 .personal-image {
   width: 45%;
@@ -122,6 +122,9 @@
 .closed-envelop:hover {
   filter: drop-shadow(0 0 1.5rem gray);
 }
+.project-h2 {
+  padding-bottom: 1%;
+}
 
 .personal-btn {
   border: 2px solid #204740;
@@ -129,7 +132,7 @@
   box-sizing: inherit;
   cursor: pointer;
   display: inline-block;
-  font-size: 0.8em;
+  font-size: 1.8em;
   margin-bottom: 10px;
   padding: 10px 20px;
   background-color: transparent;
@@ -214,5 +217,15 @@
   }
   .personal-card-info {
     margin: 2rem;
+  }
+}
+
+@media only screen and (max-width: 1030px) {
+  .personal-combo {
+    display: block;
+    height: auto;
+  }
+  .personal-combo img {
+    width: -webkit-fill-available;
   }
 }

@@ -8,16 +8,6 @@ import './projectHighlight.css'
 
 function ProjectHighlight() {
 
-    window.addEventListener(
-        "scroll",
-        () => {
-            document.body.style.setProperty(
-                "--scroll",
-                window.pageYOffset / (document.body.offsetHeight - window.innerHeight)
-            );
-        },
-        false
-    );
     AOS.init();
     return (
         <div style={{ background: '#1A1E23' }}>

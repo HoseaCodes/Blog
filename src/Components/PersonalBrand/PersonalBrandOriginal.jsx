@@ -16,10 +16,6 @@ const PersonalBrand = () => {
         window.location.href = Resume2020;
     }
 
-    window.addEventListener('scroll', () => {
-        document.body.style.setProperty('--scroll', window.pageYOffset / (document.body.offsetHeight - window.innerHeight));
-    }, false);
-
     return (<>
 
         <div className='personal-container'>

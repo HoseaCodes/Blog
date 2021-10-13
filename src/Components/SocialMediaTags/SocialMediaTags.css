@@ -1,29 +1,26 @@
 .social_footer_ul {
-  display: table;
-  margin: 15px auto 0 auto;
-  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-left: 25%;
+  margin-right: 25%;
 }
 
 .social_footer_ul li {
-  padding-left: 20px;
-  padding-top: 10px;
+  padding-left: 1.5rem;
+  padding-top: 3rem;
   float: left;
-  font-size: 1em;
   margin: 0 auto;
 }
 
 .social_footer_ul li a {
+  font-size: 1.5rem;
   color: #ccc;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 50%;
   margin: 0 auto;
-}
-
-.social_footer_ul li i {
-  width: 24px;
-  height: 24px;
-  text-align: center;
 }
 
 @media only screen and (min-width: 768px) {

@@ -83,6 +83,7 @@ import NavBar from '../../Components/NavBar/NavBar';
 import {projectData} from './ProjectsData';
 import ProjectCard from '../../Components/Cards/projectCard';
 import Footer from '../../Components/Footer/Footer';
+import { StyledHr } from '../../Layout/Hr/styledHr';
 
 const Projects = () => {
 
@@ -93,13 +94,13 @@ const Projects = () => {
                 <div className='header-logo'>
                 </div>
             </div>
-            <hr className="header-hr"/>
+            <StyledHr Primary/>
             {projectData.map(project => {
                                 return (<>
                                     <ProjectCard project={project}
                                         key={project.id}
                                     />
-                                    <hr className="header-hr"/>
+                                    <StyledHr Primary/>
                                 </>
                                 )
                             })}

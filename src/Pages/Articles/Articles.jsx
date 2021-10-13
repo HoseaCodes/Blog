@@ -11,6 +11,7 @@ import Loading from '../../Loading';
 import axios from 'axios';
 import Footer from '../../Components/Footer/Footer';
 import Pagination from '../../Components/Pagination/pagination';
+import { StyledHr } from '../../Layout/Hr/styledHr';
 
 const Articles = () => {
 
@@ -117,7 +118,7 @@ const Articles = () => {
                     <div className='artcile-header-logo'>
                     </div>
                 </div>
-                <hr className="header-hr "/>
+                <StyledHr Primary/>
                 <div id="articles">
                     <h3 className='articles-header'>Thoughts of a Wise Mind<hr /></h3>
                     <p style={{ fontSize: '1.5rem', color: 'lightgray' }}>Here are some of my articles you may like.</p>
@@ -201,7 +202,7 @@ const Articles = () => {
                     </div>
                 </div>
             </div>
-            <hr className="header-hr "/>
+            <StyledHr Primary/>
             <Footer/>
         </>
     )

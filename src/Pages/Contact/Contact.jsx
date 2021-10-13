@@ -1,20 +1,22 @@
-//Make it easy for your audience to 
-//contact you. You can create a separate 
-//“Contact” section, a “Contact” 
-//call-to-action button, or both. One 
-//best practice is to include multiple, 
-//easily accessible ways for your audience 
-//to contact you, as they navigate their 
-//way through your website. Include a 
-//contact form, your email address, or 
-//both in this section. It’s not necessary 
-//to include your phone number or address 
+//Make it easy for your audience to
+//contact you. You can create a separate
+//“Contact” section, a “Contact”
+//call-to-action button, or both. One
+//best practice is to include multiple,
+//easily accessible ways for your audience
+//to contact you, as they navigate their
+//way through your website. Include a
+//contact form, your email address, or
+//both in this section. It’s not necessary
+//to include your phone number or address
 //in your website’s contact information.
 
 import React from 'react';
 import './Contact.css'
 import NavBar from '../../Components/NavBar/NavBar';
 import ContactForm from '../../Components/Form/ContactForm'
+import { StyledHr } from '../../Layout/Hr/styledHr';
+import Footer from '../../Components/Footer/Footer';
 
 const Contact = () => {
     return (
@@ -27,9 +29,11 @@ const Contact = () => {
                     </h1>
                 </div>
             </div>
-            <hr className="header-hr "/>
+            <StyledHr Primary/>
             <h2 className='contacth2'>Contact Me</h2>
             <ContactForm />
+            <StyledHr Primary/>
+            <Footer/>
         </div >
     )
 

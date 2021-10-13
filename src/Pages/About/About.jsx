@@ -1,47 +1,47 @@
-//Tap into your 
-//professional story and your value proposition, and highlight 
-//what you do, why you do it, and how you do it. 
-//You can communicate how you became motivated to start a career 
-//in your desired industry, what drives you currently, 
+//Tap into your
+//professional story and your value proposition, and highlight
+//what you do, why you do it, and how you do it.
+//You can communicate how you became motivated to start a career
+//in your desired industry, what drives you currently,
 //the problems that you solve, and your current industry-related
-//passions. There is no need to include extensive details or your 
-//whole life story in the “About Me” section. Stick to the what, 
-//why, and how of your professional story, and any personal 
+//passions. There is no need to include extensive details or your
+//whole life story in the “About Me” section. Stick to the what,
+//why, and how of your professional story, and any personal
 //information that impacted or informed your professional story.
-//You can include some additional, brief details about your 
-//personal life in the “About Me” section, after you’ve detailed 
-//your professional story. You can include information about your 
-//interests, hobbies, pets, kids, partner, and geographic location. 
-//Including this information can help your audience connect with 
-//the person behind the work. It is important, however, to keep 
-//the personal details brief and not too personal. Remember that 
+//You can include some additional, brief details about your
+//personal life in the “About Me” section, after you’ve detailed
+//your professional story. You can include information about your
+//interests, hobbies, pets, kids, partner, and geographic location.
+//Including this information can help your audience connect with
+//the person behind the work. It is important, however, to keep
+//the personal details brief and not too personal. Remember that
 //we want to cast the widest net when job searching.
-//If you have another passion, particularly if that passion 
-//compliments the work that you will be doing in your desired 
-//industry, it’s also acceptable to include this information in 
-//your “About Me” section. For example, if you’re a UX designer, 
-//who also has a passion and talent for graphic design, you can 
-//include information about your graphic design skills, and 
-//include a link to your graphic design website. If you do 
-//include information about a secondary passion, be sure that your 
-//messaging around this interest is brief and doesn’t distract 
+//If you have another passion, particularly if that passion
+//compliments the work that you will be doing in your desired
+//industry, it’s also acceptable to include this information in
+//your “About Me” section. For example, if you’re a UX designer,
+//who also has a passion and talent for graphic design, you can
+//include information about your graphic design skills, and
+//include a link to your graphic design website. If you do
+//include information about a secondary passion, be sure that your
+//messaging around this interest is brief and doesn’t distract
 //from your primary messaging around your career interest.
 
 
 import React from 'react';
 import './About.css';
 import NavBar from '../../Components/NavBar/NavBar';
+import HeroImage from '../../Components/Hero/heroImage';
 import Footer from '../../Components/Footer/Footer';
+import { StyledHr } from '../../Layout/Hr/styledHr';
 
 
 const About = () => {
     return (
         <div>
             <NavBar />
-            <div className='about-background'>
-                <img className='about-img' src="https://i.imgur.com/dj1vhqzm.png?1" alt="Hosea" />
-            </div>
-            <hr className="header-hr "/>
+            <HeroImage About/>
+            <StyledHr Primary/>
             <div className="quote">
                 <q>
                     What you think, you become. What you feel, you attract. What you imagine, you create.
@@ -51,7 +51,7 @@ const About = () => {
             {/* <!-- Quote/Highlight End  --> */}
 
             {/* <!-- Timeline  -->  */}
-            <hr className="header-hr "/>
+            <StyledHr Primary/>
             <div className="timeline">
                 <div id="timeline" className="about-container right">
                     <div className="content">
@@ -85,7 +85,7 @@ const About = () => {
                 </div>
             </div>
             {/* <!-- Timeline End  --> */}
-            <hr className="header-hr "/>
+            <StyledHr Primary/>
             <Footer/>
         </div>
     )

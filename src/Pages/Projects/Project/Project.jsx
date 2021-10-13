@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import NavBar from '../../../Components/NavBar/NavBar';
+import {StyledHr} from '../../../Layout/Hr/styledHr';
 import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 import  './Project.css';
@@ -69,6 +70,7 @@ const ProjectItem = () => {
                         </div>
                     </div>
                 </div>
+                <StyledHr Primary/>
                 <hr className="header-hr"/>
                 <main className="single-work">
                     <section className="single-work-intro-section">
@@ -172,7 +174,7 @@ const ProjectItem = () => {
                                     return (
                                         <>
                                         <div key={i} className="section-title">
-                                            <h5 style={{paddingLeft: '30px'}}>{typeface}</h5>
+                                            <h5 style={{paddingLeft: '30px', fontSize: '3rem'}}>{typeface}</h5>
                                             <img  style={{objectFit: 'contain', padding: '30px'}} src={typography[typeface]} alt="" srcset="" />
                                         </div>
                                         </>
@@ -291,7 +293,7 @@ const ProjectItem = () => {
                     {/* { projectData.length >= 1 ? nextProjectLink : null} */}
                 </main>
             </div>
-            <hr className="header-hr"/>
+            <StyledHr Primary/>
             <Footer/>
         </>
     )

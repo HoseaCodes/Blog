@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "dompurify": "^2.3.1",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "firebase": "^8.10.0",
@@ -67,6 +68,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:dev": "env-cmd -e development react-scripts start",
+    "start:qa": "env-cmd -e testing react-scripts start",
+    "start:stag": "env-cmd -e staging react-scripts start",
+    "start:prod": "env-cmd -e production react-scripts start",
+    "build:dev": "env-cmd -e dev react-scripts build",
+    "build:qa": "env-cmd -e testing react-scripts build",
+    "build:qa": "env-cmd -e staging react-scripts build",
+    "build:prod": "env-cmd -e production react-scripts build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

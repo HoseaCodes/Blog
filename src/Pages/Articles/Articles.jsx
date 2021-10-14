@@ -16,7 +16,7 @@ import { StyledHr } from '../../Layout/Hr/styledHr';
 const Articles = () => {
 
     const state = useContext(GlobalState)
-    const [articles, setArticles] = state.articlesAPI.articles
+    const [articles] = state.articlesAPI.articles
     // const [token] = state.token
     const [callback, setCallback] = state.articlesAPI.callback
     const [loading, setLoading] = useState(false)
@@ -28,7 +28,18 @@ const Articles = () => {
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const mainPosts = articles.map((article) => { return article.archived === true ? articles.pop(article) : article})
+    const mainPosts = articles
+    const archivedPosts = [];
+    mainPosts.map((article) => {
+      if (article.archived) {
+        archivedPosts.push(article);
+        mainPosts.pop(article)
+      }
+    })
+    console.log(state, 'state')
+    console.log(articles, 'articles')
+    console.log(mainPosts, 'main')
+    console.log(archivedPosts, 'archivedPosts')
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
 
     const paginate = pageNum => setCurrentPage(pageNum);
@@ -71,12 +82,12 @@ const Articles = () => {
         }
     }
 
-    const handleCheck = async (id) => {
-        articles.forEach(article => {
-            if (article._id === id) article.checked = !article.checked
-        })
-        setArticles([...articles])
-    }
+    // const handleCheck = async (id) => {
+    //     articles.forEach(article => {
+    //         if (article._id === id) article.checked = !article.checked
+    //     })
+    //     setArticles([...articles])
+    // }
 
     const filteredArticles = currentPosts.filter(
         (article) => {
@@ -84,6 +95,7 @@ const Articles = () => {
                 search.toLowerCase()) !== -1;
         }
     );
+    console.log(filteredArticles, 'filtered')
 
     const updateSearch = event => {
         const { value } = event.target
@@ -170,28 +182,26 @@ const Articles = () => {
                         </section>
                         {/* <!--───────────────card───────────────--> */}
                         <section className='articleList'>
-                            {filteredArticles.map(article => {
-                                return (<>
-                                    <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={handleCheck} article={article}
+                            {mainPosts.map(article => {
+                                return (
+                                    <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
                                         key={article.id}
                                     />
-                                    <hr className='article-line' />
-                                </>
                                 )
                             })}
                             <Pagination currentPage={currentPage} paginate={paginate} nextPage={nextPage} prevPage={prevPage}
-                            postsPerPage={postsPerPage} totalPosts={articles.length} />
+                            postsPerPage={postsPerPage} totalPosts={mainPosts.length} />
                         </section>
                         <div>
                             <section className='article-sidebar'>
                                 <div className="popular">
                                     <h2 className='article-card-header'>Popular Post</h2>
                                     <section className='popular-articles'>
-                                        {articles.map(article => {
-                                            return (<>
-                                                <a href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
+                                        {mainPosts.map(article => {
+                                            return (
+                                                <a key={article.id} href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
-                                            </>)
+                                            )
                                         })}
                                     </section>
                                 </div>

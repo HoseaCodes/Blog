@@ -17,6 +17,7 @@ const ArticleItem = (props) => {
     const timeFormater = moment.utc(createdAt).format('MM/DD/YYYY')
 
     return (
+      <>
         <div className="article-card">
             {/* <input type="checkbox" checked={checked}
                 onChange={() => props.handleCheck(_id)} /> */}
@@ -46,6 +47,8 @@ const ArticleItem = (props) => {
 
             </div>
         </div>
+        <hr className='article-line' />
+        </>
     )
 }
 

@@ -36,3 +36,5 @@ test/db.js
 
 .eslintrc.cjs
 src/.eslintrc.js
+
+.env-cmdrc

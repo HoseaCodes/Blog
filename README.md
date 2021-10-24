@@ -153,3 +153,5 @@ npm test
 
 - User login with the ability to add comments and like post.
 - Routing for 404
+- Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
+- Confgiure multiple env

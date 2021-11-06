@@ -1,4 +1,5 @@
 import React from 'react'
+import { StyledFormSubmit } from '../../Layout/Form/styledInput';
 import './Contact.css'
 
 const ContactForm = () => {
@@ -9,7 +10,7 @@ const ContactForm = () => {
                 <input className='contact-input' type="text" name="name" placeholder="Name" />
                 <input className='contact-input' type="email" name="email" placeholder="Enter Email" />
                 <textarea className='area' name="message" placeholder='Your Message' />
-                <input className='btn' type="submit" value="Submit" />
+                <StyledFormSubmit type="submit" value="Submit"/>
             </form>
         </div>
     </>

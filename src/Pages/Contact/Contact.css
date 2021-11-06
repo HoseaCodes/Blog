@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   background-color: #1a1e23;
-  height: 60vh;
+  height: 40vh;
 }
 
 .contact-container p {
@@ -60,6 +60,6 @@ form {
   font-size: 3rem;
   text-transform: uppercase;
   text-align: center;
-  padding-top: 3rem;
+  padding-top: 8rem;
   letter-spacing: 0.5rem;
 }

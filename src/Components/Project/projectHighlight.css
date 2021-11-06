@@ -23,15 +23,6 @@
   border-color: #206a5d;
 }
 
-.portfolio-group {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 5rem;
-  color: white;
-  margin-bottom: 5rem;
-}
 /* Project Containers */
 
 @media only screen and (min-device-width: 375px) and (max-device-width: 600px) {

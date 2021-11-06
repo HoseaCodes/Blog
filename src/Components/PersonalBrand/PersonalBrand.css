@@ -122,9 +122,6 @@
 .closed-envelop:hover {
   filter: drop-shadow(0 0 1.5rem gray);
 }
-.project-h2 {
-  padding-bottom: 1%;
-}
 
 .personal-btn {
   border: 2px solid #204740;

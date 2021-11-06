@@ -5,6 +5,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './projectHighlight.css'
+import { StyledButtonATag, StyledButtonH2, StyledDivButton } from '../../Layout/Button/styledButton';
 
 function ProjectHighlight() {
 
@@ -30,10 +31,10 @@ function ProjectHighlight() {
 
                 </div> */}
             </div>
-            <div className="portfolio-group">
-                <h2 className='project-h2'>Visit my portfolio for more</h2>
-                <a className="personal-btn portfolio-link" href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank">My Portfolio</a>
-            </div>
+            <StyledDivButton>
+              <StyledButtonH2>Visit my portfolio for more</StyledButtonH2>
+              <StyledButtonATag href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank">My Portfolio</StyledButtonATag>
+            </StyledDivButton>
         </div>
     )
 }

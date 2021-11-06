@@ -10,6 +10,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import ProjectHighlight from '../../Components/Project/projectHighlight';
 import Hero from '../../Components/Hero/hero';
 import {StyledHr} from '../../Layout/Hr/styledHr';
+import {StyledButtonATag} from '../../Layout/Button/styledButton';
 
 class Home extends React.Component {
     render() {
@@ -67,12 +68,14 @@ class Home extends React.Component {
                         <StyledHr Primary/>
                         <br />
                         <div>
-                            <a href='#top' className='footer-button'
-                                data-aos="fade-right"
-                                data-aos-offset="200"
-                                data-aos-duration="3000"
-                                data-aos-easing="ease-in"
-                            >Back to Top</a>
+                          <StyledButtonATag Primary href='#top'
+                            data-aos="fade-right"
+                            data-aos-offset="200"
+                            data-aos-duration="3000"
+                            data-aos-easing="ease-in"
+                          >
+                            Back to the top
+                            </StyledButtonATag>
                         </div>
                     </div>
                     <Footer />

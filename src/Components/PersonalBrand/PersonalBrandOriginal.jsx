@@ -2,7 +2,7 @@ import React from 'react';
 import './PersonalBrand.css';
 import nique from '../../Assets/Images/nique-min.jpg'
 import Resume2020 from '../../Assets/Files/Resume2020.pdf'
-
+import {StyledButton} from '../../Layout/Button/styledButton';
 
 const PersonalBrand = () => {
 
@@ -77,8 +77,8 @@ const PersonalBrand = () => {
                         companies since the beginning of my career and I am excited for the opportunity
                             to continue this journey with another industry leader.</p>
                         <div style={{ display: "flex", justifyContent: 'space-around' }}>
-                            <button onClick={handleClick} className='personal-btn'>More about Dominique</button>
-                            <button onClick={handleDownload} className='personal-btn'>Download my Resume</button>
+                          <StyledButton onClick={handleClick}>More about Dominique</StyledButton>
+                          <StyledButton onClick={handleDownload}>Download my Resume</StyledButton>
                         </div>
                     </div>
                 </div>

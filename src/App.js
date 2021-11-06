@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as Sentry from "@sentry/react";
 import Home from './Pages/Home/Home'
 import Projects from './Pages/Projects/Projects'
 import About from './Pages/About/About'
@@ -17,7 +18,7 @@ import Register from './Pages/Auth/register';
 import Profile from './Pages/User/profile';
 import Editprofile from './Pages/User/editProfile';
 
-export default class App extends Component {
+class App extends Component {
 
   render() {
 
@@ -49,3 +50,4 @@ export default class App extends Component {
 }
 
 
+export default Sentry.withProfiler(App);

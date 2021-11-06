@@ -6,6 +6,8 @@
   "dependencies": {
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@sentry/react": "^6.13.3",
+    "@sentry/tracing": "^6.13.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
@@ -73,7 +75,6 @@
     "start:stag": "env-cmd -e staging react-scripts start",
     "start:prod": "env-cmd -e production react-scripts start",
     "build:dev": "env-cmd -e dev react-scripts build",
-    "build:qa": "env-cmd -e testing react-scripts build",
     "build:qa": "env-cmd -e staging react-scripts build",
     "build:prod": "env-cmd -e production react-scripts build",
     "build": "react-scripts build",

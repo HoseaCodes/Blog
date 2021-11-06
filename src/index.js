@@ -1,8 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import * as serviceWorker from './serviceWorker';
+
+const history = createBrowserHistory();
+
+// Sentry.init({
+//   dsn: "https://496f7401c93d458ab3cf5e4632e7a923@o990278.ingest.sentry.io/6007465",
+//   integrations: [new Integrations.BrowserTracing({
+//     tracingOrigins: ["localhost", "www.hoseacodes.com", /^\//],
+//     routingInstrumentation: Sentry.reactRouterV5Instrumentation(history),
+//   })],
+
+//   // Set tracesSampleRate to 1.0 to capture 100%
+//   // of transactions for performance monitoring.
+//   // We recommend adjusting this value in production
+//   tracesSampleRate: 1.0,
+// });
 
 ReactDOM.render(
   <React.StrictMode>

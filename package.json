@@ -69,7 +69,7 @@
     "winston": "^3.3.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "HTTPS=true react-scripts start",
     "start:dev": "env-cmd -e development react-scripts start",
     "start:qa": "env-cmd -e testing react-scripts start",
     "start:stag": "env-cmd -e staging react-scripts start",

@@ -17,6 +17,8 @@ import Login from './Pages/Auth/login';
 import Register from './Pages/Auth/register';
 import Profile from './Pages/User/profile';
 import Editprofile from './Pages/User/editProfile';
+import NavBar from './Components/NavBar/NavBar';
+import Footer from './Components/Footer/Footer';
 
 class App extends Component {
 
@@ -26,6 +28,7 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <DataProvider>
+            <NavBar/>
             <Route exact path="/" render={() => (<Home/>)}/>
             <Route path="/about" exact render={() => ( <About/>)}/>
             <Route path="/shop" exact render={() => (<Shop/>)}/>
@@ -41,6 +44,7 @@ class App extends Component {
             <Route path="/blog/new" exact component={CreateArticle} />
             <Route path="/blog/edit" exact component={CreateArticle} />
             <Route path="/contact" exact component={Contact} />
+            <Footer/>
           </DataProvider>
             <Route path="*" component={Error} />
         </Switch>

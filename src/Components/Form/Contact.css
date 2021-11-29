@@ -11,11 +11,6 @@
   width: 40% !important;
 }
 
-.contact-container p {
-  opacity: 0.6;
-  font-size: 2rem;
-}
-
 .contact-input,
 .area {
   width: 100% !important;
@@ -24,6 +19,32 @@
 .contact-input::placeholder,
 .area::placeholder {
   font-size: 1.5rem;
+}
+
+.contact-input,
+.area {
+  width: 60vw;
+  height: 3rem;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.area {
+  height: 8rem;
+}
+
+.contact-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1e23;
+  height: 40vh;
+}
+
+.contact-container p {
+  color: white;
+  font-size: 1.5rem;
+  opacity: 0.6;
 }
 
 @media only screen and (min-width: 768px) {

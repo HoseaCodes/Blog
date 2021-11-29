@@ -18,6 +18,18 @@ const HeroContainer = styled.div`
     rgba(119, 119, 119, 0.6)
   ),
   url(${wireframe});  `}
+  ${props => props.Contact && css`
+  background-image: linear-gradient(
+    to right bottom,
+    rgba(119, 119, 119, 0.6),
+    rgba(119, 119, 119, 0.6)
+  ), url(${houston});
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: 40vh;
+  margin: 0;
+  `}
   ${props => props.About && css`
     background-image: linear-gradient(
         to right bottom,

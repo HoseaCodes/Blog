@@ -26,7 +26,7 @@ const HeroContainer = styled.div`
       ),
       url(${houston});
       background-position: center;
-    height: 40vh;
+    height: 60vh;
     margin: 0;
     display: flex;
     flex-direction: column;

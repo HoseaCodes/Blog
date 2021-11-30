@@ -1,8 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import NavBar from '../../../Components/NavBar/NavBar';
 import {StyledHr} from '../../../Layout/Hr/styledHr';
-import Footer from '../../../Components/Footer/Footer';
 import {projectData} from '../ProjectsData'
 import  './Project.css';
 
@@ -42,7 +40,6 @@ const ProjectItem = () => {
 
     return (
         <>
-            <NavBar/>
             <div id="single-work" className="project-group">
                 <div style={{backgroundImage: `url(${headerImg})`}} id="top" className="hero-single-work">
                     <div className="hero-single-work-content">
@@ -294,7 +291,6 @@ const ProjectItem = () => {
                 </main>
             </div>
             <StyledHr Primary/>
-            <Footer/>
         </>
     )
 }

@@ -4,8 +4,6 @@ import { GlobalState } from '../../../GlobalState';
 import '../Articles.css'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import EventNoteIcon from '@material-ui/icons/EventNote';
-import NavBar from '../../../Components/NavBar/NavBar';
-import Footer from '../../../Components/Footer/Footer';
 import marked from 'marked';
 import moment from 'moment-timezone'
 
@@ -31,7 +29,6 @@ const ArticleItem = () => {
 
     return (
         <>
-            <NavBar/>
             <main className="blog-content">
                 <article className='blog-main'>
                     <h2 style={{ marginTop: '5rem', fontSize: '3rem', fontWeight: '600' }}>{subtitle}</h2>
@@ -71,7 +68,6 @@ const ArticleItem = () => {
                 </article>
             </main>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-            <Footer/>
         </>
     )
 }

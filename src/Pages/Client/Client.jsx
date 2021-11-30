@@ -1,13 +1,10 @@
 import React from "react";
-import NavBar from "../../Components/NavBar/NavBar";
-import Footer from "../../Components/Footer/Footer"
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
 import bootstrap from '../../Assets/Images/Bootstrap-min.png';
 
 const Client = () => {
     return (<>
-        <NavBar />
         <div className='client-header'>
             <div className='client-logo' id='client-logo'>
                 <h1 className='heading-client'>
@@ -166,7 +163,6 @@ const Client = () => {
         </div>
 
         <hr className="header-hr"/>
-        <Footer />
     </>
     )
 }

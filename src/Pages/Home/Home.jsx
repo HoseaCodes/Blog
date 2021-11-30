@@ -1,9 +1,7 @@
 import React from 'react';
 import '../Home/Home.css';
-import NavBar from '../../Components/NavBar/NavBar';
 import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
-import Footer from '../../Components/Footer/Footer';
 import Testimonial from '../../Components/Testimonials/testimonial';
 import Tech from '../../Components/Technologies/Tech';
 import EmailIcon from '@material-ui/icons/Email';
@@ -17,8 +15,7 @@ class Home extends React.Component {
         return (
             <>
                 <main className='home-page'>
-                    <NavBar id='top' />
-                    <Hero Home username={{firstName: 'Hosea', lastName: 'Codes'}}/>
+                    <Hero id='top' Home username={{firstName: 'Hosea', lastName: 'Codes'}}/>
                     <StyledHr Primary/>
                     <PersonalBrand />
                     <StyledHr Primary/>
@@ -78,7 +75,6 @@ class Home extends React.Component {
                             </StyledButtonATag>
                         </div>
                     </div>
-                    <Footer />
                 </main>
             </>
         )

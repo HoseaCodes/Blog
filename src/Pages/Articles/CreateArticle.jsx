@@ -3,8 +3,6 @@ import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
-import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
 import './CreateArticle.css';
 import marked from 'marked';
 
@@ -111,7 +109,6 @@ function CreatArticle() {
 
     return (
         <>
-            <NavBar />
             <div className="create_article" >
                 <div className="container fluid col-md-12">
                     <div id="signupbox" >
@@ -250,7 +247,6 @@ function CreatArticle() {
                 </div>
             </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-            <Footer />
         </>
     )
 }

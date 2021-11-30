@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import { GlobalState } from '../../GlobalState';
-import Footer from "../../Components/Footer/Footer";
 import "./login.css";
 
 const Login = () => {
@@ -67,7 +66,6 @@ const Login = () => {
 					</div>
 				</form>
 			</div>
-			<Footer />
 		</div>
 	);
 };

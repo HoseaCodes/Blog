@@ -1,7 +1,6 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Articles.css'
-import NavBar from '../../Components/NavBar/NavBar';
 import Subscribe from '../../Components/Subscribe/Subscribe'
 // import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
@@ -9,7 +8,6 @@ import ArticleCard from './ArticleCard';
 import { GlobalState } from '../../GlobalState';
 import Loading from '../../Loading';
 import axios from 'axios';
-import Footer from '../../Components/Footer/Footer';
 import Pagination from '../../Components/Pagination/pagination';
 import { StyledHr } from '../../Layout/Hr/styledHr';
 
@@ -121,11 +119,51 @@ const Articles = () => {
     //     taggedArticles = filteredArticles.filter(item => item.type.includes("Software Engineer"))
     // }
 
+    // Load this effect on mount
+    // useEffect(() => {
+    //   setLoading(true);
+    //   const timer = setTimeout(() => {
+    //       setLoading(false);
+    //   }, 5000);
+    //   // Cancel the timer while unmounting
+    //   return () => clearTimeout(timer);
+
+    //   // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // }, []);
+
     if (loading) return <div className="products"><Loading /></div>
     return (
         <>
+        {loading && (
+                    <div class="row display-row">
+                        <SkeletonCard/>
+                        <SkeletonCard/>
+                        <SkeletonCard/>
+                    </div>
+                )}
+                 {!loading && (
+                   <User/>
+                   )}
+                   {/*
+                </div>
+                <hr class="featurette-divider"/>
+                <div class="row ">
+                    <p className="display-row"><a class="btn btn-secondary" href="/create">Add Demo Profile &raquo;</a></p>
+                </div>
+                <hr class="featurette-divider"/>
+                <h2 className="text-center">Unregistered *Demo* Users</h2>
+                <div class="row display-row">
+              */}
+                    {loading && (
+                        <div class="row display-row">
+                            <SkeletonCard/>
+                        </div>
+                    )}
+                    {!loading && (
+                        <UnregisteredUsers/>
+                    )}
             <div className='article-container'>
-                <NavBar />
                 <div className='article-header'>
                     <div className='artcile-header-logo'>
                     </div>
@@ -213,7 +251,6 @@ const Articles = () => {
                 </div>
             </div>
             <StyledHr Primary/>
-            <Footer/>
         </>
     )
 }

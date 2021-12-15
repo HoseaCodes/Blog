@@ -8,29 +8,23 @@ import './projectHighlight.css'
 import { StyledButtonATag, StyledButtonH2, StyledDivButton } from '../../Layout/Button/styledButton';
 
 function ProjectHighlight() {
-
-    AOS.init();
+  const highlights = projectData;
+  highlights.length = 3;
+  AOS.init();
     return (
         <div style={{ background: '#1A1E23' }}>
-            <div className='project-container' style={{gridTemplateColumns: '1fr'}}>
-                <div className='project-content' data-aos="fade-right"
-                data-aos-offset="00"
-                data-aos-duration="3000"
-                >
-                    <ProjectCard project={projectData[0]}/>
+          {highlights.map(project => {
+              return (<>
+                <div className='project-container' style={{gridTemplateColumns: '1fr'}}>
+                  <div className='project-content' data-aos={project.id % 2 == 0 ? "fade-right" : "fade-left"}
+                    data-aos-offset="00"
+                    data-aos-duration="3000">
+                    <ProjectCard project={project}
+                      key={project.id}/>
+                  </div>
                 </div>
-                {/* <div className='project-content' data-aos="fade-down" data-aos-duration="3000" data-aos-offset="500"
-                    data-aos-delay="300">
-                    <ProjectCard project={projectData[1]}/>
-                </div>
-
-                <div className='project-content' data-aos="fade-left"
-                data-aos-offset="00"
-                data-aos-duration="3000">
-                    <ProjectCard project={projectData[2]}/>
-
-                </div> */}
-            </div>
+              </>
+            )})}
             <StyledDivButton>
               <StyledButtonH2>Visit my portfolio for more</StyledButtonH2>
               <StyledButtonATag href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank">My Portfolio</StyledButtonATag>

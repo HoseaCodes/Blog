@@ -80,7 +80,7 @@
 import React from 'react';
 import './Projects.css';
 import {projectData} from './ProjectsData';
-import ProjectCard from '../../Components/Cards/projectCard';
+import ProjectCard from '../../Components/Cards/project';
 import { StyledHr } from '../../Layout/Hr/styledHr';
 
 const Projects = () => {

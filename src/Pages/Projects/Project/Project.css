@@ -1351,3 +1351,30 @@ section:after {
 .overview-descrp {
   width: 85%;
 }
+.app {
+  margin-top: 2rem;
+}
+
+.button {
+  text-decoration: none;
+  color: whitesmoke;
+  padding: 1em 2em;
+  background-color: #afbac3;
+  border: 0.16em solid white;
+  border-radius: 5em;
+  font-size: 1.5rem;
+}
+.button i {
+  margin: 0 0.75em 0 0;
+}
+.highlight {
+  background-color: white;
+  color: #afbac3;
+}
+.button:hover {
+  background-color: transparent;
+  text-decoration: none;
+  color: #afbac3;
+  box-shadow: 0 16px 30px -20px black;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.3s ease;
+}

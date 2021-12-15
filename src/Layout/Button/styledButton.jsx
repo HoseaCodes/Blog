@@ -59,10 +59,9 @@ export const StyledButtonATag = styled.a`
         transition: 0.5s color ease;
       }
       @media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
-        width: 20%;
+        width: fit-content;
         margin: auto;
         bottom: 0 !important;
-        width: 40%;
       }
   `}
 `;

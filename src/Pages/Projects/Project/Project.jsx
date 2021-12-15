@@ -10,7 +10,7 @@ const ProjectItem = () => {
     // const newparm = parseInt(params.id)
 
     const { headerImg, name, title, role, objectives, subHeading, source,
-        background, context, design, designImg, headline, date, websites, typography,
+        background, context, design, designImg, headline, date, websites, app, typography,
         designColor, uiDesignImg, userFlows, mainFunctions, goal, version, prototype} = projectData[params.id - 1 ];
 
     //     const nextProjectLink =
@@ -51,6 +51,9 @@ const ProjectItem = () => {
                             <div className="text-loading-overlay is-reveal"></div>
                             <h3 className="hero-single-work-subtitle">{headline}</h3>
                         </div>
+                        <div className="app">
+                          <a href={app} target="_blank" rel="noopener noreferrer" className="button highlight"><i className="fa fa-apple fa-lg"></i>Get The App</a>
+                        </div>
                     </div>
                     <div className="hero-single-context-stripe">
                         <div className="project-content">
@@ -67,6 +70,7 @@ const ProjectItem = () => {
                         </div>
                     </div>
                 </div>
+
                 <StyledHr Primary/>
                 <hr className="header-hr"/>
                 <main className="single-work">
@@ -113,6 +117,7 @@ const ProjectItem = () => {
                                 </div>
                             </div>
                             <div className="button-content single-work-anim-text">
+
                                 <a href={websites[0]} target="_blank" rel="noopener noreferrer" className="case-study-single-button ghost no-smoothState">
                                     <span className="button-text">Visit Website</span>
                                     <span className="button-icon">

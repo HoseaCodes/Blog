@@ -7,8 +7,6 @@ function BtnRender({ article, deleteArticle }) {
         <div className="row_btn">
             <Link id="btn_buy" to="#!" onClick={() => deleteArticle(article._id, article.images.public_id)}> Delete</Link>
             <Link id="btn_view" to={`/edit_article/${article._id}`}> Edit</Link>
-
-
         </div>
     )
 }

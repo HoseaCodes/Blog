@@ -11,7 +11,7 @@ const Footer = () => {
         <footer className="footer">
             <div className="container bottom_border">
                 <div className="row">
-                    <div className=" col-sm-4 col-md col-sm-4  col-12 col">
+                    <div className=" col-sm-4 col-md col-12 col">
                         <h5 className="footer_h5 col_white_amrc pt2">Find Me</h5>
                         <p className="mb10">HoseaCodes’ mission statement is to build the future while empowering every person and every organization on the planet to achieve more. </p>
                         <p><i className="fa fa-location-arrow"></i> Houston, TX </p>
@@ -39,7 +39,7 @@ const Footer = () => {
                             <li><a href="http://webenlance.com">Image Cropping</a></li>
                         </ul>
                     </div>
-                    <div className=" col-sm-4 col-md  col-12 col">
+                    <div className=" col-sm-4 col-md col-12 col twitter-footer">
                         <h5 className="footer_h5 col_white_amrc pt2">Follow Me On</h5>
                         {/* Twitter Profile Tweets */}
                         <ul className="footer_ul2_amrc">
@@ -50,7 +50,7 @@ const Footer = () => {
                     </div>
                 </div>
             </div>
-            <div className="container">
+            <div className="container col-md ">
                 <ul className="foote_bottom_ul_amrc">
                     <li><a href="/">Home</a></li>
                     <li><a href="/about">About</a></li>

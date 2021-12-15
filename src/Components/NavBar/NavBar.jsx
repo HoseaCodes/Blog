@@ -14,7 +14,7 @@ const NavBar = () => {
   const [user] = state.userAPI.user
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
-      false
+      true
       );
 
     return (

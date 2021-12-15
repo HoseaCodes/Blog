@@ -1,5 +1,5 @@
 
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import './Articles.css'
 import Subscribe from '../../Components/Subscribe/Subscribe'
 // import { articleData, categoryTags } from './ArticleData';

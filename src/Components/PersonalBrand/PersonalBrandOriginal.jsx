@@ -76,9 +76,9 @@ const PersonalBrand = () => {
                         that believe in growth and innovation. I have worked progressively with major
                         companies since the beginning of my career and I am excited for the opportunity
                             to continue this journey with another industry leader.</p>
-                        <div style={{ display: "flex", justifyContent: 'space-around' }}>
+                        <div className="personal-btn-wrapper" >
                           <StyledButton onClick={handleClick}>More about Dominique</StyledButton>
-                          <StyledButton onClick={handleDownload}>Download my Resume</StyledButton>
+                          <StyledButton className="download-btn" onClick={handleDownload}>Download my Resume</StyledButton>
                         </div>
                     </div>
                 </div>

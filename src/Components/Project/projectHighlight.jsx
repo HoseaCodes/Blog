@@ -1,5 +1,5 @@
 import React from 'react';
-import ProjectCard from '../Cards/projectCard';
+import ProjectCard from '../Cards/project';
 import {projectData} from '../../Pages/Projects/ProjectsData';
 import AOS from 'aos';
 import 'aos/dist/aos.css';

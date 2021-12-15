@@ -145,6 +145,11 @@
   color: #fff;
 }
 
+.personal-btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
 @keyframes peronal-btn {
   0% {
     left: 250%;
@@ -185,9 +190,10 @@
     height: 50vh;
     margin: auto;
   }
-  .personal-card-info {
+  .personal-btn-wrapper {
     display: none;
   }
+
   .bio-info {
     margin-top: 3rem;
   }

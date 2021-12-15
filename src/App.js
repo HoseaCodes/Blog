@@ -10,7 +10,6 @@ import Shop from './Pages/Shop/Shop';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
-import Client from './Pages/Client/Client';
 import ArticleItem from './Pages/Articles/Article/Article';
 import ProjectItem from './Pages/Projects/Project/Project';
 import Login from './Pages/Auth/login';
@@ -34,7 +33,6 @@ class App extends Component {
             <Route path="/shop" exact render={() => (<Shop/>)}/>
             <Route path="/profile" exact component={Profile}/>
             <Route path="/edit" exact component={Editprofile}/>
-            <Route path="/client" exact component={Client}/>
             <Route path="/project" exact component={Projects}/>
             <Route path="/project/:id" exact component={ProjectItem}/>
             <Route path="/login" exact component={Login} />

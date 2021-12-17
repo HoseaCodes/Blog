@@ -119,6 +119,8 @@ This project uses Morgan to log events inside of the terminal. Visit https://git
 
 ## Enviornments
 
+[env-cmd](https://www.digitalocean.com/community/tutorials/nodejs-take-command-with-env-cmd)
+
 ### Local
 
 ### Staging

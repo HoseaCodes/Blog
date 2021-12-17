@@ -65,11 +65,12 @@
     "styled-components": "^5.3.0",
     "supertest": "^6.1.6",
     "use-dencrypt-effect": "^1.0.2",
+    "uuid": "^8.3.2",
     "web-vitals": "^1.1.2",
     "winston": "^3.3.3"
   },
   "scripts": {
-    "start": "HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "start:dev": "env-cmd -e development react-scripts start",
     "start:qa": "env-cmd -e testing react-scripts start",
     "start:stag": "env-cmd -e staging react-scripts start",

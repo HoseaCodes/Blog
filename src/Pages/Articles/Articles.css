@@ -69,7 +69,7 @@
   grid-template-columns: 3fr 1fr;
   grid-column-gap: 2rem;
   margin-top: 5rem;
-  padding-bottom: 10%;
+  padding: 0% 4% 10% 4%;
 }
 
 .article-header {
@@ -463,4 +463,34 @@
 }
 .blog-categories h6 {
   text-transform: uppercase;
+}
+
+@media only screen and (max-width: 768px) {
+  .article-sidebar {
+    display: none;
+  }
+  .article-box {
+    grid-template-columns: 1fr;
+    padding: 4%;
+  }
+  .article-card {
+    display: block;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .article-box {
+    padding: 8%;
+  }
+  .article-card-header {
+    font-size: 3rem !important;
+  }
+  .work-content {
+    font-size: 2rem !important;
+  }
+
+  .article-header,
+  .blog-tabs,
+  #tabs {
+    display: none;
+  }
 }

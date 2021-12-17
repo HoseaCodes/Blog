@@ -1,12 +1,12 @@
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import './Articles.css'
 import Subscribe from '../../Components/Subscribe/Subscribe'
-// import { articleData, categoryTags } from './ArticleData';
 import ArticleCard from './ArticleCard';
 // import { auth, login, logout } from '../../services/firebase';
 import { GlobalState } from '../../GlobalState';
-import Loading from '../../Loading';
+// import Loading from '../../Loading';
+import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
 import axios from 'axios';
 import Pagination from '../../Components/Pagination/pagination';
 import { StyledHr } from '../../Layout/Hr/styledHr';
@@ -18,7 +18,7 @@ const Articles = () => {
     // const [token] = state.token
     const [callback, setCallback] = state.articlesAPI.callback
     const [loading, setLoading] = useState(false)
-    // const [tagsShow, setTagsShow] = useState('All')
+    const [tagsShow, setTagsShow] = useState('All')
     const [search, setSearch] = useState('')
     const [status, setStatus] = useState('active')
     const [currentPage, setCurrentPage] = useState(1)
@@ -28,16 +28,14 @@ const Articles = () => {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const mainPosts = articles
     const archivedPosts = [];
+
     mainPosts.map((article) => {
       if (article.archived) {
         archivedPosts.push(article);
         mainPosts.pop(article)
       }
-    })
-    console.log(state, 'state')
-    console.log(articles, 'articles')
-    console.log(mainPosts, 'main')
-    console.log(archivedPosts, 'archivedPosts')
+    });
+
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
 
     const paginate = pageNum => setCurrentPage(pageNum);
@@ -68,7 +66,6 @@ const Articles = () => {
 
     const archiveArticle = async (id, archived) => {
         try {
-          console.log('clicks')
           const archive = !archived
             setLoading(true)
             const archiveArticle = axios.patch(`/api/articles/${id}`, {archive})
@@ -100,69 +97,38 @@ const Articles = () => {
         setSearch(value.substr(0, 20))
     }
 
-    const updateItemsShow = (/*str*/) => {
-        // setTagsShow(str)
+    const updateItemsShow = (str) => {
+        setTagsShow(str)
         setStatus("active")
     }
 
-    // let taggedArticles = []
-    // if (tagsShow === "All") {
-    //     taggedArticles = filteredArticles
-    // }
-    // else if (tagsShow === "JavaScript") {
-    //     taggedArticles = filteredArticles.filter(item => item.type.includes("JavaScript"))
-    // }
-    // else if (tagsShow === "Python") {
-    //     taggedArticles = filteredArticles.filter(item => item.type.includes("Python"))
-    // }
-    // else if (tagsShow === "Software Engineer") {
-    //     taggedArticles = filteredArticles.filter(item => item.type.includes("Software Engineer"))
-    // }
+    let taggedArticles = []
+    if (tagsShow === "All") {
+        taggedArticles = currentPosts
+    }
+    else if (tagsShow === "JavaScript") {
+        taggedArticles = currentPosts.filter(item => item.category.includes("JavaScript"))
+    }
+    else if (tagsShow === "Python") {
+        taggedArticles = currentPosts.filter(item => item.category.includes("Python"))
+    }
+    else if (tagsShow === "Software Engineer") {
+        taggedArticles = currentPosts.filter(item => item.category.includes("Software Engineer"))
+    }
 
     // Load this effect on mount
-    // useEffect(() => {
-    //   setLoading(true);
-    //   const timer = setTimeout(() => {
-    //       setLoading(false);
-    //   }, 5000);
-    //   // Cancel the timer while unmounting
-    //   return () => clearTimeout(timer);
+    useEffect(() => {
+      setLoading(true);
+      const timer = setTimeout(() => {
+          setLoading(false);
+      }, 5000);
+      // Cancel the timer while unmounting
+      return () => clearTimeout(timer);
+    }, []);
 
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-
-    // }, []);
-
-    if (loading) return <div className="products"><Loading /></div>
+    // if (loading) return <div className="products"><Loading /></div>
     return (
         <>
-        {loading && (
-                    <div class="row display-row">
-                        <SkeletonCard/>
-                        <SkeletonCard/>
-                        <SkeletonCard/>
-                    </div>
-                )}
-                 {!loading && (
-                   <User/>
-                   )}
-                   {/*
-                </div>
-                <hr class="featurette-divider"/>
-                <div class="row ">
-                    <p className="display-row"><a class="btn btn-secondary" href="/create">Add Demo Profile &raquo;</a></p>
-                </div>
-                <hr class="featurette-divider"/>
-                <h2 className="text-center">Unregistered *Demo* Users</h2>
-                <div class="row display-row">
-              */}
-                    {loading && (
-                        <div class="row display-row">
-                            <SkeletonCard/>
-                        </div>
-                    )}
-                    {!loading && (
-                        <UnregisteredUsers/>
-                    )}
             <div className='article-container'>
                 <div className='article-header'>
                     <div className='artcile-header-logo'>
@@ -219,8 +185,15 @@ const Articles = () => {
                             </div>
                         </section>
                         {/* <!--───────────────card───────────────--> */}
+                        {loading ?
                         <section className='articleList'>
-                            {mainPosts.map(article => {
+                          <SkeletonBlog/>
+                          <SkeletonBlog/>
+                          <SkeletonBlog/>
+                        </section>
+                        :
+                          <section className='articleList'>
+                            {taggedArticles.map(article => {
                                 return (
                                     <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
                                         key={article.id}
@@ -230,6 +203,7 @@ const Articles = () => {
                             <Pagination currentPage={currentPage} paginate={paginate} nextPage={nextPage} prevPage={prevPage}
                             postsPerPage={postsPerPage} totalPosts={mainPosts.length} />
                         </section>
+                      }
                         <div>
                             <section className='article-sidebar'>
                                 <div className="popular">

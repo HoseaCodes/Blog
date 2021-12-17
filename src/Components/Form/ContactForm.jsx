@@ -31,7 +31,6 @@ const ContactForm = () => {
                 <input className='contact-input' type="text" name="name" placeholder="Name" />
                 <input className='contact-input' type="email" name="email" placeholder="Enter Email" />
                 <textarea className='area' name="message" placeholder='Your Message' />
-                <div style={{color: 'white', fontSize: '2rem'}}  onClick={handleNotification}>Test</div>
                 <StyledFormSubmit  onClick={handleNotification} type="submit" value="Submit"/>
             </form>
         </div>

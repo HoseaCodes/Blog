@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { GlobalState } from '../../../GlobalState';
 import '../Articles.css'
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
@@ -58,6 +58,7 @@ const ArticleItem = () => {
                                     <br />
                                     <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
                                     <br />
+                                    <Link to='/blog'>Back</Link>
                                 </section>
                                 {/* <input type="checkbox" checked={checked}
                                     onChange={() => props.handleCheck(_id)} /> */}
@@ -67,7 +68,6 @@ const ArticleItem = () => {
                     </div>
                 </article>
             </main>
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
         </>
     )
 }

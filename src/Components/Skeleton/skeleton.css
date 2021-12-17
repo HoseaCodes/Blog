@@ -58,6 +58,12 @@
   /* overflow: hidden; */
 }
 
+.skeleton-blog {
+  background: #23292f;
+  border-radius: 5%;
+  height: 100%;
+}
+
 .shimmer {
   width: 50%;
   height: 100%;

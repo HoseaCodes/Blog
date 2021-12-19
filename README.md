@@ -129,9 +129,34 @@ This project uses Morgan to log events inside of the terminal. Visit https://git
 
 ### Development
 
+#### Performance
+
+React profiler is used to montior the performance of the application.
+
+How to run:
+
+- Create a production build
+
+```js
+npm run build -- --profile
+```
+
+- In Chrome dev tools place the throttle on low-end mobile
+- In the profiler enable: "Record why wach component rendered while profiling"
+- Target orange or darker commits
+- Check if it's a state management problem or try to solve it with memoization (i.e. callback or memo)
+
 This project uses EditorConfig to standardize text editor configuration. Visit https://editorconfig.org for details.
 
 This project uses ESLint to detect suspicious code in JavaScript files. Visit https://eslint.org for details.
+
+- Home Screen 618ms
+- Portfolio Screen 149 ms
+- Portfolio Case Study
+- Blogs Screen
+- Blog Post Screen
+- About Screen
+- Contact Screen
 
 ### Testing
 

@@ -3,7 +3,6 @@ import CarouselCareerconnect from '../Carousel/CarouselCareerConnect';
 import CarouselSneakerAPI from './CarouselSneakerAPI';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Carouselsocialring from './Carouselsocialring';
 
 

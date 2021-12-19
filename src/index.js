@@ -1,3 +1,4 @@
+import './wdyr';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
@@ -5,7 +6,6 @@ import { createBrowserHistory } from 'history';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 import App from './App';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import * as serviceWorker from './serviceWorker';
 
 const history = createBrowserHistory();

@@ -19,7 +19,7 @@ router.route('/:id')
     .put(loginRequired, updateProfile)
     .delete(loginRequired, deleteProfile)
 
-router.post('/register', loginRequired, register);
+router.post('/register', register);
 
 router.post('/login', login);
 

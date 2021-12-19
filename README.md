@@ -127,11 +127,15 @@ This project uses Morgan to log events inside of the terminal. Visit https://git
 
 ### Production
 
+#### Performance
+
+Sentry is used for real-time production montioring.
+
 ### Development
 
 #### Performance
 
-React profiler is used to montior the performance of the application.
+React profiler is used to montior the performance of the application while in development.
 
 How to run:
 

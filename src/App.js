@@ -18,13 +18,15 @@ import Profile from './Pages/User/profile';
 import Editprofile from './Pages/User/editProfile';
 import NavBar from './Components/NavBar/NavBar';
 import Footer from './Components/Footer/Footer';
+import { createBrowserHistory } from 'history';
 
 class App extends Component {
 
-  render() {
 
+  render() {
+    const history = createBrowserHistory();
     return (
-      <BrowserRouter>
+      <BrowserRouter history={history}>
         <Switch>
           <DataProvider>
             <NavBar/>

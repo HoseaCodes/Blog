@@ -31,3 +31,13 @@ export const SquareImage= styled.img`
     margin-Right: 4%;
   `}
 `;
+export const BlogDisplayImage= styled.img`
+  max-height: 90rem;
+  margin: 0 auto;
+  padding-top: 5rem;
+  display: flex;
+  width: 100%;
+  ${props => props.Primary && css`
+
+  `}
+`;

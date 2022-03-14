@@ -14,14 +14,16 @@ import {MdBookmarkBorder} from 'react-icons/md';
 import {RiShareCircleFill} from 'react-icons/ri';
 import Sticky from 'react-sticky-state';
 import logo from '../../../Assets/Images/newLogo.png';
-import {StyledLeftContainer, JustifyContent, StyledMainContainer,
-  PaddingContent, PageLinks} from '../../../Layout/Container/styledArticle';
-import {CircleImage, LogoImage, SquareImage} from '../../../Layout/Image/styledImage';
+import {StyledLeftContainer, JustifyContent, StyledMainContainer, JustifyContentSpaceAround,
+  PaddingContent, PageLinks, BlogCard, BlogPost, BlogNewsletter} from '../../../Layout/Container/styledArticle';
+import {CircleImage, LogoImage, SquareImage, BlogDisplayImage} from '../../../Layout/Image/styledImage';
+import {NamePlate, WarppedDate, GrayText, DisplayItem, BlogTitle, BlogSubTitle,
+  BlogPhotoCredit, BlogContent, Font2} from '../../../Layout/Text/styledText';
 import {StackedAlignn} from '../../../Layout/Icon/styledIcons';
 import {ArticleHr} from '../../../Layout/Hr/styledHr';
 import {AlertP} from '../../../Layout/Paragraph/styledParagraph';
 import {AlertLink, ArticleLink} from '../../../Layout/ATag/styledATag';
-import {NamePlate, WarppedDate, GrayText, DisplayItem} from '../../../Layout/Text/styledText';
+import {NewsletterInput} from '../../../Layout/Input/styledInput';
 
 const ArticleItem = () => {
     const params = useParams()
@@ -85,64 +87,62 @@ const ArticleItem = () => {
                       </div>
                     </JustifyContent>
                     <ArticleHr Primary/>
-                    <h2 className='blog-title'>{title}</h2>
-                    <h3 className='blog-title' style={{ color: 'dimgray', fontSize: '2.5rem'}}>{subtitle}</h3>
-                      <img className='blog-img' src={images.url} alt={title}  />
-                      <p style={{ display: 'flex', justifyContent: 'center', color: 'dimgray' }}>Photo Credit by <u>You</u></p>
-                      <section className='blog-card'>
+                    <BlogTitle>{title}</BlogTitle>
+                    <BlogSubTitle>{subtitle}</BlogSubTitle>
+                      <BlogDisplayImage src={images.url} alt={title}  />
+                      <BlogPhotoCredit>Photo Credit by <u>You</u></BlogPhotoCredit>
+                      <BlogCard>
                         <br />
-                        <section className='blog-post'>
+                        <BlogPost>
                         <br />
-                        <p className='blog-content-info'>{description}</p>
+                        <BlogContent>{description}</BlogContent>
                         <br />
                         <br />
-                        <p className='blog-content-info'  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></p>
+                        <BlogContent Markdown  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></BlogContent>
                         <br />
                         <Sticky >
                           <div  className="bottom sticky">
                             <ArticleHr Primary/>
-                            <div style={{ display: 'flex', justifyContent: 'space-between'}}>
-                              <div style={{ display: 'flex',  justifyContent: 'center', fontSize: '2rem'}}>
-                                <div style={{ display: 'flex',  alignItems: 'center', marginRight: '4%' }}>
+                            <JustifyContentSpaceAround>
+                              <JustifyContent Font2>
+                                <JustifyContent MarginRight>
                                   <FaRegThumbsUp/> &nbsp; <span>1</span>
-                                </div>
-                                <div  style={{ display: 'flex',  alignItems: 'center', marginRight: '4%' }}>
+                                </JustifyContent>
+                                <JustifyContent MarginRight>
                                   <FaRegComment/> &nbsp; <span>1</span>
-                                </div>
-                              </div>
-                              <div style={{fontSize: '2.5rem'}}>
+                                </JustifyContent>
+                              </JustifyContent>
+                              <Font2>
                                 <FaFacebook/>
                                 <AiFillTwitterCircle/>
                                 <TiSocialLinkedinCircular/>
                                 <RiShareCircleFill/>
                                 <MdBookmarkBorder/>
-                              </div>
-                            </div>
+                              </Font2>
+                            </JustifyContentSpaceAround>
                           </div>
                         </Sticky>
-                        <div style={{backgroundColor: 'whitesmoke', padding: '4%', marginTop: '8%', borderTop: 'solid', borderColor: 'green'}}>
+                        <BlogNewsletter>
                           <div>
                             <h3>Sign up for Software Engineering News</h3>
-                            <p style={{fontSize: '1.5rem', paddingBottom: '1.5%'}}>By Dominique Hosea</p>
-                            <p style={{fontSize: '1.8rem', width: '80%'}}>Latest news from Analytics Vidhya on our Hackathons and some of our best articles!&nbsp;
+                            <BlogContent Author>By Dominique Hosea</BlogContent>
+                            <BlogContent Newsletter>Latest news from Analytics Vidhya on our Hackathons and some of our best articles!&nbsp;
                               <u>Take a look.</u>
-                            </p>
-                            <div style={{display: 'flex', justifyContent: 'space-between', padding: '0 6% 0 0'}}>
-                              <input placeholder='Your email' type="text"
-                              style={{background: 'transparent', border: 'none', borderBottom: 'solid', width: '60%',
-                                      fontSize: '1.5rem'}} />
+                            </BlogContent>
+                            <JustifyContentSpaceAround PaddingRight>
+                              <NewsletterInput placeholder='Your email' type="text" />
                               <button style={{background: 'green', padding: '1.5% 3%', borderRadius: '60px',
                                               color: 'white', fontSize: '1.8rem', display: 'flex',  alignItems: 'center'}}><AiOutlineMail style={{fontSize: '2.5rem'}}/>&nbsp;  Get this newsletter</button>
-                            </div>
+                            </JustifyContentSpaceAround>
                             <div style={{marginTop: '4%'}}>By signing up, you will create a Medium account if you don"’"t already have one.
                               Review our Privacy Policy for more information about our privacy practices.</div>
                           </div>
-                        </div>
-                                </section>
+                        </BlogNewsletter>
+                                </BlogPost>
                                 {/* <input type="checkbox" checked={checked}
                                     onChange={() => props.handleCheck(_id)} /> */}
                                     {/* <BtnRender article={props.article} deleteArticle={props.deleteArticle} /> */}
-                            </section>
+                            </BlogCard>
                         </section>
                 </PaddingContent>
                     <div style={{ marginTop: '4%', background: 'whitesmoke'}}>

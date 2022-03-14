@@ -10,3 +10,13 @@ export const StyledHr = styled.hr`
       background: rgb(235, 183, 65);
   `}
 `;
+export const ArticleHr = styled.hr`
+  margin-bottom: 5rem;
+  background: rgb(235,183,65);
+  width: 30%;
+  ${props => props.Primary && css`
+    background: rgb(235,183,65);
+    width: 100vw;
+    margin-left: -80px;
+  `}
+`;

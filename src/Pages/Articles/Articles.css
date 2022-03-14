@@ -378,19 +378,65 @@
   display: flex;
 }
 .blog-content {
+  display: flex;
   background-color: white;
   width: 100%;
   font-family: sans-serif;
 }
-.blog-main {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 90%;
-  overflow: hidden;
+
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 60px;
 }
-.blog-main h2 {
-  font-size: 3rem;
+
+.top-header.menu-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 18px 20px;
+}
+
+.top-header.fix-search {
+  background: #eee;
+}
+
+.search {
+  position: absolute;
+  top: 155px;
+  left: 20px;
+  right: 20px;
+}
+
+.search input {
+  width: 265px;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 15px;
+  transition: width 0.2s;
+  -webkit-appearance: none;
+}
+
+.search.fix-search {
+  position: fixed;
+  top: 10px;
+}
+
+.search.fix-search input {
+  width: 250px;
+}
+
+.top {
+  height: 250px;
+  padding-top: 40px;
+}
+.hero {
+  width: 200px;
+  height: 100px;
+  background: #ccc;
+  margin: 0 auto;
 }
 
 .blog-main p {
@@ -423,15 +469,10 @@
   display: contents;
 }
 
-.blog-heading h2 {
-  font-size: 3rem;
-}
-
 .blog-title {
   text-transform: capitalize;
   margin-top: 2rem;
   font-size: 6rem;
-  text-align: center;
 }
 #terminal {
   align-self: flex-start;
@@ -452,10 +493,7 @@
 .blog-img {
   width: 100%;
 }
-.blog-combo {
-  /* display: grid;
-    grid-template-columns: 1fr 1fr; */
-}
+
 .blog-categories {
   position: relative;
   top: 42%;
@@ -494,3 +532,44 @@
     display: none;
   }
 }
+
+/* Required for react-sticky-state */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+.sticky.sticky-fixed.is-sticky {
+  margin-top: 0;
+  margin-bottom: 0;
+  position: fixed;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.sticky.sticky-fixed.is-sticky:not([style*="margin-top"]) {
+  margin-top: 0 !important;
+}
+
+.sticky.sticky-fixed.is-sticky:not([style*="margin-bottom"]) {
+  margin-bottom: 0 !important;
+}
+
+.sticky.sticky-fixed.is-absolute {
+  position: absolute;
+}
+
+.top {
+  top: 0;
+}
+
+.bottom {
+  bottom: 0;
+}
+
+.is-sticky {
+  background-color: white;
+}
+
+/* Required for react-sticky-state */

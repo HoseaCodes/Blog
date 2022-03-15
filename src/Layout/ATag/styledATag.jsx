@@ -14,3 +14,9 @@ export const ArticleLink = styled.a`
   ${props => props.Primary && css`
   `}
 `;
+export const ArticleLinkColor = styled.a`
+  color: dimgray;
+  ${props => props.Green && css`
+    color: green;
+  `}
+`;

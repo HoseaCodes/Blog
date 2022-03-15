@@ -20,7 +20,11 @@ export const CircleImage= styled.img`
   width: 8rem;
     margin-Right: 4%;
   `}
+  ${props => props.Secondary && css`
+  width: 7rem;
+  `}
 `;
+
 export const SquareImage= styled.img`
   width: 90px;
   margin-right: 4%;

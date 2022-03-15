@@ -7,6 +7,28 @@ export const StyledLeftContainer = styled.section`
   height: 100vh;
 `;
 
+export const Inherit = styled.span`
+  width: max-content;
+`;
+
+export const StyledRightContainer = styled.section`
+  width: 45rem;
+  padding: 4% 2% 0% 2%;
+  border: 1px solid #ccc;
+  margin: 0;
+  max-height: calc(105vh - 4rem);
+  overflow-Y: scroll;
+  position: sticky;
+  top: 0;
+  right: 0;
+`;
+
+export const GrayDiv = styled.section`
+  color: dimgray;
+
+`;
+
+
 export const JustifyContent = styled.div`
   display: flex;
   justify-content: center;
@@ -21,14 +43,49 @@ export const JustifyContent = styled.div`
   ${props => props.MarginRight && css`
     margin-right: 4%;
   `}
+  ${props => props.SpaceAround && css`
+    justify-content: space-between;
+    `}
+  ${props => props.MiniPost && css`
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    margin-top: 4%;
+    `}
+    ${props => props.SpaceAroundPaddingRight && css`
+    justify-content: space-between;
+    padding: 0 6% 0 0;
+  `}
 `;
 
-export const JustifyContentSpaceAround = styled.div`
+export const AlignContent = styled.div`
   display: flex;
+  align-items: center;
+  ${props => props.Center && css`
   justify-content: space-between;
-  ${props => props.PaddingRight && css`
-  padding: 0 6% 0 0;
-  `}
+  flex-direction: row;
+  margin-right: 12%;
+`}
+  ${props => props.CenterBtn && css`
+  justify-content: center;
+  padding-bottom: 16%;
+
+`}
+  ${props => props.Inherit && css`
+  flex-direction: row;
+  width: inherit;
+`}
+  ${props => props.Gray && css`
+  color: dimgray;
+`}
+`;
+
+export const Tag = styled.div`
+  background: #ccc;
+  border-radius: 20px;
+  text-align: center;
+  padding: 1%;
+  margin-right: 2%;
 `;
 
 export const PaddingContent = styled.div`
@@ -45,7 +102,7 @@ export const StyledMainContainer = styled.article`
   position: relative;
   height: calc(105vh - 4rem);
   overflow: auto;
-  overflowX: hidden;
+  overflow-X: hidden;
   WebkitOverflowScrolling: touch;
 `;
 
@@ -58,11 +115,15 @@ export const PageLinks = styled.div`
   margin-top: 20%;
 `;
 
-export const BlogCard = styled.section`
+export const BlogCard = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin: auto;
+  ${props => props.RelatedPost && css`
+    padding: 6%;
+    margin: 0;
+  `}
 `;
 
 export const BlogPost = styled.div`
@@ -78,4 +139,29 @@ export const BlogNewsletter = styled.div`
   margin-top: 8%;
   border-top: solid;
   border-color: green;
+`;
+
+export const SideUserContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${props => props.Primary && css`
+    margin-top: 12%;
+  `}
+  ${props => props.ButtonGroup && css`
+    flex-direction: row;
+    margin-top: 8%;
+  `}
+  ${props => props.Main && css`
+  padding: 6%;
+  width: 100%
+`}
+`;
+
+export const PostContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 5%;
+  ${props => props.Secondary && css`
+  margin-top: 15%;
+  `}
 `;

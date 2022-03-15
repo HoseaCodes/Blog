@@ -20,3 +20,9 @@ export const ArticleHr = styled.hr`
     margin-left: -80px;
   `}
 `;
+export const ArticleMainHr = styled.hr`
+  color: green;
+  background: slategrey;
+  width: 90%;
+  height: 2px;
+`;

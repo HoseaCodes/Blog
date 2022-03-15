@@ -13,6 +13,18 @@ export const NamePlate= styled.div`
 export const Font2= styled.div`
   font-size: 2.5rem;
   ${props => props.Primary && css`
+  `}
+`;
+export const NoMargin= styled.h5`
+  margin: 0;
+  ${props => props.Primary && css`
+  `}
+`;
+
+export const PostText= styled.p`
+  font-size: 1.8rem;
+  font-weight: 500;
+  ${props => props.Primary && css`
 
   `}
 `;
@@ -52,6 +64,13 @@ export const BlogTitle= styled.h2`
   `}
 `;
 
+export const Subtitle= styled.h6`
+  color: dimgray;
+  ${props => props.Primary && css`
+    margin: 2% 0 0 0;
+  `}
+`;
+
 export const BlogSubTitle= styled.h3`
   text-transform: capitalize;
   margin-top: 2rem;
@@ -81,5 +100,15 @@ ${props => props.Author && css`
 ${props => props.Newsletter && css`
   font-size: 1.8rem;
   width: 80%;
+  `}
+`;
+export const UserInfo= styled.div`
+  font-size: 1.8rem;
+${props => props.Padding4 && css`
+  padding: 4% 0 0 0;
+  `}
+${props => props.GrayWPadding && css`
+    font-size: 1.4rem;
+    color: dimgray;
   `}
 `;

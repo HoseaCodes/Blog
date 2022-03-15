@@ -13,6 +13,35 @@ export const StyledDivButton = styled.div`
   `}
 `;
 
+export const ReadMore = styled.button`
+  margin-top: 8%;
+  text-align: center;
+  background: green;
+  color: white;
+  border-radius: 20px;
+  padding: 1.5% 3%;
+`;
+
+export const ArticleBtn = styled.button`
+  background: green;
+  padding: 1.5% 3%;
+  border-radius: 60px;
+  color: white;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  ${props => props.RightColumn && css`
+  background: black;
+  padding: 1.5% 15%;
+  flex-direction: column;
+  `}
+  ${props => props.Follow && css`
+  padding: 1.5% 4%;
+  flex-direction: column;
+  margin-right: 2%;
+`}
+`;
+
 export const StyledButtonH2 = styled.h2`
   padding-bottom: 1%;
 `;
@@ -25,6 +54,7 @@ const personalbtn = keyframes`
     left: 0%;
   }
 `;
+
 export const StyledButtonATag = styled.a`
   border: 2px solid #204740;
   box-sizing: inherit;

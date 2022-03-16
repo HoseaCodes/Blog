@@ -73,10 +73,10 @@ async function login(req, res) {
         const { email, password } = req.body
 
         const user = await Users.findOne({ email })
-        if (!user) return res.status(400).json({ msh: "User does not exist." })
+        if (!user) return res.status(400).json({ msg: "User does not exist." })
 
         const isMatch = await bcrypt.compare(password, user.password)
-        if (!isMatch) return res.status(400).json({ msh: "Invalid password" })
+        if (!isMatch) return res.status(400).json({ msg: "Invalid password" })
 
         const accesstoken = createAccessToken({ id: user._id })
         const refreshtoken = createRefreshToken({ id: user._id })

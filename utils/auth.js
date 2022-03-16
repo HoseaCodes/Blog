@@ -7,10 +7,15 @@ const auth = (req, res, next) => {
 			return res.status(400).json({ msg: "Invalid Authentication - no token" });
 
 		jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-			if (err)
+      if (err instanceof jwt.TokenExpiredError) {
+        return res
+        .status(400)
+        .json({ msg: "Token Expired Error", err});
+      }
+      if (err)
 				return res
 					.status(400)
-					.json({ msg: "Invalid Authentication - invalid token" });
+					.json({ msg: "Invalid Authentication - invalid token"});
 
 			req.user = user;
 			next();

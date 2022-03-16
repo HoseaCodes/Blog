@@ -4,12 +4,16 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import "./login.css";
+import Logo from "../../Assets/Images/newLogo.png";
 
 const Register = () => {
+  const [showRole, setShowRole] = useState(false);
+  const [secret, setSecret] = useState("");
 	const [user, setUser] = useState({
 		name: "",
 		email: "",
 		password: "",
+		role: 0
 	});
 
 	const onChangeInput = (e) => {
@@ -30,13 +34,15 @@ const Register = () => {
 		}
 	};
 
-	const {name, email, password} = user
+  const updateRole = () => {
+      setShowRole(true);
+  }
+
+	const {name, email, password, role} = user;
 	return (
 		<div id="login-page-container">
 			<div className="login-page">
-				<Link to="/">
-					<img className="brand" src="https://i.imgur.com/xycLsso.png" alt="brand-name" />
-				</Link>
+        <img onClick={updateRole} className="brand" src={Logo} alt="brand-name" />
 				<form onSubmit={registerSubmit}>
 					<h2>Registration</h2>
 					<label htmlFor="name">Name</label>
@@ -70,6 +76,42 @@ const Register = () => {
 						value={password}
 						onChange={onChangeInput}
 					/>
+          {
+            showRole === true ?
+            <>
+              <label htmlFor="secret">Secret</label>
+              <input
+                type="text"
+                name="secret"
+                id="secret"
+                required
+                autoComplete="on"
+                placeholder="Shhh...."
+                value={secret}
+                onInput={e => setSecret(e.target.value)}
+                />
+              </>
+            :
+            null
+          }
+          {
+            secret === "ifyouknowyouknow" ?
+            <>
+            <label htmlFor="role">Role</label>
+            <input
+              type="number"
+              name="role"
+              id="role"
+              required
+              autoComplete="on"
+              placeholder="role"
+              value={role}
+              onChange={onChangeInput}
+              />
+            </>
+            :
+            null
+          }
 
 					<div className="row">
 						<button type="submit">Register</button>

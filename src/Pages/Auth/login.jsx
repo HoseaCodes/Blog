@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import { GlobalState } from '../../GlobalState';
 import "./login.css";
+import Logo from "../../Assets/Images/newLogo.png";
 
 const Login = () => {
   const state = useContext(GlobalState)
@@ -31,7 +32,8 @@ const Login = () => {
 		<div id="login-page-container">
 			<div className="login-page">
 				<Link to="/">
-                    <img className="brand" src="https://i.imgur.com/xycLsso.png" alt="brand-name" />
+                    <img className="brand" src={Logo} alt="brand-name" />
+                    {/* <img className="brand" src="https://i.imgur.com/xycLsso.png" alt="brand-name" /> */}
 				</Link>
 				<form onSubmit={loginSubmit}>
 					<h2 className="login-title">Sign in to your account</h2>

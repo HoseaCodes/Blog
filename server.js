@@ -9,6 +9,8 @@ import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser'
 import articleRouter from './routes/articles.js';
 import uploadRouter from './routes/upload.js';
+import paymentRouter from './routes/payment.js';
+import productRouter from './routes/product.js';
 import userRouter from './routes/user.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
@@ -37,6 +39,8 @@ app.use(express.static(path.join(__dirname, 'build')));
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);
 app.use('/api', uploadRouter);
+app.use('/api', paymentRouter);
+app.use('/api', productRouter);
 app.use('/api/user', userRouter);
 
 // The following "catch all" route (note the *)is necessary

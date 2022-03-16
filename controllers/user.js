@@ -1,4 +1,5 @@
 import Users from '../models/user.js';
+import Payments from '../models/payment.js';
 import Logger from '../utils/logger.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -15,8 +16,8 @@ const createRefreshToken = (user) => {
 
 async function register(req, res) {
     try {
-        const { name, email, password, role } = req.body;
-        console.log(req.body)
+        let { name, email, password, role } = req.body;
+        // Admin is role 1
 
         const user = await Users.findOne({ email })
         if (user) return res.status(400).json({ msg: "The email already exists" })
@@ -40,9 +41,10 @@ async function register(req, res) {
 
         res.cookie('refreshtoken', refreshtoken, {
             httpOnly: true,
-            path: '/api/user/refresh_token'
+            path: '/api/user/refresh_token',
+            maxAge: 7 * 25 * 60 * 60 * 1000
         })
-        // res.json({ password, passwordHash })
+
         res.json({ accesstoken })
     } catch (err) {
         return res.status(500).json({ msg: err.message })
@@ -51,8 +53,7 @@ async function register(req, res) {
 
 function refreshToken(req, res) {
     try {
-      console.log(req.cookies)
-      const rf_token = req.cookies.refreshtoken;
+      const rf_token = req.cookies.refreshtoken.replace(/^JWT\s/, "");
         if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 
         jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
@@ -63,7 +64,7 @@ function refreshToken(req, res) {
             res.json({ accesstoken })
         })
     } catch (err) {
-        return res.status(500).json({ msg: err.message })
+        return res.status(500).json({ msg: err.message, "err": err })
     }
 }
 
@@ -82,13 +83,23 @@ async function login(req, res) {
 
         res.cookie('refreshtoken', refreshtoken, {
             httpOnly: true,
-            path: '/api/user/refresh_token'
+            path: '/api/user/refresh_token',
+            maxAge: 7 * 25 * 60 * 60 * 1000
         })
-        res.json({ msg: "Login successful", accesstoken })
+        res.json({accesstoken })
 
     } catch (err) {
         return res.status(500).json({ msg: err.message })
     }
+}
+
+async function logout(req, res) {
+  try {
+    res.clearCookie('refreshtoken', { path: '/api/user/refresh_token'});
+    return res.json({msg: "Logged Out"})
+  } catch (err) {
+    return res.status(500).json({msg: err.message})
+  }
 }
 
 async function getAllUsers(req, res) {
@@ -110,6 +121,36 @@ async function getAllUsers(req, res) {
   }
 }
 
+async function addCart(req, res) {
+	try {
+
+		const user = await Users.findById(req.user.id);
+		if (!user) return res.status(400).json({ msg: "User does not exist" });
+
+    console.log(req.body.cart);
+
+		await Users.findByIdAndUpdate(
+			{ _id: req.user.id },
+			{
+				cart: req.body.cart,
+			}
+		);
+		return res.json({ msg: "Added to cart" });
+	} catch (err) {
+		return res.status(500).json({ msg: err.message });
+	}
+}
+
+async function history(req, res) {
+	try {
+		const history = await Payments.find({ user_id: req.user.id });
+
+		return res.json(history);
+	} catch (err) {
+		return res.status(500).json({ msg: err.message });
+	}
+}
+
 async function getUser(req, res) {
 	try {
 		const user = await Users.findById(req.user.id).select("-password");
@@ -123,7 +164,7 @@ async function getUser(req, res) {
 async function updateProfile(req, res) {
   try {
       const { name, avatar, title, work, education, skills, location, phone, socialMedia, websites } = req.body;
-    console.log(req.body)
+
       await Users.findOneAndUpdate({ _id: req.params.id }, {
         name, avatar, title, work, education, skills, location, phone, socialMedia, websites
       })
@@ -157,8 +198,11 @@ export {
   register,
   refreshToken,
   login,
+  logout,
   getUser,
   updateProfile,
   deleteProfile,
-  getAllUsers
+  getAllUsers,
+  addCart,
+  history
  };

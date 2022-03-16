@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: Object,
     required: true,
-    default: "https://i.imgur.com/19i5Whc.png",
+    default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU",
   },
   work : {
     type: Array,
@@ -52,6 +52,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  // articles: [{
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Articles'
+  // }],
   cart: {
     type: Array,
     default: []
@@ -63,6 +67,6 @@ const userSchema = new mongoose.Schema({
 
 const Users = mongoose.model('Users', userSchema);
 
-Users.createIndexes();
+// Users.createIndexes();
 
 export default Users;

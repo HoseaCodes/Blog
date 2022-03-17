@@ -11,7 +11,7 @@ import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
 
 const initialState = {
-    product_id: uuidv4(),
+    product_id: uuidv4().split('-').join(""),
     title: '',
     price: 0,
     description: 'Description',
@@ -70,7 +70,10 @@ function CreateProduct() {
             })
 
             setLoading(false)
-            setImages(res.data.result.secure_url)
+            setImages({
+              url: res.data.result.secure_url,
+              id: res.data.result.public_id
+            })
 
         } catch (err) {
             alert(err.response.data.msg)
@@ -119,7 +122,7 @@ function CreateProduct() {
             }
             setCallback(!callback)
 
-            history.push('/')
+            history.push('/products')
         } catch (err) {
             alert(err.response.data.msg)
         }
@@ -141,7 +144,7 @@ function CreateProduct() {
                         <div id="file_img"><Loading /></div>
                         :
                         <div id="file_img" style={styleUpload}>
-                            <img src={images ? images : ''} alt="" />
+                            <img src={images ? images.url : ''} alt="" />
                             <span onClick={handleDestory}>X</span>
                         </div>
                 }

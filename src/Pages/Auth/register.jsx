@@ -95,7 +95,7 @@ const Register = () => {
             null
           }
           {
-            secret === "ifyouknowyouknow" ?
+            secret === process.env.REACT_ROLE_SECRET_CODE ?
             <>
             <label htmlFor="role">Role</label>
             <input

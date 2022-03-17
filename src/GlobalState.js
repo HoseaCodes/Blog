@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useReducer } from "react";
 import ArticlesAPI from './API/ArticlesAPI';
+import ProductsAPI from "./API/ProductsAPI";
 import UserAPI from "./API/UserAPI";
 import axios from "axios";
 import {v4} from "uuid";
@@ -9,14 +10,14 @@ export const GlobalState = createContext();
 
 export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
-  const [state, dispatch] = useReducer((state, action) => {
+  const [globalState, dispatch] = useReducer((globalState, action) => {
     switch(action.type) {
       case "ADD_NOTIFICATION":
-        return [...state, {...action.payload}];
+        return [...globalState, {...action.payload}];
       case "REMOVE_NOTIFICATION":
-        return state.filter(element => element.id !== action.id);
+        return globalState.filter(element => element.id !== action.id);
       default:
-        return state
+        return globalState
     }
   }, []);
 
@@ -35,18 +36,19 @@ export const DataProvider = ({ children }) => {
 		}
 	}, []);
 
-    const globalState = {
+    const state = {
         token: [token, setToken],
+        productsAPI: ProductsAPI(),
         articlesAPI: ArticlesAPI(),
         userAPI: UserAPI(token),
         dispatch: dispatch
 
     }
-
+    ProductsAPI();
     return (
-        <GlobalState.Provider value={globalState}>
+        <GlobalState.Provider value={state}>
             <div className={"notification-wrapper"}>
-              {state.map(note => {
+              {globalState.map(note => {
                 return <Notification dispatch={dispatch} key={note.id} {...note}/>
               })}
             </div>

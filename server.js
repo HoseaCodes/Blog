@@ -14,6 +14,8 @@ import productRouter from './routes/product.js';
 import userRouter from './routes/user.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
+import rateLimit from 'express-rate-limit';
+
 dotenv.config();
 imageOp();
 connectDB()
@@ -35,6 +37,19 @@ const __dirname = path.resolve(path.dirname(''));
 // to serve from the production 'build' folder
 app.use(favicon(path.join(__dirname, 'build', 'favicon.ico')));
 app.use(express.static(path.join(__dirname, 'build')));
+const limiter = rateLimit({
+	// windowMs: 15 * 60 * 1000, // 15 minutes
+	// max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  windowMs: 60 * 60 * 1000, // 1 hour
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 1 hour)
+  message:
+  'Too many accounts created from this IP, please try again after an hour',
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+// Apply the rate limiting middleware to all requests
+app.use(limiter);
 
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);

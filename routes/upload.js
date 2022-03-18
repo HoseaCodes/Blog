@@ -4,11 +4,12 @@ import {
   destoryImage,
   getAllUploads
 } from '../controllers/upload.js';
+import {nodecache} from '../utils/cache.js';
 
 const router = express.Router();
 
 //image upload
-router.post("/allImages", getAllUploads);
+router.post("/allImages", nodecache, getAllUploads);
 
 //image upload
 router.post("/upload", uploadImage);

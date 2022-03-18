@@ -5,29 +5,27 @@ const logger = new Logger('cache')
 
 const cache = new NodeCache({ stdTTL: 15 });
 
-const nodecache = duration => (req, res, next) =>{
+const nodecache = (req, res, next) =>{
   try {
-    if (req.method !== 'GET') {
-      logger.error('Cannot cache non-GET method');
-      return next();
-    }
-    const key = req.originalUrl;
-    const cachedResponse = cache.get(key);
 
-    if (cachedResponse) {
-      logger.info(`Cache hit for ${key}`);
-      res.send(cachedResponse);
-    } else {
-      logger.debug(`Cache miss for ${key}`);
-      res.send = body => {
-        // res.originalSend(body);
-        cache.set(key, body, duration);
-      };
-      next();
+    const { id } = req.params;
+    if (cache.has(id)) {
+      logger.info(`Cache hit - ${id}`);
+      return res.status(200).json(cache.get(id));
     }
+
+    if (cache.has(req.cookies['cloudinary-cache'])) {
+      logger.info(`Cache hit - ${25}`);
+      return res.status(200).json(cache.get(25));
+    }
+      logger.info(`Cache missed - ${id}`);
+      next();
+
   } catch (err) {
+    logger.error(`Cache error - ${err}`);
     throw new Error(err)
   }
 }
 
-export default nodecache;
+export {nodecache, cache};
+

@@ -2,7 +2,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 import Logger from '../utils/logger.js';
-
+import {cache} from '../utils/cache.js';
 const logger = new Logger('articles')
 
 dotenv.config();
@@ -26,11 +26,21 @@ async function getAllUploads(req, res) {
       'folder:HoseaCodes/*' // add your folder
       ).sort_by('created_at','desc').max_results(30).execute().then(result=> {
 
+        res.cookie('cloudinary-cache', result.total_count, {
+          maxAge: 1000 * 60 * 60, // would expire after an hour
+          httpOnly: true, // The cookie only accessible by the web server
+       })
+
+        cache.set(result.total_count, {
+          status: 'success',
+          location: 'cache',
+          result: result,
+        });
+
         res.json({
             status: 'success',
             result: result,
         });
-
       });
 
   } catch (err) {
@@ -55,6 +65,8 @@ async function uploadImage(req, res) {
           removeTmp(file.tempFilePath)
           return res.status(400).json({ msg: "File format is incorrect" })
       }
+
+      res.clearCookie('cloudinary-cache');
 
       cloudinary.v2.uploader.upload(file.tempFilePath, { folder: "HoseaCodes" }, async (err, result) => {
           if (err) throw err;

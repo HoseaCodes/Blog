@@ -1,4 +1,7 @@
 import Products  from "../models/product.js";
+import {cache} from '../utils/cache.js';
+
+
 
 class APIfeatures {
     constructor(query, queryString) {
@@ -47,6 +50,18 @@ async function getProducts(req, res) {
         const features = new APIfeatures(Products.find(), req.query).filtering().sorting().paginating()
         const products = await features.query
 
+        res.cookie('products-cache', products.length + "products", {
+          maxAge: 1000 * 60 * 60, // would expire after an hour
+          httpOnly: true, // The cookie only accessible by the web server
+        })
+
+        cache.set( products.length + "products", {
+          status: 'success',
+          products: products,
+          result: products.length,
+          location: 'cache',
+        });
+
         res.json({
             status: 'success',
             result: products.length,
@@ -69,6 +84,7 @@ async function createProducts(req, res) {
             product_id, title: title.toLowerCase(), price, description, content, images, category
         })
 
+        res.clearCookie('products-cache');
         await newProduct.save()
 
         res.json({ msg: "Created a new product" })
@@ -79,7 +95,8 @@ async function createProducts(req, res) {
 
 async function deleteProducts(req, res) {
     try {
-        await Products.findByIdAndDelete(req.params.id)
+        await Products.findByIdAndDelete(req.params.id);
+        res.clearCookie('products-cache');
         res.json({ msg: "Deleted a product" })
 
     } catch (err) {
@@ -93,8 +110,9 @@ async function updateProducts(req, res) {
         if (!images) return res.status(400).json({ msg: "No image upload" })
 
         await Products.findOneAndUpdate({ _id: req.params.id }, {
-            title: title.toLowerCase(), price, description, content, images, category
+            title: title, price, description, content, images, category
         })
+        res.clearCookie('products-cache');
         res.json({ msg: 'Updated a product' })
     } catch (err) {
         return res.status(500).json({ msg: err.message })

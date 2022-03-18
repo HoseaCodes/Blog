@@ -26,12 +26,12 @@ async function getAllUploads(req, res) {
       'folder:HoseaCodes/*' // add your folder
       ).sort_by('created_at','desc').max_results(30).execute().then(result=> {
 
-        res.cookie('cloudinary-cache', result.total_count, {
+        res.cookie('cloudinary-cache', result.total_count + "upload", {
           maxAge: 1000 * 60 * 60, // would expire after an hour
           httpOnly: true, // The cookie only accessible by the web server
        })
 
-        cache.set(result.total_count, {
+        cache.set(result.total_count + "upload", {
           status: 'success',
           location: 'cache',
           result: result,

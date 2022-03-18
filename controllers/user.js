@@ -108,12 +108,12 @@ async function getAllUsers(req, res) {
 
       logger.info("Returning all of the users");
 
-      res.cookie('users-cache', users.length, {
+      res.cookie('users-cache', users.length + "users", {
         maxAge: 1000 * 60 * 60, // would expire after an hour
         httpOnly: true, // The cookie only accessible by the web server
      })
 
-      cache.set( users.length, {
+      cache.set( users.length + "users", {
         status: 'success',
         users: users,
         result: users.length,
@@ -159,12 +159,12 @@ async function history(req, res) {
 	try {
 		const history = await Payments.find({ user_id: req.user.id });
 
-    res.cookie('history-cache', history.length, {
+    res.cookie('history-cache', history.length + "history", {
       maxAge: 1000 * 60 * 60, // would expire after an hour
       httpOnly: true, // The cookie only accessible by the web server
    })
 
-    cache.set( history.length, {
+    cache.set( history.length + "history", {
       status: 'success',
       result: history,
       location: 'cache',
@@ -180,12 +180,12 @@ async function getUser(req, res) {
 		const user = await Users.findById(req.user.id).select("-password");
 		if (!user) return res.status(400).json({ msg: "User does not exist" });
 
-    res.cookie('user-cache', user.id, {
+    res.cookie('user-cache', user.id  + "user", {
       maxAge: 1000 * 60 * 60, // would expire after an hour
       httpOnly: true, // The cookie only accessible by the web server
    })
 
-    cache.set( user.id, {
+    cache.set( user.id + "user", {
       status: 'success',
       users: user,
       result: user.length,

@@ -1,11 +1,24 @@
 import Payments from "../models/payment.js";
 import Products from "../models/product.js";
 import Users  from "../models/user.js";
+import {cache} from '../utils/cache.js';
 
 
 async function getPayments(req, res) {
 	try {
 		const payments = await Payments.find();
+    res.cookie('payments-cache', payments.length + "payments", {
+      maxAge: 1000 * 60 * 60, // would expire after an hour
+      httpOnly: true, // The cookie only accessible by the web server
+    })
+
+    cache.set( payments.length + "payments", {
+      status: 'success',
+      payments: payments,
+      result: payments.length,
+      location: 'cache',
+    });
+
 		res.json(payments);
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -35,7 +48,7 @@ async function createPayment(req, res) {
       console.log(item)
 			return sold(item.product_id, item.quantity, item.sold);
 		});
-
+    res.clearCookie('payments-cache');
 		await newPayment.save();
 		res.json({ msg: "Payment Success" });
 	} catch (err) {

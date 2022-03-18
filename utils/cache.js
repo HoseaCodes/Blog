@@ -15,8 +15,21 @@ const nodecache = (req, res, next) =>{
     }
 
     if (cache.has(req.cookies['cloudinary-cache'])) {
-      logger.info(`Cache hit - ${25}`);
-      return res.status(200).json(cache.get(25));
+      logger.info(`Cache hit - ${req.cookies['cloudinary-cache']}`);
+      return res.status(200).json(cache.get(req.cookies['cloudinary-cache']));
+    }
+
+    if (cache.has(req.cookies['users-cache'])) {
+      logger.info(`Cache hit - ${req.cookies['users-cache']}`);
+      return res.status(200).json(cache.get(req.cookies['users-cache']));
+    }
+    if (cache.has(req.cookies['user-cache'])) {
+      logger.info(`Cache hit - ${req.cookies['user-cache']}`);
+      return res.status(200).json(cache.get(req.cookies['user-cache']));
+    }
+    if (cache.has(req.cookies['history-cache'])) {
+      logger.info(`Cache hit - ${req.cookies['history-cache']}`);
+      return res.status(200).json(cache.get(req.cookies['history-cache']));
     }
       logger.info(`Cache missed - ${id}`);
       next();

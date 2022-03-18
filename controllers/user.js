@@ -3,7 +3,7 @@ import Payments from '../models/payment.js';
 import Logger from '../utils/logger.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import {cache} from '../utils/cache.js';
 const logger = new Logger('articles');
 
 const createAccessToken = (user) => {
@@ -108,6 +108,18 @@ async function getAllUsers(req, res) {
 
       logger.info("Returning all of the users");
 
+      res.cookie('users-cache', users.length, {
+        maxAge: 1000 * 60 * 60, // would expire after an hour
+        httpOnly: true, // The cookie only accessible by the web server
+     })
+
+      cache.set( users.length, {
+        status: 'success',
+        users: users,
+        result: users.length,
+        location: 'cache',
+      });
+
       res.json({
           status: 'success',
           users: users,
@@ -133,8 +145,10 @@ async function addCart(req, res) {
 			{ _id: req.user.id },
 			{
 				cart: req.body.cart,
-			}
-		);
+			});
+
+    res.clearCookie('history-cache');
+
 		return res.json({ msg: "Added to cart" });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -145,6 +159,16 @@ async function history(req, res) {
 	try {
 		const history = await Payments.find({ user_id: req.user.id });
 
+    res.cookie('history-cache', history.length, {
+      maxAge: 1000 * 60 * 60, // would expire after an hour
+      httpOnly: true, // The cookie only accessible by the web server
+   })
+
+    cache.set( history.length, {
+      status: 'success',
+      result: history,
+      location: 'cache',
+    });
 		return res.json(history);
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -155,6 +179,19 @@ async function getUser(req, res) {
 	try {
 		const user = await Users.findById(req.user.id).select("-password");
 		if (!user) return res.status(400).json({ msg: "User does not exist" });
+
+    res.cookie('user-cache', user.id, {
+      maxAge: 1000 * 60 * 60, // would expire after an hour
+      httpOnly: true, // The cookie only accessible by the web server
+   })
+
+    cache.set( user.id, {
+      status: 'success',
+      users: user,
+      result: user.length,
+      location: 'cache',
+    });
+
 		res.json(user);
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -168,6 +205,9 @@ async function updateProfile(req, res) {
       await Users.findOneAndUpdate({ _id: req.params.id }, {
         name, avatar, title, work, education, skills, location, phone, socialMedia, websites
       })
+
+      res.clearCookie('users-cache');
+      res.clearCookie('user-cache');
 
       res.json({ msg: 'Updated profile' })
   } catch (err) {
@@ -184,6 +224,9 @@ async function deleteProfile(req, res) {
       logger.info(`Deleted user ${req.params.id} has been deleted`);
 
       await Users.findByIdAndDelete(req.params.id)
+
+      res.clearCookie('users-cache');
+      res.clearCookie('user-cache');
 
       res.json({ msg: "Deleted user" })
   } catch (err) {

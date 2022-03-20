@@ -1,0 +1,128 @@
+.shop-header {
+  width: auto;
+  min-height: 70px;
+  align-items: baseline;
+  overflow: hidden;
+  display: flex !important;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  min-width: 300px;
+}
+
+.shop-header .logo {
+  flex: 1;
+}
+
+.shop-header a {
+  text-transform: uppercase;
+  color: #555;
+}
+
+.shop-header ul li {
+  display: inline-block;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+.shop-header ul li:hover {
+  opacity: 1;
+}
+
+.menu {
+  display: none;
+}
+
+.cart-icon {
+  position: relative;
+  margin-right: 10px;
+  margin-top: 20px;
+}
+.cart-icon span {
+  background: crimson;
+  border-radius: 20px;
+  color: white;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 5px 7px;
+  font-size: 10px;
+  z-index: 1;
+}
+.cart-icon a {
+  position: absolute;
+  right: 0;
+}
+#search {
+  outline: none;
+  border: none;
+  display: inline-block;
+}
+
+#burgundy {
+  color: rgb(153, 40, 59);
+}
+
+.form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px !important;
+}
+input:checked ~ label {
+  color: rgb(153, 40, 59) !important;
+  font-weight: 500 !important;
+  text-decoration: underline !important;
+}
+.form-group input {
+  display: none;
+}
+label {
+  padding-left: 10px;
+  cursor: pointer;
+  margin: 0 !important;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* for the responsive layout of the sidebar*/
+.hamburger2 {
+  display: none;
+  z-index: 10000;
+  background-color: transparent;
+  color: white;
+  border: none;
+  cursor: pointer;
+  position: fixed;
+  top: 70px;
+  left: 15px;
+}
+.hamburger2:hover {
+  color: #40bff8;
+}
+.checker {
+  display: none;
+}
+
+@media only screen and (max-width: 1200px) {
+  .shop-header {
+    position: fixed;
+    top: 124px;
+    overflow: auto;
+    z-index: 2;
+    background-color: rgb(255, 255, 255);
+    -webkit-box-shadow: 5px 12px 10px 0px rgba(0, 0, 0, 0.22);
+    box-shadow: 5px 12px 12px 0px rgba(0, 0, 0, 0.22);
+    height: 100%;
+  }
+  .hamburger2 {
+    display: block;
+  }
+  .checker:not(:checked) ~ .shop-header {
+    transform: translateX(-350px);
+  }
+  .checker:checked ~ .shop-header {
+    transform: translateX(0px);
+  }
+}

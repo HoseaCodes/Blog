@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Footer.css";
+import {StyledHr} from '../../Layout/Hr/styledHr';
 
 import SocialMediaTags from '../SocialMediaTags/SocialMediaTags';
 
@@ -8,6 +9,8 @@ const Footer = () => {
     const year = new Date().getFullYear()
 
     return (
+      <>
+        <StyledHr Primary/>
         <footer className="footer">
             <div className="container bottom_border">
                 <div className="row">
@@ -62,6 +65,7 @@ const Footer = () => {
                 <SocialMediaTags />
             </div>
         </footer>
+      </>
     )
 };
 

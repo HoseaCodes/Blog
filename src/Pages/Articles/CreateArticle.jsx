@@ -5,6 +5,9 @@ import { useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import './CreateArticle.css';
 import marked from 'marked';
+import { v4 as uuidv4 } from 'uuid';
+import NavBar from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 const initialState = {
     article_id: '',
@@ -109,6 +112,7 @@ function CreatArticle() {
 
     return (
         <>
+          <NavBar/>
             <div className="create_article" >
                 <div className="container fluid col-md-12">
                     <div id="signupbox" >
@@ -150,9 +154,9 @@ function CreatArticle() {
                                             <div className="controls col-md-8 ">
                                                 <input className="input-md emailinput form-control mb"
                                                     name="article_id"
-                                                    required value={article.article_id}
+                                                    required value={uuidv4()}
                                                     onChange={handleChangeInput}
-                                                    placeholder="Enter Project Id" type="text" />
+                                                    disabled />
                                             </div>
                                         </div>
                                     </div>
@@ -247,6 +251,7 @@ function CreatArticle() {
                 </div>
             </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+          <Footer/>
         </>
     )
 }

@@ -1,12 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Button, Row, Table, Card, Col, Form,
-   Container, } from 'react-bootstrap';
+import { Button, Row, Table, Container } from 'react-bootstrap';
 import {CircleImage} from '../../Layout/Image/styledImage';
 import { GlobalState } from '../../GlobalState';
 import axios from "axios";
 import moment from 'moment-timezone'
 import NavBar from '../NavBar/NavBar';
 import Footer from '../Footer/Footer';
+import { useHistory } from 'react-router-dom';
 
 const initialState = {
   name: "",
@@ -21,13 +21,15 @@ const UsersList = () =>  {
   const [active, setActive] = useState(false)
   const [userView, setUserView] = useState(false)
 	const [createdUser, setCreatedUser] = useState(initialState);
+  const history = useHistory()
 
   useEffect(() => {
     const getAllUsers = async () => {
         const res = await axios.get(`/api/user/${user._id}`)
-        console.log(res)
-        console.log(users)
+        console.log(res.data.location, 'res')
         setUsers(res.data.users)
+        console.log(users, 'users from userslist')
+        console.log(user, 'user from userlist pulled from state')
     }
     getAllUsers()
 }, [user, active])
@@ -37,6 +39,7 @@ const deleteUser = async (id) => {
       const deleteUser = axios.delete(`/api/user/${id}`)
       await deleteUser
       setActive(!active)
+      history.push('/users')
   } catch (err) {
       alert(err.response.data.msg)
   }
@@ -47,6 +50,7 @@ const addUser = async () => {
       const addUser = axios.post(`/api/user/register`, { ...createdUser })
       await addUser
       setUserView(false)
+      history.push('/users')
   } catch (err) {
       alert(err.response.data.msg)
   }
@@ -80,37 +84,49 @@ const {name, email, password, role} = createdUser;
     return (
       <>
         <NavBar/>
-        <Container style={{height: '60vh', display: 'flex', alignItems: 'center'}}>
-            <Row>
+        <div className="create_product" style={{minHeight: '60vh', display: 'flex', alignItems: 'center'}}>
+          <Row>
             <h3>Add User</h3>
-            </Row>
-            <Row>
-              <Card.Body>
-                <Form>
-                  <Row className="mb-3">
-                    <Form.Group as={Col} >
-                      <Form.Label>Name</Form.Label>
-                      <Form.Control name="name" value={name} onChange={handleChangeInput} placeholder="User name..." />
-                    </Form.Group>
-                    <Form.Group as={Col} >
-                      <Form.Label>Role</Form.Label>
-                      <Form.Control name="role" type="number" className='form-control' value={role} onChange={handleChangeInput}/>
-                    </Form.Group>
-                  </Row>
-                  <Form.Group className="mb-3"  controlId="formGridEmail">
-                    <Form.Label>Email</Form.Label>
-                      <Form.Control name="email" type="email" value={email} onChange={handleChangeInput} placeholder="Enter email" />
-                    </Form.Group>
-                    <Form.Group className="mb-3"  controlId="formGridPassword">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control name="password" value={password} onChange={handleChangeInput} type="password" placeholder="Password" />
-                  </Form.Group>
-                  <Button color="success" onClick={addUser}>Save</Button>
-                  <Button color="primary" onClick={() => setUserView(false)}>Cancel</Button>
-                </Form>
-              </Card.Body>
-            </Row>
-          </Container>
+          </Row>
+            <form
+                onSubmit={addUser}
+            >
+                <div className="row">
+                    <label htmlFor="Name">Name</label>
+                    <input type="text" name="name" id="name"
+                        required  value={name}
+                        onChange={handleChangeInput}
+
+                    />
+                </div>
+                <div className="row">
+                    <label htmlFor="Role">Role</label>
+                    <input type="number" name="role" id="role"
+                        required value={role}
+                        onChange={handleChangeInput}
+
+                    />
+                </div>
+                <div className="row">
+                    <label htmlFor="email">Email</label>
+                    <textarea type="email" name="email" id="email"
+                        required value={email}
+                        onChange={handleChangeInput}
+                        rows="5"
+                    />
+                </div>
+                <div className="row">
+                    <label htmlFor="password">Password</label>
+                    <textarea type="text" name="password" id="password"
+                        required value={password}
+                        onChange={handleChangeInput}
+                        rows="5"
+                    />
+                </div>
+                <button type="submit">Save</button>
+                <div  onClick={() => setUserView(false)}>Cancel</div>
+            </form>
+        </div>
         <Footer/>
       </>
   )}
@@ -124,7 +140,7 @@ const {name, email, password, role} = createdUser;
               <Container style={{height: '80vh'}}>
                 <h2 className="text-center" style={{padding:"1em"}}>User Management</h2>
                 <div style={{textAlign:'left'}}>
-                  <Button color="primary" onClick={() => setUserView(true)}>Add Employee</Button>
+                  <Button color="primary" onClick={() => setUserView(true)}>Add User</Button>
                 </div>
                   <Row>
                       <Table striped bordered responsive hover>

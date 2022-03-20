@@ -85,7 +85,7 @@ function CreateProduct() {
         try {
             if (!isAdmin) return alert("You're not an admin")
             setLoading(true)
-            await axios.post('/api/destroy', { public_id: images.public_id }, {
+            await axios.post('/api/destroy', { public_id: images.id }, {
                 headers: { Authorization: token }
 
             })
@@ -108,7 +108,8 @@ function CreateProduct() {
             if (!isAdmin) return alert("You're not an admin")
             if (!images) return alert("No Image Upload")
             if (onEdit) {
-                await axios.put(`/api/products/${product._id}`, { ...products, images }, {
+              console.log(product)
+                await axios.put(`/api/products/${product._id}`, { ...product, images }, {
                     headers: { Authorization: token }
 
                 })
@@ -131,6 +132,7 @@ function CreateProduct() {
     const software = {name:"Software"}
     const books = {name:"Books"}
     const categories = [software, books];
+    console.log(product)
 
     return (
       <>

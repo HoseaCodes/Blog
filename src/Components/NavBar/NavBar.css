@@ -46,6 +46,7 @@
   justify-content: space-evenly;
   align-items: center;
   font-family: "Lato", sans-serif;
+  list-style-type: none;
 }
 
 .dropdown-menu {

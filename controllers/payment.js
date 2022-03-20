@@ -33,7 +33,8 @@ async function getPayments(req, res) {
 
 async function createPayment(req, res) {
 	try {
-		const user = await Users.findById(req.user.id);
+
+    const user = await Users.findById(req.user.id);
 		if (!user) return res.status(400).json({ msg: "User does not exist" });
 
 		let { cart, paymentID, address } = req.body;
@@ -51,9 +52,9 @@ async function createPayment(req, res) {
 		});
 
 		cart.filter((item) => {
-      console.log(item)
-			return sold(item.product_id, item.quantity, item.sold);
+			return sold(item._id, item.quantity, item.sold);
 		});
+
     res.clearCookie('payments-cache');
 		await newPayment.save();
 		res.json({ msg: "Payment Success" });
@@ -63,12 +64,12 @@ async function createPayment(req, res) {
 }
 
 async function sold(id, quantity, oldSold) {
-	await Products.findByIdAndUpdate(
-		{ _id: id },
-		{
-			sold: quantity + oldSold,
-		}
-	);
+    await Products.findByIdAndUpdate(
+      { _id: id },
+      {
+        sold: quantity + oldSold,
+      }
+    );
 }
 
 export {

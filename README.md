@@ -16,6 +16,10 @@ Welcome, to my personal blog and portfolio. Sharing information is vital and esp
 
 ![Article Page](https://i.imgur.com/PeDkdtv.png)
 
+## Getting Started
+
+The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
+
 ## Technologies Used
 
 This application was developed with a full MERN stack. and written in JavaScript. Styling done with Bootstrap, Material UI, SASS or SCSS and CSS.
@@ -35,9 +39,22 @@ Dependencies used:
 - Material UI - a library for building pre-styled components
 - SASS - a preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets
 
-## Getting Started
+## Features
 
-The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
+✅ Own your content
+✅ Write using Markdown On Github Issues
+✅ Syntax/Code Highlighting
+✅ Fully customizable
+✅ Tags - Topics
+✅ Links
+✅ Reactions
+✅ View Comments
+✅ Images
+✅ Minutes Read
+✅ Beautiful UI Like Medium
+✅ Easy deployment: Using Github Pages
+✅ Instant Effects on Blog when changing github issues
+✅ Beautiful blockquote
 
 ## Frontend
 
@@ -172,8 +189,37 @@ To execute tests:
 npm test
 ```
 
+## 3rd Party Packages
+
+| Name                                                  | Use Case    |
+| ----------------------------------------------------- | ----------- |
+| [AOS](https://www.markdownguide.org/extended-syntax/) | Animation   |
+| [Axios](https://www.npmjs.com/package/axios)          | HTTP client |
+| bcrypt                                                |             |
+| dompurify                                             |             |
+| framer-motion                                         |             |
+| imagemin                                              |             |
+| markdown                                              |             |
+| marked                                                |             |
+| moment                                                |             |
+| morgan                                                |             |
+| node-cache                                            |             |
+| node-sass                                             |             |
+| react-bootstrap                                       |             |
+| react-bootstrap                                       |             |
+| react-icons                                           |             |
+| react-masonry-css                                     |             |
+| react-sticky-state                                    |             |
+| react-twitter-widgets                                 |             |
+| reactjs-popup                                         |             |
+| source-map-explorer                                   |             |
+| styled-components                                     |             |
+| winston                                               |             |
+
 ## External APIs
 
+- [Paypal]()
+- [cloudinary]()
 - [Send Grid](https://app.sendgrid.com/)
 - [Get Form](https://getform.io/)
 - [Swagger API](https://support.smartbear.com/swaggerhub/docs/about.html)
@@ -186,3 +232,10 @@ npm test
 - Routing for 404
 - Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
 - Confgiure multiple env
+- Syntax/Code Highlighting
+- Tags - Topics
+- Reactions
+- View Comments
+
+- ~~Minutes Read~~
+  https://github.com/saadpasta/react-blog-github

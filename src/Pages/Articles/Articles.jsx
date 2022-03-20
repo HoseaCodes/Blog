@@ -10,6 +10,8 @@ import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
 import axios from 'axios';
 import Pagination from '../../Components/Pagination/pagination';
 import { StyledHr } from '../../Layout/Hr/styledHr';
+import NavBar from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 const Articles = () => {
 
@@ -129,6 +131,7 @@ const Articles = () => {
     // if (loading) return <div className="products"><Loading /></div>
     return (
         <>
+        <NavBar/>
             <div className='article-container'>
                 <div className='article-header'>
                     <div className='artcile-header-logo'>
@@ -225,6 +228,7 @@ const Articles = () => {
                 </div>
             </div>
             <StyledHr Primary/>
+          <Footer/>
         </>
     )
 }

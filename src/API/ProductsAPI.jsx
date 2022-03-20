@@ -12,8 +12,10 @@ function ProductsAPI() {
 
     useEffect(() => {
         const getProducts = async () => {
-            const res = await axios.get(`http://localhost:3001/api/products?limit=${page * 9}&${sort}&title[regex]=${search}`)
+            const res = await axios.get(`/api/products?limit=${page * 9}&${sort}&title[regex]=${search}`)
             // const res = await axios.get("/api/products")
+            console.log(res.data.products, 'from front-end api products')
+            console.log(res.data.location, 'pulled location')
             setProducts(res.data.products)
             setResult(res.data.result)
         }

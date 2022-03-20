@@ -64,8 +64,10 @@ async function getProducts(req, res) {
 
         res.json({
             status: 'success',
+            products: products,
             result: products.length,
-            products: products
+            location: 'main',
+
         })
     } catch (err) {
         return res.status(500).json({ msg: err.message })

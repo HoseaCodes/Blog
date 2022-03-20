@@ -19,7 +19,13 @@ async function getPayments(req, res) {
       location: 'cache',
     });
 
-		res.json(payments);
+		res.json(
+      {
+      status: 'success',
+      payments: payments,
+      result: payments.length,
+      location: 'main'
+    });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}

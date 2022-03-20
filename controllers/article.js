@@ -27,6 +27,8 @@ async function getArticle(req, res) {
             status: 'success',
             articles: articles,
             result: articles.length,
+            location: 'main',
+
         })
     } catch (err) {
 
@@ -155,6 +157,7 @@ async function updateArticleComment(req, res) {
 async function updateArticle(req, res) {
   try {
       const { title, subtitle, description, content, images, category } = req.body;
+      res.clearCookie('articles-cache');
 
       if (!images) {
 
@@ -197,17 +200,6 @@ async function archiveArticle(req, res) {
 
     logger.info(preparedLog);
 
-    res.cookie('archivedArticle-cache', archive.length + "archive", {
-      maxAge: 1000 * 60 * 60, // would expire after an hour
-      httpOnly: true, // The cookie only accessible by the web server
-    })
-
-    cache.set( archive.length + "archive", {
-      status: 'success',
-      archive: archive,
-      result: archive.length,
-      location: 'cache',
-    });
     res.json({ msg: `Moved ${req.params.id} to archive`})
   } catch (err) {
 

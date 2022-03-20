@@ -124,6 +124,8 @@ async function getAllUsers(req, res) {
           status: 'success',
           users: users,
           result: users.length,
+          location: 'main',
+
       })
   } catch (err) {
 
@@ -169,7 +171,11 @@ async function history(req, res) {
       result: history,
       location: 'cache',
     });
-		return res.json(history);
+		return res.json({
+      status: 'success',
+      result: history,
+      location: 'main',
+    });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}
@@ -192,7 +198,12 @@ async function getUser(req, res) {
       location: 'cache',
     });
 
-		res.json(user);
+		res.json({
+      status: 'success',
+      users: user,
+      result: user.length,
+      location: 'main',
+    });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}

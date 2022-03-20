@@ -39,6 +39,7 @@ async function getAllUploads(req, res) {
 
         res.json({
             status: 'success',
+            location: 'main',
             result: result,
         });
       });
@@ -87,6 +88,8 @@ async function destoryImage(req, res) {
     const { public_id } = req.body;
 
     if (!public_id) return res.status(400).json({ msg: 'No images Selected' });
+
+    res.clearCookie('cloudinary-cache');
 
      await cloudinary.v2.uploader.destroy(public_id, async (err, result) => {
           if (err) throw err;

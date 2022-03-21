@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import axios from 'axios'
 import LoadMore from './LoadMore'
 import Masonry from 'react-masonry-css'
-import Loading from '../Loading/Loading';
+import Loading from '../Loading/ProLoader';
 import ProductItem from './ProductItem';
 import { GlobalState } from '../../GlobalState';
 import './Products.css';
@@ -65,7 +65,7 @@ const Products = () => {
         900: 1
       };
 
-    if (loading) return <div className="products"><Loading /></div>
+    if (loading) return <div><ProLoader /></div>
     console.log(products)
     return (
         <>

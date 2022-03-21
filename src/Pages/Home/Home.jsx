@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../Home/Home.css';
 import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
@@ -12,8 +12,9 @@ import {StyledButtonATag} from '../../Layout/Button/styledButton';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 
-class Home extends React.Component {
-    render() {
+const Home = () =>  {
+    const [isHome, setIsHome] = useState(true);
+
         return (
             <>
               <NavBar/>
@@ -65,7 +66,6 @@ class Home extends React.Component {
                             </a>
 
                         </div>
-                        <StyledHr Primary/>
                         <br />
                         <div>
                           <StyledButtonATag Primary href='#top'
@@ -79,10 +79,9 @@ class Home extends React.Component {
                         </div>
                     </div>
                 </main>
-                <Footer/>
+                <Footer isHome={isHome} setIsHome={setIsHome}/>
             </>
         )
-    }
 }
 
 

@@ -12,6 +12,7 @@
   padding-top: 3rem;
   float: left;
   margin: 0 auto;
+  list-style: none;
 }
 
 .social_footer_ul li a {
@@ -25,8 +26,7 @@
 
 @media only screen and (min-width: 768px) {
   .social_footer_ul li i {
-    width: 16px;
-    height: 16px;
+    font-size: 2rem;
   }
   .social_footer_ul li {
     padding-left: 16px;

@@ -66,6 +66,7 @@ const Home = () =>  {
                             </a>
 
                         </div>
+                        <StyledHr Primary/>
                         <br />
                         <div>
                           <StyledButtonATag Primary href='#top'

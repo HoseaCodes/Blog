@@ -1,6 +1,6 @@
 import React from 'react';
 import "./Footer.css";
-import {StyledHr} from '../../Layout/Hr/styledHr';
+// import {StyledHr} from '../../Layout/Hr/styledHr';
 
 import SocialMediaTags from '../SocialMediaTags/SocialMediaTags';
 
@@ -8,7 +8,7 @@ const Footer = (isHome) => {
 
     const year = new Date().getFullYear();
 
-    if (isHome) {
+    if (isHome == true) {
       return (
       <>
         <footer className="footer">
@@ -71,7 +71,7 @@ const Footer = (isHome) => {
 
     return (
       <>
-        <StyledHr Primary/>
+        {/* <StyledHr Primary/> */}
         <footer className="footer">
             <div className="container bottom_border">
                 <div className="row">

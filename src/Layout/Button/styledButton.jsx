@@ -101,7 +101,6 @@ export const StyledButton = styled.button`
   box-sizing: inherit;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.8em;
   margin-bottom: 10px;
   padding: 10px 20px;
   background-color: transparent;

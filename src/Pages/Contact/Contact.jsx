@@ -2,6 +2,7 @@ import React from 'react';
 import Footer from '../../Components/Footer/Footer';
 import ContactForm from '../../Components/Form/ContactForm';
 import NavBar from '../../Components/NavBar/NavBar';
+import { StyledHr } from '../../Layout/Hr/styledHr';
 import './Contact.css'
 
 const Contact = () => {
@@ -46,6 +47,7 @@ const Contact = () => {
                     </div>
                 </div>
             </div>
+            <StyledHr Primary/>
             <Footer/>
         </>
     )

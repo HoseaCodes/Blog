@@ -1,8 +1,8 @@
 import React from 'react';
 import Footer from '../../Components/Footer/Footer';
 import NavBar from '../../Components/NavBar/NavBar';
-// import NavBar from '../../Components/NavBar/NavBar';
 import Products from '../../Components/Product/Products';
+// import Masonry from '../../Components/Masonry/Masonry';
 import Sidebar from './Header';
 import './Shop.css';
 
@@ -17,6 +17,7 @@ const Shop = () => {
               <div className="shop-container">
                   <Sidebar className="sidebar" />
                   <Products/>
+                  {/* <Masonry/> */}
               </div>
             </div>
             <Footer/>

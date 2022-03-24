@@ -10,6 +10,7 @@ import MainContainer from '../../../Components/Article/MainContainer';
 const ArticleItem = () => {
     const params = useParams()
     const state = useContext(GlobalState)
+    const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
 
@@ -34,8 +35,8 @@ const ArticleItem = () => {
         <>
           <main className="blog-content">
             <SideBar/>
-            <MainContainer timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
-            <RightColumn/>
+            <MainContainer user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
+            <RightColumn user={user} articles={articles}/>
           </main>
         </>
     )

@@ -15,9 +15,11 @@ import RelatedPosts from './RelatedPosts';
 import StickyFooter from '../Sticky/StickyFooter';
 
 const MainContainer = (props) => {
+
   const {  title, subtitle, description, images, markdown } = props.detailArticle;
   const timeFormater = props.timeFormater;
   const readTime = props.readTime;
+  const user = props.user
 
   return (
         <StyledMainContainer>
@@ -30,10 +32,10 @@ const MainContainer = (props) => {
                 </AlertP>
               </Alert>
               <JustifyContent AlignCenter>
-                <CircleImage src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
+                <CircleImage src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
                     alt="author" />
                 <div>
-                  <NamePlate>Will Smith</NamePlate>
+                  <NamePlate>{user.name || "Will Smith"}</NamePlate>
                   <WarppedDate>
                     <GrayText>{timeFormater}</GrayText>
                     <span>&nbsp;&#183;&nbsp;</span>
@@ -66,7 +68,7 @@ const MainContainer = (props) => {
               </BlogCard>
             </section>
           </PaddingContent>
-          <RelatedPosts timeFormater={timeFormater} readTime={readTime}/>
+          <RelatedPosts user={user} articles={props.articles} timeFormater={timeFormater} readTime={readTime}/>
         </StyledMainContainer>
   )
 }

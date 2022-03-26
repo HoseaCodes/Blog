@@ -78,7 +78,8 @@
     height: 8vh;
     background-color: #1a1e23;
   }
-  .nav-logo {
+  .nav-logo,
+  .nav-title {
     display: none;
   }
   .nav-link {

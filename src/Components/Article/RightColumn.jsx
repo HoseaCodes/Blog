@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {PageLinks, StyledRightContainer, AlignContent, SideUserContainer,
   PostContainer} from '../../Layout/Container/styledArticle';
 import {SquareImage, CircleImage} from '../../Layout/Image/styledImage';
@@ -9,18 +9,32 @@ import {MdBookmarkBorder} from 'react-icons/md';
 import { MarginTop } from '../../Layout/Margin/styledMargin';
 import { ArticleInput } from '../../Layout/Input/styledInput';
 import { Link } from 'react-router-dom';
-
+import { useHistory } from 'react-router-dom';
+import { GlobalState } from '../../GlobalState';
 
 const RightColumn = ({user, articles}) => {
 
+  const recentPosts = articles.slice(0, 5);
+  const history = useHistory();
+  const state = useContext(GlobalState);
+  const [isLoggedIn] = state.userAPI.isLoggedIn
 
-  const recentPosts = articles.slice(0, 5)
   console.log(user)
+
+  const handleClick= async (e) => {
+    history.push(`/${e}`)
+  }
   return (
           <StyledRightContainer>
             <AlignContent Center>
-              <ArticleBtn RightColumn >Get Started</ArticleBtn>
-              <ArticleLinkColor Green href='#'>Sign In</ArticleLinkColor>
+              {!isLoggedIn ?
+              <>
+                <ArticleBtn RightColumn onClick={() => handleClick('register')} >Get Started</ArticleBtn>
+                <ArticleLinkColor Green href='/login'>Sign In</ArticleLinkColor>
+              </>
+              :
+                <h2>Welcome, {user.name.split(' ')[0]}</h2>
+              }
             </AlignContent>
                 <MarginTop RightCloumnSearch>
                   <ArticleInput Search placeholder='Search' type="text"/>

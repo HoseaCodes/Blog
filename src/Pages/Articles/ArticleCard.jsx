@@ -35,7 +35,7 @@ const ArticleItem = (props) => {
                         <h2 className='article-card-header' >{title}</h2>
                     </Link>
                     <p className="article-card-meta"><span>1 &nbsp;<VisibilityIcon /> &nbsp;</span>{timeFormater}</p>
-                    <p className="work-content">{description}</p>
+                    <p className="work-content">{props.truncate(description)}</p>
                     <br />
                     {/* <div>{ReactHtmlParser(sanitizedHtml)}</div> */}
 

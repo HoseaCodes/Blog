@@ -133,7 +133,7 @@ const NavBar = () => {
                     <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                   </Link>
                   :
-                  <h1 style={{color: 'white'}}>Welcome, {user.name.split(' ')[0]}</h1>
+                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user.name.split(' ')[0]}</h1>
                 }
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     {isAdmin && adminRouter()}

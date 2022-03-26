@@ -42,7 +42,7 @@ const Register = () => {
 	return (
 		<div id="login-page-container">
 			<div className="login-page">
-        <img onClick={updateRole} className="brand" src={Logo} alt="brand-name" />
+        <img onClick={updateRole}  src={Logo} alt="brand-name" />
 				<form onSubmit={registerSubmit}>
 					<h2>Registration</h2>
 					<label htmlFor="name">Name</label>

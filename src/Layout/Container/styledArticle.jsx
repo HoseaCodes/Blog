@@ -78,6 +78,10 @@ export const AlignContent = styled.div`
   ${props => props.Gray && css`
   color: dimgray;
 `}
+  ${props => props.Column && css`
+  @media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
+    flex-direction: column;
+  }`}
 `;
 
 export const Tag = styled.div`

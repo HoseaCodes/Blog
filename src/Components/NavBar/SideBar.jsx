@@ -36,7 +36,9 @@ const SideBar = () => {
     return (
       <StyledLeftContainer>
         <JustifyContent >
-          <LogoImage src={logo} alt="logo"/>
+          <Link to="/">
+            <LogoImage src={logo} alt="logo"/>
+          </Link>
         </JustifyContent>
         <StackedAlignn >
           <Link to="/"><BsHouseDoor style={{marginBottom: '5rem'}}/></Link>

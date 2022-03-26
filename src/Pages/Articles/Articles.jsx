@@ -39,7 +39,10 @@ const Articles = () => {
     });
 
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
-
+    const popularPosts = mainPosts.slice(indexOfLastPost, mainPosts.length)
+    const truncate = (str) => {
+      return str.length > 10 ? str.substring(0, 150) + "..." : str;
+  }
     const paginate = pageNum => setCurrentPage(pageNum);
     const nextPage = () => {
         if (currentPage > articles.length) return;
@@ -198,7 +201,7 @@ const Articles = () => {
                           <section className='articleList'>
                             {taggedArticles.map(article => {
                                 return (
-                                    <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
+                                    <ArticleCard truncate={truncate} archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
                                         key={article.id}
                                     />
                                 )
@@ -207,12 +210,12 @@ const Articles = () => {
                             postsPerPage={postsPerPage} totalPosts={mainPosts.length} />
                         </section>
                       }
-                        <div>
+                        <div className='article-sidebar-container'>
                             <section className='article-sidebar'>
                                 <div className="popular">
                                     <h2 className='article-card-header'>Popular Post</h2>
                                     <section className='popular-articles'>
-                                        {mainPosts.map(article => {
+                                        {popularPosts.map(article => {
                                             return (
                                                 <a key={article.id} href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>

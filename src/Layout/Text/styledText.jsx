@@ -62,6 +62,9 @@ export const BlogTitle= styled.h2`
   font-size: 6rem;
   ${props => props.Green && css`
   `}
+  @media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
+    font-size: 4rem;
+  }
 `;
 
 export const Subtitle= styled.h6`

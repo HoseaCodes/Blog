@@ -7,6 +7,8 @@ import {NamePlate} from '../../Layout/Text/styledText';
 import {MarginTop} from '../../Layout/Margin/styledMargin';
 import {ArticleMainHr} from '../../Layout/Hr/styledHr';
 import {ReadMore} from '../../Layout/Button/styledButton';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const RelatedPosts = (props) => {
 
@@ -14,7 +16,11 @@ const RelatedPosts = (props) => {
   const articles = props.articles;
   const user = props.user;
   const recentPosts = articles.slice(0, 4)
+  const history = useHistory()
 
+  const handleReadMore = async () => {
+      history.push('/blog')
+}
   return (
           <MarginTop Whitesmoke>
             {recentPosts.map(article => {
@@ -28,10 +34,12 @@ const RelatedPosts = (props) => {
                                 <span>&nbsp;&#183;&nbsp;</span>
                                 <GrayDiv>{timeFormater}</GrayDiv>
                               </AlignContent>
-                              <AlignContent>
+                              <AlignContent Column>
                                 <div style={{marginRight: '1rem'}}>
-                                  <h4>{articles.title || "No Code Approach — Process Speech and convert to Text — Logic Apps"}</h4>
-                                  <p  style={{width: '80%'}}> {articles.description || "Using Azure Cognitive Services Speech to Text and Logic apps No Code — Workflow style We can re use the same pattern for other Azure Cognitive..."}
+                                <Link to={`/blog/${article.id}`} rel="noopener noreferrer">
+                                  <h4>{article.title || "No Code Approach — Process Speech and convert to Text — Logic Apps"}</h4>
+                                </Link>
+                                  <p  style={{width: '80%'}}> {article.description || "Using Azure Cognitive Services Speech to Text and Logic apps No Code — Workflow style We can re use the same pattern for other Azure Cognitive..."}
                                   </p>
                                 </div>
                                 <img height={'250rem'} width={'450rem'} src={article.images.url|| "https://tateeda.com/wp-content/uploads/2020/05/2.png"} alt="post"/>
@@ -49,7 +57,7 @@ const RelatedPosts = (props) => {
                           )
                         })}
             <AlignContent CenterBtn>
-              <ReadMore>Read more from me</ReadMore>
+              <ReadMore onClick={handleReadMore}>Read more from me</ReadMore>
             </AlignContent>
           </MarginTop>
   )

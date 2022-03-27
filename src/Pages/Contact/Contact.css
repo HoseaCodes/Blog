@@ -104,6 +104,7 @@
   text-transform: lowercase;
   color: black;
 }
+
 @media only screen and (max-width: 1200px) {
   .contact-container {
     padding: 15%;
@@ -172,24 +173,28 @@
 }
 @media only screen and (max-width: 500px) {
   .contact-container {
-    padding-top: 40%;
-    padding-bottom: 10%;
+    padding-top: 0%;
+    padding-bottom: 0%;
+    height: fit-content;
+  }
+  .contact-container textarea {
+    width: 100%;
   }
   .contact-title {
     padding-top: 40px;
   }
   .contact-title,
   .contact-subtitle {
-    font-size: 3rem;
+    font-size: 5rem;
   }
   .contact-style {
-    font-size: 3.5rem;
+    font-size: 4.5rem;
   }
-  .contact-item {
-    font-size: 0.7rem;
+  .contact-item p {
+    font-size: 1.7rem;
   }
   .contact-item h4 {
-    font-size: 1rem;
+    font-size: 2rem;
     padding-top: 4%;
     padding-bottom: 0%;
   }

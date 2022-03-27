@@ -6,7 +6,9 @@ import ArticleCard from './ArticleCard';
 // import { auth, login, logout } from '../../services/firebase';
 import { GlobalState } from '../../GlobalState';
 // import Loading from '../../Loading';
-import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
+// import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import axios from 'axios';
 import Pagination from '../../Components/Pagination/pagination';
 import { StyledHr } from '../../Layout/Hr/styledHr';
@@ -193,9 +195,69 @@ const Articles = () => {
                         {/* <!--───────────────card───────────────--> */}
                         {loading ?
                         <section className='articleList'>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          {/* <SkeletonBlog/>
                           <SkeletonBlog/>
-                          <SkeletonBlog/>
-                          <SkeletonBlog/>
+                          <SkeletonBlog/> */}
                         </section>
                         :
                           <section className='articleList'>

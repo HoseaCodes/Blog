@@ -307,7 +307,30 @@ button:focus {
 @media only screen and (max-width: 56.25em) {
   .hero-single-context-stripe .context-stripe-focus-area {
     text-align: center;
+    display: flex;
   }
+
+  .single-work-giga-text {
+    left: 20% !important;
+  }
+
+  .single-work-anim-text {
+    flex-direction: column;
+  }
+
+  .case-study-single-button .button-icon svg {
+    display: none;
+  }
+
+  .typography-container {
+    flex-direction: column;
+  }
+
+  .single-work-text-content.is-left {
+    padding: 0% !important;
+    margin-left: 0% !important;
+  }
+
   .hero-single-context-stripe .context-stripe-focus-area li {
     display: block;
     clear: both;
@@ -339,6 +362,33 @@ button:focus {
     width: 100%;
     display: block;
     margin-bottom: 10px;
+  }
+  .hero-single-context-stripe .context-stripe-focus-area,
+  .outline-title {
+    display: none;
+  }
+  .overview-container.project-services {
+    grid-template-columns: 1fr !important;
+  }
+  .service-item {
+    grid-template-columns: 1fr !important;
+    grid-auto-columns: 1fr !important;
+    grid-template-areas: none !important;
+  }
+  .button-content {
+    padding: 0% !important;
+  }
+  .single-work-giga-text,
+  .typography-container {
+    display: none !important;
+  }
+  .inner-container {
+    margin-left: 0% !important;
+  }
+  .sticky-labels.services-label,
+  .sticky-labels {
+    margin-top: 0% !important;
+    margin-bottom: 0% !important;
   }
 }
 

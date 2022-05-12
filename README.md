@@ -1,29 +1,100 @@
-# [HoseaCodes-Blog](http://www.hoseacodes.com/)
+<div id="top"></div>
+<!-- PROJECT SHIELDS -->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
 
-## Created by: Dominique Hosea
 
-### September 2020
 
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="http://www.hoseacodes.com/">
+    <img src="public/hosea3.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <a href="http://www.hoseacodes.com/">
+    <h3 align="center">HoseaCodes-Blog</h3>
+  </a>
+
+  <p align="center">
 Welcome, to my personal blog and portfolio. Sharing information is vital and especially in the dev commnunity. The blog showcases my latest works, testomines, articles, about me section, and contact me section. It mainly focuses on my current and most recent accomplishments.
+    <br />
+    <a href="/docs.md"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="http://www.hoseacodes.com/">View Demo</a>
+    ·
+    <a href="https://github.com/HoseaCodes/Blog/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/HoseaCodes/Blog/issues">Request Feature</a>
+  </p>
+</div>
 
-[![NPM Version 7.6.3][npm-image]][npm-url]
 
-### Homepage
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
 ![Homepage](https://i.imgur.com/5k3N3ex.png)
 
-### Blog Page
+The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
 
-![Article Page](https://i.imgur.com/PeDkdtv.png)
+Here's why:
+* Your time should be focused on creating something amazing. A project that solves a problem and helps others
+* You shouldn't be doing the same tasks over and over like creating a README from scratch
+* You should implement DRY principles to the rest of your life :smile:
 
-## Technologies Used
+Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
 
-This application was developed with a full MERN stack. and written in JavaScript. Styling done with Bootstrap, Material UI, SASS or SCSS and CSS.
+Use the `BLANK_README.md` to get started.
 
-M - MongoDB, NoSQL database  
-E - Express, a back-end framework  
-R - React, a client side framework  
-N - NodeJS - to run back end service
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+### Built With
+
+This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+
+#### M.E.R.N Stack
+* [MongoDB.js](https://nextjs.org/) - MongoDB, NoSQL database
+* [Express.js](https://vuejs.org/) - Express, a back-end middleware framework  
+* [React.js](https://reactjs.org/) - React, a client-end framework  
+* [Node.js](https://angular.io/) - Node, a back-end framework
+* [Bootstrap](https://getbootstrap.com)
+* [Typescript.js](https://nextjs.org/)
 
 Dependencies used:
 
@@ -35,154 +106,139 @@ Dependencies used:
 - Material UI - a library for building pre-styled components
 - SASS - a preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- GETTING STARTED -->
 ## Getting Started
 
-The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
-## Frontend
+### Prerequisites
 
-### Typography
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-Fluid font sizes - The body is set to 100% causing the font to adjust the font sizes to the browser defaults.
+### Installation
 
-Best Practices:
+_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-- No pixels are used to calculate sizes
-- `em` or `rem` are used to calculate font-sizes
+<!-- 1. Get a free API Key at [https://example.com](https://example.com) -->
+1. Clone the repo
+   ```sh
+   git clone https://github.com/HoseaCodes/Blog.git
+   ```
+1. Install NPM packages
+   ```sh
+   npm install
+   ```
+<!-- 4. Enter your API in `config.js`
+   ```js
+   const API_KEY = 'ENTER YOUR API'; 
+   ``` -->
 
-### Images
 
-Width - Set max-width to 100% causing the images to grow or shrink depending on the size of the parent column.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Best Practices:
+<!-- ROADMAP -->
+## Roadmap
 
-- Have at least 150 ppi at least 300 is recommended
+- [] Add Changelog
+- [] Add back to top links
+- [ ] Add Additional Templates w/ Examples
+- [ ] Add "components" document to easily copy & paste sections of the readme
+- [ ] Multi-language Support
+    - [ ] Chinese
+    - [ ] Spanish
+    - [ ] French
 
-  How to find ppi for Mac users:
 
-  - Open your image in Preview.
-  - Up at the top, click "Tools" > "Adjust Size"
-  - Uncheck the box labeled "Resample Image"
-  - Next, using inches, change the size of your artwork to your desired print size.
-  - The resolution should be at least 300 pixels per inch.
+See the [open issues](https://github.com/HoseaCodes/Blog/issues) for a full list of proposed features (and known issues).
 
-- Compress the images
-  You can use tools like https://compresspng.com/ to compress the image
-  - The browser will optimize the image due to image being so large. They will size the image down to shrink it to the webpage.
-- Alterantively, you can look into srcset
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## Backend
+<!-- USAGE EXAMPLES -->
+## Usage
 
-### Business Logic
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-### Enpoints
+_For more examples, please refer to the [Documentation](https://example.com)_
 
-Test enpoints on test server:
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Simply visit [Test Server](https://app.swaggerhub.com/apis-docs/HoseaCodes/Hoseacodes/1.0.0#/)
 
-Test endpoints locally by:
+<!-- CONTRIBUTING -->
+## Contributing
 
-```bash
-/* Change directories into Swagger Server */
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-cd swagger-server
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
 
-/* Run Server */
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-npm start
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-/* The server will be live on http://localhost:8080/docs */
-```
 
-After completing the instructions to run locally click here: [Local Server](http://localhost:8080/docs)
 
-- /articles
-- /articles/:id
-- /upload
-- /destory
-- /register
-- /login
-- /refresh_token
+<!-- LICENSE -->
+## License
 
-## Dev Ops
+Distributed under the MIT License. See `LICENSE.txt` for more information.
 
-### Process Manager
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This project uses PM2 to keep the application alive due to faulty errors, server changes or file changes. Visit https://pm2.io/docs/plus/overview/ for details.
 
-### Logger
 
-This project uses Winston to log events into our log manager. Visit https://github.com/winstonjs/winston for details.
+<!-- CONTACT -->
+## Contact
 
-This project uses Morgan to log events inside of the terminal. Visit https://github.com/expressjs/morgan for details.
+Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
-## Enviornments
+Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
-[env-cmd](https://www.digitalocean.com/community/tutorials/nodejs-take-command-with-env-cmd)
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Local
 
-### Staging
 
-### Production
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
 
-#### Performance
+Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-Sentry is used for real-time production montioring.
+* [Choose an Open Source License](https://choosealicense.com)
+* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
+* [Malven's Grid Cheatsheet](https://grid.malven.co/)
+* [Img Shields](https://shields.io)
+* [GitHub Pages](https://pages.github.com)
+* [Font Awesome](https://fontawesome.com)
+* [React Icons](https://react-icons.github.io/react-icons/search)
 
-### Development
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-#### Performance
 
-React profiler is used to montior the performance of the application while in development.
 
-How to run:
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
+[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
+[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
+[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
+[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
+[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: images/screenshot.png
 
-- Create a production build
-
-```js
-npm run build -- --profile
-```
-
-- In Chrome dev tools place the throttle on low-end mobile
-- In the profiler enable: "Record why wach component rendered while profiling"
-- Target orange or darker commits
-- Check if it's a state management problem or try to solve it with memoization (i.e. callback or memo)
-
-This project uses EditorConfig to standardize text editor configuration. Visit https://editorconfig.org for details.
-
-This project uses ESLint to detect suspicious code in JavaScript files. Visit https://eslint.org for details.
-
-- Home Screen 618ms
-- Portfolio Screen 149 ms
-- Portfolio Case Study
-- Blogs Screen
-- Blog Post Screen
-- About Screen
-- Contact Screen
-
-### Testing
-
-This project uses Jest for testing. Visit https://jestjs.io for details.
-
-To execute tests:
-
-```bash
-npm test
-```
-
-## External APIs
-
-- [Send Grid](https://app.sendgrid.com/)
-- [Get Form](https://getform.io/)
-- [Swagger API](https://support.smartbear.com/swaggerhub/docs/about.html)
-
-## Unsolved Problems
-
-## Future Enhancements
-
-- User login with the ability to add comments and like post.
-- Routing for 404
-- Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
-- Confgiure multiple env

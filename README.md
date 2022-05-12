@@ -121,6 +121,9 @@ This is an example of how to list things you need to use the software and how to
   ```sh
   npm install npm@latest -g
   ```
+  ```sh
+  npm install -g nodemon
+  ```
 
 ### Installation
 
@@ -146,16 +149,36 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- ROADMAP -->
 ## Roadmap
 
+- [ ] Npm Scripts to set up mutiple envs
+  - [ ] [env-cmd](https://www.digitalocean.com/community/tutorials/nodejs-take-command-with-env-cmd)
+  - [ ] Local
+  - [ ] Stagging
+  - [ ] Production
+  - [ ] Performance
+  - [ ] Development
+- [ ] Pipeline
+  - [ ] Implement Jenkins
+- [X] Establish .gitinore
+- [X] Install Nodemon
+- [ ] Create proxy server/registry
+  - [ProxyDocs](https://blog.logrocket.com/why-you-should-use-proxy-server-create-react-app/#what-is-proxy-server) 
+  - [] Open Source - Proxy registry   
 - [ ] Add Changelog
+  - [ ] Implement in Pipeline
 - [ ] Add back to top links
+- [ ] Debugging
+  - [X] Install React Developer Tools Extension
+  - [ ] Install Redux DevTools Extension
+  - [React Debugging Docs(https://raygun.com/blog/react-debugging-guide/)
+  - [Node Debugging Docs](https://raygun.com/blog/node-debugger/)
+  - [Node Debugging Docs](https://nodejs.org/en/docs/guides/debugging-getting-started/)
+  - [VS Code Node Debugging Docs](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
     - [ ] Chinese
     - [ ] Spanish
     - [ ] French
-
-
 - [ ] User login with the ability to add comments and like post.
 - [ ] Routing for 404
 - [ ] Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.

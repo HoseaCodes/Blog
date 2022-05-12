@@ -149,6 +149,24 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- ROADMAP -->
 ## Roadmap
 
+- [X] Create-React-App
+  - [Create React Docs](https://create-react-app.dev/docs/documentation-intro)
+  - [X] Install npm
+  - [X] Install webpack
+  - [X] Create ReadMe
+  - [X] Create package.json
+- [X] Remote Repo Storage
+  - [X] Github
+- [ ] TypeScript
+- [ ] GraphQL
+- [ ] Install a Linter
+  - [ ] ES Linter
+  - [ ] JS Linter
+  - [ ] Prettier
+- [ ] Select Code Style
+  - [ ] Google
+  - [ ] Airbnb
+  - [ ] Github
 - [ ] Npm Scripts to set up mutiple envs
   - [ ] [env-cmd](https://www.digitalocean.com/community/tutorials/nodejs-take-command-with-env-cmd)
   - [ ] Local
@@ -165,21 +183,59 @@ _Below is an example of how you can instruct your audience on installing and set
   - [] Open Source - Proxy registry   
 - [ ] Add Changelog
   - [ ] Implement in Pipeline
-- [ ] Add back to top links
+- [ ] Asnyc/Await
+  - [ ] Non-blocking
 - [ ] Debugging
+- [ ] Business Logic / API
+  - [ ] Abstract Logic
+  - [ ] REST/SOAP
+- [ ] Swagger Docs
+- [ ] Logging
+  - [ ] Add to headers
+  - [ ] Trace Id
+  - [ ] Flow Id
+- [ ] Docker
+- [ ] Continuous Delivery
+- [ ] Continuous Intergration
+- [ ] PM2 
+- [ ] Performance
+  - [ ] Latency
+  - [ ] Memory Usage
+  - [ ] CPU Usage
+- [ ] Security
+  - [ ] Validators
+  - [ ] Nodesceurity.io
+- [ ] Database
+- [ ] Monitoring
+  - [ ] SLA
+  - [ ] SLO
+- [ ] Testing
+  - [ ] Unit Tests
+  - [ ] Integration Tests
+  - [ ] Smoke Tests / Sanity Checks 
+  - [ ] End to End Tests
+  - [ ] Regression Tests
+  - [ ] Acceptance Tests
+  - [ ] System Tests
+  - [ ] Pre-flight check
+- [ ] React Router
   - [X] Install React Developer Tools Extension
   - [ ] Install Redux DevTools Extension
   - [React Debugging Docs(https://raygun.com/blog/react-debugging-guide/)
   - [Node Debugging Docs](https://raygun.com/blog/node-debugger/)
   - [Node Debugging Docs](https://nodejs.org/en/docs/guides/debugging-getting-started/)
   - [VS Code Node Debugging Docs](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
     - [ ] Chinese
     - [ ] Spanish
     - [ ] French
 - [ ] User login with the ability to add comments and like post.
+- [ ] Document Entire App
+  - [ ] Tools
+  - [ ] UI
+  - [ ] Testing
+  - [ ] Backend
+  - [ ] Architecture
 - [ ] Routing for 404
 - [ ] Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
 - [ ] Confgiure multiple env

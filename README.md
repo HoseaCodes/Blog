@@ -146,14 +146,21 @@ _Below is an example of how you can instruct your audience on installing and set
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Add Changelog
-- [] Add back to top links
+- [ ] Add Changelog
+- [ ] Add back to top links
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
     - [ ] Chinese
     - [ ] Spanish
     - [ ] French
+
+
+- [ ] User login with the ability to add comments and like post.
+- [ ] Routing for 404
+- [ ] Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
+- [ ] Confgiure multiple env
+
 
 
 See the [open issues](https://github.com/HoseaCodes/Blog/issues) for a full list of proposed features (and known issues).

@@ -20,10 +20,10 @@ async function register(req, res) {
         // Admin is role 1
 
         const user = await Users.findOne({ email })
-        if (user) return res.status(400).json({ msg: "The email already exists" })
+        if (user) return res.status(409).json({ msg: "Conflict: The email already exists" })
 
         if (password.length < 6)
-            return res.status(400).json({ msg: "Password is at least 6 characters long" })
+            return res.status(401).json({ msg: "Password is at least 6 characters long" })
 
         //Password Encryption
         const passwordHash = await bcrypt.hash(password, 10)
@@ -70,7 +70,7 @@ function refreshToken(req, res) {
 
 async function login(req, res) {
     try {
-        const { email, password } = req.body
+        const { email, password, rememberMe } = req.body
 
         const user = await Users.findOne({ email })
         if (!user) return res.status(400).json({ msg: "User does not exist." })
@@ -81,11 +81,14 @@ async function login(req, res) {
         const accesstoken = createAccessToken({ id: user._id })
         const refreshtoken = createRefreshToken({ id: user._id })
 
-        res.cookie('refreshtoken', refreshtoken, {
-            httpOnly: true,
-            path: '/api/user/refresh_token',
-            maxAge: 7 * 25 * 60 * 60 * 1000
-        })
+        if(rememberMe) {
+          // Only set cookies if user checks remember me
+          res.cookie('refreshtoken', refreshtoken, {
+              httpOnly: true,
+              path: '/api/user/refresh_token',
+              maxAge: 7 * 25 * 60 * 60 * 1000
+          })
+        }
         res.json({accesstoken })
 
     } catch (err) {

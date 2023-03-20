@@ -1,5 +1,5 @@
 // import React, { Component, lazy, Suspense, useContext} from 'react';
-import React, { lazy, Suspense} from 'react';
+import React, { lazy, Suspense, useContext} from 'react';
 import * as Sentry from "@sentry/react";
 import Home from './Pages/Home/Home'
 import Projects from './Pages/Projects/Projects'
@@ -7,7 +7,7 @@ import Articles from './Pages/Articles/Articles'
 import Error from './Pages/Error/Error'
 // import Shop from './Pages/Shop/Shop';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import CreateArticle from './Pages/Articles/CreateArticle'
+import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import ArticleItem from './Pages/Articles/Article/Article';
 import ProjectItem from './Pages/Projects/Project/Project';
@@ -34,13 +34,12 @@ const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
 
   // render() {
-const App = () => {
+const App = (props) => {
 
     const history = createBrowserHistory();
-    // const state = useContext(GlobalState);
 
-    // const isLoggedIn = false
-    // const [isLoggedIn] = state.userAPI.isLoggedIn
+    const isLoggedIn = false
+    console.log(props, 'state')
     // const isAdmin = false
     // const [isAdmin] = state.userAPI.isAdmin
 
@@ -49,7 +48,7 @@ const App = () => {
         <Switch>
           <DataProvider>
             {/* <NavBar/> */}
-            <Route exact path="/" render={() => (<Home/>)}/>
+            <Route exact path="/" render={() => (<Home />)}/>
             <Suspense fallback={<ProLoader/>}>
               <Route path="/about" exact component={About}/>
               <Route path="/contact" exact component={Contact} />
@@ -75,7 +74,7 @@ const App = () => {
             <Route path="/blog" exact component={Articles} />
             <Route path="/blog/:id" exact component={ArticleItem} />
             {/* Requires Login */}
-            {/* <Route path="/blog/new" exact component={!isLoggedIn ? CreateArticle : Error} /> */}
+            <Route path="/blog/new" exact component={CreateArticle} />
             {/* <Route path="/blog/edit" exact component={!isLoggedIn ? CreateArticle : Error} /> */}
             {/* Requires Login */}
             {/* Blog */}

@@ -8,6 +8,7 @@ import marked from 'marked';
 import { v4 as uuidv4 } from 'uuid';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
+import Error401 from '../Error/Error401'
 
 const initialState = {
     article_id: '',
@@ -30,6 +31,24 @@ function CreatArticle() {
     const [articles] = state.articlesAPI.articles
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
+    const [isLoggedIn] = state.userAPI.isLoggedIn
+
+    console.log(isLoggedIn)
+    function sleep(num) {
+        let now = new Date();
+        const stop = now.getTime() + num;
+        while(true) {
+            now = new Date();
+            if(now.getTime() > stop) return;
+        }
+    }
+
+useEffect(() => {
+    if (!isLoggedIn) {
+            sleep(5000)
+            history.push('/')
+        }
+    }, [])
 
     useEffect(() => {
         if (param.id) {
@@ -112,146 +131,153 @@ function CreatArticle() {
 
     return (
         <>
-          <NavBar/>
-            <div className="create_article" >
-                <div className="container fluid col-md-12">
-                    <div id="signupbox" >
-                        <div className="panel panel-default">
-                            <div className="panel-heading">
-                                <div className="panel-title text-center"><h3>Add Article</h3></div>
-                            </div>
-                            <div className="panel-body" >
-                                <form className="row g-3" onSubmit={handleSubmit}>
-                                    <div className="col-md-6">
-                                        <div id="div_p_name" className="form-group required">
-                                            <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 ">
-                                                <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                    name="title"
-                                                    required value={article.title}
-                                                    onChange={handleChangeInput}
-                                                // disabled={onEdit}
-                                                />
-                                            </div>
-                                        </div>
+        {isLoggedIn ?
+            <>
+                <NavBar/>
+                    <div className="create_article" >
+                        <div className="container fluid col-md-12">
+                            <div id="signupbox" >
+                                <div className="panel panel-default">
+                                    <div className="panel-heading">
+                                        <div className="panel-title text-center"><h3>Add Article</h3></div>
                                     </div>
-                                    <div className="col-md-6">
-                                        <div id="div_p_name" className="form-group required">
-                                            <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 ">
-                                                <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                    name="subtitle"
-                                                    required value={article.subtitle}
-                                                    onChange={handleChangeInput}
-                                                // disabled={onEdit}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div id="div_p_id" className="form-group required">
-                                            <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 ">
-                                                <input className="input-md emailinput form-control mb"
-                                                    name="article_id"
-                                                    required value={uuidv4()}
-                                                    onChange={handleChangeInput}
-                                                    disabled />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col-md-6">
-                                        <div id="div_id_downloads" className="form-group required">
-                                            <label for="p_downloads" className="control-label col-md-4  requiredField">Article Language<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 ">
-                                                <select name="cars" type="number" className="form-control mb" >
-
-                                                    <option value="volvo">Java</option>
-                                                    <option value="saab">Python</option>
-                                                    <option value="fiat">JavaScript</option>
-                                                    <option value="audi">Software Engineer</option>
-
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div id="div_description" className="form-group required">
-                                            <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 ">
-                                                <textarea className="mb"
-                                                    name="description"
-                                                    required value={article.description}
-                                                    onChange={handleChangeInput}
-                                                    style={{ width: '100%' }}
-                                                    rows="5"
-                                                    cols="50"
-                                                ></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div id="div_id_image" className="form-group required">
-                                            <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-8 mb upload" >
-
-                                                <input className="input-md emailinput form-control mb"
-                                                    name="file" id="file_up"
-                                                    onChange={handleUpload}
-                                                    placeholder="Enter Project Id" type="file" />
-
-                                                {
-                                                    loading ?
-                                                        <div id="file_img"><Loading /></div>
-                                                        :
-                                                        <div id="file_img" style={styleUpload}>
-                                                            <img src={images ? images.url : ''} alt="" />
-                                                            <span onClick={handleDestory}>X</span>
-                                                        </div>
-
-                                                }
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* <ReactMarkdown source={input} className="markdown" /> */}
-                                    <div className="col-md-12">
-                                        <div id="div_description" className="form-group required row">
-                                            <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
-                                            <div className="controls col-md-6 ">
-                                                <h5 className="text-center">Enter your markdown</h5>
-                                                <textarea className="preview d-flex jusify-self-center mauto mb"
-                                                    name="markdown"
-                                                    required value={article.markdown}
-                                                    onChange={handleChangeInput}
-                                                    // value={input}
-                                                ></textarea>
-                                            </div>
-                                            <div className="col-6" id="perview">
-                                                <h5 className="text-center">See the result</h5>
-                                                <div className="preview" dangerouslySetInnerHTML={{ __html: marked(article.markdown) }}>
+                                    <div className="panel-body" >
+                                        <form className="row g-3" onSubmit={handleSubmit}>
+                                            <div className="col-md-6">
+                                                <div id="div_p_name" className="form-group required">
+                                                    <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 ">
+                                                        <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
+                                                            name="title"
+                                                            required value={article.title}
+                                                            onChange={handleChangeInput}
+                                                        // disabled={onEdit}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div className="form-group">
-                                        <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
+                                            <div className="col-md-6">
+                                                <div id="div_p_name" className="form-group required">
+                                                    <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 ">
+                                                        <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
+                                                            name="subtitle"
+                                                            required value={article.subtitle}
+                                                            onChange={handleChangeInput}
+                                                        // disabled={onEdit}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div id="div_p_id" className="form-group required">
+                                                    <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 ">
+                                                        <input className="input-md emailinput form-control mb"
+                                                            name="article_id"
+                                                            required value={uuidv4()}
+                                                            onChange={handleChangeInput}
+                                                            disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col-md-6">
+                                                <div id="div_id_downloads" className="form-group required">
+                                                    <label for="p_downloads" className="control-label col-md-4  requiredField">Article Language<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 ">
+                                                        <select name="cars" type="number" className="form-control mb" >
+
+                                                            <option value="volvo">Java</option>
+                                                            <option value="saab">Python</option>
+                                                            <option value="fiat">JavaScript</option>
+                                                            <option value="audi">Software Engineer</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div id="div_description" className="form-group required">
+                                                    <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 ">
+                                                        <textarea className="mb"
+                                                            name="description"
+                                                            required value={article.description}
+                                                            onChange={handleChangeInput}
+                                                            style={{ width: '100%' }}
+                                                            rows="5"
+                                                            cols="50"
+                                                        ></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <div id="div_id_image" className="form-group required">
+                                                    <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-8 mb upload" >
+
+                                                        <input className="input-md emailinput form-control mb"
+                                                            name="file" id="file_up"
+                                                            onChange={handleUpload}
+                                                            placeholder="Enter Project Id" type="file" />
+
+                                                        {
+                                                            loading ?
+                                                                <div id="file_img"><Loading /></div>
+                                                                :
+                                                                <div id="file_img" style={styleUpload}>
+                                                                    <img src={images ? images.url : ''} alt="" />
+                                                                    <span onClick={handleDestory}>X</span>
+                                                                </div>
+
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* <ReactMarkdown source={input} className="markdown" /> */}
+                                            <div className="col-md-12">
+                                                <div id="div_description" className="form-group required row">
+                                                    <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-md-6 ">
+                                                        <h5 className="text-center">Enter your markdown</h5>
+                                                        <textarea className="preview d-flex jusify-self-center mauto mb"
+                                                            name="markdown"
+                                                            required value={article.markdown}
+                                                            onChange={handleChangeInput}
+                                                            // value={input}
+                                                        ></textarea>
+                                                    </div>
+                                                    <div className="col-6" id="perview">
+                                                        <h5 className="text-center">See the result</h5>
+                                                        <div className="preview" dangerouslySetInnerHTML={{ __html: marked(article.markdown) }}>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <br />
-                                            <button className="btn btn-info btn-md" type="submit">Add Article</button>
-                                            <button className="btn btn-danger btn-md" type="reset"><a href="/blog">Cancel</a> </button>
-                                        </div>
+                                            <div className="form-group">
+                                                <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
+                                                    <br />
+                                                    <button className="btn btn-info btn-md" type="submit">Add Article</button>
+                                                    <button className="btn btn-danger btn-md" type="reset"><a href="/blog">Cancel</a> </button>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-          <Footer/>
+                    <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
+                <Footer/>
+            </>
+        :
+            <Error401 />
+        }
+         
         </>
     )
 }

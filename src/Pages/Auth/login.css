@@ -1,117 +1,116 @@
-.login-page {
+.login-row { 
+  display: block;
+}
+
+.form-group {
+  width: -webkit-fill-available !important;
+}
+
+.main-content {
+  width: 50%;
+  border-radius: 20px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, .4);
+  margin: 5em auto;
+  display: flex;
+}
+
+.company__info {
+  background-color: #008080;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  padding: 50px;
-  /* margin: 50px auto; */
-  margin: auto;
+  color: #fff;
+}
+
+.fa-android {
+  font-size: 3em;
+}
+
+#password {
+  padding-left: 25px;
+  /* <img src="https://img.icons8.com/material-sharp/24/null/visible.png" /> */
+  /* 
+  */
+  background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat right;
+  background: url("https://img.icons8.com/material-sharp/24/null/visible.png") no-repeat right; 
+  background-size: 20px;
+}
+
+.password-visible {
+  background: url("https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/null/external-eye-devices-flatart-icons-outline-flatarticons.png") no-repeat right; 
+}
+
+@media screen and (max-width: 640px) {
+  .main-content {
+    width: 90%;
+  }
+
+  .company__info {
+    display: none;
+  }
+
+  .login_form {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+}
+
+@media screen and (min-width: 642px) and (max-width:800px) {
+  .main-content {
+    width: 70%;
+  }
+}
+
+.row>h2 {
+  color: #008080;
+}
+
+.login_form {
+  background-color: #fff;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+form {
+  padding: 0 2em;
+}
+
+.form__input {
   width: 100%;
-  text-align: center;
-  /* height: auto; */
-  height: 100vh;
+  border: 0px solid transparent;
+  border-radius: 0;
+  border-bottom: 1px solid #aaa;
+  padding: 1em .5em .5em;
+  padding-left: 2em;
+  outline: none;
+  margin: 1.5em auto;
+  transition: all .5s ease;
 }
 
-.login-page h2 {
-  letter-spacing: 2px;
-  font-size: 2.5rem;
-  color: rgb(0, 0, 0);
-  margin: 50px auto;
+.form__input:focus {
+  border-bottom-color: #008080;
+  box-shadow: 0 0 5px rgba(0, 80, 80, .4);
+  border-radius: 4px;
 }
 
-.login-page form {
-  width: 30%;
+.login-btn {
+  transition: all .5s ease;
+  width: 70%;
+  border-radius: 30px;
+  color: #008080;
+  font-weight: 600;
+  background-color: #fff;
+  border: 1px solid #008080;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
 }
 
-.login-title {
-  font-family: "Oregon";
-}
-
-.login-page form input,
-.login-page form button {
-  width: 100%;
-  height: 40px;
-  margin: 10px 0;
-  padding: 0 5px;
-  outline: rgb(3, 165, 206);
-  border: 1 solid rgb(3, 165, 206);
-  margin: auto;
-}
-
-.login-page form input::placeholder {
-  padding-left: 10px;
-  font-size: 1.75rem;
-}
-
-.login-page form .row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 0;
-  margin-top: 20px;
-}
-
-.login-page form button {
-  width: 100%;
-  height: 50px;
-  background: rgb(0, 0, 0);
-  color: white;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 5px;
-}
-
-.login-page form a {
-  color: black;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
-}
-
-#login-page-container .footer-top,
-#register-page-container .footer-top {
-  position: absolute;
-  /* bottom: 0; */
-  left: 0;
-  width: 100%;
-}
-
-#login-page-container label {
-  float: left;
-  padding: 0;
-  font-weight: bold;
-  font-size: 1.9rem;
-}
-
-#login-page-container .brand {
-  margin-left: 20px;
-  margin-top: -6%;
-  margin-bottom: -6%;
-}
-
-@media only screen and (max-width: 1475px) {
-  #login-page-container .brand {
-    width: 100%;
-    margin-left: 0%;
-  }
-  .login-page form {
-    width: 40%;
-  }
-  .login-page h2 {
-    font-size: 3rem;
-    margin: 30px auto;
-  }
-}
-@media only screen and (max-width: 975px) {
-  #login-page-container .brand {
-    width: 100%;
-    margin-left: 0%;
-  }
-  .login-page form {
-    width: 60%;
-  }
-  .login-page h2 {
-    font-size: 2rem;
-    margin: 30px auto;
-  }
+.login-btn:hover,
+.login-btn:focus {
+  background-color: #008080;
+  color: #fff;
 }

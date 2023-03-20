@@ -21,14 +21,39 @@ const Register = () => {
 		setUser({ ...user, [name]: value });
 	};
 
+	const validation = (input) => {
+		let valid = true
+		let message = ""
+		if (input.name) {
+			valid = typeof input.name === 'string'
+			valid = input.name.length >= 3
+			message = "Name only accepts string characters and must be greater than 3"
+		} else if (input.password) {
+			valid = typeof input.password === 'string'
+			valid = input.password.length >= 6
+			message = "Password must be greater than 6 charaters"
+		} else if (input.email) {
+			valid = typeof input === 'string'
+			let regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+			valid = input.email.match(regex)
+			message = "Email only accepts in email format"
+		}
+		return {valid, message}
+	}
+
 	const registerSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await axios.post("/api/user/register", { ...user });
-
-			localStorage.setItem("firstLogin", true);
-
-			window.location.href = "/";
+			const {valid, message} = validation(user)
+			if (valid) {
+				await axios.post("/api/user/register", { ...user });
+	
+				localStorage.setItem("firstLogin", true);
+	
+				window.location.href = "/";
+			} else {
+				alert(message)
+			}
 		} catch (err) {
 			alert(err.response.data.msg);
 		}
@@ -112,7 +137,6 @@ const Register = () => {
             :
             null
           }
-
 					<div className="row">
 						<button type="submit">Register</button>
 						<div>

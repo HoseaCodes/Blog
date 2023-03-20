@@ -284,7 +284,7 @@ const Articles = () => {
                                     <section className='popular-articles'>
                                         {popularPosts.map(article => {
                                             return (
-                                                <a key={article.id} href={`/blog/${article._id}`} target="_blank"rel="noopener noreferrer" >
+                                                <a key={article.id} href={`/blog/${article._id}`} rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
                                             )
                                         })}

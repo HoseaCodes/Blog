@@ -14,7 +14,11 @@ import { GlobalState } from '../../GlobalState';
 
 const RightColumn = ({user, articles}) => {
 
-  const recentPosts = articles.slice(0, 5);
+  const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
+  const uri = window.location.pathname;
+  const recentPosts = shuffleArray(articles)
+        .filter((article) => article._id != uri.split('/')[2])
+        .slice(0, 5);
   const history = useHistory();
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn
@@ -58,11 +62,11 @@ const RightColumn = ({user, articles}) => {
                   <PostText>Related</PostText>
                   {recentPosts.map(article => {
                       return (
-                          <div key={article.id}>
+                          <div key={article._id}>
                             <PostContainer>
                               <SquareImage src={article.images.url} alt="post" />
                               <SideUserContainer>
-                                <Link to={`/blog/${article.id}`} rel="noopener noreferrer">
+                                <Link to={`/blog/${article._id}`} rel="noopener noreferrer">
                                   <h5>{article.title}</h5>
                                 </Link>
                                 <Subtitle Primary> {article.subtitle}</Subtitle>

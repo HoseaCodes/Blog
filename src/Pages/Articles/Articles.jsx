@@ -30,7 +30,7 @@ const Articles = () => {
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const mainPosts = articles
+    const mainPosts = articles.sort((a,b) =>  new Date(b.createdAt) - new Date(a.createdAt));
     const archivedPosts = [];
 
     mainPosts.map((article) => {
@@ -41,16 +41,22 @@ const Articles = () => {
     });
 
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
-    const popularPosts = mainPosts.slice(indexOfLastPost, mainPosts.length)
+    const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
+    const popularPosts = shuffleArray(mainPosts)
+        .filter((article) => article != currentPosts)
+        .slice(0, 5);
+
     const truncate = (str) => {
       return str.length > 10 ? str.substring(0, 150) + "..." : str;
-  }
+    }
     const paginate = pageNum => setCurrentPage(pageNum);
+
     const nextPage = () => {
         if (currentPage > articles.length) return;
         setSearch('')
         setCurrentPage(currentPage + 1);
     }
+
     const prevPage = () => {
         if (currentPage < 1) return;
         setSearch('')
@@ -97,7 +103,6 @@ const Articles = () => {
                 search.toLowerCase()) !== -1;
         }
     );
-    console.log(filteredArticles, 'filtered')
 
     const updateSearch = event => {
         const { value } = event.target
@@ -279,7 +284,7 @@ const Articles = () => {
                                     <section className='popular-articles'>
                                         {popularPosts.map(article => {
                                             return (
-                                                <a key={article.id} href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
+                                                <a key={article.id} href={`/blog/${article._id}`} target="_blank"rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
                                             )
                                         })}

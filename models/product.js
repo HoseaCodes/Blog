@@ -49,6 +49,6 @@ const productSchema = new mongoose.Schema({
 
 const Products = mongoose.model("Products", productSchema);
 
-Products.createIndexes();
+// Products.createIndexes();
 
 export default Products;

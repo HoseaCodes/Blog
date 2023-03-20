@@ -39,6 +39,6 @@ const paymentSchema = new mongoose.Schema({
 
 const Payments = mongoose.model("Payments", paymentSchema);
 
-Payments.createIndexes();
+// Payments.createIndexes();
 
 export default Payments;

@@ -6,7 +6,7 @@ import {ArticleHr} from '../../Layout/Hr/styledHr';
 import {HiOutlinePencilAlt} from 'react-icons/hi';
 import {BsHouseDoor, BsBell} from 'react-icons/bs';
 import {MdBookmarkBorder} from 'react-icons/md';
-import logo from '../../Assets/Images/newLogo.png';
+import logo from '../../Assets/Images/logo-min.png';
 
 const SideBar = () => {
 

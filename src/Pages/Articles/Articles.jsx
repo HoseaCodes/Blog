@@ -26,17 +26,23 @@ const Articles = () => {
 
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const mainPosts = articles
+    const mainPosts = articles.sort((a,b) =>  new Date(b.createdAt) - new Date(a.createdAt));
+    
     const archivedPosts = [];
-
+    
     mainPosts.map((article) => {
-      if (article.archived) {
-        archivedPosts.push(article);
-        mainPosts.pop(article)
-      }
+        if (article.archived) {
+            archivedPosts.push(article);
+            mainPosts.pop(article)
+        }
     });
-
+    
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
+    const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
+
+    const popularPosts = shuffleArray(mainPosts)
+        .filter((article) => article != currentPosts)
+        .slice(0, 5);
 
     const paginate = pageNum => setCurrentPage(pageNum);
     const nextPage = () => {
@@ -115,6 +121,8 @@ const Articles = () => {
     else if (tagsShow === "Software Engineer") {
         taggedArticles = currentPosts.filter(item => item.category.includes("Software Engineer"))
     }
+    console.log(popularPosts)
+   
 
     // Load this effect on mount
     useEffect(() => {
@@ -209,9 +217,9 @@ const Articles = () => {
                                 <div className="popular">
                                     <h2 className='article-card-header'>Popular Post</h2>
                                     <section className='popular-articles'>
-                                        {mainPosts.map(article => {
+                                        {popularPosts.map(article => {
                                             return (
-                                                <a key={article.id} href={`/blog/${article.id}`} target="_blank"rel="noopener noreferrer" >
+                                                <a key={article.id} href={`/blog/${article._id}`} target="_blank"rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
                                             )
                                         })}

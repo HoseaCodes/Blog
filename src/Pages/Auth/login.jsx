@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 import { GlobalState } from '../../GlobalState';
 import "./login.css";
-import Logo from "../../Assets/Images/newLogo.png";
+import Logo from "../../Assets/Images/logo-min.png";
 
 const Login = () => {
   const state = useContext(GlobalState)

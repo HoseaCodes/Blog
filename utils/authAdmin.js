@@ -2,7 +2,7 @@ import Users from "../models/user.js";
 
 const authAdmin = async (req, res, next) => {
     try {
-      const user = await Users.findOne({
+      const user = await Users.find({
         _id: req.params.id
       })
       console.log(user)

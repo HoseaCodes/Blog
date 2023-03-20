@@ -34,7 +34,7 @@ async function createArticle(req, res) {
             return res.status(400).json({ msg: "No image upload" });
         }
 
-        const article = await Articles.findOne({ article_id });
+        const article = await Articles.find({ article_id });
 
         if (article) {
 

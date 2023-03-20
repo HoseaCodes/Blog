@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import "./login.css";
-import Logo from "../../Assets/Images/newLogo.png";
+import Logo from "../../Assets/Images/logo-min.png";
 
 const Register = () => {
   const [showRole, setShowRole] = useState(false);

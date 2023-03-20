@@ -1,5 +1,5 @@
 import styled, {css} from 'styled-components';
-import breakpoint from '../../Utils/breakpoints.js';
+import breakpoint from '../../utils/breakpoints';
 import wireframe from '../../Assets/Images/wireframe-min.jpg';
 import houston from '../../Assets/Images/besomeone-min.jpg';
 

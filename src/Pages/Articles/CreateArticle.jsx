@@ -11,6 +11,10 @@ import Footer from '../../Components/Footer/Footer';
 import Error401 from '../Error/Error401'
 import {StyledButton} from '../../Layout/Button/styledButton';
 import { articleTempltes } from './ArticleTemplate';
+import { arrayItems } from "./AIOptions";
+import { Configuration, OpenAIApi } from "openai";
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 
 
@@ -36,6 +40,28 @@ function CreatArticle() {
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
     const [isLoggedIn] = state.userAPI.isLoggedIn
+    const [option, setOption] = useState({});
+    const [result, setResult] = useState("");
+    const [input, setInput] = useState("");
+    const [show, setShow] = useState(false);
+
+    const configuration = new Configuration({
+        apiKey: process.env.REACT_APP_VITE_Open_AI_Key,
+    });
+
+    const openai = new OpenAIApi(configuration);
+
+    const selectOption = (option) => {
+        setOption(option);
+    };
+
+    const doStuff = async () => {
+        let object = { ...option, prompt: input };
+        console.log(process.env.REACT_APP_VITE_Open_AI_Key)
+        const response = await openai.createCompletion(object);
+        console.log(response)
+        setResult(response.data.choices[0].text);
+    };
 
 
     function sleep(num) {
@@ -139,8 +165,85 @@ function CreatArticle() {
         console.log(article)
         setArticle({ ...article, [name]: articleTempltes[e.target.options.selectedIndex].markdown })
                 console.log(article)
-
     }
+
+    function OptionSelection({ arrayItems, selectOption }) {
+        return (
+            <>
+            <h1 className="heading">ChatGPT Clone</h1>
+
+            <div className="grid-main">
+                {arrayItems.map((item) => {
+                return (
+                    <div
+                    className="grid-child"
+                    onClick={() => selectOption(item.option)}
+                    >
+                    <h3>{item.name}</h3>
+                    <p>{item.description}</p>
+                    </div>
+                );
+                })}
+            </div>
+            </>
+        );
+    }
+
+
+    const handleChangeInputOPENPAI = e => {
+        console.log(input)
+        const { value } = e.target
+        setInput(e.target.value)
+    }
+    function Translation({ doStuff, handleChange, handleChangeInputOPENPAI, setInput, setMessage, result }) {
+        return (
+            <div>
+                <textarea
+                    name="input"
+                    type="text"
+                    className="text-area"
+                    cols={55}
+                    rows={10}
+                    onChange={handleChangeInputOPENPAI}
+                ></textarea>
+                <button className="action-btn" onClick={doStuff}>
+                    DO YOU STUFF!
+                </button>
+
+                <h3 className="result-text">{result.length > 0 ? result : ""}</h3>
+            </div>
+        );
+    }
+
+    function Example() {
+        console.log(show)
+        return (
+            <>
+                <Button variant="primary" onClick={() => setShow(true)}>
+                    Blog Post Preview
+                </Button>
+
+                <Modal
+                    show={show}
+                    animation={false}
+                    onHide={() => setShow(false)}
+                    // dialogClassName="modal-100w"
+                    aria-labelledby="example-custom-modal-styling-title"
+                    style={{width: '200% !important', right: '40% !important'}}
+                >
+                    <Modal.Header closeButton>
+                    <Modal.Title id="example-custom-modal-styling-title">
+                        Blog Post Preview
+                    </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body dangerouslySetInnerHTML={{ __html: marked(article.markdown) }}>
+                        
+                    </Modal.Body>
+                </Modal>
+            </>
+        );
+    }
+
 
     return (
         <>
@@ -330,7 +433,38 @@ function CreatArticle() {
                                                 </div>
                                             </div>
                                         </form>
+                                        <div>
+                                            <Example />
+                                        </div>
+                                        <div>
+                                            Need Help <span className="qs">? <span className="popover above">Our AI blog bot will help you create stunning blog in a flash.</span></span>
+                                            <div className="App">
+                                                {Object.values(option).length === 0 ? (
+                                                <OptionSelection arrayItems={arrayItems} selectOption={selectOption} />
+                                                ) : (
+                                                    <>
+                                                        <div>
+                                                            <textarea
+                                                                name="input"
+                                                                type="text"
+                                                                className="text-area"
+                                                                cols={55}
+                                                                rows={10}
+                                                                onChange={handleChangeInputOPENPAI}
+                                                            ></textarea>
+                                                            <button className="action-btn" onClick={doStuff}>
+                                                                DO YOU STUFF!
+                                                            </button>
+
+                                                            <h3 className="result-text">{result.length > 0 ? result : ""}</h3>
+                                                        </div>
+                                                    </>
+                                                    // <Translation handleChange={handleChange} handleChangeInputOPENPAI={handleChangeInputOPENPAI} doStuff={doStuff} setInput={setInput} setMessage={setMessage} result={result} />
+                                                    )}
+                                            </div>
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>

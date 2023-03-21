@@ -85,7 +85,7 @@ const NavBar = () => {
             <div className="dropdown-menu" aria-labelledby="navdrop">
                 <Link to={"/blog/new"} className="dropdown-item nav-link">Create Post</Link>
                 <Link to={"/blog"} rel="noopener noreferrer"
-                  className="dropdown-item nav-link">View Blog</Link>
+                  className="dropdown-item nav-link">View Blogs</Link>
             </div>
           </li>
           <li className="dropdown">

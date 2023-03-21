@@ -9,18 +9,22 @@ import { v4 as uuidv4 } from 'uuid';
 import NavBar from '../../Components/NavBar/NavBar';
 import Footer from '../../Components/Footer/Footer';
 import Error401 from '../Error/Error401'
+import {StyledButton} from '../../Layout/Button/styledButton';
+import { articleTempltes } from './ArticleTemplate';
 
-const initialState = {
-    article_id: '',
-    title: '',
-    subtitle: '',
-    description: 'Description',
-    markdown: 'Markdown',
-    category: '',
-    id: ''
-}
+
 
 function CreatArticle() {
+    const [markdown, setMarkdown] = useState(articleTempltes[3].markdown)
+    const initialState = {
+        article_id: '',
+        title: '',
+        subtitle: '',
+        description: 'Description',
+        markdown: markdown,
+        category: '',
+        id: ''
+    }
     const state = useContext(GlobalState)
     const [article, setArticle] = useState(initialState)
     const [images, setImages] = useState(false)
@@ -33,7 +37,7 @@ function CreatArticle() {
     const [callback, setCallback] = state.articlesAPI.callback
     const [isLoggedIn] = state.userAPI.isLoggedIn
 
-    console.log(isLoggedIn)
+
     function sleep(num) {
         let now = new Date();
         const stop = now.getTime() + num;
@@ -43,8 +47,8 @@ function CreatArticle() {
         }
     }
 
-useEffect(() => {
-    if (!isLoggedIn) {
+    useEffect(() => {
+        if (!isLoggedIn) {
             sleep(5000)
             history.push('/')
         }
@@ -129,6 +133,15 @@ useEffect(() => {
         }
     }
 
+    const updateMarkdown = (e) => {
+        const { name } = e.target
+        setMarkdown(articleTempltes[e.target.options.selectedIndex].markdown)
+        console.log(article)
+        setArticle({ ...article, [name]: articleTempltes[e.target.options.selectedIndex].markdown })
+                console.log(article)
+
+    }
+
     return (
         <>
         {isLoggedIn ?
@@ -145,12 +158,15 @@ useEffect(() => {
                                         <form className="row g-3" onSubmit={handleSubmit}>
                                             <div className="col-md-6">
                                                 <div id="div_p_name" className="form-group required">
-                                                    <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-8 ">
-                                                        <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                            name="title"
-                                                            required value={article.title}
-                                                            onChange={handleChangeInput}
+                                                        <input 
+                                                          className="input-md emailinput form-control mb"
+                                                          placeholder="Enter Article Title Name" 
+                                                          type="text"
+                                                          name="title"
+                                                          required value={article.title}
+                                                          onChange={handleChangeInput}
                                                         // disabled={onEdit}
                                                         />
                                                     </div>
@@ -158,20 +174,23 @@ useEffect(() => {
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_p_name" className="form-group required">
-                                                    <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-8 ">
-                                                        <input className="input-md emailinput form-control mb" placeholder="Enter Article Name" type="text"
-                                                            name="subtitle"
-                                                            required value={article.subtitle}
-                                                            onChange={handleChangeInput}
-                                                        // disabled={onEdit}
+                                                        <input 
+                                                          className="input-md emailinput form-control mb" 
+                                                          placeholder="Enter Article Subtitle Name" 
+                                                          type="text"
+                                                          name="subtitle"
+                                                          required value={article.subtitle}
+                                                          onChange={handleChangeInput}
+                                                          // disabled={onEdit}
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_p_id" className="form-group required">
-                                                    <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-8 ">
                                                         <input className="input-md emailinput form-control mb"
                                                             name="article_id"
@@ -181,25 +200,37 @@ useEffect(() => {
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            {/* <div className="col-md-6 mb-0">
+                                                <div id="div_p_id" className="form-group required">
+                                                    <label 
+                                                        for="tags" 
+                                                        className="control-label col-md-6"
+                                                        requiredField
+                                                        > Article Language Tag
+                                                        <span className="asteriskField">*</span> 
+                                                    </label>
+                                                </div>
+                                            </div> */}
                                             <div className="col-md-6">
                                                 <div id="div_id_downloads" className="form-group required">
-                                                    <label for="p_downloads" className="control-label col-md-4  requiredField">Article Language<span className="asteriskField">*</span> </label>
                                                     <div className="controls col-md-8 ">
-                                                        <select name="cars" type="number" className="form-control mb" >
-
+                                                        <select 
+                                                          name="tags" 
+                                                          type="text" 
+                                                          className="form-control mb" 
+                                                          style={{height: 'auto'}}
+                                                          >
                                                             <option value="volvo">Java</option>
                                                             <option value="saab">Python</option>
                                                             <option value="fiat">JavaScript</option>
                                                             <option value="audi">Software Engineer</option>
-
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_description" className="form-group required">
-                                                    <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-8 ">
                                                         <textarea className="mb"
                                                             name="description"
@@ -214,7 +245,7 @@ useEffect(() => {
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_id_image" className="form-group required">
-                                                    <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-8 mb upload" >
 
                                                         <input className="input-md emailinput form-control mb"
@@ -236,11 +267,41 @@ useEffect(() => {
                                                     </div>
                                                 </div>
                                             </div>
+                                             <div className="col-md-6">
+                                                <div id="div_id_downloads" className="form-group required">
+                                                    <div className="controls col-md-8 ">
+                                                        <label 
+                                                        for="markdown" 
+                                                        className="control-label col-md-8"
+                                                        requiredField
+                                                        >
+                                                            Article Template
+                                                            <span className="asteriskField">*</span> 
+                                                            &nbsp;&nbsp;
+                                                            <span className="qs">? <span className="popover above">These templates will give you a starting point to start writing a blog.</span></span>
+                                                        </label>
+                                                        <select 
+                                                          onChange={updateMarkdown}
+                                                          name="markdown" 
+                                                          type="text" 
+                                                          className="form-control mb" 
+                                                          style={{height: 'auto'}}
+                                                          >
+                                                            {
+                                                                articleTempltes.map(article => (
+                                                                        <option key={article.id} value={article.name}>{article.name}</option>
+                                                                    )
+                                                                )
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             {/* <ReactMarkdown source={input} className="markdown" /> */}
                                             <div className="col-md-12">
                                                 <div id="div_description" className="form-group required row">
-                                                    <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
+                                                    {/* <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label> */}
                                                     <div className="controls col-md-6 ">
                                                         <h5 className="text-center">Enter your markdown</h5>
                                                         <textarea className="preview d-flex jusify-self-center mauto mb"
@@ -260,9 +321,12 @@ useEffect(() => {
                                             <br />
                                             <div className="form-group">
                                                 <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
-                                                    <br />
-                                                    <button className="btn btn-info btn-md" type="submit">Add Article</button>
-                                                    <button className="btn btn-danger btn-md" type="reset"><a href="/blog">Cancel</a> </button>
+                                                    <br /> <br />
+                                                    <StyledButton type="submit"> Add Article</StyledButton>
+                                                    &nbsp;&nbsp;
+                                                    <StyledButton type="reset"><a href="/blog">Cancel</a></StyledButton>
+                                                    {/* <button className="personal-btn" type="submit">Add Article</button> */}
+                                                    {/* <button className="personal-btn" type="reset"><a href="/blog">Cancel</a> </button> */}
                                                 </div>
                                             </div>
                                         </form>

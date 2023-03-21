@@ -4,9 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 import { GlobalState } from '../../GlobalState';
-import "./login.css";
+import "./auth.css";
 import Logo from "../../Assets/Images/newLogo.png";
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 
 const Login = () => {
   const state = useContext(GlobalState)

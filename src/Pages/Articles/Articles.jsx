@@ -43,7 +43,7 @@ const Articles = () => {
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
     const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
     const popularPosts = shuffleArray(mainPosts)
-        .filter((article) => article != currentPosts)
+        .filter((article) => article !== currentPosts)
         .slice(0, 5);
 
     const truncate = (str) => {

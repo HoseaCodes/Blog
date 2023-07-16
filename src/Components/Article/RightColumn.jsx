@@ -17,7 +17,7 @@ const RightColumn = ({user, articles}) => {
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
   const uri = window.location.pathname;
   const recentPosts = shuffleArray(articles)
-        .filter((article) => article._id != uri.split('/')[2])
+        .filter((article) => article._id !== uri.split('/')[2])
         .slice(0, 5);
   const history = useHistory();
   const state = useContext(GlobalState);

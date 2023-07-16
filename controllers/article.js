@@ -2,6 +2,7 @@ import Articles from '../models/article.js';
 import Comments from '../models/article.js';
 import Logger from '../utils/logger.js';
 import {cache} from '../utils/cache.js';
+import axios from 'axios'
 
 const logger = new Logger('articles')
 
@@ -41,26 +42,67 @@ async function getArticle(req, res) {
 async function createArticle(req, res) {
     try {
 
-        const { article_id, title, subtitle, markdown, description, images, category } = req.body;
+        const { article_id, title, subtitle, markdown, description, images, category, devTo, medium } = req.body;
 
         if (!images) {
 
-            logger.error("No image provided.");
-            return res.status(400).json({ msg: "No image upload" });
+          logger.error("No image provided.");
+          return res.status(400).json({ msg: "No image upload" });
+        }
+
+        const article = await Articles.findOne({ article_id });
+
+        if (article) {
+
+          logger.error("Article already exist.");
+
+          return res.status(400).json({ msg: "This article already exists." })
+        }
+
+        const newArticle = new Articles({
+          article_id, title, subtitle, markdown, description, images, category
+        })
+
+        try {
+          if (devTo) {
+            await axios.post('https://dev.to/api/articles',
+              {
+                "article": {
+                "title": title,
+                "published": false,
+                "body_markdown": markdown,
+                "tags": ["api", "hoseacodes"],
+                "series": "Hello series"
+                }
+              }, {
+                headers: { "api-key": process.env.FOREMAPI },
+              }
+            )
+            logger.info('Published to Dev To')
+          }
+          
+          if (medium) {
+            const userId = "19b6b41adf30f1e6165b2707fba2dd2f35ebf2e72ff34b4355b8041b26b59a497"
+            await axios.post(`https://api.medium.com/v1/users/${userId}/posts`,
+              {
+                "title": title,
+                "contentFormat": "markdown",
+                "content": markdown,
+                "canonicalUrl": images,
+                "tags": ["api", "hoseacodes"],
+                "publishStatus": "public",
+                "notifyFollowers": true
+              }, {
+                headers: { Authorization: `Bearer ${process.env.MEDIUMAPI}` },
+              }
+            )
+            logger.info('Published to Medium')
           }
 
-          const article = await Articles.findOne({ article_id });
-
-          if (article) {
-
-            logger.error("Article already exist.");
-
-            return res.status(400).json({ msg: "This article already exists." })
-          }
-
-          const newArticle = new Articles({
-            article_id, title, subtitle, markdown, description, images, category
-          })
+        } catch (error) {
+          logger.error(`Error: ${error}`);
+        }
+        
 
         res.clearCookie('artilces-cache');
         await newArticle.save()

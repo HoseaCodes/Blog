@@ -57,8 +57,8 @@ const NavBar = () => {
                 id="navdrop" role="button" data-toggle="dropdown"
                 data-hover="dropdown">Portfolio</a>
             <div className="dropdown-menu" aria-labelledby="navdrop">
-              <Link to="http://www.dominiquehosea.com" rel="noopener noreferrer"
-                 target="_blank" className="dropdown-item nav-link">Backend Portfolio</Link>
+              <a href="http://www.dominiquehosea.com" target="_blank" rel="noopener noreferrer"
+              className="dropdown-item nav-link">Backend Portfolio</a>
               <Link to="/project" rel="noopener noreferrer"
                  className="dropdown-item nav-link">Project Case Studies</Link>
             </div>

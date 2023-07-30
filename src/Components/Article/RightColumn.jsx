@@ -23,7 +23,7 @@ const RightColumn = ({user, articles}) => {
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
   const recentPosts = shuffleArray(articles)
         .filter((article) => {
-          article._id !== uri.split('/')[2]
+          // article._id !== uri.split('/')[2]
           return article.title.toLowerCase().indexOf(
             search.toLowerCase()) !== -1;
         })

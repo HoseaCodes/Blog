@@ -6,7 +6,7 @@ const initialState = {
     "name": "",
     "email": "",
     "password": "",
-    "avatar": {},
+    "avatar": "",
     "title" : "",
     "location" : "",
     "work" : [],

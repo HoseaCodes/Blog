@@ -19,7 +19,7 @@ const Newsletter = () => {
               <ArticleInput placeholder='Your email' type="text" />
               <ArticleBtn><AiOutlineMail style={{fontSize: '2.5rem'}}/>&nbsp;  Get this newsletter</ArticleBtn>
             </JustifyContent>
-            <MarginTop>By signing up, you will create a Medium account if you don"’"t already have one.
+            <MarginTop>By signing up, you will create a Medium account if you don’t already have one.
               Review our Privacy Policy for more information about our privacy practices.</MarginTop>
           </div>
         </BlogNewsletter>

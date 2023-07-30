@@ -30,11 +30,13 @@ const ArticleItem = () => {
     const avgWordsMinRead = 238
     const wordCount = markdown.length + 700
     const readTime = Math.round(wordCount / avgWordsMinRead)
-
     return (
         <>
           <main className="blog-content">
-            <SideBar/>
+            {
+                user.name !== "" && 
+                <SideBar/>
+            }
             <MainContainer user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
             <RightColumn user={user} articles={articles}/>
           </main>

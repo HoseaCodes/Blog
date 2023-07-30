@@ -20,19 +20,25 @@ const MainContainer = (props) => {
   const timeFormater = props.timeFormater;
   const readTime = props.readTime;
   const user = props.user
-
+  const avatar = user.avatar === "" ?
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
+  : user.avatar; 
   return (
         <StyledMainContainer>
           <PaddingContent>
             <section>
-              <Alert transition="false" variant="light">
-                <AlertP>
-                  You have <strong style={{ color: 'black' }}>1</strong> free member-only story left this month.&nbsp;
-                  <AlertLink href="#">Sign up for Medium and get an extra one.</AlertLink>
-                </AlertP>
-              </Alert>
+              {
+                user.name !== "" && 
+                <Alert transition="false" variant="light">
+                  <AlertP>
+                    You have <strong style={{ color: 'black' }}>1</strong> free member-only story left this month.&nbsp;
+                    <AlertLink href="#">Sign up for Medium and get an extra one.</AlertLink>
+                  </AlertP>
+                </Alert>
+
+              }
               <JustifyContent AlignCenter>
-                <CircleImage src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
+                <CircleImage src={avatar}
                     alt="author" />
                 <div>
                   <NamePlate>{user.name || "Will Smith"}</NamePlate>
@@ -49,7 +55,7 @@ const MainContainer = (props) => {
                 <BlogTitle>{title}</BlogTitle>
                 <BlogSubTitle>{subtitle}</BlogSubTitle>
                 <BlogDisplayImage src={images.url} alt={title}  />
-                <BlogPhotoCredit>Photo Credit by <u>You</u></BlogPhotoCredit>
+                <BlogPhotoCredit>Photo Credit by &nbsp;<u>You</u></BlogPhotoCredit>
               <BlogCard>
                 <br />
                 <BlogPost>

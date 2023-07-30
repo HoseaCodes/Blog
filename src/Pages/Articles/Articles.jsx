@@ -116,16 +116,16 @@ const Articles = () => {
 
     let taggedArticles = []
     if (tagsShow === "All") {
-        taggedArticles = currentPosts
+        taggedArticles = filteredArticles
     }
     else if (tagsShow === "JavaScript") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("JavaScript"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("JavaScript"))
     }
     else if (tagsShow === "Python") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("Python"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("Python"))
     }
     else if (tagsShow === "Software Engineer") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("Software Engineer"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("Software Engineer"))
     }
 
     // Load this effect on mount

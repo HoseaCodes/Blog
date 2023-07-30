@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {PageLinks, StyledRightContainer, AlignContent, SideUserContainer,
   PostContainer} from '../../Layout/Container/styledArticle';
 import {SquareImage, CircleImage} from '../../Layout/Image/styledImage';
@@ -14,17 +14,25 @@ import { GlobalState } from '../../GlobalState';
 
 const RightColumn = ({user, articles}) => {
 
-  const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
-  const uri = window.location.pathname;
-  const recentPosts = shuffleArray(articles)
-        .filter((article) => article._id !== uri.split('/')[2])
-        .slice(0, 5);
   const history = useHistory();
+  const uri = window.location.pathname;
   const state = useContext(GlobalState);
-  const [isLoggedIn] = state.userAPI.isLoggedIn
+  const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [search, setSearch] = useState('')
 
-  console.log(user)
+  const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
+  const recentPosts = shuffleArray(articles)
+        .filter((article) => {
+          article._id !== uri.split('/')[2]
+          return article.title.toLowerCase().indexOf(
+            search.toLowerCase()) !== -1;
+        })
+        .slice(0, 5);
 
+  const updateSearch = event => {
+    const { value } = event.target
+    setSearch(value.substr(0, 20))
+  }
   const handleClick= async (e) => {
     history.push(`/${e}`)
   }
@@ -41,11 +49,13 @@ const RightColumn = ({user, articles}) => {
               }
             </AlignContent>
                 <MarginTop RightCloumnSearch>
-                  <ArticleInput Search placeholder='Search' type="text"/>
+                  <ArticleInput Search 
+                  placeholder='Search' 
+                  type="text"
+                  value={search}
+                  onChange={updateSearch}/>
                 </MarginTop >
                 <SideUserContainer Primary>
-                  {/* <CircleImage Secondary src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
-                            alt="author" /> */}
                   <CircleImage Secondary src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
                             alt="author" />
                   <UserInfo Padding4>{user.name || "Will Smith"}</UserInfo>

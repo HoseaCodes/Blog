@@ -11,12 +11,9 @@ import Footer from '../../Components/Footer/Footer';
 import Error401 from '../Error/Error401'
 import {StyledButton} from '../../Layout/Button/styledButton';
 import { articleTempltes } from './ArticleTemplate';
-import { arrayItems } from "./AIOptions";
-import { Configuration, OpenAIApi } from "openai";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-
-
+import SimpleForm from '../../Components/SImpleForm/simpleForm';
+import Preview from '../../Components/Article/Preview';
+import AITemplate from '../../Components/OpenAI/AITemplate';
 
 function CreatArticle() {
     const [markdown, setMarkdown] = useState(articleTempltes[3].markdown)
@@ -40,29 +37,8 @@ function CreatArticle() {
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
     const [isLoggedIn] = state.userAPI.isLoggedIn
-    const [option, setOption] = useState({});
-    const [result, setResult] = useState("");
-    const [input, setInput] = useState("");
     const [show, setShow] = useState(false);
-
-    const configuration = new Configuration({
-        apiKey: process.env.REACT_APP_VITE_Open_AI_Key,
-    });
-
-    const openai = new OpenAIApi(configuration);
-
-    const selectOption = (option) => {
-        setOption(option);
-    };
-
-    const doStuff = async () => {
-        let object = { ...option, prompt: input };
-        console.log(process.env.REACT_APP_VITE_Open_AI_Key)
-        const response = await openai.createCompletion(object);
-        console.log(response)
-        setResult(response.data.choices[0].text);
-    };
-
+    const [showAITemplate, setShowAITemplate] = useState(false);
 
     function sleep(num) {
         let now = new Date();
@@ -83,12 +59,14 @@ function CreatArticle() {
     useEffect(() => {
         if (param.id) {
             setOnEdit(true)
-            articles.forEach(article => {
-                if (article._id === param.id) {
-                    setArticle(article)
-                    // setImages(article.images)
-                }
-            })
+            if (articles !== undefined) { 
+                articles.forEach(article => {
+                    if (article._id === param.id) {
+                        setArticle(article)
+                        // setImages(article.images)
+                    }
+                })
+            }
         } else {
             setOnEdit(false)
             setArticle(initialState)
@@ -166,84 +144,11 @@ function CreatArticle() {
         setArticle({ ...article, [name]: articleTempltes[e.target.options.selectedIndex].markdown })
                 console.log(article)
     }
-
-    function OptionSelection({ arrayItems, selectOption }) {
-        return (
-            <>
-            <h1 className="heading">ChatGPT Clone</h1>
-
-            <div className="grid-main">
-                {arrayItems.map((item) => {
-                return (
-                    <div
-                    className="grid-child"
-                    onClick={() => selectOption(item.option)}
-                    >
-                    <h3>{item.name}</h3>
-                    <p>{item.description}</p>
-                    </div>
-                );
-                })}
-            </div>
-            </>
-        );
-    }
-
-
-    const handleChangeInputOPENPAI = e => {
-        console.log(input)
-        const { value } = e.target
-        setInput(e.target.value)
-    }
-    function Translation({ doStuff, handleChange, handleChangeInputOPENPAI, setInput, setMessage, result }) {
-        return (
-            <div>
-                <textarea
-                    name="input"
-                    type="text"
-                    className="text-area"
-                    cols={55}
-                    rows={10}
-                    onChange={handleChangeInputOPENPAI}
-                ></textarea>
-                <button className="action-btn" onClick={doStuff}>
-                    DO YOU STUFF!
-                </button>
-
-                <h3 className="result-text">{result.length > 0 ? result : ""}</h3>
-            </div>
-        );
-    }
-
-    function Example() {
-        console.log(show)
-        return (
-            <>
-                <Button variant="primary" onClick={() => setShow(true)}>
-                    Blog Post Preview
-                </Button>
-
-                <Modal
-                    show={show}
-                    animation={false}
-                    onHide={() => setShow(false)}
-                    // dialogClassName="modal-100w"
-                    aria-labelledby="example-custom-modal-styling-title"
-                    style={{width: '200% !important', right: '40% !important'}}
-                >
-                    <Modal.Header closeButton>
-                    <Modal.Title id="example-custom-modal-styling-title">
-                        Blog Post Preview
-                    </Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body dangerouslySetInnerHTML={{ __html: marked(article.markdown) }}>
-                        
-                    </Modal.Body>
-                </Modal>
-            </>
-        );
-    }
-
+    
+    const handlePublish = e => {
+        const { name, checked } = e.target
+        setArticle({ ...article, [name]: checked })
+    };
 
     return (
         <>
@@ -261,40 +166,40 @@ function CreatArticle() {
                                         <form className="row g-3" onSubmit={handleSubmit}>
                                             <div className="col-md-6">
                                                 <div id="div_p_name" className="form-group required">
-                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Title<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-8 ">
+                                                    <label for="p_name" className="control-label requiredField">Title<span className="asteriskField">*</span></label>
+                                                    <div className="controls">
                                                         <input 
-                                                          className="input-md emailinput form-control mb"
+                                                          className="input-md emailinput form-control"
                                                           placeholder="Enter Article Title Name" 
                                                           type="text"
                                                           name="title"
                                                           required value={article.title}
                                                           onChange={handleChangeInput}
-                                                        // disabled={onEdit}
+                                                          disabled={onEdit}
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_p_name" className="form-group required">
-                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Subtitle<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-8 ">
+                                                    <label for="p_name" className="control-label requiredField">Subtitle<span className="asteriskField">*</span> </label>
+                                                    <div className="controls">
                                                         <input 
-                                                          className="input-md emailinput form-control mb" 
+                                                          className="input-md emailinput form-control" 
                                                           placeholder="Enter Article Subtitle Name" 
                                                           type="text"
                                                           name="subtitle"
                                                           required value={article.subtitle}
                                                           onChange={handleChangeInput}
-                                                          // disabled={onEdit}
+                                                          disabled={onEdit}
                                                         />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_p_id" className="form-group required">
-                                                    {/* <label for="p_id" className="control-label col-md-4  requiredField">Article Id<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-8 ">
+                                                    <label for="p_id" className="control-label requiredField">Article Id<span className="asteriskField">*</span> </label>
+                                                    <div className="controls">
                                                         <input className="input-md emailinput form-control mb"
                                                             name="article_id"
                                                             required value={uuidv4()}
@@ -303,38 +208,32 @@ function CreatArticle() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            {/* <div className="col-md-6 mb-0">
+                                            <div className="col-md-6 mb-0">
                                                 <div id="div_p_id" className="form-group required">
                                                     <label 
                                                         for="tags" 
-                                                        className="control-label col-md-6"
+                                                        className="control-label"
                                                         requiredField
                                                         > Article Language Tag
                                                         <span className="asteriskField">*</span> 
                                                     </label>
-                                                </div>
-                                            </div> */}
-                                            <div className="col-md-6">
-                                                <div id="div_id_downloads" className="form-group required">
-                                                    <div className="controls col-md-8 ">
-                                                        <select 
-                                                          name="tags" 
-                                                          type="text" 
-                                                          className="form-control mb" 
-                                                          style={{height: 'auto'}}
-                                                          >
-                                                            <option value="volvo">Java</option>
-                                                            <option value="saab">Python</option>
-                                                            <option value="fiat">JavaScript</option>
-                                                            <option value="audi">Software Engineer</option>
-                                                        </select>
-                                                    </div>
+                                                    <select 
+                                                        name="tags" 
+                                                        type="text" 
+                                                        className="form-control mb" 
+                                                        style={{height: 'auto'}}
+                                                        >
+                                                        <option value="volvo">Java</option>
+                                                        <option value="saab">Python</option>
+                                                        <option value="fiat">JavaScript</option>
+                                                        <option value="audi">Software Engineer</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_description" className="form-group required">
-                                                    {/* <label for="p_name" className="control-label col-md-4  requiredField">Description<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-8 ">
+                                                    <label for="p_name" className="control-label requiredField">Description<span className="asteriskField">*</span> </label>
+                                                    <div className="controls ">
                                                         <textarea className="mb"
                                                             name="description"
                                                             required value={article.description}
@@ -348,14 +247,12 @@ function CreatArticle() {
                                             </div>
                                             <div className="col-md-6">
                                                 <div id="div_id_image" className="form-group required">
-                                                    {/* <label for="id_image" className="control-label col-md-4  requiredField">Article Image<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-8 mb upload" >
-
+                                                    <label for="id_image" className="control-label requiredField">Article Image<span className="asteriskField">*</span> </label>
+                                                    <div className="controls mb upload" >
                                                         <input className="input-md emailinput form-control mb"
                                                             name="file" id="file_up"
                                                             onChange={handleUpload}
                                                             placeholder="Enter Project Id" type="file" />
-
                                                         {
                                                             loading ?
                                                                 <div id="file_img"><Loading /></div>
@@ -370,12 +267,12 @@ function CreatArticle() {
                                                     </div>
                                                 </div>
                                             </div>
-                                             <div className="col-md-6">
+                                            <div className="col-md-6">
                                                 <div id="div_id_downloads" className="form-group required">
-                                                    <div className="controls col-md-8 ">
+                                                    <div className="controls">
                                                         <label 
                                                         for="markdown" 
-                                                        className="control-label col-md-8"
+                                                        className="control-label"
                                                         requiredField
                                                         >
                                                             Article Template
@@ -400,14 +297,50 @@ function CreatArticle() {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="col-md-6">
+                                                <div id="div_id_downloads" className="form-group required">
+                                                    <div className="controls">
+                                                        <label 
+                                                        for="markdown" 
+                                                        className="control-label"
+                                                        requiredField
+                                                        >
+                                                           Publish To Dev
+                                                            <span className="pr-1 asteriskField">*</span> 
+                                                        </label>
+                                                          <input 
+                                                          type="checkbox"
+                                                          name="dev" 
+                                                          onChange={(e) => handlePublish(e)}
+                                                          aria-label="Checkbox for following text input"/>
+                                                    </div>
+                                                </div>
+                                                <div id="div_id_downloads" className="form-group required">
+                                                    <div className="controls">
+                                                        <label 
+                                                        for="markdown" 
+                                                        className="control-label"
+                                                        requiredField
+                                                        >
+                                                           Publish To Medium
+                                                            <span className="pr-1 asteriskField">*</span> 
+                                                        </label>
+                                                          <input 
+                                                          type="checkbox"
+                                                          name="medium"
+                                                          onChange={(e) => handlePublish(e)}
+                                                          aria-label="Checkbox for following text input"/>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             {/* <ReactMarkdown source={input} className="markdown" /> */}
-                                            <div className="col-md-12">
+                                            <div className="col-md-12 pb-5">
                                                 <div id="div_description" className="form-group required row">
-                                                    {/* <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label> */}
-                                                    <div className="controls col-md-6 ">
+                                                    <label for="p_name" className="text-center control-label col-md-12 requiredField">Markdown<span className="asteriskField">*</span> </label>
+                                                    <div className="controls col-6">
                                                         <h5 className="text-center">Enter your markdown</h5>
-                                                        <textarea className="preview d-flex jusify-self-center mauto mb"
+                                                        <textarea className="preview d-flex jusify-self-center h-100 w-100 mb"
                                                             name="markdown"
                                                             required value={article.markdown}
                                                             onChange={handleChangeInput}
@@ -433,36 +366,10 @@ function CreatArticle() {
                                                 </div>
                                             </div>
                                         </form>
-                                        <div>
-                                            <Example />
+                                        <div className='pb-5'>
+                                            <Preview show={show} setShow={setShow} marked={marked} article={article}/>
                                         </div>
-                                        <div>
-                                            Need Help <span className="qs">? <span className="popover above">Our AI blog bot will help you create stunning blog in a flash.</span></span>
-                                            <div className="App">
-                                                {Object.values(option).length === 0 ? (
-                                                <OptionSelection arrayItems={arrayItems} selectOption={selectOption} />
-                                                ) : (
-                                                    <>
-                                                        <div>
-                                                            <textarea
-                                                                name="input"
-                                                                type="text"
-                                                                className="text-area"
-                                                                cols={55}
-                                                                rows={10}
-                                                                onChange={handleChangeInputOPENPAI}
-                                                            ></textarea>
-                                                            <button className="action-btn" onClick={doStuff}>
-                                                                DO YOU STUFF!
-                                                            </button>
-
-                                                            <h3 className="result-text">{result.length > 0 ? result : ""}</h3>
-                                                        </div>
-                                                    </>
-                                                    // <Translation handleChange={handleChange} handleChangeInputOPENPAI={handleChangeInputOPENPAI} doStuff={doStuff} setInput={setInput} setMessage={setMessage} result={result} />
-                                                    )}
-                                            </div>
-                                        </div>
+                                        <AITemplate showAITemplate={showAITemplate} setShowAITemplate={setShowAITemplate} />
                                     </div>
                                     
                                 </div>
@@ -472,10 +379,9 @@ function CreatArticle() {
                     <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
                 <Footer/>
             </>
-        :
+            :
             <Error401 />
         }
-         
         </>
     )
 }

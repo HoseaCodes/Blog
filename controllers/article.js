@@ -42,7 +42,7 @@ async function getArticle(req, res) {
 async function createArticle(req, res) {
     try {
 
-        const { article_id, title, subtitle, markdown, description, images, category, devTo, medium } = req.body;
+        const { article_id, title, subtitle, markdown, description, images, category, dev, medium } = req.body;
 
         if (!images) {
 
@@ -64,7 +64,7 @@ async function createArticle(req, res) {
         })
 
         try {
-          if (devTo) {
+          if (dev) {
             await axios.post('https://dev.to/api/articles',
               {
                 "article": {

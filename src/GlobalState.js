@@ -44,7 +44,6 @@ export const DataProvider = ({ children }) => {
         dispatch: dispatch
 
     }
-    console.log(state)
     ProductsAPI();
     return (
         <GlobalState.Provider value={state}>

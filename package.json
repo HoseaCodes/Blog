@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
+    "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
     "@sentry/react": "^6.13.3",
     "@sentry/tracing": "^6.13.3",

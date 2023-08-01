@@ -13,6 +13,10 @@ const articleSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
+    // postedBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'Users'
+    // },
     title: {
         type: String,
         required: true,
@@ -46,11 +50,21 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // tags: {
+    //   type: [String]
+    // },
     // slug: {
     //     type: String,
     //     required: true,
     //     unique: true
     // },
+    // comments: [{
+    //     text: String,
+    //     postedBy: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: 'Users'
+    //     }
+    // }],
     createdAt: {
         type: Date,
         default: Date.now

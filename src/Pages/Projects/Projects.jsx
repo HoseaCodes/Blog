@@ -82,11 +82,14 @@ import './Projects.css';
 import {projectData} from './ProjectsData';
 import ProjectCard from '../../Components/Cards/project';
 import { StyledHr } from '../../Layout/Hr/styledHr';
+import NavBar from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 const Projects = () => {
 
     return (
-        <div>
+        <>
+          <NavBar/>
             <div className='header2'>
                 <div className='header-logo'>
                 </div>
@@ -101,7 +104,8 @@ const Projects = () => {
                                 </>
                                 )
                             })}
-        </div>
+          <Footer/>
+        </>
     )
 
 }

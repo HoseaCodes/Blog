@@ -3,7 +3,7 @@ import Payments from '../models/payment.js';
 import Logger from '../utils/logger.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-
+import {cache} from '../utils/cache.js';
 const logger = new Logger('articles');
 
 const createAccessToken = (user) => {
@@ -20,10 +20,10 @@ async function register(req, res) {
         // Admin is role 1
 
         const user = await Users.findOne({ email })
-        if (user) return res.status(400).json({ msg: "The email already exists" })
+        if (user) return res.status(409).json({ msg: "Conflict: The email already exists" })
 
         if (password.length < 6)
-            return res.status(400).json({ msg: "Password is at least 6 characters long" })
+            return res.status(401).json({ msg: "Password is at least 6 characters long" })
 
         //Password Encryption
         const passwordHash = await bcrypt.hash(password, 10)
@@ -70,7 +70,7 @@ function refreshToken(req, res) {
 
 async function login(req, res) {
     try {
-        const { email, password } = req.body
+        const { email, password, rememberMe } = req.body
 
         const user = await Users.findOne({ email })
         if (!user) return res.status(400).json({ msg: "User does not exist." })
@@ -81,11 +81,14 @@ async function login(req, res) {
         const accesstoken = createAccessToken({ id: user._id })
         const refreshtoken = createRefreshToken({ id: user._id })
 
-        res.cookie('refreshtoken', refreshtoken, {
-            httpOnly: true,
-            path: '/api/user/refresh_token',
-            maxAge: 7 * 25 * 60 * 60 * 1000
-        })
+        if(rememberMe) {
+          // Only set cookies if user checks remember me
+          res.cookie('refreshtoken', refreshtoken, {
+              httpOnly: true,
+              path: '/api/user/refresh_token',
+              maxAge: 7 * 25 * 60 * 60 * 1000
+          })
+        }
         res.json({accesstoken })
 
     } catch (err) {
@@ -108,10 +111,24 @@ async function getAllUsers(req, res) {
 
       logger.info("Returning all of the users");
 
+      res.cookie('users-cache', users.length + "users", {
+        maxAge: 1000 * 60 * 60, // would expire after an hour
+        httpOnly: true, // The cookie only accessible by the web server
+     })
+
+      cache.set( users.length + "users", {
+        status: 'success',
+        users: users,
+        result: users.length,
+        location: 'cache',
+      });
+
       res.json({
           status: 'success',
           users: users,
           result: users.length,
+          location: 'main',
+
       })
   } catch (err) {
 
@@ -133,8 +150,10 @@ async function addCart(req, res) {
 			{ _id: req.user.id },
 			{
 				cart: req.body.cart,
-			}
-		);
+			});
+
+    res.clearCookie('history-cache');
+
 		return res.json({ msg: "Added to cart" });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
@@ -145,7 +164,21 @@ async function history(req, res) {
 	try {
 		const history = await Payments.find({ user_id: req.user.id });
 
-		return res.json(history);
+    res.cookie('history-cache', history.length + "history", {
+      maxAge: 1000 * 60 * 60, // would expire after an hour
+      httpOnly: true, // The cookie only accessible by the web server
+   })
+
+    cache.set( history.length + "history", {
+      status: 'success',
+      result: history,
+      location: 'cache',
+    });
+		return res.json({
+      status: 'success',
+      result: history,
+      location: 'main',
+    });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}
@@ -155,7 +188,25 @@ async function getUser(req, res) {
 	try {
 		const user = await Users.findById(req.user.id).select("-password");
 		if (!user) return res.status(400).json({ msg: "User does not exist" });
-		res.json(user);
+
+    res.cookie('user-cache', user.id  + "user", {
+      maxAge: 1000 * 60 * 60, // would expire after an hour
+      httpOnly: true, // The cookie only accessible by the web server
+   })
+
+    cache.set( user.id + "user", {
+      status: 'success',
+      users: user,
+      result: user.length,
+      location: 'cache',
+    });
+
+		res.json({
+      status: 'success',
+      users: user,
+      result: user.length,
+      location: 'main',
+    });
 	} catch (err) {
 		return res.status(500).json({ msg: err.message });
 	}
@@ -168,6 +219,9 @@ async function updateProfile(req, res) {
       await Users.findOneAndUpdate({ _id: req.params.id }, {
         name, avatar, title, work, education, skills, location, phone, socialMedia, websites
       })
+
+      res.clearCookie('users-cache');
+      res.clearCookie('user-cache');
 
       res.json({ msg: 'Updated profile' })
   } catch (err) {
@@ -184,6 +238,9 @@ async function deleteProfile(req, res) {
       logger.info(`Deleted user ${req.params.id} has been deleted`);
 
       await Users.findByIdAndDelete(req.params.id)
+
+      res.clearCookie('users-cache');
+      res.clearCookie('user-cache');
 
       res.json({ msg: "Deleted user" })
   } catch (err) {

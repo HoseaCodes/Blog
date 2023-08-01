@@ -1,0 +1,116 @@
+.login-row { 
+  display: block;
+}
+
+.form-group {
+  width: -webkit-fill-available !important;
+}
+
+.main-content {
+  width: 50%;
+  border-radius: 20px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, .4);
+  margin: 5em auto;
+  display: flex;
+}
+
+.company__info {
+  background-color: #008080;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
+}
+
+.fa-android {
+  font-size: 3em;
+}
+
+#password {
+  padding-left: 25px;
+  /* <img src="https://img.icons8.com/material-sharp/24/null/visible.png" /> */
+  /* 
+  */
+  background: url("https://static.thenounproject.com/png/101791-200.png") no-repeat right;
+  background: url("https://img.icons8.com/material-sharp/24/null/visible.png") no-repeat right; 
+  background-size: 20px;
+}
+
+.password-visible {
+  background: url("https://img.icons8.com/external-flatart-icons-outline-flatarticons/64/null/external-eye-devices-flatart-icons-outline-flatarticons.png") no-repeat right; 
+}
+
+@media screen and (max-width: 640px) {
+  .main-content {
+    width: 90%;
+  }
+
+  .company__info {
+    display: none;
+  }
+
+  .login_form {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+}
+
+@media screen and (min-width: 642px) and (max-width:800px) {
+  .main-content {
+    width: 70%;
+  }
+}
+
+.row>h2 {
+  color: #008080;
+}
+
+.login_form {
+  background-color: #fff;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+}
+
+form {
+  padding: 0 2em;
+}
+
+.form__input {
+  width: 100%;
+  border: 0px solid transparent;
+  border-radius: 0;
+  border-bottom: 1px solid #aaa;
+  padding: 1em .5em .5em;
+  padding-left: 2em;
+  outline: none;
+  margin: 1.5em auto;
+  transition: all .5s ease;
+}
+
+.form__input:focus {
+  border-bottom-color: #008080;
+  box-shadow: 0 0 5px rgba(0, 80, 80, .4);
+  border-radius: 4px;
+}
+
+.login-btn {
+  transition: all .5s ease;
+  width: 70%;
+  border-radius: 30px;
+  color: #008080;
+  font-weight: 600;
+  background-color: #fff;
+  border: 1px solid #008080;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+.login-btn:hover,
+.login-btn:focus {
+  background-color: #008080;
+  color: #fff;
+}

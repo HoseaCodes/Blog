@@ -7,6 +7,26 @@ const Timeline = () => {
        <div className="timeline">
                 <div id="timeline" className="about-container right">
                     <div className="content">
+                        <h2>2023</h2>
+                        <p className="timelineP a-content">
+                            While in my Software Engineer II position I was exposed to architecture, SRE foundations, and cloud development in AWS.
+                            Where I built severless applications with services ranging from Lambdas, Cloudwatch, VPCs, Subnets, ECS, S3, SNS and IAM.
+                            Using our services like Terraform, pipelines, chaos engineering, failovers, and circuit breakers.
+                        </p>
+                    </div>
+                </div>
+                <div id="timeline" className="about-container left">
+                    <div className="content">
+                        <h2>2022</h2>
+                        <p className="timelineP a-content">
+                            I completed my first year as a Software Engineer I at State Farm, where I was shortly promoted to Software Engineer II.
+                            I took on several exisiting Java projects revolving around data manipulation, logging, intenral application proxy, and email services.
+                            The projects allowed me to advance my skills in backend development to become a more well rounded Full-Stack Engineer.
+                        </p>
+                    </div>
+                </div>
+                <div id="timeline" className="about-container right">
+                    <div className="content">
                         <h2>2021</h2>
                         <p className="timelineP a-content">I secured my first position as a Full-Stack Java Software Engineer at State Farm in March of 2021. Working in a full agile software development process including mining technical business features and utilizing Java Spring Boot with Maven to create a REST micro-service applications. </p>
                     </div>

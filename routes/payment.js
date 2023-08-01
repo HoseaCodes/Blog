@@ -5,13 +5,15 @@ import {
   getPayments,
   createPayment,
 } from '../controllers/payment.js';
+import {nodecache} from '../utils/cache.js';
+
 const router = express.Router();
 
 router.route('/payment')
     .post(auth, createPayment)
 
 router.route('/payment/:id')
-    .get(authAdmin, getPayments)
+    .get(authAdmin, nodecache, getPayments)
 
 
 export default router;

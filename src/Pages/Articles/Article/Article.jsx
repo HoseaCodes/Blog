@@ -10,6 +10,7 @@ import MainContainer from '../../../Components/Article/MainContainer';
 const ArticleItem = () => {
     const params = useParams()
     const state = useContext(GlobalState)
+    const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
 
@@ -29,13 +30,15 @@ const ArticleItem = () => {
     const avgWordsMinRead = 238
     const wordCount = markdown.length + 700
     const readTime = Math.round(wordCount / avgWordsMinRead)
-
     return (
         <>
           <main className="blog-content">
-            <SideBar/>
-            <MainContainer timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
-            <RightColumn/>
+            {
+                user.name !== "" && 
+                <SideBar/>
+            }
+            <MainContainer user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
+            <RightColumn user={user} articles={articles}/>
           </main>
         </>
     )

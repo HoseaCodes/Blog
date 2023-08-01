@@ -188,6 +188,9 @@ export const CardTitle = styled.h3`
   margin-top: 0;
   padding-top: 0;
   padding-bottom: 0;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
+    font-size: 3.5rem;
+  }
 `;
 
 export const CardSubtitle = styled.h5`

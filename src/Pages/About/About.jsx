@@ -3,10 +3,13 @@ import HeroImage from '../../Components/Hero/heroImage';
 import { StyledHr } from '../../Layout/Hr/styledHr';
 import { StyledQuoteContainer, StyledQuote, StyledQuoteAuthor } from '../../Layout/Quote/styledQuote';
 import Timeline from '../../Components/Timeline/timeline';
+import NavBar from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 const About = () => {
     return (
-        <div>
+        <>
+          <NavBar/>
             <HeroImage About/>
             <StyledHr Primary/>
             <StyledQuoteContainer>
@@ -20,7 +23,8 @@ const About = () => {
             <StyledHr Primary/>
             <Timeline/>
             <StyledHr Primary/>
-        </div>
+          <Footer/>
+        </>
     )
 }
 

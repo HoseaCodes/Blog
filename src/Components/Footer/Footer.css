@@ -103,12 +103,18 @@ footer p {
   margin-left: 50px;
 }
 
+@media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
+  .twitter-footer {
+    display: none;
+  }
+
+  .social_footer_ul {
+    margin-left: 10% !important;
+  }
+}
+
 @media only screen and (max-width: 480px) {
   .dompl {
     margin: 0%;
   }
-}
-
-.twitter-footer {
-  overflow: hidden;
 }

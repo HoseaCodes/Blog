@@ -6,10 +6,14 @@ import ArticleCard from './ArticleCard';
 // import { auth, login, logout } from '../../services/firebase';
 import { GlobalState } from '../../GlobalState';
 // import Loading from '../../Loading';
-import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
+// import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import axios from 'axios';
 import Pagination from '../../Components/Pagination/pagination';
 import { StyledHr } from '../../Layout/Hr/styledHr';
+import NavBar from '../../Components/NavBar/NavBar';
+import Footer from '../../Components/Footer/Footer';
 
 const Articles = () => {
 
@@ -27,7 +31,6 @@ const Articles = () => {
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const mainPosts = articles.sort((a,b) =>  new Date(b.createdAt) - new Date(a.createdAt));
-    
     const archivedPosts = [];
     
     mainPosts.map((article) => {
@@ -39,17 +42,21 @@ const Articles = () => {
     
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
     const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
-
     const popularPosts = shuffleArray(mainPosts)
-        .filter((article) => article != currentPosts)
+        .filter((article) => article !== currentPosts)
         .slice(0, 5);
 
+    const truncate = (str) => {
+      return str.length > 10 ? str.substring(0, 150) + "..." : str;
+    }
     const paginate = pageNum => setCurrentPage(pageNum);
+
     const nextPage = () => {
         if (currentPage > articles.length) return;
         setSearch('')
         setCurrentPage(currentPage + 1);
     }
+
     const prevPage = () => {
         if (currentPage < 1) return;
         setSearch('')
@@ -96,7 +103,6 @@ const Articles = () => {
                 search.toLowerCase()) !== -1;
         }
     );
-    console.log(filteredArticles, 'filtered')
 
     const updateSearch = event => {
         const { value } = event.target
@@ -110,16 +116,16 @@ const Articles = () => {
 
     let taggedArticles = []
     if (tagsShow === "All") {
-        taggedArticles = currentPosts
+        taggedArticles = filteredArticles
     }
     else if (tagsShow === "JavaScript") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("JavaScript"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("JavaScript"))
     }
     else if (tagsShow === "Python") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("Python"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("Python"))
     }
     else if (tagsShow === "Software Engineer") {
-        taggedArticles = currentPosts.filter(item => item.category.includes("Software Engineer"))
+        taggedArticles = filteredArticles.filter(item => item.category.includes("Software Engineer"))
     }
     console.log(popularPosts)
    
@@ -137,6 +143,7 @@ const Articles = () => {
     // if (loading) return <div className="products"><Loading /></div>
     return (
         <>
+        <NavBar/>
             <div className='article-container'>
                 <div className='article-header'>
                     <div className='artcile-header-logo'>
@@ -195,15 +202,75 @@ const Articles = () => {
                         {/* <!--───────────────card───────────────--> */}
                         {loading ?
                         <section className='articleList'>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          <div className="post">
+                            <div className="left-col">
+                                <div className="avatar">
+                                  <Skeleton
+                                    circle
+                                    height="100%"
+                                    containerClassName="avatar-skeleton"
+                                  />
+                                </div>
+                                <div className="user-name">
+                                   <Skeleton width={70} />
+                                </div>
+                            </div>
+                            <div className="right-col">
+                                <h3><Skeleton /></h3>
+                                <p className="mb-0">
+                                    <Skeleton count={3} />
+                                </p>
+                            </div>
+                        </div>
+                          {/* <SkeletonBlog/>
                           <SkeletonBlog/>
-                          <SkeletonBlog/>
-                          <SkeletonBlog/>
+                          <SkeletonBlog/> */}
                         </section>
                         :
                           <section className='articleList'>
                             {taggedArticles.map(article => {
                                 return (
-                                    <ArticleCard archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
+                                    <ArticleCard truncate={truncate} archiveArticle={archiveArticle} deleteArticle={deleteArticle} handleCheck={mainPosts} article={article}
                                         key={article.id}
                                     />
                                 )
@@ -212,14 +279,14 @@ const Articles = () => {
                             postsPerPage={postsPerPage} totalPosts={mainPosts.length} />
                         </section>
                       }
-                        <div>
+                        <div className='article-sidebar-container'>
                             <section className='article-sidebar'>
                                 <div className="popular">
                                     <h2 className='article-card-header'>Popular Post</h2>
                                     <section className='popular-articles'>
                                         {popularPosts.map(article => {
                                             return (
-                                                <a key={article.id} href={`/blog/${article._id}`} target="_blank"rel="noopener noreferrer" >
+                                                <a key={article.id} href={`/blog/${article._id}`} rel="noopener noreferrer" >
                                                     <div className="popular-link">{article.title}</div><br /></a>
                                             )
                                         })}
@@ -233,6 +300,7 @@ const Articles = () => {
                 </div>
             </div>
             <StyledHr Primary/>
+          <Footer/>
         </>
     )
 }

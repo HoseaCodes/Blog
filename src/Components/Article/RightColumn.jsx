@@ -1,29 +1,64 @@
-import React from 'react';
+import React, {useContext, useState} from 'react';
 import {PageLinks, StyledRightContainer, AlignContent, SideUserContainer,
   PostContainer} from '../../Layout/Container/styledArticle';
 import {SquareImage, CircleImage} from '../../Layout/Image/styledImage';
-import {UserInfo, PostText, NoMargin, Subtitle} from '../../Layout/Text/styledText';
+import {UserInfo, PostText, Subtitle} from '../../Layout/Text/styledText';
 import {ArticleBtn} from '../../Layout/Button/styledButton';
 import {ArticleLink, ArticleLinkColor} from '../../Layout/ATag/styledATag';
 import {MdBookmarkBorder} from 'react-icons/md';
 import { MarginTop } from '../../Layout/Margin/styledMargin';
 import { ArticleInput } from '../../Layout/Input/styledInput';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import { GlobalState } from '../../GlobalState';
 
-const RightColumn = () => {
+const RightColumn = ({user, articles}) => {
 
+  const history = useHistory();
+  const uri = window.location.pathname;
+  const state = useContext(GlobalState);
+  const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [search, setSearch] = useState('')
+
+  const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
+  const recentPosts = shuffleArray(articles)
+        .filter((article) => {
+          // article._id !== uri.split('/')[2]
+          return article.title.toLowerCase().indexOf(
+            search.toLowerCase()) !== -1;
+        })
+        .slice(0, 5);
+
+  const updateSearch = event => {
+    const { value } = event.target
+    setSearch(value.substr(0, 20))
+  }
+  const handleClick= async (e) => {
+    history.push(`/${e}`)
+  }
   return (
           <StyledRightContainer>
             <AlignContent Center>
-              <ArticleBtn RightColumn >Get Started</ArticleBtn>
-              <ArticleLinkColor Green href='#'>Sign In</ArticleLinkColor>
+              {!isLoggedIn ?
+              <>
+                <ArticleBtn RightColumn onClick={() => handleClick('register')} >Get Started</ArticleBtn>
+                <ArticleLinkColor Green href='/login'>Sign In</ArticleLinkColor>
+              </>
+              :
+                <h2>Welcome, {user.name.split(' ')[0]}</h2>
+              }
             </AlignContent>
                 <MarginTop RightCloumnSearch>
-                  <ArticleInput Search placeholder='Search' type="text"/>
+                  <ArticleInput Search 
+                  placeholder='Search' 
+                  type="text"
+                  value={search}
+                  onChange={updateSearch}/>
                 </MarginTop >
                 <SideUserContainer Primary>
-                  <CircleImage Secondary src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
+                  <CircleImage Secondary src={user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
                             alt="author" />
-                  <UserInfo Padding4>Will Smith</UserInfo>
+                  <UserInfo Padding4>{user.name || "Will Smith"}</UserInfo>
                   <UserInfo GrayWPadding>119 Followers</UserInfo>
                   <UserInfo GrayWPadding>
                     Software Engineer | Python Programmer | Java Programmer | Tech Enthusiast | JavaScript Programmer | React Lover | Mobile Developer
@@ -35,30 +70,22 @@ const RightColumn = () => {
                 </SideUserContainer>
                 <SideUserContainer Primary>
                   <PostText>Related</PostText>
-                  <PostContainer>
-                    <SquareImage src={"https://okteto.com/static/ac268f62ae1c1edd1802a3b841bf2c5a/cover.png"}
-                            alt="post" />
-                    <SideUserContainer>
-                      <h5>FastAPI: Complete API Development</h5>
-                      <Subtitle Primary> FastAPI: Complete API Development</Subtitle>
-                    </SideUserContainer>
-                  </PostContainer>
-                  <PostContainer Secondary>
-                    <SquareImage src={"https://makeameme.org/media/templates/250/dr_evil_austin_powers.jpg"}
-                            alt="post" />
-                    <SideUserContainer>
-                      <NoMargin>Handling MongoDb ObjectId in Python FastAPI</NoMargin>
-                      <Subtitle Primary> Keep it simlpe but significant</Subtitle>
-                    </SideUserContainer>
-                  </PostContainer>
-                  <PostContainer Secondary>
-                    <SquareImage src={"https://miro.medium.com/max/1200/1*OdqgwkO9B5A29LP9Vb9rHQ.png"}
-                            alt="post" />
-                    <SideUserContainer>
-                      <NoMargin>Pydantic — Better Data Validation for Python</NoMargin>
-                      <Subtitle Primary> “Data validation and settings management using Python type hinting."</Subtitle>
-                    </SideUserContainer>
-                  </PostContainer>
+                  {recentPosts.map(article => {
+                      return (
+                          <div key={article._id}>
+                            <PostContainer>
+                              <SquareImage src={article.images.url} alt="post" />
+                              <SideUserContainer>
+                                <Link to={`/blog/${article._id}`} rel="noopener noreferrer">
+                                  <h5>{article.title}</h5>
+                                </Link>
+                                <Subtitle Primary> {article.subtitle}</Subtitle>
+                              </SideUserContainer>
+                            </PostContainer>
+                            <br/>
+                          </div>
+                          )
+                        })}
                 </SideUserContainer>
                 <PageLinks >
                   <ArticleLink href='#' >Help</ArticleLink>

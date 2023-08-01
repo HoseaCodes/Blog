@@ -82,7 +82,7 @@ async function createArticle(req, res) {
           }
           
           if (medium) {
-            const userId = "19b6b41adf30f1e6165b2707fba2dd2f35ebf2e72ff34b4355b8041b26b59a497"
+            const userId = process.env.MEDIUMID
             await axios.post(`https://api.medium.com/v1/users/${userId}/posts`,
               {
                 "title": title,

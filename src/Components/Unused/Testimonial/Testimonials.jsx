@@ -27,7 +27,7 @@
 
 import React, { useState, useCallback } from "react";
 import { useTransition, animated } from "react-spring";
-// import TwitterIcon from '@material-ui/icons/Twitter';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import './Testimonials.css'
 import Aaron from '../../icons/aaron.png'
 import Chengu from '../../icons/Chengu.png'
@@ -151,7 +151,7 @@ const Testimonials = () => {
                                     }}>
                                         <p style={{ opacity: '.6', margin: '0', lineHeight: '40px', letterSpacing: '1px' }}> Follow {step.fName} on Twitter</p>
                                         <a className='social' href={step.social} rel="noopener noreferrer" target="_blank">
-                                            {/* <TwitterIcon fontSize="large" /> */}
+                                            <TwitterIcon fontSize="large" />
                                         </a>
                                     </div>
                                 </div>

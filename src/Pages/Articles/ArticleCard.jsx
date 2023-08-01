@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import './Articles.css'
 import BtnRender from './BtnRender';
-// import ReactHtmlParser from 'react-html-parser';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import moment from 'moment-timezone'
 import { GlobalState } from '../../GlobalState';
@@ -37,8 +36,6 @@ const ArticleItem = (props) => {
                     <p className="article-card-meta"><span>1 &nbsp;<VisibilityIcon /> &nbsp;</span>{timeFormater}</p>
                     <p className="work-content">{props.truncate(description)}</p>
                     <br />
-                    {/* <div>{ReactHtmlParser(sanitizedHtml)}</div> */}
-
                 </div>
                 {isAdmin && isLoggedIn ?
                     <BtnRender article={props.article} deleteArticle={props.deleteArticle} /> :

@@ -11,8 +11,6 @@ function ArticlesAPI() {
     useEffect(() => {
         const getArticles = async () => {
             const res = await axios.get(`/api/articles`)
-            console.log(res.data.articles, 'from front-end api articles')
-            console.log(res.data.location, 'pulled location')
             setArticles(res.data.articles)
             setResult(res.data.result)
         }

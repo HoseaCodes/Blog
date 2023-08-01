@@ -4,7 +4,7 @@ import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
 import Testimonial from '../../Components/Testimonials/testimonial';
 import Tech from '../../Components/Technologies/Tech';
-// import EmailIcon from '@material-ui/icons/Email';
+import EmailIcon from '@material-ui/icons/Email';
 import ProjectHighlight from '../../Components/Project/projectHighlight';
 import Hero from '../../Components/Hero/hero';
 import {StyledHr} from '../../Layout/Hr/styledHr';
@@ -62,8 +62,7 @@ const Home = () =>  {
                                 Send Me A Message
                             </h2>
                             <a className='social' href="https://mail.google.com/mail/u/0/#inbox?compose=new" target="_blank" rel="noopener noreferrer">
-                                {/* <EmailIcon className='email' fontSize='large' style={{ color: '#206a5d', width: '15rem !important' }} /> */}
-                                Email
+                                <EmailIcon className='email' fontSize='large' style={{ color: '#206a5d', width: '15rem !important' }} />
                             </a>
 
                         </div>

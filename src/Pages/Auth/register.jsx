@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "./auth.css";
 import Logo from "../../Assets/Images/newLogo.png";
 
+
 const Register = () => {
   const [showRole, setShowRole] = useState(false);
   const [secret, setSecret] = useState("");

@@ -32,14 +32,14 @@ const Articles = () => {
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
     const mainPosts = articles.sort((a,b) =>  new Date(b.createdAt) - new Date(a.createdAt));
     const archivedPosts = [];
-
+    
     mainPosts.map((article) => {
-      if (article.archived) {
-        archivedPosts.push(article);
-        mainPosts.pop(article)
-      }
+        if (article.archived) {
+            archivedPosts.push(article);
+            mainPosts.pop(article)
+        }
     });
-
+    
     const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost)
     const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
     const popularPosts = shuffleArray(mainPosts)
@@ -127,6 +127,8 @@ const Articles = () => {
     else if (tagsShow === "Software Engineer") {
         taggedArticles = filteredArticles.filter(item => item.category.includes("Software Engineer"))
     }
+    console.log(popularPosts)
+   
 
     // Load this effect on mount
     useEffect(() => {

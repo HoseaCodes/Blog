@@ -1,8 +1,8 @@
 import React from 'react';
-import './PersonalBrand.css';
-import nique from '../../icons/nique.jpg'
-import dom from '../../icons/hosea3.png'
-import Resume2020 from '../../icons/Resume2020.pdf'
+import './PersonalBrand.css'
+import nique from '../../Assets/Icons/nique.jpg'
+import dom from '../../Assets/Icons/hosea3.png'
+import Resume2020 from '../../Assets/Files/Resume2020.pdf'
 import Modal from 'react-bootstrap/Modal'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'

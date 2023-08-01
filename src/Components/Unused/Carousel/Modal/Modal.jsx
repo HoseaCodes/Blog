@@ -1,26 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
+// import { makeStyles } from '@material-ui/core/styles';
+// import Modal from '@material-ui/core/Modal';
+// import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import '../Modal/Modal.css';
 
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        outline: 'none'
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     modal: {
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         outline: 'none'
+//     },
+//     paper: {
+//         backgroundColor: theme.palette.background.paper,
+//         border: '2px solid #000',
+//         boxShadow: theme.shadows[5],
+//         padding: theme.spacing(2, 4, 3),
+//     },
+// }));
 
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
@@ -69,7 +68,7 @@ export default function SpringModal() {
     return (
         <div>
             <h3 onClick={handleOpen} className='link'>Read More</h3>
-            <Modal
+            {/* <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
                 className={classes.modal}
@@ -88,7 +87,7 @@ export default function SpringModal() {
                         <p id="spring-modal-description">Enterprise Project: ‎Social Ring lets you create custom rings for your profile pictures on your favorite social media platform. The idea was simple and easy to follow. The project duration was two months with my main focus on writing maintainable Swift code that is scalable for future improvements. If you would like a demo please let me know, I would be happy to walk you through the codebase.</p>
                     </div>
                 </Fade>
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

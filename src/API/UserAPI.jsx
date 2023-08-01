@@ -32,9 +32,7 @@ function UserAPI(token) {
           const res = await axios.get("/api/user/info", {
             headers: { Authorization: token },
 					});
-          console.log(res.data.users, 'from front-end api user')
-          console.log(res.data.location, 'pulled location')
-					setIsLoggedIn(true);
+		  setIsLoggedIn(true);
           isAuthenticated(true);
           setUser(res.data.users);
 					res.data.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);

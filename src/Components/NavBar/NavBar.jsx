@@ -88,7 +88,7 @@ const NavBar = () => {
                   className="dropdown-item nav-link">View Blogs</Link>
             </div>
           </li>
-          <li className="dropdown">
+          {/* <li className="dropdown">
             <a className="nav-link dropdown-toggle" href="/"
                 id="navdrop" role="button" data-toggle="dropdown"
                 data-hover="dropdown">Shop</a>
@@ -100,12 +100,12 @@ const NavBar = () => {
                   <Link to="/cart">
                     {" "}
                     <AiOutlineShoppingCart style={{marginLeft: '1rem',color: 'white'}}/>
-                    {/* <img src={} alt="Shoppingcart" width="30" /> */}
+                    <img src={""} alt="Shoppingcart" width="30" />
                   </Link>
                 </div>
             </div>
-          </li>
-          <li className="dropdown">
+          </li> */}
+          {/* <li className="dropdown">
             <a className="nav-link dropdown-toggle" href="/"
                 id="navdrop" role="button" data-toggle="dropdown"
                 data-hover="dropdown">Settings</a>
@@ -113,7 +113,7 @@ const NavBar = () => {
                 <Link to="/profile" className="nav-link">View Profile</Link>
                 <Link to="/settings" className="nav-link">View Settings</Link>
             </div>
-          </li>
+          </li> */}
           <Link className="nav-link" onClick={logoutUser}>Logout</Link>
         </>
       )};

@@ -53,16 +53,17 @@ async function register(req, res) {
 
 function refreshToken(req, res) {
     try {
-      const rf_token = req.cookies.refreshtoken.replace(/^JWT\s/, "");
-        if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
+      let rf_token = req.cookies.refreshtoken
+      if (rf_token) rf_token = rf_token = req.cookies.refreshtoken.replace(/^JWT\s/, "");
+      if (!rf_token) return res.status(400).json({ msg: "Please Login or Register" })
 
-        jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
-            if (err) return res.status(400).json({ msg: "Please Login or Register" })
+      jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+          if (err) return res.status(400).json({ msg: "Please Verify Info & Login or Register" })
 
-            const accesstoken = createAccessToken({ id: user.id })
+          const accesstoken = createAccessToken({ id: user.id })
 
-            res.json({ accesstoken })
-        })
+          res.json({ accesstoken })
+      })
     } catch (err) {
         return res.status(500).json({ msg: err.message, "err": err })
     }
@@ -89,7 +90,7 @@ async function login(req, res) {
               maxAge: 7 * 25 * 60 * 60 * 1000
           })
         }
-        res.json({accesstoken })
+        res.json({ accesstoken })
 
     } catch (err) {
         return res.status(500).json({ msg: err.message })
@@ -214,10 +215,16 @@ async function getUser(req, res) {
 
 async function updateProfile(req, res) {
   try {
-      const { name, avatar, title, work, education, skills, location, phone, socialMedia, websites } = req.body;
+      const { name, avatar, title, work, education, 
+        skills, location, phone, socialMedia, websites,
+        socialMediaHandles, articles, cart, role, username,
+        aboutMe, projects } = req.body;
 
       await Users.findOneAndUpdate({ _id: req.params.id }, {
-        name, avatar, title, work, education, skills, location, phone, socialMedia, websites
+        name, avatar, title, work, education, 
+        skills, location, phone, socialMedia, websites,
+        socialMediaHandles, articles, cart, role, username,
+        aboutMe, projects
       })
 
       res.clearCookie('users-cache');

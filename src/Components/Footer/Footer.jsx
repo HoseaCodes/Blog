@@ -8,7 +8,7 @@ const Footer = (isHome) => {
 
     const year = new Date().getFullYear();
 
-    if (isHome == true) {
+    if (isHome === true) {
       return (
       <>
         <footer className="footer">

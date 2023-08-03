@@ -144,29 +144,30 @@ async function deletePostcomment(req, res) {
       await Articles.findByIdAndDelete(req.params.id)
       res.clearCookie('comments-cache');
       res.json({ msg: "Deleted a article" })
-  } catch (err) {
-
+    } catch (err) {
+      
       logger.error(err)
-
+      
       return res.status(500).json({ msg: err.message })
+    }
   }
-}
-
+  
 async function updateLikes(req, res) {
   try {
+      
+    const post_id = req.params.id
+    let { likes } = req.body;
+    likes += 1;
 
-  const uid = req.body.uid
-  const post_id = req.params.id
-  const { likes } = req.body;
-
-  const values = [ uid, post_id ]
-  console.log(values)
-  likes += 1;
-  await Articles.findOneAndUpdate({ _id: req.params.id },
-    {likes});
-
+    await Articles.findOneAndUpdate({ _id: post_id },
+      {likes});
+        
+    res.json({ 
+      msg: `${post_id} received a new like`,
+      totalLikes: likes
+    })
   } catch (err) {
-
+    console.log(err)
     logger.error(err);
 
     return res.status(500).json({ msg: err.message });

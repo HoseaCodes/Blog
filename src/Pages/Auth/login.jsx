@@ -25,7 +25,7 @@ const Login = () => {
 		try {
 			await axios.post("/api/user/login", { ...user, rememberMe });
 			localStorage.setItem("firstLogin", true);
-			// window.location.href = "/";
+			window.location.href = "/";
 		} catch (err) {
 			alert(err.response.data.msg);
 		}
@@ -88,7 +88,7 @@ const Login = () => {
 									<div className="row login-row">
 										<input onClick={() => setRememberMe(!rememberMe)} type="checkbox" name="remember_me" id="remember_me" className=""/>
 										&nbsp;&nbsp;
-										<label for="remember_me">Remember Me!</label>
+										<label htmlFor="remember_me">Remember Me!</label>
 									</div>
 									<div className="row login-row">
 										<input type="submit" value="Submit" className="login-btn"/>

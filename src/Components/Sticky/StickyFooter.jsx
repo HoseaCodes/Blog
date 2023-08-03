@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import Sticky from 'react-sticky-state';
 import {ArticleHr} from '../../Layout/Hr/styledHr';
 import {AiFillTwitterCircle } from 'react-icons/ai';
@@ -10,7 +11,21 @@ import {RiShareCircleFill} from 'react-icons/ri';
 import {TiSocialLinkedinCircular} from 'react-icons/ti';
 import './StickyState.css';
 
-const StickyFooter = () => {
+const StickyFooter = ({id, likes}) => {
+  const [postLikes, setPostLikes] = useState(likes)
+
+  useEffect(() => {
+
+	}, [likes]);
+
+  const handleLike = async () => {
+		try {
+			const updateLike = await axios.put(`/api/articles/${id}/likes`, { likes: postLikes });
+      setPostLikes(parseInt(updateLike.data.totalLikes))
+		} catch (err) {
+			alert(err.response.data.msg);
+		}
+	};
   return (
           <Sticky >
             <div  className="bottom sticky">
@@ -18,7 +33,7 @@ const StickyFooter = () => {
               <JustifyContent SpaceAround>
                 <JustifyContent Font2>
                   <JustifyContent MarginRight>
-                    <FaRegThumbsUp/> &nbsp; <span>1</span>
+                    <FaRegThumbsUp onClick={handleLike}/> &nbsp; <span>{postLikes}</span> &nbsp;
                   </JustifyContent>
                   <JustifyContent MarginRight>
                     <FaRegComment/> &nbsp; <span>1</span>

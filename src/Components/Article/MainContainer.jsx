@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from 'react-bootstrap/Alert'
-import { AiFillStar, AiFillPlayCircle } from 'react-icons/ai';
+import { AiFillStar } from 'react-icons/ai';
 import {JustifyContent, StyledMainContainer,
   PaddingContent, BlogCard, BlogPost} from '../../Layout/Container/styledArticle';
 import {CircleImage, BlogDisplayImage} from '../../Layout/Image/styledImage';
@@ -16,8 +16,7 @@ import RelatedPosts from './RelatedPosts';
 import StickyFooter from '../Sticky/StickyFooter';
 
 const MainContainer = (props) => {
-
-  const {  title, subtitle, description, images, markdown } = props.detailArticle;
+  const {  _id, likes, title, subtitle, description, images, markdown } = props.detailArticle;
   const timeFormater = props.timeFormater;
   const readTime = props.readTime;
   const user = props.user
@@ -66,7 +65,7 @@ const MainContainer = (props) => {
                   <br />
                   <BlogContent Markdown  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></BlogContent>
                   <br />
-                  <StickyFooter/>
+                  <StickyFooter id={_id} likes={likes}/>
                   <Newsletter/>
                 </BlogPost>
                 {/* <input type="checkbox" checked={checked}

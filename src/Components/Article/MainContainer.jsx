@@ -9,6 +9,7 @@ import {NamePlate, WarppedDate, GrayText, DisplayItem, BlogTitle, BlogSubTitle,
 import {ArticleHr} from '../../Layout/Hr/styledHr';
 import {AlertP} from '../../Layout/Paragraph/styledParagraph';
 import {AlertLink} from '../../Layout/ATag/styledATag';
+import TextToSpeech from './TextToSpeech';
 import marked from 'marked';
 import Newsletter from '../Subscribe/Newsletter';
 import RelatedPosts from './RelatedPosts';
@@ -47,7 +48,7 @@ const MainContainer = (props) => {
                     <span>&nbsp;&#183;&nbsp;</span>
                     <DisplayItem>{readTime} min read &nbsp; <AiFillStar/></DisplayItem>
                     <span>&nbsp;&#183;&nbsp;</span>
-                    <DisplayItem Green><AiFillPlayCircle style={{fontSize: 'larger'}}/> &nbsp; Listen</DisplayItem>
+                    <TextToSpeech text={markdown} />
                   </WarppedDate>
                 </div>
               </JustifyContent>

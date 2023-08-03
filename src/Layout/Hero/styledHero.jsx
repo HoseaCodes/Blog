@@ -1,5 +1,4 @@
 import styled, {css} from 'styled-components';
-import breakpoint from '../../utils/breakpoints.js';
 import wireframe from '../../Assets/Images/wireframe-min.jpg';
 import houston from '../../Assets/Images/besomeone-min.jpg';
 
@@ -45,14 +44,6 @@ const HeroContainer = styled.div`
     align-items: center;
     justify-content: space-evenly;
     `}
-  @media only screen and ${breakpoint.devicemin.xs} and ${breakpoint.devicemax.lg} {
-    height: 40vh;
-    width: 100%;
-    padding-bottom: 35px;
-  }
-  @media only screen and ${breakpoint.devicemin.xs} and ${breakpoint.devicemax.sm} {
-    display: none;
-  }
 `;
 const HeroPositioning = styled.div `
   position: absolute;
@@ -97,12 +88,6 @@ const HeroText = styled.span`
     ${props => props.Right && css`
     animation: rightIn 5s ease-in -1s normal;
   `}
-
-  @media only screen and ${breakpoint.devicemin.xs} and ${breakpoint.devicemax.lg} {
-    font-size: 3rem;
-    line-height: 50px;
-    margin-left: 35px;
-  }
 `;
 
 const HeroCircleImage = styled.img.attrs({src: `${'https://i.imgur.com/dj1vhqzm.png?1'}`})`

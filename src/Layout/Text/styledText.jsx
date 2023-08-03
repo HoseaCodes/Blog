@@ -54,6 +54,9 @@ export const DisplayItem= styled.div`
   ${props => props.Green && css`
     color: green;
   `}
+  ${props => props.Red && css`
+    color: red;
+  `}
 `;
 
 export const BlogTitle= styled.h2`

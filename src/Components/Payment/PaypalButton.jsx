@@ -1,6 +1,6 @@
 import React from 'react';
 
-import PaypalExpressBtn from 'react-paypal-express-checkout';
+// import PaypalExpressBtn from 'react-paypal-express-checkout';
 
 export default class PaypalButton extends React.Component {
     render() {
@@ -55,12 +55,14 @@ export default class PaypalButton extends React.Component {
         }
 
         return (
-            <PaypalExpressBtn
-                style={style}
-                env={env} client={client}
-                currency={currency} total={total}
-                onError={onError} onSuccess={onSuccess}
-                onCancel={onCancel} />
+            <>
+            </>
+            // <PaypalExpressBtn
+            //     style={style}
+            //     env={env} client={client}
+            //     currency={currency} total={total}
+            //     onError={onError} onSuccess={onSuccess}
+            //     onCancel={onCancel} />
         );
     }
 }

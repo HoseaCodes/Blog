@@ -1,25 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
+// import { makeStyles } from '@material-ui/core/styles';
+// import Modal from '@material-ui/core/Modal';
+// import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
-import ControlPointIcon from '@material-ui/icons/ControlPoint';
+// import ControlPointIcon from '@material-ui/icons/ControlPoint';
 import '../Modal/Modal.css';
 
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        border: '2px solid #000',
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-    },
-}));
+// const useStyles = makeStyles((theme) => ({
+//     modal: {
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//     },
+//     paper: {
+//         backgroundColor: theme.palette.background.paper,
+//         border: '2px solid #000',
+//         boxShadow: theme.shadows[5],
+//         padding: theme.spacing(2, 4, 3),
+//     },
+// }));
 
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
@@ -66,7 +66,7 @@ export default function SpringModal() {
 
     return (
         <div>
-            <ControlPointIcon fontSize='large' style={{ color: '#206a5d' }} type="button" onClick={handleOpen} />
+            {/* <ControlPointIcon fontSize='large' style={{ color: '#206a5d' }} type="button" onClick={handleOpen} />
             <Modal
                 aria-labelledby="spring-modal-title"
                 aria-describedby="spring-modal-description"
@@ -85,7 +85,7 @@ export default function SpringModal() {
                         <p id="spring-modal-description">Collabrative Project: DevCenter - Styling with Bootstrap, Materialize and CSS. Problem: Devs have multiple tabs windows open while attempting to do there job. Solution: To create an app that would allow the users to authenticate with other applications and then be able to use some base functionality of those sites via a third party API.</p>
                     </div>
                 </Fade>
-            </Modal>
+            </Modal> */}
         </div>
     );
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { arrayItems } from "../../utils/AIOptions";
+import { arrayItems } from "../../utils/AIOptions.jsx";
 
 function OptionSelection({ selectOption, setInput }) {
     const handleClick = (item) => {

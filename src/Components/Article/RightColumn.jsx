@@ -1,24 +1,30 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect } from 'react';
 import {PageLinks, StyledRightContainer, AlignContent, SideUserContainer,
   PostContainer} from '../../Layout/Container/styledArticle';
 import {SquareImage, CircleImage} from '../../Layout/Image/styledImage';
 import {UserInfo, PostText, Subtitle} from '../../Layout/Text/styledText';
 import {ArticleBtn} from '../../Layout/Button/styledButton';
 import {ArticleLink, ArticleLinkColor} from '../../Layout/ATag/styledATag';
-import {MdBookmarkBorder} from 'react-icons/md';
+import {MdBookmarkBorder, MdClose} from 'react-icons/md';
+import {BiCheckShield, BiDotsHorizontalRounded} from 'react-icons/bi';
 import { MarginTop } from '../../Layout/Margin/styledMargin';
 import { ArticleInput } from '../../Layout/Input/styledInput';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import { GlobalState } from '../../GlobalState';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const RightColumn = ({user, articles}) => {
 
   const history = useHistory();
-  const uri = window.location.pathname;
+  // const uri = window.location.pathname;
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [search, setSearch] = useState('')
+  const [viewComment, setViewComment] = useState(true)
+  const [comments, setComments] = useState({comments: []})
+  const param = useParams()
 
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
   const recentPosts = shuffleArray(articles)
@@ -36,7 +42,82 @@ const RightColumn = ({user, articles}) => {
   const handleClick= async (e) => {
     history.push(`/${e}`)
   }
+
+  useEffect(() => {
+    const id =  param.id   
+
+    if (id) {
+        const getComments = async () => {
+          const res = await axios.get(`/api/articles/${id}/comments`)
+          let filteredComments = res.data.comments.filter((comment) => {
+              return comment.blog === id;
+          });
+          setComments({comments: filteredComments});
+        }
+        getComments()
+    }
+  }, [param.id])
+
   return (
+    <>
+      {
+        viewComment ?
+          <StyledRightContainer>
+            <AlignContent Center>
+              <div style={{display: 'flex', justifyContent: 'space-between', 
+              width: '100%', alignItems: 'center'}}>
+                <div>
+                  <h4><strong>Responses ({comments.comments.length})</strong></h4>
+                </div>
+                <div>
+                  <span><BiCheckShield style={{fontSize: '2.5rem'}} /></span>
+                  <span><BiDotsHorizontalRounded style={{fontSize: '2.5rem'}}/></span>
+                  <span><MdClose style={{fontSize: '2.5rem'}}/></span>
+                </div>
+              </div>
+            </AlignContent>
+            <div>
+              <img src="" alt="" srcset="" />
+              <h3>Name</h3>
+              <textarea placeholder='What are your thoughts?' name="" id="" cols="30" rows="10"></textarea>
+              <button>Cancel</button>
+              <button>Respond</button>
+            </div>
+            <select name="" id="" disabled="disabled">
+              <option value="Relevant">Most Relevant</option>
+              <option value="Recent">Most Recent</option>
+            </select>
+            <hr />
+            {
+              comments !== undefined && 
+              comments.comments.length !== 0 ?
+              <>
+                {comments.comments.map(comment => {
+                  return (
+                    <div key={comment._id}>
+                      <div>
+                        <img src="" alt="" srcset="" />
+                        <h3>{comment.name}</h3> <span>Reference towards the blog writer</span>
+                        <p>minutes ago</p>
+                      </div>
+                      <div>
+                        <span>Settings Icon</span>
+                      </div>
+                      <div>
+                        {comment.comment}
+                      </div>
+                      <div>
+                        <button>like</button>
+                        <button>Reply</button>
+                      </div>
+                    </div>
+                )})}
+              </>
+              :
+              <>No Comments</>
+            }
+          </StyledRightContainer>
+        :
           <StyledRightContainer>
             <AlignContent Center>
               {!isLoggedIn ?
@@ -97,7 +178,9 @@ const RightColumn = ({user, articles}) => {
                   <ArticleLink href='#' >Terms</ArticleLink>
                   <ArticleLink href='#' >About</ArticleLink>
                 </PageLinks>
-            </StyledRightContainer>
+          </StyledRightContainer>
+      }
+    </>
   )
 }
 

@@ -62,13 +62,13 @@ const articleSchema = new mongoose.Schema({
     //     required: true,
     //     unique: true
     // },
-    // comments: [{
-    //     text: String,
-    //     postedBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: 'Users'
-    //     }
-    // }],
+    comments: [{
+        text: String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Comments'
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

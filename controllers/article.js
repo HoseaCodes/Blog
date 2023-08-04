@@ -1,5 +1,5 @@
 import Articles from '../models/article.js';
-import Comments from '../models/article.js';
+import Comments from '../models/comment.js';
 import Logger from '../utils/logger.js';
 import {cache} from '../utils/cache.js';
 import axios from 'axios'
@@ -133,24 +133,6 @@ async function deleteArticle(req, res) {
         return res.status(500).json({ msg: err.message })
     }
 }
-
-
-async function deletePostcomment(req, res) {
-  try {
-    const post_id = req.body.post_id
-
-      logger.info(`Deleted comment ${req.params.id} has been deleted`);
-
-      await Articles.findByIdAndDelete(req.params.id)
-      res.clearCookie('comments-cache');
-      res.json({ msg: "Deleted a article" })
-    } catch (err) {
-      
-      logger.error(err)
-      
-      return res.status(500).json({ msg: err.message })
-    }
-  }
   
 async function updateLikes(req, res) {
   try {
@@ -252,40 +234,12 @@ async function archiveArticle(req, res) {
   }
 }
 
-async function createArticleComment(req, res) {
-  try {
-
-    const { article_id, post_id, comment, markdown, user_id, date_created } = req.body;
-
-    const article = await Articles.findOne({ article_id });
-
-      const newComment = new Comments({
-        article_id, post_id, comment, user_id, markdown, date_created
-      })
-
-      await newComment.save()
-
-      logger.info(`New comment has been created`);
-      res.clearCookie('comments-cache');
-
-      res.json({ msg: "Created a new comment" });
-  } catch (err) {
-
-      logger.error(err)
-
-      return res.status(500).json({ msg: err.message })
-  }
-}
-
-
 
 export {
   getArticle,
   createArticle,
-  createArticleComment,
   archiveArticle,
   deleteArticle,
-  deletePostcomment,
   updateArticle,
   updateArticleComment,
   updateLikes,

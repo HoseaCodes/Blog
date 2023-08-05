@@ -11,7 +11,7 @@ import {RiShareCircleFill} from 'react-icons/ri';
 import {TiSocialLinkedinCircular} from 'react-icons/ti';
 import './StickyState.css';
 
-const StickyFooter = ({id, likes}) => {
+const StickyFooter = ({id, likes, setViewComment, viewComment}) => {
   const [postLikes, setPostLikes] = useState(likes)
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const StickyFooter = ({id, likes}) => {
                     <FaRegThumbsUp onClick={handleLike}/> &nbsp; <span>{postLikes}</span> &nbsp;
                   </JustifyContent>
                   <JustifyContent MarginRight>
-                    <FaRegComment/> &nbsp; <span>1</span>
+                    <FaRegComment onClick={() => setViewComment(true)}/> &nbsp; <span>1</span>
                   </JustifyContent>
                 </JustifyContent>
                 <Font2>

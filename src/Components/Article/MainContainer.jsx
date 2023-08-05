@@ -65,7 +65,7 @@ const MainContainer = (props) => {
                   <br />
                   <BlogContent Markdown  dangerouslySetInnerHTML={{ __html: marked(markdown) }}></BlogContent>
                   <br />
-                  <StickyFooter id={_id} likes={likes}/>
+                  <StickyFooter viewComment={props.viewComment} setViewComment={props.setViewComment} id={_id} likes={likes}/>
                   <Newsletter/>
                 </BlogPost>
                 {/* <input type="checkbox" checked={checked}

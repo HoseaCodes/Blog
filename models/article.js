@@ -13,10 +13,10 @@ const articleSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    // postedBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Users'
-    // },
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     title: {
         type: String,
         required: true,

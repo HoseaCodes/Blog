@@ -13,6 +13,7 @@ const ArticleItem = () => {
     const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
+    const [viewComment, setViewComment] = useState(false)
 
     useEffect(() => {
         if (params.id) {
@@ -37,8 +38,8 @@ const ArticleItem = () => {
                 user.name !== "" && 
                 <SideBar/>
             }
-            <MainContainer user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
-            <RightColumn user={user} articles={articles}/>
+            <MainContainer viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
+            <RightColumn setViewComment={setViewComment} viewComment={viewComment} user={user} articles={articles}/>
           </main>
         </>
     )

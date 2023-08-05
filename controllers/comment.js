@@ -40,7 +40,7 @@ async function getComment(req, res) {
 async function createComment(req, res) {
   try {
 
-    const { comment_id, name, email, comment, markdown, user_id } = req.body;
+    const { comment_id, name, email, comment, markdown, user_id, avatar } = req.body;
     console.log(req.body)
     const com = await Comments.findOne({ comment_id });
 
@@ -52,7 +52,7 @@ async function createComment(req, res) {
     const newComment = new Comments({
       comment_id, name, email, 
       comment, markdown, user_id, 
-      blog: req.params.id  
+      blog: req.params.id, avatar
     })
 
     await newComment.save()

@@ -37,6 +37,7 @@ function CreatArticle() {
     const [onEdit, setOnEdit] = useState(false)
     const [callback, setCallback] = state.articlesAPI.callback
     const [isLoggedIn] = state.userAPI.isLoggedIn
+    const [user] = state.userAPI.user
     const [show, setShow] = useState(false);
     const [showAITemplate, setShowAITemplate] = useState(false);
 
@@ -125,7 +126,9 @@ function CreatArticle() {
             if (onEdit) {
                 await axios.put(`/api/articles/${article._id}`, { ...articles, images })
             } else {
-                await axios.post('/api/articles', { ...article, images })
+                setArticle({ ...article, ['article_id']: uuidv4() })
+                console.log(article)
+                await axios.post('/api/articles', { ...article, images, ...user })
                 setImages(false)
                 setArticle(initialState)
             }
@@ -140,9 +143,7 @@ function CreatArticle() {
     const updateMarkdown = (e) => {
         const { name } = e.target
         setMarkdown(articleTempltes[e.target.options.selectedIndex].markdown)
-        console.log(article)
         setArticle({ ...article, [name]: articleTempltes[e.target.options.selectedIndex].markdown })
-                console.log(article)
     }
     
     const handlePublish = e => {
@@ -202,7 +203,7 @@ function CreatArticle() {
                                                     <div className="controls">
                                                         <input className="input-md emailinput form-control mb"
                                                             name="article_id"
-                                                            required value={uuidv4()}
+                                                            value={uuidv4()}
                                                             onChange={handleChangeInput}
                                                             disabled />
                                                     </div>

@@ -1,24 +1,17 @@
 name: Snyk Scan
-on: push
+on:
+  push:
+    branches:
+      - master
 jobs:
   security:
     runs-on: ubuntu-latest
-    env:
-      JSON_OUTPUT: snyk-static-scan.json
     steps:
       - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
       - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
         continue-on-error: true
-        run: |
-          snyk code test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Archive snyk results
-        uses: actions/upload-artifact@v3
         with:
-          name: snyk-report
-          path: output/scan/snyk.html
-          retention-days: 5
+          command: monitor

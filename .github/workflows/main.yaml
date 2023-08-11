@@ -46,3 +46,12 @@ jobs:
           name: snyk-report
           path: output/scan/snyk.html
           retention-days: 5
+  lint:
+    needs: [static-scan, dependency-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v3
+      - run: npm i
+      - name: lint
+        run: npm run lint

@@ -52,12 +52,12 @@ async function createArticle(req, res) {
 
         const article = await Articles.find({ article_id });
 
-        if (article) {
+        // if (article) {
 
-          logger.error("Article already exist.");
+        //   logger.error("Article already exist.");
 
-          return res.status(400).json({ msg: "This article already exists." })
-        }
+        //   return res.status(400).json({ msg: "This article already exists." })
+        // }
 
         const newArticle = new Articles({
           article_id, title, subtitle, markdown, description, images, category

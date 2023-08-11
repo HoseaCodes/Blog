@@ -78,7 +78,9 @@
     "build:dev": "env-cmd -e dev react-scripts build",
     "build:qa": "env-cmd -e staging react-scripts build",
     "build:prod": "env-cmd -e production react-scripts build",
-    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+    "build": "react-scripts build",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
@@ -106,6 +108,8 @@
     "@shelf/jest-mongodb": "^2.0.3",
     "@welldone-software/why-did-you-render": "^6.2.3",
     "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-react": "^7.33.1",
     "jest": "^26.6.0"
   }
 }

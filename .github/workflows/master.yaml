@@ -10,10 +10,10 @@ jobs:
       - uses: snyk/actions/setup@master
       - uses: actions/setup-go@v1
       - name: Run Snyk to check for vulnerabilities
+        continue-on-error: true
         run: |
           snyk code test
           snyk-to-html -i $JSON_OUTPUT -o snyk.html 
-        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Archive snyk results

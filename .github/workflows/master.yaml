@@ -16,8 +16,6 @@ jobs:
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
       - name: Archive snyk results
         uses: actions/upload-artifact@v3
         with:

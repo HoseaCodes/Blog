@@ -235,7 +235,8 @@ npm test
 - Syntax/Code Highlighting
 - Tags - Topics
 - Reactions
-- View Comments
-
+- ~~View Comment~~
 - ~~Minutes Read~~
   https://github.com/saadpasta/react-blog-github
+- Add [unsplash](https://unsplash.com/documentation)
+  - When adding a blog image a user should be able to use an unsplash image.

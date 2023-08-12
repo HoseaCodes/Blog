@@ -137,7 +137,7 @@ export const BlogPost = styled.div`
   padding: 1%;
 `;
 
-export const BlogNewsletter = styled.div`
+export const BlogNewsletter = styled.form`
   background-color: whitesmoke;
   padding: 4%;
   margin-top: 8%;

@@ -221,4 +221,8 @@
     margin: auto !important;
     width: 40% !important;
   }
+
+  .contact-group h2 {
+    font-size: 3.5rem !important;
+  }
 }

@@ -8,7 +8,9 @@ import {JustifyContent, BlogNewsletter} from '../../Layout/Container/styledArtic
 
 const Newsletter = () => {
   return (
-        <BlogNewsletter>
+        <BlogNewsletter 
+        action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b" method='POST'
+        className='d-none d-md-block'>
           <div>
             <h3>Sign up for Software Engineering News</h3>
             <BlogContent Author>By Dominique Hosea</BlogContent>
@@ -16,7 +18,12 @@ const Newsletter = () => {
               <u>Take a look.</u>
             </BlogContent>
             <JustifyContent SpaceAroundPaddingRight>
-              <ArticleInput placeholder='Your email' type="text" />
+              <ArticleInput 
+              name="email_address"
+              placeholder='Your email' type="text" />
+              <ArticleInput style={{display: 'none'}}
+              name="from" value={'Newsletter'}
+              type="text" />
               <ArticleBtn><AiOutlineMail style={{fontSize: '2.5rem'}}/>&nbsp;  Get this newsletter</ArticleBtn>
             </JustifyContent>
             <MarginTop>By signing up, you will create a Medium account if you don’t already have one.

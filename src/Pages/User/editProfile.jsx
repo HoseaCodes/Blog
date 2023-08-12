@@ -105,7 +105,7 @@ console.log(avatar)
                     <div id="signupbox" >
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                            <a href="/edit"><div className="panel-title text-center"> Edit Profile</div></a>
+                                <div className="panel-title text-center"> Edit Profile</div>
                             </div>
                             <div className="panel-body" >
                                 <form onSubmit={handleSubmit} className="row g-3" >

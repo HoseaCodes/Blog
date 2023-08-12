@@ -40,11 +40,17 @@ const StickyFooter = ({id, likes, setViewComment, viewComment}) => {
                   </JustifyContent>
                 </JustifyContent>
                 <Font2>
-                  <FaFacebook/>
-                  <AiFillTwitterCircle/>
-                  <TiSocialLinkedinCircular/>
-                  <RiShareCircleFill/>
-                  <MdBookmarkBorder/>
+                  <a href="https://www.facebook.com/so.inthatthang" target="_blank" rel="noopener noreferrer">
+                    <FaFacebook style={{color: 'green'}}/>
+                  </a>
+                  <a href="https://twitter.com/DominiqueRHosea" target="_blank" rel="noopener noreferrer">
+                    <AiFillTwitterCircle  style={{color: 'green'}}/>
+                  </a>
+                  <a href="https://www.linkedin.com/in/dominique-hosea/" target="_blank" rel="noopener noreferrer">
+                    <TiSocialLinkedinCircular  style={{color: 'green'}}/>
+                  </a>
+                  {/* <RiShareCircleFill/> */}
+                  {/* <MdBookmarkBorder/> */}
                 </Font2>
               </JustifyContent>
             </div>

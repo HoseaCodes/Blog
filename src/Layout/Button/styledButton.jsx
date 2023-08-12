@@ -20,6 +20,11 @@ export const ReadMore = styled.button`
   color: white;
   border-radius: 20px;
   padding: 1.5% 3%;
+  ${props => props.disabled && css`
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  `}
 `;
 
 export const ArticleBtn = styled.button`

@@ -22,6 +22,7 @@ const RightColumn = (props) => {
   // const uri = window.location.pathname;
   const state = useContext(GlobalState);
   const [currentUser, setCurrentUser] = useState(props.user);
+  const [user] = state.userAPI.user
   const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [search, setSearch] = useState('')
   const [comments, setComments] = useState({comments: []})
@@ -63,7 +64,7 @@ const RightColumn = (props) => {
     <>
       {
         props.viewComment ?
-          <StyledRightContainer>
+          <StyledRightContainer className='d-none d-lg-block'>
             <AlignContent>
               <div style={{display: 'flex', justifyContent: 'space-between', 
               width: '100%', alignItems: 'center'}}>
@@ -158,7 +159,7 @@ const RightColumn = (props) => {
             }
           </StyledRightContainer>
         :
-          <StyledRightContainer>
+          <StyledRightContainer className='d-none d-lg-block'>
             <AlignContent Center>
               {!isLoggedIn ?
               <>
@@ -166,7 +167,7 @@ const RightColumn = (props) => {
                 <ArticleLinkColor Green href='/login'>Sign In</ArticleLinkColor>
               </>
               :
-                <h2>Welcome, {currentUser.name.split(' ')[0]}</h2>
+                <h2>Welcome, {user.name.split(' ')[0]}</h2>
               }
             </AlignContent>
                 <MarginTop RightCloumnSearch>

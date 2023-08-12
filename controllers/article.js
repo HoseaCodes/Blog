@@ -39,6 +39,26 @@ async function getArticle(req, res) {
     }
 }
 
+async function getArticleByID(req, res) {
+    try {
+        const article = await Articles.findOne({ _id: req.params.id })
+
+        logger.info("Returning the list of articles");
+
+        if(!article) return res.status(400).send({ msg: 'Article does not exisit'})
+
+        res.json({
+            status: 'success',
+            article: article,
+        })
+    } catch (err) {
+
+        logger.error(err);
+
+        return res.status(500).json({ msg: err.message })
+    }
+}
+
 async function createArticle(req, res) {
     try {
 
@@ -210,22 +230,22 @@ async function updateArticle(req, res) {
   }
 }
 
-async function archiveArticle(req, res) {
+async function conditionalArticle(req, res) {
   try {
-    const { archive } = req.body;
-    console.log(archive)
-
-    const originalBody = req.body
-
-    await Articles.findOneAndUpdate({ _id: req.params.id }, {
-      archived: archive
-    })
-
-    const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${archive}`;
-
-    logger.info(preparedLog);
-
-    res.json({ msg: `Moved ${req.params.id} to archive`})
+    const { archive, draft } = req.body;
+    if (archive) {
+      await Articles.findOneAndUpdate({ _id: req.params.id }, {
+        archived: archive
+      })
+      logger.info('Updated archive');
+      res.json({ msg: `Moved ${req.params.id} to archive`})
+    } else if (draft) {
+      await Articles.findOneAndUpdate({ _id: req.params.id }, {
+        draft: draft
+      })
+      logger.info('Updated draft');
+      res.json({ msg: `Moved ${req.params.id} to archive`})
+    }
   } catch (err) {
 
     logger.error(err);
@@ -237,8 +257,9 @@ async function archiveArticle(req, res) {
 
 export {
   getArticle,
+  getArticleByID,
   createArticle,
-  archiveArticle,
+  conditionalArticle,
   deleteArticle,
   updateArticle,
   updateArticleComment,

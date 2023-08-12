@@ -2,7 +2,8 @@ import express from 'express';
 import {
   getArticle,
   createArticle,
-  archiveArticle,
+  getArticleByID,
+  conditionalArticle,
   deleteArticle,
   updateArticle,
   updateArticleComment,
@@ -24,7 +25,8 @@ router.route('/articles')
   .post(createArticle)
 
 router.route('/articles/:id')
-  .patch(archiveArticle)
+  .get(getArticleByID)
+  .patch(conditionalArticle)
   .delete(deleteArticle)
   .put(updateArticle)
 

@@ -25,7 +25,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "express-rate-limit": "^6.7.0",
-    "firebase": "^8.10.0",
+    "firebase": "^10.2.0",
     "framer-motion": "^4.1.17",
     "imagemin": "^8.0.1",
     "imagemin-jpegtran": "^7.0.0",

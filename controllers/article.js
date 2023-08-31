@@ -62,7 +62,7 @@ async function getArticleByID(req, res) {
 async function createArticle(req, res) {
     try {
 
-        const { article_id, title, subtitle, markdown, description, images, category, dev, medium } = req.body;
+        const { article_id, title, subtitle, markdown, description, images, category, dev, medium, postedBy } = req.body;
 
         if (!images) {
 
@@ -80,7 +80,7 @@ async function createArticle(req, res) {
         // }
 
         const newArticle = new Articles({
-          article_id, title, subtitle, markdown, description, images, category
+          article_id, title, subtitle, markdown, description, images, category, postedBy
         })
 
         try {

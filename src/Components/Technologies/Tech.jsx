@@ -9,14 +9,28 @@ import Py from '../../Assets/Images/Py-min.png';
 import Reactt from '../../Assets/Images/Reactt-min.png';
 import Swift from '../../Assets/Images/swift-min.png';
 import JQuery from '../../Assets/Images/jquery-min.png';
+import Azure from '../../Assets/Images/azure.png';
+import AWS from '../../Assets/Images/aws.png';
+import Arch from '../../Assets/Images/architecture.png';
+import DevOps from '../../Assets/Images/devops.png';
+import Firebase from '../../Assets/Images/firebase.png';
+import Github from '../../Assets/Images/GitHub.png';
+import GitLab from '../../Assets/Images/gitlab.png';
+import Splunk from '../../Assets/Images/splunk.png';
+import NPM from '../../Assets/Images/npm.png';
+import SpringBoot from '../../Assets/Images/springboot.png';
+import Terraform from '../../Assets/Images/terraform.png';
+import Tailwind from '../../Assets/Images/tailwind.png';
 import './Technologies.css';
 
 
 class Tech extends Component {
 
     render() {
-        const imgSlide = {"bootstrap": Bootstrap, "javascript": JS, "Django": Django,
-        "mongodb": MongoDB, "nodejs": Node, "postgresql": postgresql, "python": Py, "react": Reactt,
+        const imgSlide = {"AWS": AWS, "azure": Azure, "Architecture": Arch, 
+        "firebase": Firebase, "github": Github, "gitlab": GitLab, "splunk": Splunk, "npm": NPM,
+        "springboot": SpringBoot, "terraform": Terraform, "react": Reactt, "tailwind": Tailwind,
+        "DevOps": DevOps, "bootstrap": Bootstrap, "javascript": JS, "Django": Django, "mongodb": MongoDB, "nodejs": Node, "postgresql": postgresql, "python": Py, 
         "swift": Swift,"jquery": JQuery, "java": 'https://i.imgur.com/wiEM1zo.png',"solidity": 'https://i.imgur.com/NhpXJN2.png'};
         return (
             <>
@@ -33,7 +47,7 @@ class Tech extends Component {
                             {Object.keys(imgSlide).map((img) => {
                                 return (
                                     <div  className="client-slide" key={img}>
-                                        <img src={imgSlide[img]} height="100" width="150" alt={img} />
+                                        <img style={{width: "auto", height: "-webkit-fill-available"}} src={imgSlide[img]} height="50" width="150" alt={img} />
                                     </div>
                                 )
                             })}

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
 import '../Home/Home.css';
 import SocialMedia from '../../Components/SocialMedia/SocialMedia';
 import PersonalBrand from '../../Components/PersonalBrand/PersonalBrandOriginal';
@@ -9,16 +9,12 @@ import ProjectHighlight from '../../Components/Project/projectHighlight';
 import Hero from '../../Components/Hero/hero';
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import {StyledButtonATag} from '../../Layout/Button/styledButton';
-import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
+
 
 const Home = () =>  {
-    const [isHome, setIsHome] = useState(true);
-
     return (
         <>
-            <NavBar/>
-            <main className='home-page'>
+            <section className='home-page'>
                 <Hero id='top' Home username={{firstName: 'Hosea', lastName: 'Codes'}}/>
                 <StyledHr Primary/>
                 <PersonalBrand />
@@ -79,8 +75,7 @@ const Home = () =>  {
                         </StyledButtonATag>
                     </div>
                 </div>
-            </main>
-            <Footer isHome={isHome} setIsHome={setIsHome}/>
+            </section>
         </>
     )
 }

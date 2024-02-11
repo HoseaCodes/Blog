@@ -26,6 +26,7 @@ const RightColumn = (props) => {
   const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [search, setSearch] = useState('')
   const [comments, setComments] = useState({comments: []})
+  const [comment, setComment] = useState("")
   const param = useParams()
 
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
@@ -58,7 +59,26 @@ const RightColumn = (props) => {
         }
         getComments()
     }
-  }, [param.id])
+  }, [param.id, comment])
+
+  const postComment = async () => {
+    try {
+      await axios.post(`/api/articles/${param.id}/comments`, {postId: param.id, comment, user})
+      const res = await axios.get(`/api/articles/${id}/comments`)
+      let filteredComments = res.data.comments.filter((comment) => {
+          return comment.blog === id;
+      });
+      setComments({comments: filteredComments});
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleChangeInput = e => {
+      const { name, value } = e.target
+      console.log(name, value)
+      setComment(value)
+  }
 
   return (
     <>
@@ -83,9 +103,10 @@ const RightColumn = (props) => {
                 <div>
                   <img src="" alt="" srcset="" />
                   <h3>{currentUser.name}</h3>
-                  <textarea placeholder='What are your thoughts?' name="" id="" cols="30" rows="10"></textarea>
+                  <textarea onChange={(e) => handleChangeInput(e)}
+                  placeholder='What are your thoughts?' name="" id="" cols="30" rows="10"></textarea>
                   <button>Cancel</button>
-                  <button>Respond</button>
+                  <button onClick={() => postComment()}>Respond</button>
                 </div>
                 :
                 <div style={{marginTop: '2rem',  WebkitBoxShadow:  '0px 0px 10px 1px rgba(220,220,220,0.9)',boxShadow: '0px 0px 10px 1px rgba(220,220,220,0.9)', padding: '5px 15px',
@@ -97,12 +118,13 @@ const RightColumn = (props) => {
                     <h3 style={{ marginLeft: '5px',fontSize: '1.5rem'}}>Anonymous</h3>
                   </div>
                   <textarea 
+                  onChange={(e) => handleChangeInput(e)}
                   style={{border: 'none', paddingTop: '10px'}}
                   placeholder='What are your thoughts?' 
                   name="" id="" cols="30" rows="10"></textarea>
                   <div style={{display: 'flex', width: '100%', justifyContent: 'space-around', alignItems: 'flex-end'}}>
                     <button>Cancel</button>
-                    <button>Respond</button>
+                    <button onClick={() => postComment()}>Respond</button>
                   </div>
                 </div>
 

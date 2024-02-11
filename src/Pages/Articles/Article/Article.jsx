@@ -10,6 +10,8 @@ import MainContainer from '../../../Components/Article/MainContainer';
 const ArticleItem = () => {
     const params = useParams()
     const state = useContext(GlobalState)
+    const [isLoggedIn] = state.userAPI.isLoggedIn;
+    const [isAdmin] = state.userAPI.isAdmin;
     const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
@@ -38,7 +40,7 @@ const ArticleItem = () => {
                 user.name !== "" && 
                 <SideBar className='d-none d-lg-block'/>
             }
-            <MainContainer viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} 
+            <MainContainer isAdmin={isAdmin} isLoggedIn={isLoggedIn} viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} 
             timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
             <RightColumn setViewComment={setViewComment} viewComment={viewComment} user={user} articles={articles}/>
           </main>

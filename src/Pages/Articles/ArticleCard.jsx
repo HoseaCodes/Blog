@@ -1,30 +1,23 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './Articles.css'
-import BtnRender from './BtnRender';
+import BtnRender from '../../Components/Article/BtnRender';
 // import VisibilityIcon from '@material-ui/icons/Visibility';
 import { AiFillEye } from 'react-icons/ai'
 import moment from 'moment-timezone'
-import { GlobalState } from '../../GlobalState';
 
 const ArticleItem = (props) => {
-    const state = useContext(GlobalState);
-    const [isLoggedIn] = state.userAPI.isLoggedIn
-    const [isAdmin] = state.userAPI.isAdmin
-
     const { title, createdAt, description, images, _id, archived } = props.article;
-
     const timeFormater = moment.utc(createdAt).format('MM/DD/YYYY')
-
     return (
       <>
         <div className="article-card">
-            {/* <input type="checkbox" checked={checked}
-                onChange={() => props.handleCheck(_id)} /> */}
+            <input type="checkbox" checked={checked}
+                onChange={() => props.handleCheck(_id)} />
             <img className='article-img' src={images.url} alt={title} />
             <div className='article-content'>
                 <div style={{ padding: '1rem' }}>
-                {isAdmin && isLoggedIn ?
+                {props.isAdmin && props.isLoggedIn ?
 
                     <input type="checkbox" name="archive" onClick={() => props.archiveArticle(_id, archived)}/> :
                     null
@@ -38,7 +31,7 @@ const ArticleItem = (props) => {
                     <p className="work-content">{props.truncate(description)}</p>
                     <br />
                 </div>
-                {isAdmin && isLoggedIn ?
+                {props.isAdmin && props.isLoggedIn ?
                     <BtnRender article={props.article} deleteArticle={props.deleteArticle} /> :
                     null
                 }

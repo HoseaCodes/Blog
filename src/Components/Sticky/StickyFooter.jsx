@@ -9,11 +9,13 @@ import {JustifyContent} from '../../Layout/Container/styledArticle';
 import {MdBookmarkBorder} from 'react-icons/md';
 import {RiShareCircleFill} from 'react-icons/ri';
 import {TiSocialLinkedinCircular} from 'react-icons/ti';
+
 import './StickyState.css';
 
-const StickyFooter = ({id, likes, setViewComment, viewComment}) => {
+const StickyFooter = ({id, likes, setViewComment, comments}) => {
   const [postLikes, setPostLikes] = useState(likes)
 
+  console.log(comments)
   useEffect(() => {
 
 	}, [likes]);
@@ -26,6 +28,15 @@ const StickyFooter = ({id, likes, setViewComment, viewComment}) => {
 			alert(err.response.data.msg);
 		}
 	};
+
+  const handleComment = async () => {
+    try {
+      setViewComment(true)
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   return (
           <Sticky >
             <div  className="bottom sticky">
@@ -36,7 +47,7 @@ const StickyFooter = ({id, likes, setViewComment, viewComment}) => {
                     <FaRegThumbsUp onClick={handleLike}/> &nbsp; <span>{postLikes}</span> &nbsp;
                   </JustifyContent>
                   <JustifyContent MarginRight>
-                    <FaRegComment onClick={() => setViewComment(true)}/> &nbsp; <span>1</span>
+                    <FaRegComment onClick={() => handleComment()}/> &nbsp; <span>{comments.length || 0}</span>
                   </JustifyContent>
                 </JustifyContent>
                 <Font2>

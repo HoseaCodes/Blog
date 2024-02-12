@@ -39,20 +39,23 @@ async function getComment(req, res) {
 
 async function createComment(req, res) {
   try {
+    let { comment_id, postId, name, email, comment, user_id, avatar } = req.body;
+    if (!name) name = 'Anonymous'
+    if (!email) email = 'test@email.com'
+    let date = (new Date()).toLocaleDateString
 
-    const { comment_id, name, email, comment, markdown, user_id, avatar } = req.body;
     console.log(req.body)
-    const com = await Comments.findOne({ comment_id });
+ 
+    // const com = await Comments.findOne({ comment_id });
 
-    if (com) {
-      logger.error("Comment already exist.");
-      return res.status(400).json({ msg: "This comment already exists." })
-    }
+    // if (com) {
+    //   logger.error("Comment already exist.");
+    //   return res.status(400).json({ msg: "This comment already exists." })
+    // }
 
     const newComment = new Comments({
-      comment_id, name, email, 
-      comment, markdown, user_id, 
-      blog: req.params.id, avatar
+      name, email, comment, postId,
+      blog: postId, date
     })
 
     await newComment.save()
@@ -62,7 +65,7 @@ async function createComment(req, res) {
 
     res.json({ msg: "Created a new comment" });
   } catch (err) {
-
+    console.log(err)
     logger.error(err)
 
     return res.status(500).json({ msg: err.message })

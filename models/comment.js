@@ -17,6 +17,17 @@ const commentSchema = new mongoose.Schema({
         type:String,
         required:"this filed is required"
     },
+    postId: {
+        type: String,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
+    },
+    comments: {
+        type: String,
+    },
     blog:{
         type:mongoose.Schema.Types.ObjectId,
         ref: 'Articles'

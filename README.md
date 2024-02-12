@@ -42,18 +42,31 @@ Dependencies used:
 ## Features
 
 ✅ Own your content
+
 ✅ Write using Markdown On Github Issues
+
 ✅ Syntax/Code Highlighting
+
 ✅ Fully customizable
+
 ✅ Tags - Topics
+
 ✅ Links
+
 ✅ Reactions
+
 ✅ View Comments
+
 ✅ Images
+
 ✅ Minutes Read
+
 ✅ Beautiful UI Like Medium
+
 ✅ Easy deployment: Using Github Pages
+
 ✅ Instant Effects on Blog when changing github issues
+
 ✅ Beautiful blockquote
 
 ## Frontend

@@ -4,7 +4,7 @@ import "./profile.css";
 import { GlobalState } from "../../GlobalState";
 import { Link } from "react-router-dom";
 
-const Main = () => {
+const Profile = () => {
   const state = useContext(GlobalState);
   const [user] = state.userAPI.user;
 
@@ -800,4 +800,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default Profile;

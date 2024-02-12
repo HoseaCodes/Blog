@@ -201,335 +201,329 @@ function CreatArticle() {
   return (
     <>
       {loggedIn ? (
-          <div className="create_article">
-            <div className="container fluid col-md-12">
-              <div id="signupbox">
-                <div className="panel panel-default">
-                  <div className="panel-heading">
-                    <div className="panel-title text-center">
-                      <h3>Add Article</h3>
-                    </div>
+        <div className="create_article">
+          <div className="container fluid col-md-12">
+            <div id="signupbox">
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <div className="panel-title text-center">
+                    <h3>Add Article</h3>
                   </div>
-                  <div className="panel-body">
-                    <form className="row g-3" onSubmit={handleSubmit}>
-                      <div className="col-md-6">
-                        <div id="div_p_name" className="form-group required">
-                          <label
-                            for="p_name"
-                            className="control-label requiredField"
-                          >
-                            Title<span className="asteriskField">*</span>
-                          </label>
-                          <div className="controls">
-                            <input
-                              className="input-md emailinput form-control"
-                              placeholder="Enter Article Title Name"
-                              type="text"
-                              name="title"
-                              required
-                              value={article.title}
-                              onChange={handleChangeInput}
-                              disabled={onEdit}
-                            />
-                          </div>
+                </div>
+                <div className="panel-body">
+                  <form className="row g-3" onSubmit={handleSubmit}>
+                    <div className="col-md-6">
+                      <div id="div_p_name" className="form-group required">
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          Title<span className="asteriskField">*</span>
+                        </label>
+                        <div className="controls">
+                          <input
+                            className="input-md emailinput form-control"
+                            placeholder="Enter Article Title Name"
+                            type="text"
+                            name="title"
+                            required
+                            value={article.title}
+                            onChange={handleChangeInput}
+                            disabled={onEdit}
+                          />
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div id="div_p_name" className="form-group required">
-                          <label
-                            for="p_name"
-                            className="control-label requiredField"
-                          >
-                            Subtitle<span className="asteriskField">*</span>{" "}
-                          </label>
-                          <div className="controls">
-                            <input
-                              className="input-md emailinput form-control"
-                              placeholder="Enter Article Subtitle Name"
-                              type="text"
-                              name="subtitle"
-                              required
-                              value={article.subtitle}
-                              onChange={handleChangeInput}
-                              disabled={onEdit}
-                            />
-                          </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div id="div_p_name" className="form-group required">
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          Subtitle<span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls">
+                          <input
+                            className="input-md emailinput form-control"
+                            placeholder="Enter Article Subtitle Name"
+                            type="text"
+                            name="subtitle"
+                            required
+                            value={article.subtitle}
+                            onChange={handleChangeInput}
+                            disabled={onEdit}
+                          />
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div id="div_p_id" className="form-group required">
-                          <label
-                            for="p_id"
-                            className="control-label requiredField"
-                          >
-                            Article Id<span className="asteriskField">*</span>{" "}
-                          </label>
-                          <div className="controls">
-                            <input
-                              className="input-md emailinput form-control mb"
-                              name="article_id"
-                              value={uuidv4()}
-                              onChange={handleChangeInput}
-                              disabled
-                            />
-                          </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div id="div_p_id" className="form-group required">
+                        <label
+                          for="p_id"
+                          className="control-label requiredField"
+                        >
+                          Article Id<span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls">
+                          <input
+                            className="input-md emailinput form-control mb"
+                            name="article_id"
+                            value={uuidv4()}
+                            onChange={handleChangeInput}
+                            disabled
+                          />
                         </div>
                       </div>
-                      <div className="col-md-6 mb-0">
-                        <div id="div_p_id" className="form-group required">
+                    </div>
+                    <div className="col-md-6 mb-0">
+                      <div id="div_p_id" className="form-group required">
+                        <label
+                          for="tags"
+                          className="control-label"
+                          requiredfield
+                        >
+                          {" "}
+                          Article Language Tag
+                          <span className="asteriskField">*</span>
+                        </label>
+                        <select
+                          name="tags"
+                          type="text"
+                          className="form-control mb"
+                          style={{ height: "auto" }}
+                        >
+                          <option value="volvo">Java</option>
+                          <option value="saab">Python</option>
+                          <option value="fiat">JavaScript</option>
+                          <option value="audi">Software Engineer</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div id="div_description" className="form-group required">
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          Description<span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls ">
+                          <textarea
+                            className="mb"
+                            name="description"
+                            required
+                            value={article.description}
+                            onChange={handleChangeInput}
+                            style={{ width: "100%" }}
+                            rows="5"
+                            cols="50"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div id="div_id_image" className="form-group required">
+                        <label
+                          for="id_image"
+                          className="control-label requiredField"
+                        >
+                          Article Image
+                          <span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls mb upload">
+                          <input
+                            className="input-md emailinput form-control mb"
+                            name="file"
+                            id="file_up"
+                            onChange={handleUpload}
+                            placeholder="Enter Project Id"
+                            type="file"
+                          />
+                          {loading ? (
+                            <div id="file_img">
+                              <Loading />
+                            </div>
+                          ) : (
+                            <div id="file_img" style={styleUpload}>
+                              <img src={images ? images.url : ""} alt="" />
+                              <span onClick={handleDestory}>X</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        id="div_id_downloads"
+                        className="form-group required"
+                      >
+                        <div className="controls">
                           <label
-                            for="tags"
+                            for="markdown"
                             className="control-label"
-                            requiredField
+                            requiredfield
                           >
-                            {" "}
-                            Article Language Tag
+                            Article Template
                             <span className="asteriskField">*</span>
+                            &nbsp;&nbsp;
+                            <span className="qs">
+                              ?{" "}
+                              <span className="popover above">
+                                These templates will give you a starting point
+                                to start writing a blog.
+                              </span>
+                            </span>
                           </label>
                           <select
-                            name="tags"
+                            onChange={updateMarkdown}
+                            name="markdown"
                             type="text"
                             className="form-control mb"
                             style={{ height: "auto" }}
                           >
-                            <option value="volvo">Java</option>
-                            <option value="saab">Python</option>
-                            <option value="fiat">JavaScript</option>
-                            <option value="audi">Software Engineer</option>
+                            {articleTempltes.map(article => (
+                              <option key={article.id} value={article.name}>
+                                {article.name}
+                              </option>
+                            ))}
                           </select>
                         </div>
                       </div>
-                      <div className="col-md-6">
-                        <div
-                          id="div_description"
-                          className="form-group required"
-                        >
-                          <label
-                            for="p_name"
-                            className="control-label requiredField"
-                          >
-                            Description<span className="asteriskField">*</span>{" "}
-                          </label>
-                          <div className="controls ">
-                            <textarea
-                              className="mb"
-                              name="description"
-                              required
-                              value={article.description}
-                              onChange={handleChangeInput}
-                              style={{ width: "100%" }}
-                              rows="5"
-                              cols="50"
-                            ></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div id="div_id_image" className="form-group required">
-                          <label
-                            for="id_image"
-                            className="control-label requiredField"
-                          >
-                            Article Image
-                            <span className="asteriskField">*</span>{" "}
-                          </label>
-                          <div className="controls mb upload">
-                            <input
-                              className="input-md emailinput form-control mb"
-                              name="file"
-                              id="file_up"
-                              onChange={handleUpload}
-                              placeholder="Enter Project Id"
-                              type="file"
-                            />
-                            {loading ? (
-                              <div id="file_img">
-                                <Loading />
-                              </div>
-                            ) : (
-                              <div id="file_img" style={styleUpload}>
-                                <img src={images ? images.url : ""} alt="" />
-                                <span onClick={handleDestory}>X</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div
-                          id="div_id_downloads"
-                          className="form-group required"
-                        >
-                          <div className="controls">
-                            <label
-                              for="markdown"
-                              className="control-label"
-                              requiredField
-                            >
-                              Article Template
-                              <span className="asteriskField">*</span>
-                              &nbsp;&nbsp;
-                              <span className="qs">
-                                ?{" "}
-                                <span className="popover above">
-                                  These templates will give you a starting point
-                                  to start writing a blog.
-                                </span>
-                              </span>
-                            </label>
-                            <select
-                              onChange={updateMarkdown}
-                              name="markdown"
-                              type="text"
-                              className="form-control mb"
-                              style={{ height: "auto" }}
-                            >
-                              {articleTempltes.map(article => (
-                                <option key={article.id} value={article.name}>
-                                  {article.name}
-                                </option>
-                              ))}
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div
-                          id="div_id_downloads"
-                          className="form-group required"
-                        >
-                          <div className="controls">
-                            <label
-                              for="markdown"
-                              className="control-label"
-                              requiredField
-                            >
-                              Publish To Dev
-                              <span className="pr-1 asteriskField">*</span>
-                            </label>
-                            <input
-                              type="checkbox"
-                              name="dev"
-                              onChange={e => handlePublish(e)}
-                              aria-label="Checkbox for following text input"
-                            />
-                          </div>
-                        </div>
-                        <div
-                          id="div_id_downloads"
-                          className="form-group required"
-                        >
-                          <div className="controls">
-                            <label
-                              for="markdown"
-                              className="control-label"
-                              requiredField
-                            >
-                              Publish To Medium
-                              <span className="pr-1 asteriskField">*</span>
-                            </label>
-                            <input
-                              type="checkbox"
-                              name="medium"
-                              onChange={e => handlePublish(e)}
-                              aria-label="Checkbox for following text input"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      {!isMobileView && (
-                        <div className="blog__categoryMobile">
-                          <label className="blog__categoryList__label">
-                            Select A Particular Category
-                          </label>
-                          <select
-                            className="blog__categoryList__select"
-                            value={selectedCategory}
-                            onChange={e => setselectedCategory(e.target.value)}
-                          >
-                            {allBlogCategory?.map(blogCat => {
-                              return (
-                                <option value={blogCat.name}>
-                                  {" "}
-                                  {blogCat.name}
-                                </option>
-                              );
-                            })}
-                          </select>
-                        </div>
-                      )}
-
-                      {/* <ReactMarkdown source={input} className="markdown" /> */}
-                      <div className="col-lg-12 col-md-6 pb-5">
-                        <div
-                          id="div_description"
-                          className="form-group required row"
-                        >
-                          <label
-                            for="p_name"
-                            className="text-center control-label col-md-12 requiredField"
-                          >
-                            Markdown<span className="asteriskField">*</span>{" "}
-                          </label>
-                          <div className="controls col-lg-6">
-                            <h5 className="text-center">Enter your markdown</h5>
-                            <textarea
-                              className="preview d-flex jusify-self-center h-100 w-100 mb"
-                              name="markdown"
-                              required
-                              value={article.markdown}
-                              onChange={handleChangeInput}
-                              // value={input}
-                            ></textarea>
-                          </div>
-                          <div className="col-lg-6" id="perview">
-                            <h5 className="text-center">See the result</h5>
-                            <div
-                              className="preview"
-                              dangerouslySetInnerHTML={{
-                                __html: marked(article.markdown)
-                              }}
-                            ></div>
-                          </div>
-                        </div>
-                      </div>
-                      <br />
-                      <div className="form-group">
-                        <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
-                          <br /> <br />
-                          <StyledButton type="submit">
-                            {" "}
-                            Add Article
-                          </StyledButton>
-                          &nbsp;&nbsp;
-                          <StyledButton type="reset">
-                            <a href="/blog">Cancel</a>
-                          </StyledButton>
-                          {/* <button className="personal-btn" type="submit">Add Article</button> */}
-                          {/* <button className="personal-btn" type="reset"><a href="/blog">Cancel</a> </button> */}
-                        </div>
-                      </div>
-                    </form>
-                    <div className="pb-5">
-                      <Preview
-                        show={show}
-                        setShow={setShow}
-                        marked={marked}
-                        article={article}
-                      />
                     </div>
-                    <AITemplate
-                      showAITemplate={showAITemplate}
-                      setShowAITemplate={setShowAITemplate}
+                    <div className="col-md-6">
+                      <div
+                        id="div_id_downloads"
+                        className="form-group required"
+                      >
+                        <div className="controls">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredfield
+                          >
+                            Publish To Dev
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="dev"
+                            onChange={e => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
+                      <div
+                        id="div_id_downloads"
+                        className="form-group required"
+                      >
+                        <div className="controls">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredfield
+                          >
+                            Publish To Medium
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="medium"
+                            onChange={e => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    {!isMobileView && (
+                      <div className="blog__categoryMobile">
+                        <label className="blog__categoryList__label">
+                          Select A Particular Category
+                        </label>
+                        <select
+                          className="blog__categoryList__select"
+                          value={selectedCategory}
+                          onChange={e => setselectedCategory(e.target.value)}
+                        >
+                          {allBlogCategory?.map(blogCat => {
+                            return (
+                              <option value={blogCat.name}>
+                                {" "}
+                                {blogCat.name}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    )}
+
+                    {/* <ReactMarkdown source={input} className="markdown" /> */}
+                    <div className="col-lg-12 col-md-6 pb-5">
+                      <div
+                        id="div_description"
+                        className="form-group required row"
+                      >
+                        <label
+                          for="p_name"
+                          className="text-center control-label col-md-12 requiredField"
+                        >
+                          Markdown<span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls col-lg-6">
+                          <h5 className="text-center">Enter your markdown</h5>
+                          <textarea
+                            className="preview d-flex jusify-self-center h-100 w-100 mb"
+                            name="markdown"
+                            required
+                            value={article.markdown}
+                            onChange={handleChangeInput}
+                            // value={input}
+                          ></textarea>
+                        </div>
+                        <div className="col-lg-6" id="perview">
+                          <h5 className="text-center">See the result</h5>
+                          <div
+                            className="preview"
+                            dangerouslySetInnerHTML={{
+                              __html: marked(article.markdown)
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="form-group">
+                      <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
+                        <br /> <br />
+                        <StyledButton type="submit"> Add Article</StyledButton>
+                        &nbsp;&nbsp;
+                        <StyledButton type="reset">
+                          <a href="/blog">Cancel</a>
+                        </StyledButton>
+                        {/* <button className="personal-btn" type="submit">Add Article</button> */}
+                        {/* <button className="personal-btn" type="reset"><a href="/blog">Cancel</a> </button> */}
+                      </div>
+                    </div>
+                  </form>
+                  <div className="pb-5">
+                    <Preview
+                      show={show}
+                      setShow={setShow}
+                      marked={marked}
+                      article={article}
                     />
                   </div>
+                  <AITemplate
+                    showAITemplate={showAITemplate}
+                    setShowAITemplate={setShowAITemplate}
+                  />
                 </div>
               </div>
             </div>
           </div>
-        //   <hr style d={{ background: "rgb(235,183,65)", width: "100%" }} />
-        
+        </div>
       ) : (
+        //   <hr style d={{ background: "rgb(235,183,65)", width: "100%" }} />
+
         <Error401 />
       )}
     </>

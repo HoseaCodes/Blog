@@ -99,7 +99,6 @@ console.log(avatar)
 
     return (
         <>
-            <NavBar />
             <div className="create_article" >
                 <div className="container fluid col-md-12">
                     <div id="signupbox" >
@@ -287,7 +286,6 @@ console.log(avatar)
                 </div>
             </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-            <Footer />
         </>
     )
 }

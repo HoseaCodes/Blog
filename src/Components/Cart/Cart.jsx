@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import PaypalButton from "../Payment/PaypalButton";
 import "./Cart.css";
-import NavBar from "../NavBar/NavBar";
-import Footer from "../Footer/Footer";
 
 const Cart = () => {
 	const state = useContext(GlobalState);
@@ -179,14 +177,12 @@ const Cart = () => {
     <>
      {/* {cart.length === 0 && emptyCart()}
      {cart && loadedCart()} */}
-     <NavBar/>
      {
       cart.length === 0  ?
       emptyCart()
       :
       loadedCart()
       }
-      <Footer/>
     </>
 	);
 };

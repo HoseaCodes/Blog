@@ -67,11 +67,6 @@ jobs:
           node-version: '20'
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
-      - name: Heroku Login
-        run: heroku login -i
-        env:
-          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       - name: Deploy to Heroku
         run: |
           git remote add heroku https://git.heroku.com/hoseacodes-dev.git

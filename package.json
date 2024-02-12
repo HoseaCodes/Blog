@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
   "dependencies": {
     "@sentry/react": "^6.19.7",
     "@sentry/tracing": "^6.13.3",
@@ -68,7 +71,7 @@
     "build:dev": "env-cmd -e dev react-scripts build",
     "build:qa": "env-cmd -e staging react-scripts build",
     "build:prod": "env-cmd -e production react-scripts build",
-    "build": "react-scripts build",
+    "build": "react-scripts --openssl-legacy-provider build",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "test": "jest",

@@ -211,7 +211,6 @@ npm test
 | react-masonry-css                                     |             |
 | react-sticky-state                                    |             |
 | react-twitter-widgets                                 |             |
-| reactjs-popup                                         |             |
 | source-map-explorer                                   |             |
 | styled-components                                     |             |
 | winston                                               |             |
@@ -230,7 +229,9 @@ npm test
 
 - User login with the ability to add comments and like post.
 - Routing for 404
-- Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
+- Case Studies
+  - Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
+  - Create a template for all case studies 
 - Confgiure multiple env
 - Syntax/Code Highlighting
 - Tags - Topics
@@ -240,3 +241,26 @@ npm test
   https://github.com/saadpasta/react-blog-github
 - Add [unsplash](https://unsplash.com/documentation)
   - When adding a blog image a user should be able to use an unsplash image.
+- Sign up to newletter on blog page.
+  - with Brevo
+- Article Updates
+  - Save a blog post to favorites
+  - Save blog post as a draft
+  - Track views to blog post
+  - Like a comment
+  - Handle notifications button on blog post
+  - Allow signed in user the ability to edit post.
+- User Updates
+  - Save user to favorite authors
+  - Follow the author
+  - Update your profile page
+  - View your profile page
+- DevOps
+  - Add Github Actions
+  - Static Scan
+  - Dependency Scan
+  - Lint Errors (ES Lint, Prettier)
+  - Testing (Unit, Integration, E2E)
+  - Upload to EOT
+  - Handle Release
+  - Handle version

@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 import "./Articles.css";
 import Subscribe from "../../Components/Subscribe/Subscribe";
 import ArticleCard from "./ArticleCard";
-// import { auth, login, logout } from '../../services/firebase';
 import { GlobalState } from "../../GlobalState";
 // import Loading from '../../Loading';
 import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';

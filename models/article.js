@@ -45,6 +45,10 @@ const articleSchema = new mongoose.Schema({
     category: {
         type: [categorySchema],
     },
+    categories: {
+        type: Array,
+        required: false   
+    },
     archived: {
         type: Boolean,
         default: false,
@@ -80,6 +84,9 @@ const articleSchema = new mongoose.Schema({
           ref: 'Comments'
         }
     }],
+    createdDate: {
+        type: Date
+    },
     createdAt: {
         type: Date,
         default: Date.now

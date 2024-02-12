@@ -71,7 +71,8 @@
     "build": "react-scripts build",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test": "react-scripts test",
+    "test": "jest",
+    "test:jest": "jest",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },

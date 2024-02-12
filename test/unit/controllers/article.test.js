@@ -1,5 +1,5 @@
-const Article = require('../models/article');
-const { getArticle, createArticle, deleteArticle, updateArticle} = require('../controllers/article');
+const Article = require('../../../models/article');
+const { getArticle, createArticle, deleteArticle, updateArticle} = require('../../../controllers/article');
 const {MongoClient} = require('mongodb');
 const request = require('supertest');
 const mongoose = require('mongoose')

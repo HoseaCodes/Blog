@@ -59,8 +59,20 @@ jobs:
     needs: [static-scan, dependency-scan, lint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: akhileshns/heroku-deploy@v3.13.15 # This is the action
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+      - name: Deploy to Heroku
+        run: |
+          heroku git:remote -a ${{ secrets.HEROKU_APP_NAME }}
+          git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}

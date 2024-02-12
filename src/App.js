@@ -15,7 +15,7 @@ import Register from './Pages/Auth/register';
 import ProLoader from './Components/Loading/ProLoader';
 import Editprofile from './Pages/User/editProfile';
 import { createBrowserHistory } from 'history';
-import Profile from './Pages/User/Profile';
+import Profile from './Pages/User/profile';
 import Layout from './Layout/Layout';
 import Loading from './Loading';
 import Products from './Pages/Products/Products';

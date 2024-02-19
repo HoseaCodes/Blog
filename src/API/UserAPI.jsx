@@ -28,12 +28,13 @@ function UserAPI(token) {
   const [cookies] = useCookies(["cookie-name"]);
 
   useEffect(() => {
-    if (!cookies.accesstoken) setIsLoggedIn(true);
-    if (token) {
+    if (cookies.accesstoken) setIsLoggedIn(true);
+    if (token || isLoggedIn || cookies.accesstoken) {
       const getUser = async () => {
+        const accesstoken = token ? token : cookies.accesstoken;
         try {
           const res = await axios.get("/api/user/info", {
-            headers: { Authorization: token }
+            headers: { Authorization: accesstoken }
           });
           console.log(res, "huh");
           setIsLoggedIn(true);
@@ -46,7 +47,7 @@ function UserAPI(token) {
       };
       getUser();
     }
-  }, [token, cookies, user]);
+  }, [token, cookies]);
 
   const addCart = async product => {
     if (!isLoggedIn) return alert("Please login to continue buying");

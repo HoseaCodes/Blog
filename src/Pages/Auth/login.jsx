@@ -13,11 +13,7 @@ const Login = () => {
   const state = useContext(GlobalState);
   const [user, setUser] = state.userAPI.user;
   const [isLoggedIn, setIsLoggedIn] = state.userAPI.isLoggedIn;
-  console.log(state, "state");
-  console.log(state.userAPI, "state");
-  console.log(state.userAPI.isLoggedIn, "state");
-  console.log(state.userAPI.isLoggedIn[0], "state");
-  console.log(state.userAPI.isLoggedIn[1], "state");
+
   const [pass, setPass] = useState(false);
   const [initialPress, setInitialPress] = useState(0);
   const [rememberMe, setRememberMe] = useState(false);
@@ -82,7 +78,7 @@ const Login = () => {
                 <h2>Log In</h2>
               </div>
               <div className="row login-row">
-                <form onSubmit={loginSubmit} className="form-group">
+                <form onSubmit={loginSubmit} className="">
                   <div className="row login-row">
                     <input
                       className="form__input"

@@ -61,7 +61,10 @@ const App = () => {
               <Route path="/project/:id" exact={true} component={ProjectItem} />
               {/* Showcase */}
               {/* UserManagement */}
-              <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} />
+              <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} >
+                <Profile />
+              </PrivateRoute>
+              {/* <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} /> */}
               <PrivateRoute type={"login"} path="/profile/edit" exact={true} element={Editprofile} />
               {/* UserManagement */}
               {/* AdminManagement */}
@@ -79,7 +82,7 @@ const App = () => {
               <PrivateRoute type={"login"} path="/shop/cart" exact={true} element={Checkout} />
               {/* Shop */}
               {/* 404 */}
-              <Route path="*" component={Error} />
+              {/* <Route component={Error} /> */}
               {/* 404 */}
             </Layout>
           </DataProvider>

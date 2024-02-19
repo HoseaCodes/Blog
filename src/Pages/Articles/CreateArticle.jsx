@@ -3,7 +3,7 @@ import { GlobalState } from "../../GlobalState";
 import Loading from "../../Loading";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
-import "./CreateArticle.css";
+// import "./CreateArticle.css";
 import marked from "marked";
 import { v4 as uuidv4 } from "uuid";
 import Error401 from "../Error/Error401";
@@ -213,14 +213,14 @@ function CreatArticle() {
                 <div className="panel-body">
                   <form className="row g-3" onSubmit={handleSubmit}>
                     <div className="col-md-6">
-                      <div id="div_p_name" className="form-group required">
+                      <div id="div_p_name" className=" required">
                         <label
                           for="p_name"
                           className="control-label requiredField"
                         >
                           Title<span className="asteriskField">*</span>
                         </label>
-                        <div className="controls">
+                        {/* <div className="controls"> */}
                           <input
                             className="input-md emailinput form-control"
                             placeholder="Enter Article Title Name"
@@ -231,11 +231,11 @@ function CreatArticle() {
                             onChange={handleChangeInput}
                             disabled={onEdit}
                           />
-                        </div>
+                        {/* </div> */}
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div id="div_p_name" className="form-group required">
+                      <div id="div_p_name" className=" required">
                         <label
                           for="p_name"
                           className="control-label requiredField"
@@ -257,7 +257,7 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div id="div_p_id" className="form-group required">
+                      <div id="div_p_id" className=" required">
                         <label
                           for="p_id"
                           className="control-label requiredField"
@@ -276,11 +276,11 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6 mb-0">
-                      <div id="div_p_id" className="form-group required">
+                      <div id="div_p_id" className=" required">
                         <label
                           for="tags"
                           className="control-label"
-                          requiredfield
+                          requiredField
                         >
                           {" "}
                           Article Language Tag
@@ -300,7 +300,7 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div id="div_description" className="form-group required">
+                      <div id="div_description" className=" required">
                         <label
                           for="p_name"
                           className="control-label requiredField"
@@ -361,7 +361,7 @@ function CreatArticle() {
                           <label
                             for="markdown"
                             className="control-label"
-                            requiredfield
+                            requiredField
                           >
                             Article Template
                             <span className="asteriskField">*</span>
@@ -393,13 +393,13 @@ function CreatArticle() {
                     <div className="col-md-6">
                       <div
                         id="div_id_downloads"
-                        className="form-group required"
+                        className="required"
                       >
                         <div className="controls">
                           <label
                             for="markdown"
                             className="control-label"
-                            requiredfield
+                            requiredField
                           >
                             Publish To Dev
                             <span className="pr-1 asteriskField">*</span>
@@ -414,13 +414,13 @@ function CreatArticle() {
                       </div>
                       <div
                         id="div_id_downloads"
-                        className="form-group required"
+                        className=" required"
                       >
                         <div className="controls">
                           <label
                             for="markdown"
                             className="control-label"
-                            requiredfield
+                            requiredField
                           >
                             Publish To Medium
                             <span className="pr-1 asteriskField">*</span>
@@ -460,7 +460,7 @@ function CreatArticle() {
                     <div className="col-lg-12 col-md-6 pb-5">
                       <div
                         id="div_description"
-                        className="form-group required row"
+                        className=" required row"
                       >
                         <label
                           for="p_name"
@@ -499,8 +499,6 @@ function CreatArticle() {
                         <StyledButton type="reset">
                           <a href="/blog">Cancel</a>
                         </StyledButton>
-                        {/* <button className="personal-btn" type="submit">Add Article</button> */}
-                        {/* <button className="personal-btn" type="reset"><a href="/blog">Cancel</a> </button> */}
                       </div>
                     </div>
                   </form>

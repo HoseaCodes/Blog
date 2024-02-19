@@ -1,27 +1,28 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
+import Login from "./Pages/Auth/login";
+import Home from "./Pages/Home/Home";
 
 const PrivateRoute = ({ type, exact, path, element }) => {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const isAdmin = localStorage.getItem("isAdmin");
-
   if (type === "login") {
     return isLoggedIn ? (
       <Route path={path} exact={exact} component={element} />
     ) : (
-      <Redirect to="/login" />
+      <Route path={path} exact={exact} component={Login} />
     );
   }
 
   if (type === "admin") {
-    return isAdmin ? (
+    return !isAdmin ? (
       <Route path={path} exact={exact} component={element} />
     ) : (
-      <Redirect to="/" />
+      <Route path={path} exact={exact} component={Home} />
     );
   }
 
-  return <Redirect to="/" />;
+  return <Route path={path} exact={exact} component={Home} />;
 };
 
 export default PrivateRoute;

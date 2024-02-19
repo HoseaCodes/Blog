@@ -65,24 +65,20 @@ async function createArticle(req, res) {
         const { article_id, title, subtitle, markdown, description, images, category, dev, medium, postedBy } = req.body;
 
         if (!images) {
-
           logger.error("No image provided.");
           return res.status(400).json({ msg: "No image upload" });
         }
 
         const article = await Articles.find({ article_id });
-
-        // if (article) {
-
-        //   logger.error("Article already exist.");
-
-        //   return res.status(400).json({ msg: "This article already exists." })
-        // }
+        if (article.length > 0) {
+          logger.error("Article already exist.");
+          return res.status(400).json({ msg: "This article already exists." })
+        }
 
         const newArticle = new Articles({
-          article_id, title, subtitle, markdown, description, images, category, postedBy
+          article_id, title, subtitle, markdown, description, images, postedBy
         })
-
+      
         try {
           if (dev) {
             await axios.post('https://dev.to/api/articles',
@@ -131,9 +127,8 @@ async function createArticle(req, res) {
 
         res.json({ msg: "Created a new article" });
     } catch (err) {
-
+          console.log(err, "error");
         logger.error(err)
-
         return res.status(500).json({ msg: err.message })
     }
 }

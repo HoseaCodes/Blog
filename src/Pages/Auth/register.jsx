@@ -173,7 +173,7 @@ const Register = () => {
 								<h2>Register</h2>
 							</div>
 							<div className="row login-row">
-								<form onSubmit={registerSubmit} className="form-group">
+								<form onSubmit={registerSubmit} className="">
 									<div className="row login-row">
 										<input
 											className="form__input"

@@ -17,9 +17,14 @@ function AITemplate({ showAITemplate, setShowAITemplate }) {
     const openai = new OpenAIApi(configuration);
 
     const doStuff = async () => {
-        let object = { ...option, prompt: input };
-        const response = await openai.createCompletion(object);
-        setResult(response.data.choices[0].text);
+        try {
+            let object = { ...option, prompt: input };
+            const response = await openai.createCompletion(object);
+            setResult(response.data.choices[0].text);
+        } catch (error) {
+            console.log(error);
+            alert("Error in AI", error);
+        }
     };
 
     const handleChangeInputOPENPAI = e => {

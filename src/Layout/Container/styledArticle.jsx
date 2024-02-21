@@ -154,6 +154,7 @@ export const SideUserContainer = styled.div`
   ${props => props.ButtonGroup && css`
     flex-direction: row;
     margin-top: 8%;
+    justify-content: space-evenly;
   `}
   ${props => props.Main && css`
   padding: 6%;

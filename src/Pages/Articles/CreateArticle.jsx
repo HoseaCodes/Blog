@@ -3,15 +3,14 @@ import { GlobalState } from "../../GlobalState";
 import Loading from "../../Loading";
 import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
-// import "./CreateArticle.css";
+import "./CreateArticle.css";
 import marked from "marked";
 import { v4 as uuidv4 } from "uuid";
 import Error401 from "../Error/Error401";
-import { StyledButton } from "../../Layout/Button/styledButton";
 import { articleTempltes } from "./ArticleTemplate";
-import SimpleForm from "../../Components/SImpleForm/simpleForm";
 import Preview from "../../Components/Article/Preview";
 import AITemplate from "../../Components/OpenAI/AITemplate";
+import { Button } from "../../Components/Button/Button";
 
 function CreatArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
@@ -73,6 +72,11 @@ function CreatArticle() {
       now = new Date();
       if (now.getTime() > stop) return;
     }
+  }
+
+  function handleClick(e) {
+    e.preventDefault();
+    window.location.href = "/blog";
   }
 
   useEffect(() => {
@@ -155,9 +159,14 @@ function CreatArticle() {
           images
         });
       } else {
-        setArticle({ ...article, ["article_id"]: uuidv4() });
+        setArticle({
+          ...article,
+          ["article_id"]: uuidv4(),
+          category: selectedCategory,
+          id: user.id
+        });
         console.log(article);
-        await axios.post("/api/articles", { ...article, images, ...user });
+        await axios.post("/api/articles", { ...article, images, ...user});
         setImages(false);
         setArticle(initialState);
       }
@@ -221,16 +230,16 @@ function CreatArticle() {
                           Title<span className="asteriskField">*</span>
                         </label>
                         {/* <div className="controls"> */}
-                          <input
-                            className="input-md emailinput form-control"
-                            placeholder="Enter Article Title Name"
-                            type="text"
-                            name="title"
-                            required
-                            value={article.title}
-                            onChange={handleChangeInput}
-                            disabled={onEdit}
-                          />
+                        <input
+                          className="input-md emailinput form-control"
+                          placeholder="Enter Article Title Name"
+                          type="text"
+                          name="title"
+                          required
+                          value={article.title}
+                          onChange={handleChangeInput}
+                          disabled={onEdit}
+                        />
                         {/* </div> */}
                       </div>
                     </div>
@@ -270,7 +279,7 @@ function CreatArticle() {
                             name="article_id"
                             value={uuidv4()}
                             onChange={handleChangeInput}
-                            disabled
+                            // disabled
                           />
                         </div>
                       </div>
@@ -322,7 +331,7 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div id="div_id_image" className="form-group required">
+                      <div id="div_id_image" className="required">
                         <label
                           for="id_image"
                           className="control-label requiredField"
@@ -381,7 +390,7 @@ function CreatArticle() {
                             className="form-control mb"
                             style={{ height: "auto" }}
                           >
-                            {articleTempltes.map(article => (
+                            {articleTempltes.map((article) => (
                               <option key={article.id} value={article.name}>
                                 {article.name}
                               </option>
@@ -391,10 +400,7 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div
-                        id="div_id_downloads"
-                        className="required"
-                      >
+                      <div id="div_id_downloads" className="required">
                         <div className="controls">
                           <label
                             for="markdown"
@@ -407,15 +413,12 @@ function CreatArticle() {
                           <input
                             type="checkbox"
                             name="dev"
-                            onChange={e => handlePublish(e)}
+                            onChange={(e) => handlePublish(e)}
                             aria-label="Checkbox for following text input"
                           />
                         </div>
                       </div>
-                      <div
-                        id="div_id_downloads"
-                        className=" required"
-                      >
+                      <div id="div_id_downloads" className=" required">
                         <div className="controls">
                           <label
                             for="markdown"
@@ -428,7 +431,7 @@ function CreatArticle() {
                           <input
                             type="checkbox"
                             name="medium"
-                            onChange={e => handlePublish(e)}
+                            onChange={(e) => handlePublish(e)}
                             aria-label="Checkbox for following text input"
                           />
                         </div>
@@ -442,9 +445,9 @@ function CreatArticle() {
                         <select
                           className="blog__categoryList__select"
                           value={selectedCategory}
-                          onChange={e => setselectedCategory(e.target.value)}
+                          onChange={(e) => setselectedCategory(e.target.value)}
                         >
-                          {allBlogCategory?.map(blogCat => {
+                          {allBlogCategory?.map((blogCat) => {
                             return (
                               <option value={blogCat.name}>
                                 {" "}
@@ -458,10 +461,7 @@ function CreatArticle() {
 
                     {/* <ReactMarkdown source={input} className="markdown" /> */}
                     <div className="col-lg-12 col-md-6 pb-5">
-                      <div
-                        id="div_description"
-                        className=" required row"
-                      >
+                      <div id="div_description" className=" required row">
                         <label
                           for="p_name"
                           className="text-center control-label col-md-12 requiredField"
@@ -484,7 +484,7 @@ function CreatArticle() {
                           <div
                             className="preview"
                             dangerouslySetInnerHTML={{
-                              __html: marked(article.markdown)
+                              __html: marked(article.markdown),
                             }}
                           ></div>
                         </div>
@@ -494,11 +494,14 @@ function CreatArticle() {
                     <div className="form-group">
                       <div className="mauto maxwidth col-md-12 text-center d-flex justify-content-center">
                         <br /> <br />
-                        <StyledButton type="submit"> Add Article</StyledButton>
+                        <Button primary label="Add Article" type="submit" />
                         &nbsp;&nbsp;
-                        <StyledButton type="reset">
-                          <a href="/blog">Cancel</a>
-                        </StyledButton>
+                        <Button
+                          primary
+                          onClick={handleClick}
+                          label={`Cancel`}
+                          type="reset"
+                        />
                       </div>
                     </div>
                   </form>

@@ -42,7 +42,7 @@ const MainContainer = (props) => {
           <JustifyContent AlignCenter>
             <CircleImage src={avatar} alt="author" />
             <div>
-              <NamePlate>{user.name || "Will Smith"}</NamePlate>
+              <NamePlate>Author: {user.name || "Will Smith"}</NamePlate>
               <WarppedDate>
                 <GrayText>{timeFormater}</GrayText>
                 <span>&nbsp;&#183;&nbsp;</span>
@@ -59,7 +59,7 @@ const MainContainer = (props) => {
           <BlogSubTitle>{subtitle}</BlogSubTitle>
           <BlogDisplayImage src={images.url} alt={title} />
           <BlogPhotoCredit>
-            Photo Credit by &nbsp;<u>You</u>
+            Photo Credit by &nbsp;<u>{user.name}</u>
           </BlogPhotoCredit>
           <BlogCard>
             <br />

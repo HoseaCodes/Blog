@@ -8,7 +8,7 @@ import { MdEmail } from "react-icons/md";
 import ProjectHighlight from "../../Components/Project/projectHighlight";
 import Hero from "../../Components/Hero/hero";
 import { StyledHr } from "../../Layout/Hr/styledHr";
-import { StyledButtonATag } from "../../Layout/Button/styledButton";
+import { AncorButton } from "../../Components/Button/AncorButton";
 
 const Home = () => {
   return (
@@ -81,17 +81,17 @@ const Home = () => {
           </div>
           <StyledHr Primary />
           <br />
-          <div>
-            <StyledButtonATag
-              Primary
+          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+            <AncorButton
+              primary
               href="#top"
+              target="_self"
+              label="Back to Top"
               data-aos="fade-right"
               data-aos-offset="200"
               data-aos-duration="3000"
               data-aos-easing="ease-in"
-            >
-              Back to the top
-            </StyledButtonATag>
+            />
           </div>
         </div>
       </section>

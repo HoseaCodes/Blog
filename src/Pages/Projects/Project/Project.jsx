@@ -114,30 +114,34 @@ const ProjectItem = () => {
               <div className="text-loading-overlay is-reveal"></div>
               <h3 className="hero-single-work-subtitle">{headline}</h3>
             </div>
-            <div className="app">
-              <a
-                href={app}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="button highlight"
-              >
-                <i className="fa fa-apple fa-lg"></i>Get The App
-              </a>
-            </div>
+            {
+              app && (
+                <div className="app">
+                  <a
+                    href={app}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button highlight"
+                  >
+                    <i className="fa fa-apple fa-lg"></i>Get The App
+                  </a>
+                </div>
+              )
+            }
           </div>
           <div className="hero-single-context-stripe">
             <div className="project-content">
               <ul className="context-stripe-focus-area is-loaded">
                 <li>
-                  <strong>Role</strong>
-                  <span className="stripe-baffle">{role}</span>
+                  <strong>Role:</strong>
+                  <span className="stripe-baffle">{` ${role}`}</span>
                 </li>
                 <li>
-                  <strong>Context</strong>{" "}
+                  <strong>Context:</strong>{" "}
                   <span className="stripe-baffle"> {context}</span>
                 </li>
                 <li>
-                  <strong>Period</strong>{" "}
+                  <strong>Period:</strong>{" "}
                   <span className="stripe-baffle"> {date}</span>
                 </li>
               </ul>
@@ -146,7 +150,6 @@ const ProjectItem = () => {
         </div>
 
         <StyledHr Primary />
-        <hr className="header-hr" />
         <main className="single-work">
           <section className="single-work-intro-section">
             <div className="single-work-giga-text">
@@ -287,7 +290,12 @@ const ProjectItem = () => {
                           {typeface}
                         </h5>
                         <img
-                          style={{ objectFit: "contain", padding: "30px" }}
+                          style={{
+                            objectFit: "contain",
+                            padding: "30px",
+                            backgroundColor: "#333333",
+                            height: "25 rem",
+                          }}
                           src={typography[typeface]}
                           alt=""
                           srcset=""

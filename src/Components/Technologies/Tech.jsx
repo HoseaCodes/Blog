@@ -30,33 +30,53 @@ class Tech extends Component {
         const imgSlide = {"AWS": AWS, "azure": Azure, "Architecture": Arch, 
         "firebase": Firebase, "github": Github, "gitlab": GitLab, "splunk": Splunk, "npm": NPM,
         "springboot": SpringBoot, "terraform": Terraform, "react": Reactt, "tailwind": Tailwind,
-        "DevOps": DevOps, "bootstrap": Bootstrap, "javascript": JS, "Django": Django, "mongodb": MongoDB, "nodejs": Node, "postgresql": postgresql, "python": Py, 
-        "swift": Swift,"jquery": JQuery, "java": 'https://i.imgur.com/wiEM1zo.png',"solidity": 'https://i.imgur.com/NhpXJN2.png'};
+        "DevOps": DevOps, "bootstrap": Bootstrap, "javascript": JS, "Django": Django, "mongodb": MongoDB,
+        "nodejs": Node, "postgresql": postgresql, "python": Py, 
+        "swift": Swift,"jquery": JQuery, "java": 'https://i.imgur.com/wiEM1zo.png',"solidity": 'https://i.imgur.com/NhpXJN2.png'
+        };
+        function getRandomObjectKeys(obj, count) {
+          const keys = Object.keys(obj);
+          const shuffledKeys = keys.sort(() => 0.5 - Math.random());
+          return shuffledKeys.slice(0, count);
+        }
+
+        const selectedObjects = getRandomObjectKeys(imgSlide, 14);
         return (
-            <>
-                <div className="tech-container">
-                    <h2
-                    data-aos="fade-down"
-                    data-aos-offset="500"
-                    data-aos-duration="3000"
-                    data-aos-easing="ease-in"
-                    className='tech-title'>Technologies</h2>
+          <>
+            <div className="tech-container">
+              <h2
+                data-aos="fade-down"
+                data-aos-offset="500"
+                data-aos-duration="3000"
+                data-aos-easing="ease-in"
+                className="tech-title"
+              >
+                Technologies
+              </h2>
 
-                    <div className="client-slider">
-                        <div className="client-slide-track">
-                            {Object.keys(imgSlide).map((img) => {
-                                return (
-                                    <div  className="client-slide" key={img}>
-                                        <img style={{width: "auto", height: "-webkit-fill-available"}} src={imgSlide[img]} height="50" width="150" alt={img} />
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
+              <div className="client-slider">
+                <div className="client-slide-track">
+                  {selectedObjects.map((img) => {
+                    return (
+                      <div className="client-slide" key={img}>
+                        <img
+                          style={{
+                            width: "auto",
+                            height: "-webkit-fill-available",
+                          }}
+                          src={imgSlide[img]}
+                          height="50"
+                          width="150"
+                          alt={img}
+                        />
+                      </div>
+                    );
+                  })}
                 </div>
-
-            </>
-        )
+              </div>
+            </div>
+          </>
+        );
     }
 }
 

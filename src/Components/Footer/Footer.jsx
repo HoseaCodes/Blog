@@ -156,7 +156,7 @@ const Footer = (props) => {
                 </li>
               </ul>
               {/* <!--foote_bottom_ul_amrc ends here--> */}
-              <p className="text-center">
+              <p className="copyright">
                 All Rights Reserved, &copy; {year} Hosea Codes
               </p>
               <SocialMediaTags />

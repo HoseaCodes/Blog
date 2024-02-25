@@ -1,3 +1,24 @@
+/*
+Projects: 
+WIP - POC - MVP - Dev - Staging - Prod
+Pure CSS - https://pure-css-chi.vercel.app/ - Prod
+User Management - https://user-management-iota.vercel.app/ - POC
+Social Ring - https://www.social-ring.com/ - Prod
+Kidvercity - https://www.kidvercity.com/ - MVP
+UI Heat - https://uiheat.com - POC
+LeadGen - https://acleadgeneration-d6957f321f1b.herokuapp.com/docs - POC
+SneakerAPI - https://sneaker-api-htx.herokuapp.com/ - POC
+CareerConnect - https://careerconnect-htx.herokuapp.com/ - POC
+Analytics - https://analytics-htx.herokuapp.com/ - Dev
+AI-Quiz - https://www.npmjs.com/package/ai-quiz - POC
+WriteMind - https://www.writemind.io/ - Dev
+CareerComposer - https://www.careercomposer.com/ - Dev
+- Add Diagrams
+- User Flows
+- Tech Stacks
+- Key Features
+- Pictures or Gifs of Key Features
+*/
 export const projectData = [
   {
     id: 1,

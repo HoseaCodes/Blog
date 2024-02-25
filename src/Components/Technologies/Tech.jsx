@@ -27,12 +27,31 @@ import './Technologies.css';
 class Tech extends Component {
 
     render() {
-        const imgSlide = {"AWS": AWS, "azure": Azure, "Architecture": Arch, 
-        "firebase": Firebase, "github": Github, "gitlab": GitLab, "splunk": Splunk, "npm": NPM,
-        "springboot": SpringBoot, "terraform": Terraform, "react": Reactt, "tailwind": Tailwind,
-        "DevOps": DevOps, "bootstrap": Bootstrap, "javascript": JS, "Django": Django, "mongodb": MongoDB,
-        "nodejs": Node, "postgresql": postgresql, "python": Py, 
-        "swift": Swift,"jquery": JQuery, "java": 'https://i.imgur.com/wiEM1zo.png',"solidity": 'https://i.imgur.com/NhpXJN2.png'
+        const imgSlide = {
+          AWS: AWS,
+          azure: Azure,
+          Architecture: Arch,
+          firebase: Firebase,
+          github: Github,
+          gitlab: GitLab,
+          splunk: Splunk,
+          npm: NPM,
+          springboot: SpringBoot,
+          terraform: Terraform,
+          react: Reactt,
+          tailwind: Tailwind,
+          DevOps: DevOps,
+          bootstrap: Bootstrap,
+          javascript: JS,
+          Django: Django,
+          mongodb: MongoDB,
+          nodejs: Node,
+          postgresql: postgresql,
+          python: Py,
+          swift: Swift,
+          jquery: JQuery,
+          java: "https://i.imgur.com/wiEM1zo.png",
+          solidity: "https://i.imgur.com/K662O2U.png",
         };
         function getRandomObjectKeys(obj, count) {
           const keys = Object.keys(obj);

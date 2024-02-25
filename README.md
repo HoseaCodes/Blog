@@ -71,136 +71,15 @@ Dependencies used:
 
 ## Frontend
 
-### Typography
-
-Fluid font sizes - The body is set to 100% causing the font to adjust the font sizes to the browser defaults.
-
-Best Practices:
-
-- No pixels are used to calculate sizes
-- `em` or `rem` are used to calculate font-sizes
-
-### Images
-
-Width - Set max-width to 100% causing the images to grow or shrink depending on the size of the parent column.
-
-Best Practices:
-
-- Have at least 150 ppi at least 300 is recommended
-
-  How to find ppi for Mac users:
-
-  - Open your image in Preview.
-  - Up at the top, click "Tools" > "Adjust Size"
-  - Uncheck the box labeled "Resample Image"
-  - Next, using inches, change the size of your artwork to your desired print size.
-  - The resolution should be at least 300 pixels per inch.
-
-- Compress the images
-  You can use tools like https://compresspng.com/ to compress the image
-  - The browser will optimize the image due to image being so large. They will size the image down to shrink it to the webpage.
-- Alterantively, you can look into srcset
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/Frontend) for details.
 
 ## Backend
 
-### Business Logic
-
-### Enpoints
-
-Test enpoints on test server:
-
-Simply visit [Test Server](https://app.swaggerhub.com/apis-docs/HoseaCodes/Hoseacodes/1.0.0#/)
-
-Test endpoints locally by:
-
-```bash
-/* Change directories into Swagger Server */
-
-cd swagger-server
-
-/* Run Server */
-
-npm start
-
-/* The server will be live on http://localhost:8080/docs */
-```
-
-After completing the instructions to run locally click here: [Local Server](http://localhost:8080/docs)
-
-- /articles
-- /articles/:id
-- /upload
-- /destory
-- /register
-- /login
-- /refresh_token
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
 ## Dev Ops
 
-### Process Manager
-
-This project uses PM2 to keep the application alive due to faulty errors, server changes or file changes. Visit https://pm2.io/docs/plus/overview/ for details.
-
-### Logger
-
-This project uses Winston to log events into our log manager. Visit https://github.com/winstonjs/winston for details.
-
-This project uses Morgan to log events inside of the terminal. Visit https://github.com/expressjs/morgan for details.
-
-## Enviornments
-
-[env-cmd](https://www.digitalocean.com/community/tutorials/nodejs-take-command-with-env-cmd)
-
-### Local
-
-### Staging
-
-### Production
-
-#### Performance
-
-Sentry is used for real-time production montioring.
-
-### Development
-
-#### Performance
-
-React profiler is used to montior the performance of the application while in development.
-
-How to run:
-
-- Create a production build
-
-```js
-npm run build -- --profile
-```
-
-- In Chrome dev tools place the throttle on low-end mobile
-- In the profiler enable: "Record why wach component rendered while profiling"
-- Target orange or darker commits
-- Check if it's a state management problem or try to solve it with memoization (i.e. callback or memo)
-
-This project uses EditorConfig to standardize text editor configuration. Visit https://editorconfig.org for details.
-
-This project uses ESLint to detect suspicious code in JavaScript files. Visit https://eslint.org for details.
-
-- Home Screen 618ms
-- Portfolio Screen 149 ms
-- Portfolio Case Study
-- Blogs Screen
-- Blog Post Screen
-- About Screen
-- Contact Screen
-
-### Testing
-
-This project uses Jest for testing. Visit https://jestjs.io for details.
-
-To execute tests:
-
-```bash
-npm test
-```
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 
 ## 3rd Party Packages
 
@@ -230,11 +109,7 @@ npm test
 
 ## External APIs
 
-- [Paypal]()
-- [cloudinary]()
-- [Send Grid](https://app.sendgrid.com/)
-- [Get Form](https://getform.io/)
-- [Swagger API](https://support.smartbear.com/swaggerhub/docs/about.html)
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 
 ## Unsolved Problems
 

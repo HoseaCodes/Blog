@@ -246,12 +246,16 @@ npm test
   - Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
   - Create a template for all case studies 
 - Confgiure multiple env
+  - [x] Staging - Dev
+  - [ ] Pass in env to map to env
 - Syntax/Code Highlighting
 - Tags - Topics
 - Reactions
 - ~~View Comment~~
 - ~~Minutes Read~~
+
   https://github.com/saadpasta/react-blog-github
+
 - Add [unsplash](https://unsplash.com/documentation)
   - When adding a blog image a user should be able to use an unsplash image.
 - Sign up to newletter on blog page.
@@ -259,6 +263,7 @@ npm test
 - Article Updates
   - Save a blog post to favorites
   - Save blog post as a draft
+  - Schedule blog post
   - Track views to blog post
   - Like a comment
   - Handle notifications button on blog post
@@ -277,3 +282,25 @@ npm test
   - Upload to EOT
   - Handle Release
   - Handle version
+- Games 
+  - Create Game Page
+- Shop 
+  - Create Shop Page
+  - Link shop page with etsy shop
+  - Allow ability to put in cart
+  - Allow ability to checkout
+  - Allow the Ability to see orders
+- Projects
+  - Hightlight projects
+    - Pure CSS
+    - Update Social Ring
+    - Update Kidvercity
+    - LeadGen
+    - SneakerAPI
+    - CareerConnect - When finished
+    - UIHeat - When Finished
+    - Analytics - When finished
+    - AI Quiz - When finished
+    - Writemind
+    - CareerCompose
+    - Budget App - When finished

@@ -300,32 +300,38 @@ const RightColumn = (props) => {
               onChange={updateSearch}
             />
           </MarginTop>
-          <SideUserContainer Primary>
-            <CircleImage
-              Secondary
-              src={
-                currentUser.avatar ||
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
-              }
-              alt="author"
-            />
-            <UserInfo Padding4>{currentUser.name || "Will Smith"}</UserInfo>
-            <UserInfo GrayWPadding>119 Followers</UserInfo>
-            <UserInfo GrayWPadding>
-              Software Engineer | Python Programmer | Java Programmer | Tech
-              Enthusiast | JavaScript Programmer | React Lover | Mobile
-              Developer
-            </UserInfo>
-          </SideUserContainer>
-          <SideUserContainer ButtonGroup>
-            <Button size="small" backgroundColor="green" label="Follow" />
-            <Button
-              icon={<MdBookmarkBorder style={{ fontSize: "2rem", position: 'absolute', left: '66%',  top: '59%' }} />}
-              size="small"
-              backgroundColor="green"
-              shape={"round"}
-            />
-          </SideUserContainer>
+          {
+            isLoggedIn && (
+              <>
+                <SideUserContainer Primary>
+                  <CircleImage
+                    Secondary
+                    src={
+                      currentUser.avatar ||
+                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
+                    }
+                    alt="author"
+                  />
+                  <UserInfo Padding4>{currentUser.name || "Will Smith"}</UserInfo>
+                  <UserInfo GrayWPadding>119 Followers</UserInfo>
+                  <UserInfo GrayWPadding>
+                    Software Engineer | Python Programmer | Java Programmer | Tech
+                    Enthusiast | JavaScript Programmer | React Lover | Mobile
+                    Developer
+                  </UserInfo>
+                </SideUserContainer>
+                <SideUserContainer ButtonGroup>
+                  <Button size="small" backgroundColor="green" label="Follow" />
+                  <Button
+                    icon={<MdBookmarkBorder style={{ fontSize: "2rem", position: 'absolute', left: '66%',  top: '59%' }} />}
+                    size="small"
+                    backgroundColor="green"
+                    shape={"round"}
+                  />
+                </SideUserContainer>
+              </>
+            )
+          }
           <SideUserContainer Primary>
             <PostText>Related</PostText>
             {recentPosts.map((article) => {

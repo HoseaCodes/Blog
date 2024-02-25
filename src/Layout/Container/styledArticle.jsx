@@ -49,7 +49,7 @@ export const JustifyContent = styled.div`
   ${props => props.MiniPost && css`
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 100%;
     margin-top: 4%;
     `}
     ${props => props.SpaceAroundPaddingRight && css`

@@ -179,3 +179,75 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
     - Writemind
     - CareerCompose
     - Budget App - When finished
+  - Landing Page
+    - Cloud Portfolio
+      - https://cassanellicarlo.com/
+      - https://djomegni.com/
+    - AI Portfolio
+      - https://kozodoi.me/portfolio/
+      - http://www.ericwadkins.com/
+      - https://github.com/thavlik/machine-learning-portfolio?tab=readme-ov-file
+      - https://aksh-ai.com/
+      - https://medium.com/muthoni-wanyoike/building-a-strong-ai-portfolio-showcase-your-skills-to-employers-d6be0c999f0a
+      - https://www.projectpro.io/article/ml-projects-ideas-with-source-code/474
+      - https://github.com/nitsuga1986/machine-learning-nd-portfolio
+    - DevOps Portfolio
+      - https://dev.to/softwaresennin/build-a-stellar-devops-portfolio-with-no-prior-experience-jp8
+      - https://medium.com/@AnnAfame/how-to-build-your-projects-portfolio-as-a-junior-devops-engineer-252b554f2291
+      - https://troyingram.net/
+      - https://adityacprtm.dev/portfolio
+      - https://adityagundecha.com/
+      - https://www.mayankdevops.com/
+      - https://www.jodywan.com/
+      - https://www.projectpro.io/article/real-time-devops-projects-for-practice/585
+      - https://www.surajdhakre.xyz/projects
+      - https://www.knowledgehut.com/blog/devops/devops-projects#devops%C2%A0project-ideas
+    - FrontEnd Porfolio
+      - https://itssharl.ee/fr
+      - https://www.behance.net/gallery/186671031/Portfolio-for-Frontend-Developer?tracking_source=search_projects|frontend+portfolio&l=7 or https://www.behance.net/gallery/186671031/Portfolio-for-Frontend-Developer
+      - https://tamalsen.dev/
+      - https://dunks1980.com/
+      - https://bepatrickdavid.com/
+      - https://www.lauren-waller.com/
+      - https://vanholtz.co/
+      - https://resn.co.nz/
+      - https://www.seyi.dev/?ref=catalins.tech
+      - https://cydstumpel.nl/
+    - Backend Dev
+      - https://blog.hubspot.com/website/backend-projects
+      - https://blog.devgenius.io/designing-a-backend-developer-portfolio-website-a-ux-case-study-5881236ec36b
+      - https://www.youtube.com/watch?v=nIracKeqsFk
+    - Game Dev
+      - https://bruno-simon.com/
+      - http://www.rleonardi.com/interactive-resume/?ref=hackernoon.com
+      - https://caferati.me/
+      - https://jesse-zhou.com/
+    - Mechnical Engineer
+      - https://mitcommlab.mit.edu/meche/commkit/portfolio/
+      - https://www.freelance.pizza/post/build-a-stunning-engineering-portfolio
+      - https://thanhvtran.com/
+      - https://static1.squarespace.com/static/5605c610e4b06b221b9e1b52/t/5a9b0a1c0d9297b125485029/1520110148892/Sienna+Magee+Portfolio+v2.pdf
+      - https://www.hannahgazdus.com/
+      - https://www.tjwatson.net/
+      - https://www.williamsadowski.com/Portfolio/DesignPortfolio_Sadowski.pdf
+      - https://mjaspeg.wixsite.com/mjaspe
+      - https://www.hardwareishard.net/portfolio-database
+      - https://fwachter.github.io/
+      - https://sites.google.com/view/sethschafferportfolio/home
+      - https://www.colinkeil.com/
+      - https://evangrant.wordpress.ncsu.edu/
+    - Electrical Engineer
+      - https://www.jeremyblum.com/portfolio/
+      - https://priswidjaja.wixsite.com/portfolio
+      - https://slidesgo.com/theme/electrical-engineer-portfolio
+      - https://twcarobotics.com/engineering-notebook/
+      - https://ftcbrowncoats.org/wp-content/uploads/2021/05/Engineering-Portfolio.pdf
+    - Robotics Engineer
+      - https://www.mccormick.northwestern.edu/robotics/curriculum/featured-project-portfolios.html
+      - https://www.kuriosityrobotics.com/_files/ugd/065d5b_84b3c96fc00c4ac7bedb8852eeddec67.pdf?index=true
+      - https://ethanholand.com/
+      - https://www.jesseweisberg.com/
+      - https://campussuite-storage.s3.amazonaws.com/prod/1558774/0fe95a24-a31d-11e9-aabe-12253009c2da/2378222/297345ce-9355-11ec-981c-0e9cb3837b5b/file/RoboClovers%20FTC%202021-2022%20Engineering%20Portfolio%20(rev%201.10.21).pdf
+    - Architect 
+      - https://www.schabell.org/2022/05/portfolio-architecture-examples-application-development-collection.html
+      - https://spetrescu.ro/

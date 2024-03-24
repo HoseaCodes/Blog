@@ -7,11 +7,8 @@ import Loading from '../Loading/ProLoader';
 import ProductItem from './ProductItem';
 import { GlobalState } from '../../GlobalState';
 import './Products.css';
-// import NavBar from '../NavBar/NavBar';
-// import Footer from '../Footer/Footer';
 
 const Products = () => {
-
     const state = useContext(GlobalState)
     const [products, setProducts] = state.productsAPI.products
     const [isAdmin] = state.userAPI.isAdmin

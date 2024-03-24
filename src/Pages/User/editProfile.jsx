@@ -99,13 +99,12 @@ console.log(avatar)
 
     return (
         <>
-            <NavBar />
             <div className="create_article" >
                 <div className="container fluid col-md-12">
                     <div id="signupbox" >
                         <div className="panel panel-default">
                             <div className="panel-heading">
-                            <a href="/edit"><div className="panel-title text-center"> Edit Profile</div></a>
+                                <div className="panel-title text-center"> Edit Profile</div>
                             </div>
                             <div className="panel-body" >
                                 <form onSubmit={handleSubmit} className="row g-3" >
@@ -287,7 +286,6 @@ console.log(avatar)
                 </div>
             </div>
             <hr style={{ background: 'rgb(235,183,65)', width: '100%' }} />
-            <Footer />
         </>
     )
 }

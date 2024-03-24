@@ -4,8 +4,6 @@ import {CircleImage} from '../../Layout/Image/styledImage';
 import { GlobalState } from '../../GlobalState';
 import axios from "axios";
 import moment from 'moment-timezone'
-import NavBar from '../NavBar/NavBar';
-import Footer from '../Footer/Footer';
 import { useHistory } from 'react-router-dom';
 
 const initialState = {
@@ -83,7 +81,6 @@ const {name, email, password, role} = createdUser;
   const addUserView = () => {
     return (
       <>
-        <NavBar/>
         <div className="create_product" style={{minHeight: '60vh', display: 'flex', alignItems: 'center'}}>
           <Row>
             <h3>Add User</h3>
@@ -127,7 +124,6 @@ const {name, email, password, role} = createdUser;
                 <div  onClick={() => setUserView(false)}>Cancel</div>
             </form>
         </div>
-        <Footer/>
       </>
   )}
 
@@ -136,7 +132,6 @@ const {name, email, password, role} = createdUser;
               {userView && addUserView()}
               {!userView &&
               <>
-              <NavBar/>
               <Container style={{height: '80vh'}}>
                 <h2 className="text-center" style={{padding:"1em"}}>User Management</h2>
                 <div style={{textAlign:'left'}}>
@@ -179,7 +174,6 @@ const {name, email, password, role} = createdUser;
                       </Table>
                   </Row>
                 </Container>
-                <Footer/>
               </>
               }
             </>

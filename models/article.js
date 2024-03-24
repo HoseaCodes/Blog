@@ -6,6 +6,13 @@ import { JSDOM } from 'jsdom';
 
 const dompurify = createDomPurify(new JSDOM().window);
 
+const categorySchema = new mongoose.Schema({
+  categoryName: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category",
+  },
+});
+
 const articleSchema = new mongoose.Schema({
     article_id: {
         type: String,
@@ -13,10 +20,10 @@ const articleSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    // postedBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Users'
-    // },
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     title: {
         type: String,
         required: true,
@@ -36,9 +43,17 @@ const articleSchema = new mongoose.Schema({
         default: "https://i.imgur.com/19i5Whc.png",
     },
     category: {
-        type: [String],
+        type: [categorySchema],
+    },
+    categories: {
+        type: Array,
+        required: false   
     },
     archived: {
+        type: Boolean,
+        default: false,
+    },
+    draft: {
         type: Boolean,
         default: false,
     },
@@ -50,21 +65,28 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // tags: {
-    //   type: [String]
-    // },
-    // slug: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
-    // comments: [{
-    //     text: String,
-    //     postedBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: 'Users'
-    //     }
-    // }],
+    likes: {
+        type: Number,
+        default: 0
+    },
+    tags: {
+      type: [String]
+    },
+    slug: {
+        type: String,
+        // required: true,
+        unique: true
+    },
+    comments: [{
+        text: String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Comments'
+        }
+    }],
+    createdDate: {
+        type: Date
+    },
     createdAt: {
         type: Date,
         default: Date.now

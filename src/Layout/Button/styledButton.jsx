@@ -8,38 +8,11 @@ export const StyledDivButton = styled.div`
   margin-top: 5rem;
   color: white;
   margin-bottom: 5rem;
-  ${props => props.Primary && css`
+  ${(props) =>
+    props.Primary &&
+    css`
       background: rgb(235, 183, 65);
-  `}
-`;
-
-export const ReadMore = styled.button`
-  margin-top: 8%;
-  text-align: center;
-  background: green;
-  color: white;
-  border-radius: 20px;
-  padding: 1.5% 3%;
-`;
-
-export const ArticleBtn = styled.button`
-  background: green;
-  padding: 1.5% 3%;
-  border-radius: 60px;
-  color: white;
-  font-size: 1.8rem;
-  display: flex;
-  align-items: center;
-  ${props => props.RightColumn && css`
-  background: black;
-  padding: 1.5% 15%;
-  flex-direction: column;
-  `}
-  ${props => props.Follow && css`
-  padding: 1.5% 4%;
-  flex-direction: column;
-  margin-right: 2%;
-`}
+    `}
 `;
 
 export const StyledButtonH2 = styled.h2`
@@ -97,6 +70,9 @@ export const StyledButtonATag = styled.a`
 `;
 
 export const StyledButton = styled.button`
+  font-weight: 700;
+  border-radius: 3em;
+  line-height: 1;
   border: 2px solid #204740;
   box-sizing: inherit;
   cursor: pointer;
@@ -115,7 +91,9 @@ export const StyledButton = styled.button`
     background-color: #204740;
     color: #fff;
   }
-  ${props => props.Primary && css`
+  ${(props) =>
+    props.Primary &&
+    css`
       display: flex;
       justify-content: center;
       text-transform: uppercase;
@@ -132,5 +110,12 @@ export const StyledButton = styled.button`
         bottom: 0 !important;
         width: 40%;
       }
-  `}
+    `}
+  ${(props) =>
+    props.disabled &&
+    css`
+      border: 1px solid #999999;
+      background-color: #cccccc;
+      color: #666666;
+    `}
 `;

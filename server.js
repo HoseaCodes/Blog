@@ -8,6 +8,7 @@ import cors from 'cors';
 import bodyParser from "body-parser";
 import cookieParser from 'cookie-parser'
 import articleRouter from './routes/articles.js';
+import categoryRouter from './routes/category.js';
 import uploadRouter from './routes/upload.js';
 import paymentRouter from './routes/payment.js';
 import productRouter from './routes/product.js';
@@ -49,10 +50,11 @@ const limiter = rateLimit({
 })
 
 // Apply the rate limiting middleware to all requests
-app.use(limiter);
+// app.use(limiter);
 
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);
+app.use('/api', categoryRouter);
 app.use('/api', uploadRouter);
 app.use('/api', paymentRouter);
 app.use('/api', productRouter);

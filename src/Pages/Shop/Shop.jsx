@@ -1,6 +1,4 @@
 import React from 'react';
-import Footer from '../../Components/Footer/Footer';
-import NavBar from '../../Components/NavBar/NavBar';
 import Products from '../../Components/Product/Products';
 // import Masonry from '../../Components/Masonry/Masonry';
 import Sidebar from './Header';
@@ -11,7 +9,6 @@ const Shop = () => {
           <div>
             {/* <iframe title='hoseacodes-store' src='https://teespring.com/stores/hoseacodes-2'>
             </iframe> */}
-            <NavBar/>
             <div className="wrapper">
               {/* <NavBar/> */}
               <div className="shop-container">
@@ -20,7 +17,6 @@ const Shop = () => {
                   {/* <Masonry/> */}
               </div>
             </div>
-            <Footer/>
           </div>
     )
 }

@@ -6,6 +6,15 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  username: {
+    type: String,
+  },
+  aboutMe: {
+    type: String,
+  },
+  projects: {
+    type: [String],
+  },
   email: {
     type: String,
     required: true,
@@ -21,7 +30,7 @@ const userSchema = new mongoose.Schema({
     default: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU",
   },
   work : {
-    type: Array,
+    type: [String],
   },
   title: {
     type: String,
@@ -32,17 +41,21 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   education : {
-    type: Array,
+    type: [String],
   },
   skills : {
-    type: Array,
+    type: [String],
     default: []
   },
-  sociallMedia : {
-    type: Array,
+  socialMedia : {
+    type: [String],
+  },
+  socialMediaHandles: {
+    type: Map,
+    of: String
   },
   websites : {
-    type: Array,
+    type: [String],
   },
   location : {
     type: String,
@@ -52,21 +65,20 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
-  // articles: [{
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Articles'
-  // }],
+  articles: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Articles'
+  }],
   cart: {
     type: Array,
     default: []
   }
 }, {
   timestamps: true
-})
+}, { strict: false })
 
 
 const Users = mongoose.model('Users', userSchema);
-
 // Users.createIndexes();
 
 export default Users;

@@ -89,6 +89,7 @@
 
 .blog-tabs {
   display: flex;
+  justify-content: space-between;
 }
 
 .nav-item .nav-link {

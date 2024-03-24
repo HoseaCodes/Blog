@@ -46,7 +46,7 @@ const SideBar = () => {
           <MdBookmarkBorder onClick={handleSave} style={{marginBottom: '5rem'}}/>
           <ArticleHr/>
           {isAdmin ?
-            <Link to="/blog/new"><HiOutlinePencilAlt style={{marginBottom: '5rem'}}/></Link>
+            <Link to="/admin/blog/new"><HiOutlinePencilAlt style={{marginBottom: '5rem'}}/></Link>
             :
             <HiOutlinePencilAlt onClick={handleUnauthorized} style={{marginBottom: '5rem'}}/>
           }

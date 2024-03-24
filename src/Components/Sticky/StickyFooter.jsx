@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import Sticky from 'react-sticky-state';
 import {ArticleHr} from '../../Layout/Hr/styledHr';
 import {AiFillTwitterCircle } from 'react-icons/ai';
@@ -8,9 +9,34 @@ import {JustifyContent} from '../../Layout/Container/styledArticle';
 import {MdBookmarkBorder} from 'react-icons/md';
 import {RiShareCircleFill} from 'react-icons/ri';
 import {TiSocialLinkedinCircular} from 'react-icons/ti';
+
 import './StickyState.css';
 
-const StickyFooter = () => {
+const StickyFooter = ({id, likes, setViewComment, comments}) => {
+  const [postLikes, setPostLikes] = useState(likes)
+
+  console.log(comments)
+  useEffect(() => {
+
+	}, [likes]);
+
+  const handleLike = async () => {
+		try {
+			const updateLike = await axios.put(`/api/articles/${id}/likes`, { likes: postLikes });
+      setPostLikes(parseInt(updateLike.data.totalLikes))
+		} catch (err) {
+			alert(err.response.data.msg);
+		}
+	};
+
+  const handleComment = async () => {
+    try {
+      setViewComment(true)
+    } catch (error) {
+      alert(error);
+    }
+  }
+
   return (
           <Sticky >
             <div  className="bottom sticky">
@@ -18,18 +44,24 @@ const StickyFooter = () => {
               <JustifyContent SpaceAround>
                 <JustifyContent Font2>
                   <JustifyContent MarginRight>
-                    <FaRegThumbsUp/> &nbsp; <span>1</span>
+                    <FaRegThumbsUp onClick={handleLike}/> &nbsp; <span>{postLikes}</span> &nbsp;
                   </JustifyContent>
                   <JustifyContent MarginRight>
-                    <FaRegComment/> &nbsp; <span>1</span>
+                    <FaRegComment onClick={() => handleComment()}/> &nbsp; <span>{comments.length || 0}</span>
                   </JustifyContent>
                 </JustifyContent>
                 <Font2>
-                  <FaFacebook/>
-                  <AiFillTwitterCircle/>
-                  <TiSocialLinkedinCircular/>
-                  <RiShareCircleFill/>
-                  <MdBookmarkBorder/>
+                  <a href="https://www.facebook.com/so.inthatthang" target="_blank" rel="noopener noreferrer">
+                    <FaFacebook style={{color: 'green'}}/>
+                  </a>
+                  <a href="https://twitter.com/DominiqueRHosea" target="_blank" rel="noopener noreferrer">
+                    <AiFillTwitterCircle  style={{color: 'green'}}/>
+                  </a>
+                  <a href="https://www.linkedin.com/in/dominique-hosea/" target="_blank" rel="noopener noreferrer">
+                    <TiSocialLinkedinCircular  style={{color: 'green'}}/>
+                  </a>
+                  {/* <RiShareCircleFill/> */}
+                  {/* <MdBookmarkBorder/> */}
                 </Font2>
               </JustifyContent>
             </div>

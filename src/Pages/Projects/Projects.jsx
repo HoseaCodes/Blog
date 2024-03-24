@@ -76,38 +76,29 @@
 //recently learned. If you’ve been part of a design challenge
 //or hackathon, let your audience know.
 
-
-import React from 'react';
-import './Projects.css';
-import {projectData} from './ProjectsData';
-import ProjectCard from '../../Components/Cards/project';
-import { StyledHr } from '../../Layout/Hr/styledHr';
-import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
+import React from "react";
+import "./Projects.css";
+import { projectData } from "./ProjectsData";
+import ProjectCard from "../../Components/Cards/project";
+import { StyledHr } from "../../Layout/Hr/styledHr";
 
 const Projects = () => {
-
-    return (
-        <>
-          <NavBar/>
-            <div className='header2'>
-                <div className='header-logo'>
-                </div>
-            </div>
-            <StyledHr Primary/>
-            {projectData.map(project => {
-                                return (<>
-                                    <ProjectCard project={project}
-                                        key={project.id}
-                                    />
-                                    <StyledHr Primary/>
-                                </>
-                                )
-                            })}
-          <Footer/>
-        </>
-    )
-
-}
+  return (
+    <>
+      <div className="header2">
+        <div className="header-logo"></div>
+      </div>
+      <StyledHr Primary />
+      {projectData.map(project => {
+        return (
+          <>
+            <ProjectCard project={project} key={project.id} />
+            <StyledHr Primary />
+          </>
+        );
+      })}
+    </>
+  );
+};
 
 export default Projects;

@@ -1,0 +1,1 @@
+process.env.allow_origins = "valid,valid1,(.*?)localhost"

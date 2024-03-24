@@ -17,10 +17,6 @@
   background-color: #1a1e23;
 }
 
-.socialmedia {
-  margin-bottom: 15rem;
-}
-
 .testimonies-group,
 .contact-group {
   background-color: rgb(35, 41, 47);
@@ -220,5 +216,9 @@
   .header-button {
     margin: auto !important;
     width: 40% !important;
+  }
+
+  .contact-group h2 {
+    font-size: 3.5rem !important;
   }
 }

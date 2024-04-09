@@ -40,3 +40,5 @@ src/.eslintrc.js
 .env-cmdrc
 
 test/coverage
+
+animation

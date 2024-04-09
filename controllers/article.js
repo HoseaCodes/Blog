@@ -62,7 +62,7 @@ async function getArticleByID(req, res) {
 async function createArticle(req, res) {
     try {
 
-        const { article_id, title, subtitle, markdown, description, images, category, dev, medium, postedBy } = req.body;
+        const { article_id, title, subtitle, markdown, description, images, categories, dev, medium, postedBy, series } = req.body;
 
         if (!images) {
           logger.error("No image provided.");
@@ -74,10 +74,19 @@ async function createArticle(req, res) {
           logger.error("Article already exist.");
           return res.status(400).json({ msg: "This article already exists." })
         }
-
+      
         const newArticle = new Articles({
-          article_id, title, subtitle, markdown, description, images, postedBy
-        })
+          article_id,
+          title,
+          subtitle,
+          markdown,
+          description,
+          images,
+          postedBy,
+          tags: ["api", "hoseacodes"],
+          categories,
+          slug: title.toLowerCase().replace(/ /g, "-"),
+        });
       
         try {
           if (dev) {
@@ -88,7 +97,7 @@ async function createArticle(req, res) {
                 "published": false,
                 "body_markdown": markdown,
                 "tags": ["api", "hoseacodes"],
-                "series": "Hello series"
+                "series": series
                 }
               }, {
                 headers: { "api-key": process.env.FOREMAPI },
@@ -98,25 +107,33 @@ async function createArticle(req, res) {
           }
           
           if (medium) {
-            const userId = process.env.MEDIUMID
-            await axios.post(`https://api.medium.com/v1/users/${userId}/posts`,
+            const userId = process.env.MEDIUMAPI
+            await axios.post(
+              `https://api.medium.com/v1/users/${process.env.MEDIUMUSER}/posts`,
               {
-                "title": title,
-                "contentFormat": "markdown",
-                "content": markdown,
-                "canonicalUrl": images,
-                "tags": ["api", "hoseacodes"],
-                "publishStatus": "public",
-                "notifyFollowers": true
-              }, {
+                title: title,
+                contentFormat: "markdown",
+                content: markdown,
+                canonicalUrl: images,
+                tags: ["api", "hoseacodes"],
+                publishStatus: "public",
+                notifyFollowers: true,
+              },
+              {
                 headers: { Authorization: `Bearer ${process.env.MEDIUMAPI}` },
               }
-            )
+            );
             logger.info('Published to Medium')
           }
 
         } catch (error) {
           logger.error(`Error: ${error}`);
+          return res
+            .status(error.response.status)
+            .json({
+              code: error.response.statusText,
+              msg: error.response.data,
+            });
         }
         
 

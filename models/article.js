@@ -6,13 +6,6 @@ import { JSDOM } from 'jsdom';
 
 const dompurify = createDomPurify(new JSDOM().window);
 
-const categorySchema = new mongoose.Schema({
-  categoryName: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Category",
-  },
-});
-
 const articleSchema = new mongoose.Schema({
     article_id: {
         type: String,
@@ -42,11 +35,8 @@ const articleSchema = new mongoose.Schema({
         required: true,
         default: "https://i.imgur.com/19i5Whc.png",
     },
-    category: {
-        type: [categorySchema],
-    },
     categories: {
-        type: Array,
+        type: [String],
         required: false   
     },
     archived: {
@@ -70,11 +60,12 @@ const articleSchema = new mongoose.Schema({
         default: 0
     },
     tags: {
-      type: [String]
+        type: [String],
+        required: false
     },
     slug: {
         type: String,
-        // required: true,
+        required: true,
         unique: true
     },
     comments: [{
@@ -84,9 +75,6 @@ const articleSchema = new mongoose.Schema({
           ref: 'Comments'
         }
     }],
-    createdDate: {
-        type: Date
-    },
     createdAt: {
         type: Date,
         default: Date.now

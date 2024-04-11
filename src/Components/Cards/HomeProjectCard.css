@@ -1,0 +1,34 @@
+.variant-vertical-card {
+  color: dimgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 50rem;
+  height: 70rem;
+  padding: 2%;
+  border-radius: 10px;
+  background-color: #EFF7FF;
+}
+.variant-vertical {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.variant-horizontal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+.variant-horizontal-card {
+  color: dimgray;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 50rem;
+  height: 50rem;
+  padding: 2%;
+  border-radius: 10px;
+  background-color: #EFF7FF;
+}

@@ -1,5 +1,11 @@
 .header-nav {
-  background-color: #1a1e23;
+  /* background-color: #1a1e23; */ 
+  /* background-color: transparent; */
+  position: absolute;
+  left: 0;
+  top: 0%;
+  z-index: 3;
+  width: -webkit-fill-available;
 }
 
 .nav-logo {
@@ -12,10 +18,12 @@
   color: white !important;
   font-size: 2.5rem;
   margin: 2rem;
+  font-weight: bolder !important;
 }
 
 .dropdown-menu {
   background-color: #1a1e23 !important;
+  background-color: transparent !important;
 }
 
 .nav-link:focus,
@@ -39,7 +47,7 @@
 }
 
 .left-nav {
-  font-weight: 700;
+  font-weight: bolder !important;
   height: 5vh;
   display: flex;
   flex-direction: row;

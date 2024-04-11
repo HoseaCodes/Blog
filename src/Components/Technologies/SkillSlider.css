@@ -1,0 +1,170 @@
+.slider-wrapper {
+  overflow: hidden;
+  background-color: whitesmoke;
+  height: 50rem;
+  max-width: 600px;
+
+  display: flex;
+  justify-content: center;
+  border-radius: 12px;
+  position: relative;
+  align-items: center;
+}
+/* 
+.container-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: inherit;
+  height: 100%;
+  position: absolute;
+  animation: marquee 20s linear infinite alternate;
+}
+.orbs {
+  list-style: none;
+  margin: 0;
+  padding: 0 0.5rem;
+  display: flex;
+  float: left;
+  column-gap: 1rem;
+  z-index: 0;
+}
+.orb a {
+  display: flex;
+  border: 1px solid transparent;
+  border-radius: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.orb a span {
+  position: absolute;
+  bottom: -2rem;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10rem;
+  color: #fff;
+}
+.orb a:hover {
+  border-color: gray;
+}
+.orb a:hover span {
+  opacity: 1;
+}
+.orb--s {
+  height: 100%;
+  width: 100%;
+}
+.orb--m {
+  height: 100%;
+  width: 100%;
+}
+.orb--l {
+  height: 100%;
+  width: 100%;
+}
+.orb:nth-child(2n + 1) {
+  margin-top: 1rem;
+}
+.orb:nth-child(even of .noted) {
+  margin-top: 2rem;
+}
+.orb:nth-child(even of .offset) {
+  margin-top: 3rem;
+}
+.orb:nth-child(5n) {
+  margin-top: 4rem;
+}
+.orb:nth-child(odd) {
+  margin-top: 6rem;
+}
+.orb:nth-child(odd of .offset) {
+  margin-top: 7rem;
+}
+.orb:nth-child(odd of .noted) {
+  margin-top: 8rem;
+}
+.orb__img {
+  border-radius: 100%;
+  overflow: hidden;
+  object-fit: cover;
+}
+@-webkit-keyframes marquee {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+@keyframes marquee {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+.scroll {
+  position: relative;
+  display: flex;
+  width: 45rem;
+  height: 15rem;
+}
+
+.scroll div {
+  white-space: nowrap;
+  animation: logoScroll 20s linear infinite;
+  animation-delay: calc(20s * -1);
+  display: flex;
+  justify-content: space-around;
+  gap: calc(40rem + 10%);
+  width: inherit;
+}
+
+.scroll div:nth-child(2) {
+  animation: scroll2 20s linear infinite;
+  animation-delay: calc(20s / -2);
+}
+
+@keyframes logoScroll {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll2 {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-200%);
+  }
+}
+
+.scroll div span {
+  display: inline-flex;
+  margin: 10px;
+  letter-spacing: 0.2em;
+  font-size: 2.5rem;
+  background: #333;
+  color: #fff;
+  padding: 5rem 5rem;
+  border-radius: 5px;
+  transition: 0.5s;
+  z-index: 99;
+}
+
+.scroll div span:hover {
+  background: #d0a93a;
+  cursor: pointer;
+} */

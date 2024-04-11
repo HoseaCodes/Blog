@@ -9,6 +9,7 @@ import ProjectHighlight from "../../Components/Project/projectHighlight";
 import Hero from "../../Components/Hero/hero";
 import { StyledHr } from "../../Layout/Hr/styledHr";
 import { AncorButton } from "../../Components/Button/AncorButton";
+import HomeProjectCard from "../../Components/Cards/HomeProjectCard";
 
 const Home = () => {
   return (
@@ -20,12 +21,32 @@ const Home = () => {
           username={{ firstName: "Hosea", lastName: "Codes" }}
         />
         <StyledHr Primary />
-        <PersonalBrand />
-        <StyledHr Primary />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          <video
+            style={{ width: "100rem", borderRadius: "24px" }}
+            loop
+            autoPlay
+            muted
+            controls>
+            <source
+              src="https://framerusercontent.com/assets/frnywyFHcy3y0vcaGD0nDPHMKcI.mp4"
+              type="video/mp4"
+            />
+          </video>
+        </div>
+        {/* <PersonalBrand /> */}
+        {/* <StyledHr Primary /> */}
         <Tech />
-        <StyledHr Primary />
+        {/* <StyledHr Primary /> */}
         <div className="projects">
-          <ProjectHighlight />
+          {/* <ProjectHighlight /> */}
+          <HomeProjectCard />
         </div>
         <div className="testimonies-group">
           <StyledHr Primary />
@@ -61,7 +82,7 @@ const Home = () => {
                 opacity: ".8",
                 textTransform: "uppercase",
                 textShadow: "2px 2px 2px #206a5d",
-                letterSpacing: "1rem"
+                letterSpacing: "1rem",
               }}
             >
               Send Me A Message
@@ -81,7 +102,14 @@ const Home = () => {
           </div>
           <StyledHr Primary />
           <br />
-          <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
             <AncorButton
               primary
               href="#top"

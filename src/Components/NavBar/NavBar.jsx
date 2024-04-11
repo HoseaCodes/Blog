@@ -1,16 +1,19 @@
-import React, {useReducer, useContext } from "react";
+import React, {useReducer, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import "./NavBar.css";
 import burger from '../../Assets/Images/burger-min.png';
-import Logo from '../../Assets/Images/logo-min.png';
+// import Logo from '../../Assets/Images/logo-min.png';
+import Logo from '../../Assets/Icons/logo-min.png';
 import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import AnimatedLogo from "../Animation/Text/AnimatedLogo";
 
 
 const NavBar = () => {
   const state = useContext(GlobalState);
+  const [hideLogo, setHideLogo] = useState();
   const [isLoggedIn] = state.userAPI.isLoggedIn
   const [isAdmin] = state.userAPI.isAdmin
   const [user] = state.userAPI.user
@@ -19,6 +22,12 @@ const NavBar = () => {
       (isActive) => !isActive,
       true
       );
+
+  useEffect(() => {
+    if (window.location.pathname.includes("/blog/")) {
+      setHideLogo(true);
+    }
+  })
 
   const logoutUser = async () => {
     await axios.post("/api/user/logout");
@@ -48,7 +57,7 @@ const NavBar = () => {
 		)};
 
   const publicRouter = () => {
-    return (
+    if (!hideLogo) return (
       <>
         <Link to="/" className="nav-link active">Home</Link>
         <Link to="/blog" className="nav-link">Blog</Link>
@@ -119,33 +128,34 @@ const NavBar = () => {
     )};
 
     return (
-        <header className="header-nav conatiner">
-            <div className='burger-nav'>
-                <img className='nav-img' src={burger} alt="menu"
-                width='50px' height='50px'
-                onClick={toggle}
-                />
-            </div>
-            <nav className='nav-combo'>
-                {
-                  !isLoggedIn ?
-                  <Link to="/login" >
-                    <img className='nav-logo' src={Logo} alt="HoseaCodes" />
-                  </Link>
-                  :
-                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user.name.split(' ')[0]}</h1>
-                }
-                <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
-                    {isAdmin && adminRouter()}
-                    {
-                      isLoggedIn ?
-                      loggedInRouter()
-                      :
-                      publicRouter()
+      <header className="header-nav conatiner">
+        <div className="burger-nav">
+          <img
+            className="nav-img"
+            src={burger}
+            alt="menu"
+            width="50px"
+            height="50px"
+            onClick={toggle}
+          />
+        </div>
+        <nav className="nav-combo">
+          {!hideLogo && !isLoggedIn && (
+            <Link to="/login">
+              <AnimatedLogo />
+              {/* <img className='nav-logo' src={Logo} alt="HoseaCodes" /> */}
+            </Link>
+          )}
+          {isLoggedIn && (
+            <h1 className="nav-title" style={{ color: "white" }}>
+              Welcome, {user.name.split(" ")[0]}
+            </h1>
+          )}
+          <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
+            {isAdmin && adminRouter()}
+            {isLoggedIn ? loggedInRouter() : publicRouter()}
 
-                    }
-
-                    {/* {isAdmin ?
+            {/* {isAdmin ?
                     ("")
                     :
                     (
@@ -157,12 +167,10 @@ const NavBar = () => {
                         </Link>
                       </div>
                     )} */}
-                </ul>
-            </nav>
-            <StyledHr Primary/>
-        </header>
-
-    )
+          </ul>
+        </nav>
+      </header>
+    );
 }
 
 

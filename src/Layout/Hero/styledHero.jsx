@@ -48,7 +48,7 @@ const HeroContainer = styled.div`
 const HeroPositioning = styled.div `
   position: absolute;
   left: 50%;
-  top: 15%;
+  top: 25%;
   transform: translateX(-50%);
 `;
 const HeroText = styled.span`

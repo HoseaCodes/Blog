@@ -22,21 +22,21 @@ const PersonalBrand = () => {
           {/* <Cards />
             <Resume /> */}
           <div
-            data-aos="fade-right"
-            data-aos-offset="500"
-            data-aos-duration="3000"
-            data-aos-easing="ease-in"
+            // data-aos="fade-right"
+            // data-aos-offset="500"
+            // data-aos-duration="3000"
+            // data-aos-easing="ease-in"
             className="personalBrand-opener"
           >
             <h2 className="name-title">Dominique Hosea</h2>
             <p className="bio-info">
-              A full-stack &nbsp;
-              <span className="personalBrand-p">Software Engineer </span>
-              driven by a passion for knowledge. I am focused on building
-              software that improves user engagement and experience through
-              &nbsp;
-              <span>developing fast solutions </span>
-              to complex problems that allow users to excel.
+              An enthusiastic Full-Stack &nbsp;
+              <span className="personalBrand-p">Software Engineer</span>
+              &nbsp;driven by a passion for knowledge. I thrive on pushing the
+              boundaries of technology to create products that redefine standards.
+              My passion for software engineering goes beyond code; I want to create
+              things that &nbsp;
+              <span>make a difference</span>.
             </p>
             <hr
               id="aboutme"
@@ -48,17 +48,17 @@ const PersonalBrand = () => {
               className="personal-image"
               src={nique}
               alt="Dominique Hosea"
-              data-aos="fade-right"
-              data-aos-offset="500"
-              data-aos-duration="3000"
-              data-aos-easing="ease-in"
+              // data-aos="fade-right"
+              // data-aos-offset="500"
+              // data-aos-duration="3000"
+              // data-aos-easing="ease-in"
             />
             <div
               className="personal-card"
-              data-aos="fade-left"
-              data-aos-offset="500"
-              data-aos-duration="3000"
-              data-aos-easing="ease-in"
+              // data-aos="fade-left"
+              // data-aos-offset="500"
+              // data-aos-duration="3000"
+              // data-aos-easing="ease-in"
             >
               <div className="personal-card-info">
                 <h3 className="personal-card-title">
@@ -105,9 +105,10 @@ const PersonalBrand = () => {
                 </p>
                 <br />
                 <p className="personal-card-content">
-                  Additionally, I held a position as Lead Backend Software
+                  {/* Additionally, I held a position as Lead Backend Software
                   Engineer at Aimly in Austin, TX, where I further honed my
-                  expertise. I wrote unit and integration tests for quality
+                  expertise. */}
+                  I wrote unit and integration tests for quality
                   assurance, utilized Node.js for backend system development,
                   and implemented software engineering best practices such as
                   automated pipelines, Operational Excellence, and Information
@@ -119,14 +120,14 @@ const PersonalBrand = () => {
                   integration and continuous deployment (CI/CD) pipelines.
                 </p>
                 <br />
-                <p className="personal-card-content">
+                {/* <p className="personal-card-content">
                   {" "}
                   I am now seeking a role where I can continue to grow alongside
-                  motivated individuals who share a belief in continuous growth and
-                  innovation. Having progressively contributed to major
+                  motivated individuals who share a belief in continuous growth
+                  and innovation. Having progressively contributed to major
                   companies throughout my career, I am enthusiastic about the
                   prospect of contributing to another industry leader's success.
-                </p>
+                </p> */}
                 <div className="personal-btn-wrapper">
                   <Button
                     primary

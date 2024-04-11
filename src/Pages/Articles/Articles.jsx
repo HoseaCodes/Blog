@@ -9,6 +9,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 import Pagination from "../../Components/Pagination/pagination";
 import { StyledHr } from "../../Layout/Hr/styledHr";
+import { truncate } from "../../Utils/helperFunctions";
 
 const Articles = () => {
   const [isMobileView, setIsMobileView] = useState(false);
@@ -46,9 +47,6 @@ const Articles = () => {
     .filter(article => article !== currentPosts)
     .slice(0, 5);
 
-  const truncate = str => {
-    return str.length > 10 ? str.substring(0, 150) + "..." : str;
-  };
   const paginate = pageNum => setCurrentPage(pageNum);
 
   const nextPage = () => {

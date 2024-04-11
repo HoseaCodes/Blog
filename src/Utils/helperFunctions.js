@@ -83,4 +83,8 @@ function sleep(num) {
   }
 }
 
-export { copyTextToClipboard, responsive, sleep };
+const truncate = (str) => {
+  return str.length > 10 ? str.substring(0, 150) + "..." : str;
+};
+
+export { copyTextToClipboard, responsive, sleep, truncate };

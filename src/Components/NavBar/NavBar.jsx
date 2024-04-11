@@ -7,9 +7,11 @@ import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
+import { useCookies } from "react-cookie";
 
 
 const NavBar = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn
   const [isAdmin] = state.userAPI.isAdmin
@@ -23,6 +25,8 @@ const NavBar = () => {
   const logoutUser = async () => {
     await axios.post("/api/user/logout");
     localStorage.removeItem("firstLogin");
+    localStorage.removeItem("isLoggedIn");
+    removeCookie("accesstoken");
     window.location.href = "/";
   };
 

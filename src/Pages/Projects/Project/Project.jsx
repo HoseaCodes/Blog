@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { StyledHr } from "../../../Layout/Hr/styledHr";
 import { projectData } from "../ProjectsData";
 import "./Project.css";
-import Carousel from "../../../Components/Carousel/Carousel";
+// import Carousel from "../../../Components/Carousel/Carousel";
 import AnimatedImage from "../../../Components/Animation/Image/AnimatedImage";
 import AnimatedTextCharacter from "../../../Components/Animation/Text/AnimatedTextCharacter";
 import AnimatedTextSlide from "../../../Components/Animation/Text/AnimatedTextSlide";
@@ -598,7 +598,7 @@ const ProjectItem = () => {
                         data-aos-duration="1500"
                         data-aos-easing="ease-in"
                       >
-                        <Carousel items={uiDesignImgs} />
+                        {/* <Carousel items={uiDesignImgs} /> */}
                       </div>
                     ) : (
                       <AnimatedImage

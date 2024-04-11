@@ -11,22 +11,27 @@ import { articleTempltes } from "./ArticleTemplate";
 import Preview from "../../Components/Article/Preview";
 import AITemplate from "../../Components/OpenAI/AITemplate";
 import { Button } from "../../Components/Button/Button";
+import { sleep } from "../../Utils/helperFunctions";
 
 function CreatArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
   const initialState = {
-    article_id: "",
+    article_id: uuidv4(),
     title: "",
     subtitle: "",
     description: "Description",
     markdown: markdown,
-    category: "",
-    id: ""
+    categories: "",
+    id: "",
+    series: "Hoseacodes",
+    dev: false,
+    medium: false,
+    archived: false,
+    draft: false,
   };
   const state = useContext(GlobalState);
   const [article, setArticle] = useState(initialState);
   const [images, setImages] = useState(false);
-  // const [input, setInput] = useState('')
   const [isMobileView, setIsMobileView] = useState(false);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
@@ -39,40 +44,16 @@ function CreatArticle() {
   const [show, setShow] = useState(false);
   const [showAITemplate, setShowAITemplate] = useState(false);
   const loggedIn = localStorage.getItem("isLoggedIn");
-  const [selectedCategory, setselectedCategory] = useState(
-    localStorage.getItem("category") === null
-      ? "Programming"
-      : localStorage.getItem("category")
-  );
-  const [allBlogCategory, setAllBlogCategory] = useState([
-    { name: "Programming" },
-    { name: "Software Engineering" },
-    { name: "Python" },
-    { name: "Java" },
-    { name: "JavaScript" },
-    { name: "Tech" }
-  ]);
-
-  useEffect(() => {
-    localStorage.setItem("category", selectedCategory);
-  }, [selectedCategory]);
+  const [selectedCategory, setselectedCategory] = useState("Programming");
+  const [allBlogCategory, setAllBlogCategory] = useState([]);
 
   useEffect(async () => {
     const config = { headers: { "Content-Type": "application/json" } };
     const res = await axios.get("/api/category", config);
     if (res) {
-      setAllBlogCategory(res.data.category);
+      setAllBlogCategory(res.data.categories);
     }
   }, []);
-
-  function sleep(num) {
-    let now = new Date();
-    const stop = now.getTime() + num;
-    while (true) {
-      now = new Date();
-      if (now.getTime() > stop) return;
-    }
-  }
 
   function handleClick(e) {
     e.preventDefault();
@@ -90,7 +71,7 @@ function CreatArticle() {
     if (param.id) {
       setOnEdit(true);
       if (articles !== undefined) {
-        articles.forEach(article => {
+        articles.forEach((article) => {
           if (article._id === param.id) {
             setArticle(article);
             // setImages(article.images)
@@ -105,10 +86,10 @@ function CreatArticle() {
   }, [param.id, articles]);
 
   const styleUpload = {
-    display: images ? "block" : "none"
+    display: images ? "block" : "none",
   };
-    
-  const handleUpload = async e => {
+
+  const handleUpload = async (e) => {
     e.preventDefault();
     try {
       const file = e.target.files[0];
@@ -123,7 +104,7 @@ function CreatArticle() {
       setLoading(true);
 
       const res = await axios.post("/api/upload", formData, {
-        headers: { "content-type": "multipart/form-data" }
+        headers: { "content-type": "multipart/form-data" },
       });
       setLoading(false);
       setImages(res.data.result);
@@ -144,29 +125,32 @@ function CreatArticle() {
     }
   };
 
-  const handleChangeInput = e => {
+  const handleChangeInput = (e) => {
     const { name, value } = e.target;
-    setArticle({ ...article, [name]: value });
+    if (name === "tags") {
+      setArticle({ ...article, [name]: [value] });
+    } else {
+      setArticle({ ...article, [name]: value });
+    }
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (!images) return alert("No Image Upload");
       if (onEdit) {
         await axios.put(`/api/articles/${article._id}`, {
           ...articles,
-          images
+          images,
         });
       } else {
         setArticle({
           ...article,
           ["article_id"]: uuidv4(),
-          category: selectedCategory,
-          id: user.id
+          categories: [selectedCategory],
+          id: user.id,
         });
-        console.log(article);
-        await axios.post("/api/articles", { ...article, images, ...user});
+        await axios.post("/api/articles", { ...article, images, ...user });
         setImages(false);
         setArticle(initialState);
       }
@@ -178,34 +162,19 @@ function CreatArticle() {
     }
   };
 
-  const updateMarkdown = e => {
+  const updateMarkdown = (e) => {
     const { name } = e.target;
     setMarkdown(articleTempltes[e.target.options.selectedIndex].markdown);
     setArticle({
       ...article,
-      [name]: articleTempltes[e.target.options.selectedIndex].markdown
+      [name]: articleTempltes[e.target.options.selectedIndex].markdown,
     });
   };
 
-  const handlePublish = e => {
+  const handlePublish = (e) => {
     const { name, checked } = e.target;
     setArticle({ ...article, [name]: checked });
   };
-
-//   useEffect(() => {
-//     const onresize = () => {
-//       // if (window.screen.width > 600) {
-//       //     setIsMobileView(false);
-//       //     setDesktopView(true);
-//       // }
-//     };
-//     window.addEventListener("resize", onresize);
-//     onresize();
-
-//     return () => {
-//       window.removeEventListener("resize", onresize);
-//     };
-//   }, []);
 
   return (
     <>
@@ -229,7 +198,6 @@ function CreatArticle() {
                         >
                           Title<span className="asteriskField">*</span>
                         </label>
-                        {/* <div className="controls"> */}
                         <input
                           className="input-md emailinput form-control"
                           placeholder="Enter Article Title Name"
@@ -240,7 +208,6 @@ function CreatArticle() {
                           onChange={handleChangeInput}
                           disabled={onEdit}
                         />
-                        {/* </div> */}
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -277,9 +244,9 @@ function CreatArticle() {
                           <input
                             className="input-md emailinput form-control mb"
                             name="article_id"
-                            value={uuidv4()}
-                            onChange={handleChangeInput}
-                            // disabled
+                            value={initialState.article_id}
+                            å
+                            disabled
                           />
                         </div>
                       </div>
@@ -301,10 +268,12 @@ function CreatArticle() {
                           className="form-control mb"
                           style={{ height: "auto" }}
                         >
-                          <option value="volvo">Java</option>
-                          <option value="saab">Python</option>
-                          <option value="fiat">JavaScript</option>
-                          <option value="audi">Software Engineer</option>
+                          <option value="java">Java</option>
+                          <option value="python">Python</option>
+                          <option value="javascript">JavaScript</option>
+                          <option value="softwareengineering">
+                            Software Engineer
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -318,7 +287,7 @@ function CreatArticle() {
                         </label>
                         <div className="controls ">
                           <textarea
-                            className="mb"
+                            className="mb bg-transparent"
                             name="description"
                             required
                             value={article.description}
@@ -401,7 +370,7 @@ function CreatArticle() {
                     </div>
                     <div className="col-md-6">
                       <div id="div_id_downloads" className="required">
-                        <div className="controls">
+                        <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
                             className="control-label"
@@ -411,6 +380,7 @@ function CreatArticle() {
                             <span className="pr-1 asteriskField">*</span>
                           </label>
                           <input
+                            className="bg-transparent"
                             type="checkbox"
                             name="dev"
                             onChange={(e) => handlePublish(e)}
@@ -419,7 +389,7 @@ function CreatArticle() {
                         </div>
                       </div>
                       <div id="div_id_downloads" className=" required">
-                        <div className="controls">
+                        <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
                             className="control-label"
@@ -440,18 +410,18 @@ function CreatArticle() {
                     {!isMobileView && (
                       <div className="blog__categoryMobile">
                         <label className="blog__categoryList__label">
-                          Select A Particular Category
-                        </label>
+                          Select A Category
+                        </label>{" "}
                         <select
-                          className="blog__categoryList__select"
+                          className="blog__categoryList__select bg-transparent"
                           value={selectedCategory}
                           onChange={(e) => setselectedCategory(e.target.value)}
                         >
-                          {allBlogCategory?.map((blogCat) => {
+                          {allBlogCategory?.map((category) => {
                             return (
-                              <option value={blogCat.name}>
+                              <option value={category.name}>
                                 {" "}
-                                {blogCat.name}
+                                {category.name}
                               </option>
                             );
                           })}
@@ -471,12 +441,11 @@ function CreatArticle() {
                         <div className="controls col-lg-6">
                           <h5 className="text-center">Enter your markdown</h5>
                           <textarea
-                            className="preview d-flex jusify-self-center h-100 w-100 mb"
+                            className="preview d-flex jusify-self-center h-100 w-100 mb bg-transparent"
                             name="markdown"
                             required
                             value={article.markdown}
                             onChange={handleChangeInput}
-                            // value={input}
                           ></textarea>
                         </div>
                         <div className="col-lg-6" id="perview">

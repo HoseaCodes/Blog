@@ -175,9 +175,9 @@ const ProjectItem = () => {
             <div className="project-content">
               <ul className="context-stripe-focus-area is-loaded">
                 <li>
-                  <strong>Role:</strong>
+                  <strong>Role: </strong>
                   <span>
-                    <AnimatedTextCharacter text={`${role}`} />
+                    <AnimatedTextCharacter text={` ${role}`} />
                   </span>
                 </li>
                 <li>

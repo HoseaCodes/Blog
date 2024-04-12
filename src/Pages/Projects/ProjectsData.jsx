@@ -201,7 +201,7 @@ export const projectData = [
     name: "Aimly",
     headline:
       "A digital fundraising platform with gourmet potato chips that makes fundraising simple, easy, and fun.",
-    role: "Lead Backend Software Engineer",
+    role: "Lead Backend Engineer",
     context: " Web Services",
     date: " Fall 2022",
     img: "https://i.imgur.com/Gm73C4F.png",

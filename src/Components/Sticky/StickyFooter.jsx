@@ -47,7 +47,7 @@ const StickyFooter = ({id, likes, setViewComment, comments}) => {
                     <FaRegThumbsUp onClick={handleLike}/> &nbsp; <span>{postLikes}</span> &nbsp;
                   </JustifyContent>
                   <JustifyContent MarginRight>
-                    <FaRegComment onClick={() => handleComment()}/> &nbsp; <span>{comments.length || 0}</span>
+                    <FaRegComment onClick={() => handleComment()}/> &nbsp; <span>{comments.length - 1 || 0}</span>
                   </JustifyContent>
                 </JustifyContent>
                 <Font2>

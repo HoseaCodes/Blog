@@ -55,7 +55,10 @@ const RightColumn = (props) => {
           let filteredComments = res.data.comments.filter((comment) => {
               return comment.blog === id;
           });
-          setComments({comments: filteredComments});
+          setComments({ comments: filteredComments });
+          await axios.put(`/api/articles/${id}`, {
+            comments: filteredComments
+          })
         }
         getComments()
     }
@@ -68,7 +71,10 @@ const RightColumn = (props) => {
       let filteredComments = res.data.comments.filter((comment) => {
           return comment.blog === id;
       });
-      setComments({comments: filteredComments});
+      setComments({ comments: filteredComments });
+       await axios.put(`/api/articles/${id}`, {
+         comments: filteredComments,
+       });
     } catch (error) {
       console.log(error)
     }

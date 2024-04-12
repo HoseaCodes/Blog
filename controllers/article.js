@@ -267,27 +267,24 @@ async function updateArticleComment(req, res) {
 
 async function updateArticle(req, res) {
   try {
-    const { title, subtitle, description, content, images, category } =
-      req.body;
-    res.clearCookie("articles-cache");
+    const { title, subtitle, description, content, images, category, comments } = req.body;
 
-    if (!images) {
-      logger.error("No image provided.");
-      res.clearCookie("user-cache");
-      return res.status(400).json({ msg: "No image upload" });
-    }
+    const originalArticle = await Articles.findOne({ _id: req.params.id });
+
+    res.clearCookie("articles-cache");
 
     const originalBody = req.body;
 
     await Articles.findOneAndUpdate(
       { _id: req.params.id },
       {
-        title: title.toLowerCase(),
-        subtitle,
-        description,
-        content,
-        images,
-        category,
+        // title: title.toLowerCase(),
+        // subtitle,
+        // description,
+        // content,
+        // images,
+        // category,
+        comments: [originalArticle.comments, ...comments],
       }
     );
 
@@ -298,6 +295,7 @@ async function updateArticle(req, res) {
     res.json({ msg: "Updated a article" });
   } catch (err) {
     logger.error(err);
+    console.log(err.message)
 
     return res.status(500).json({ msg: err.message });
   }

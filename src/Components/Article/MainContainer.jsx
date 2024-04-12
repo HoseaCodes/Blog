@@ -17,7 +17,7 @@ import StickyFooter from '../Sticky/StickyFooter';
 import BtnRender from './BtnRender';
 
 const MainContainer = (props) => {
-  const {  _id, likes, title, subtitle, description, images, markdown, comments } = props.detailArticle;
+  const { _id, likes, title, subtitle, description, images, markdown, comments } = props.detailArticle;
   const timeFormater = props.timeFormater;
   const readTime = props.readTime;
   const user = props.user
@@ -59,7 +59,7 @@ const MainContainer = (props) => {
           <BlogSubTitle>{subtitle}</BlogSubTitle>
           <BlogDisplayImage src={images.url} alt={title} />
           <BlogPhotoCredit>
-            Photo Credit by &nbsp;<u>{user.name}</u>
+            Photo Credit by &nbsp;<u>{user.name || "Anonymous"}</u>
           </BlogPhotoCredit>
           <BlogCard>
             <br />
@@ -74,7 +74,7 @@ const MainContainer = (props) => {
               ></BlogContent>
               <br />
               <StickyFooter
-                comments
+                comments={comments}
                 viewComment={props.viewComment}
                 setViewComment={props.setViewComment}
                 id={_id}
@@ -84,16 +84,16 @@ const MainContainer = (props) => {
             </BlogPost>
             {props.isAdmin && props.isLoggedIn ? (
               <>
-              <input
-                type="checkbox"
-                checked={true}
-                onChange={() => props.handleCheck(_id)}
+                <input
+                  type="checkbox"
+                  checked={true}
+                  onChange={() => props.handleCheck(_id)}
                 />
-              <BtnRender
-                article={props.article}
-                deleteArticle={props.deleteArticle}
+                <BtnRender
+                  article={props.article}
+                  deleteArticle={props.deleteArticle}
                 />
-            </>
+              </>
             ) : null}
           </BlogCard>
         </section>

@@ -362,13 +362,13 @@ const RightColumn = (props) => {
           </SideUserContainer>
           <PageLinks>
             <ArticleLink href="#">Help</ArticleLink>
-            <ArticleLink href="#">Status</ArticleLink>
-            <ArticleLink href="#">Writers</ArticleLink>
-            <ArticleLink href="#">Blog</ArticleLink>
-            <ArticleLink href="#">Careers</ArticleLink>
+            {/* <ArticleLink href="#">Status</ArticleLink> */}
+            {/* <ArticleLink href="#">Writers</ArticleLink> */}
+            <ArticleLink href="/blog">Blog</ArticleLink>
+            {/* <ArticleLink href="#">Careers</ArticleLink> */}
             <ArticleLink href="#">Privacy</ArticleLink>
             <ArticleLink href="#">Terms</ArticleLink>
-            <ArticleLink href="#">About</ArticleLink>
+            {/* <ArticleLink href="#">About</ArticleLink> */}
           </PageLinks>
         </StyledRightContainer>
       )}

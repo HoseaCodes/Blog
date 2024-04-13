@@ -6,11 +6,11 @@ import jwt from "jsonwebtoken";
 import { cache } from "../utils/cache.js";
 const logger = new Logger("articles");
 
-const createAccessToken = user => {
+const createAccessToken = (user) => {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
 };
 
-const createRefreshToken = user => {
+const createRefreshToken = (user) => {
   return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 };
 
@@ -38,7 +38,7 @@ async function register(req, res) {
       name,
       email,
       password: passwordHash,
-      role
+      role,
     });
     // Save mongodb
     await newUser.save();
@@ -50,7 +50,7 @@ async function register(req, res) {
     res.cookie("refreshtoken", refreshtoken, {
       httpOnly: true,
       path: "/api/user/refresh_token",
-      maxAge: 7 * 25 * 60 * 60 * 1000
+      maxAge: 7 * 25 * 60 * 60 * 1000,
     });
 
     res.json({ accesstoken });
@@ -100,13 +100,13 @@ async function login(req, res) {
       res.cookie("refreshtoken", refreshtoken, {
         httpOnly: true,
         path: "/api/user/refresh_token",
-        maxAge: 7 * 25 * 60 * 60 * 1000
+        maxAge: 7 * 25 * 60 * 60 * 1000,
       });
     }
     res.cookie("accesstoken", accesstoken, {
       maxAge: 7 * 25 * 60 * 60 * 1000,
       path: "/api/user/login",
-      httpOnly: true
+      httpOnly: true,
     });
 
     res.json({ accesstoken });
@@ -132,21 +132,21 @@ async function getAllUsers(req, res) {
 
     res.cookie("users-cache", users.length + "users", {
       maxAge: 1000 * 60 * 60, // would expire after an hour
-      httpOnly: true // The cookie only accessible by the web server
+      httpOnly: true, // The cookie only accessible by the web server
     });
 
     cache.set(users.length + "users", {
       status: "success",
       users: users,
       result: users.length,
-      location: "cache"
+      location: "cache",
     });
 
     res.json({
       status: "success",
       users: users,
       result: users.length,
-      location: "main"
+      location: "main",
     });
   } catch (err) {
     logger.error(err);
@@ -165,7 +165,7 @@ async function addCart(req, res) {
     await Users.findByIdAndUpdate(
       { _id: req.user.id },
       {
-        cart: req.body.cart
+        cart: req.body.cart,
       }
     );
 
@@ -183,18 +183,18 @@ async function history(req, res) {
 
     res.cookie("history-cache", history.length + "history", {
       maxAge: 1000 * 60 * 60, // would expire after an hour
-      httpOnly: true // The cookie only accessible by the web server
+      httpOnly: true, // The cookie only accessible by the web server
     });
 
     cache.set(history.length + "history", {
       status: "success",
       result: history,
-      location: "cache"
+      location: "cache",
     });
     return res.json({
       status: "success",
       result: history,
-      location: "main"
+      location: "main",
     });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
@@ -208,21 +208,21 @@ async function getUser(req, res) {
 
     res.cookie("user-cache", user.id + "user", {
       maxAge: 1000 * 60 * 60, // would expire after an hour
-      httpOnly: true // The cookie only accessible by the web server
+      httpOnly: true, // The cookie only accessible by the web server
     });
 
     cache.set(user.id + "user", {
       status: "success",
       users: user,
       result: user.length,
-      location: "cache"
+      location: "cache",
     });
 
     res.json({
       status: "success",
       users: user,
       result: user.length,
-      location: "main"
+      location: "main",
     });
   } catch (err) {
     return res.status(500).json({ msg: err.message });
@@ -248,31 +248,88 @@ async function updateProfile(req, res) {
       role,
       username,
       aboutMe,
-      projects
+      projects,
+      notifications,
+      favoriteArticles,
+      savedArticles,
+      likedArticles
     } = req.body;
 
-    await Users.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        name,
-        avatar,
-        title,
-        work,
-        education,
-        skills,
-        location,
-        phone,
-        socialMedia,
-        websites,
-        socialMediaHandles,
-        articles,
-        cart,
-        role,
-        username,
-        aboutMe,
-        projects
-      }
-    );
+    const originalBody = req.body;
+    const originalUser = await Users.findOne({ _id: req.params.id });
+    if (originalBody.notifications) {
+      const newNotifications = originalUser.notifications.concat(notifications);
+      const uniqueNotifications = [...new Set(newNotifications)];
+      console.log({ newNotifications });
+      await Users.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          notifications: uniqueNotifications,
+        }
+      );
+    }
+    
+    if (originalBody.favoriteArticles) {
+      console.log(`favoriteArticles`);
+      const newFavoriteArticles =
+        originalUser.favoriteArticles.concat(favoriteArticles);
+      const uniqueFavoriteArticles = [...new Set(newFavoriteArticles)];
+      await Users.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          favoriteArticles: uniqueFavoriteArticles,
+        }
+      );
+    }
+    
+    if (originalBody.savedArticles) {
+      console.log(`savedArticles`);
+      const newSavedArticles = originalUser.savedArticles.concat(savedArticles);
+      const uniqueSavedArticles = [...new Set(newSavedArticles)];
+      console.log({ newSavedArticles });
+      await Users.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          savedArticles: uniqueSavedArticles,
+        }
+      );
+    }
+
+    if (originalBody.likedArticles) {
+      console.log(`likedArticles`);
+      const newLikedArticles = originalUser.likedArticles.concat(likedArticles);
+      const uniqueLikedArticles = [...new Set(newLikedArticles)];
+      console.log({ newLikedArticles });
+      await Users.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          likedArticles: uniqueLikedArticles,
+        }
+      );
+    }
+
+    // await Users.findOneAndUpdate(
+    //   { _id: req.params.id },
+    //   {
+    //     name,
+    //     avatar,
+    //     title,
+    //     work,
+    //     education,
+    //     skills,
+    //     location,
+    //     phone,
+    //     socialMedia,
+    //     websites,
+    //     socialMediaHandles,
+    //     articles,
+    //     cart,
+    //     role,
+    //     username,
+    //     aboutMe,
+    //     projects
+    //   }
+    // );
 
     res.clearCookie("users-cache");
     res.clearCookie("user-cache");
@@ -280,7 +337,7 @@ async function updateProfile(req, res) {
     res.json({ msg: "Updated profile" });
   } catch (err) {
     logger.error(err);
-
+    console.log(err.message);
     return res.status(500).json({ msg: err.message });
   }
 }
@@ -312,5 +369,5 @@ export {
   deleteProfile,
   getAllUsers,
   addCart,
-  history
+  history,
 };

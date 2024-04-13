@@ -17,7 +17,7 @@ const Newsletter = () => {
         <h3>Sign up for Software Engineering News</h3>
         <BlogContent Author>By Dominique Hosea</BlogContent>
         <BlogContent Newsletter>
-          Latest news from Analytics Vidhya on our Hackathons and some of our
+          Latest news from Software Engieering on our Hackathons and some of our
           best articles!&nbsp;
           <u>Take a look.</u>
         </BlogContent>

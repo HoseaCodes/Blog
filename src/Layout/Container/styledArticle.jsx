@@ -13,7 +13,7 @@ export const Inherit = styled.span`
 
 export const StyledRightContainer = styled.section`
   width: 45rem;
-  padding: 4% 2% 0% 2%;
+  padding: 2% 2% 0% 2%;
   border: 1px solid #ccc;
   margin: 0;
   max-height: calc(105vh - 4rem);

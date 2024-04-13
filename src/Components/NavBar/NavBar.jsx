@@ -8,15 +8,21 @@ import { GlobalState } from '../../GlobalState';
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useCookies } from "react-cookie";
-
+import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const location = useLocation();
+  const currentPath = location.pathname;
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn
   const [isAdmin] = state.userAPI.isAdmin
   const [user] = state.userAPI.user
   const [cart] = state.userAPI.cart;
+  if (currentPath.includes("/blog/")) {
+    return null;
+  }
+
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
       true

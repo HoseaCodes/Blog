@@ -69,6 +69,22 @@ const userSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Articles'
   }],
+  notifications: {
+    type: [String],
+    default: []
+  },
+  favoriteArticles: {
+    type: [String],
+    default: []
+  },
+  savedArticles: {
+    type: [String],
+    default: []
+  },
+  likedArticles: {
+    type: [String],
+    default: []
+  },
   cart: {
     type: Array,
     default: []

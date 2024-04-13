@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {StyledLeftContainer, JustifyContent} from '../../Layout/Container/styledArticle';
 import {LogoImage} from '../../Layout/Image/styledImage';
 import {StackedAlignn} from '../../Layout/Icon/styledIcons';
@@ -9,9 +9,12 @@ import {MdBookmarkBorder} from 'react-icons/md';
 import logo from '../../Assets/Images/newLogo.png';
 import { Link } from "react-router-dom";
 import {GlobalState} from '../../GlobalState';
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-const SideBar = () => {
+const SideBar = (props) => {
 
+  const param = useParams();
   const state = useContext(GlobalState);
 
   const [isAdmin] = state.userAPI.isAdmin;
@@ -26,12 +29,24 @@ const SideBar = () => {
     e.preventDefault();
     // Create save post function on backend
     alert("Save the post to user profile.")
+     if (props.user) {
+       console.log(props.user);
+       await axios.put(`/api/user/${props.user._id}`, {
+         savedArticles: [props.article._id],
+       });
+     }
   }
 
   const handleNotification = async e => {
     e.preventDefault();
     // Create notification function on backend
     alert("Start being alerted when user makes posts.")
+    if (props.user) {
+      console.log(props.user);
+      await axios.put(`/api/user/${props.user._id}`, {
+        notifications: [props.user._id],
+      });
+    }
   }
     return (
       <StyledLeftContainer>

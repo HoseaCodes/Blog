@@ -38,7 +38,7 @@ const ArticleItem = () => {
           <main className="blog-content">
             {
                 user.name !== "" && 
-                <SideBar className='d-none d-lg-block'/>
+                <SideBar user={user} article={detailArticle} className='d-none d-lg-block'/>
             }
             <MainContainer isAdmin={isAdmin} isLoggedIn={isLoggedIn} viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} 
             timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />

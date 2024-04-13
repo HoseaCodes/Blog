@@ -79,6 +79,8 @@ const MainContainer = (props) => {
                 setViewComment={props.setViewComment}
                 id={_id}
                 likes={likes}
+                user={user}
+                article={props.detailArticle}
               />
               <Newsletter />
             </BlogPost>

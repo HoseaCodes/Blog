@@ -51,12 +51,12 @@ const RelatedPosts = (props) => {
               </AlignContent>
               <AlignContent Column>
                 <div style={{ marginRight: "1rem" }}>
-                  <Link to={`/blog/${article.id}`} rel="noopener noreferrer">
+                  <a href={`/blog/${article._id}`}>
                     <h4>
                       {article.title ||
                         "No Code Approach — Process Speech and convert to Text — Logic Apps"}
                     </h4>
-                  </Link>
+                  </a>
                   <p style={{ width: "80%" }}>
                     {" "}
                     {article.description ||
@@ -89,7 +89,7 @@ const RelatedPosts = (props) => {
       })}
       <AlignContent CenterBtn>
         <Button
-          backgroundColor="green"
+          backgroundColor={`${!moreArticles ? "gray" : "green"}`}
           label="Read more"
           onClick={handleReadMore}
           disabled={!moreArticles}

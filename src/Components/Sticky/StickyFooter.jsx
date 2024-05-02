@@ -54,7 +54,7 @@ const StickyFooter = ({id, likes, setViewComment, comments, user, article}) => {
             </JustifyContent>
             <JustifyContent MarginRight>
               <FaRegComment onClick={() => handleComment()} /> &nbsp;{" "}
-              <span>{comments.length - 1 || 0}</span>
+              <span>{comments.length == 0 ? comments.length - 1 : 0}</span>
             </JustifyContent>
           </JustifyContent>
           <Font2>

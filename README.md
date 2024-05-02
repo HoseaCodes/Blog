@@ -111,7 +111,22 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 
+## How To Run App
+
+Build image locally
+
+```docker
+docker build -t hoseacodes_blog .  
+```
+Run local image in container
+
+```docker
+docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
+```
+
 ## Unsolved Problems
+
+- [ ] Fix Docker Image
 
 ## Future Enhancements
 

@@ -19,7 +19,7 @@
 .section-images {
   background-color: #435b69;
 }
-.image img {
+/* .image img {
   height: 200px;
   border-radius: 12px;
 }
@@ -30,7 +30,7 @@
   color: whitesmoke;
   font-size: 1.1em;
   background-color: #1a1e23;
-}
+} */
 
 .section-cards {
   overflow: hidden;
@@ -64,10 +64,10 @@
     top: 315px;
   }
 }
-.presentation .cards {
+/* .presentation .cards {
   margin-top: -160px;
   z-index: 7;
-}
+} */
 
 .presentation .white-text {
   color: #ffffff;
@@ -191,7 +191,7 @@ small {
   max-width: 100%;
   overflow: hidden;
 }
-.card {
+/* .card {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -201,8 +201,8 @@ small {
   margin-top: -100px;
   animation: cards 3s ease-in-out;
   animation-direction: normal;
-}
-.card:nth-child(1) {
+} */
+/* .card:nth-child(1) {
   z-index: 3;
   background-color: rgba(101, 4, 95, 0.85);
   transform: translateY(-145px) rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
@@ -216,7 +216,7 @@ small {
   z-index: 1;
   background-color: rgba(207, 198, 198, 0.85);
   transform: translateY(20px) rotateX(65deg) rotateY(0deg) rotateZ(-45deg);
-}
+} */
 
 .card__title {
   font-size: 1.8em;

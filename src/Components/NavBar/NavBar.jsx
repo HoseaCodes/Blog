@@ -129,7 +129,7 @@ const NavBar = () => {
     )};
 
     return (
-        <header className="header-nav conatiner">
+        <StyledHeaderNav className="conatiner">
             <div className='burger-nav'>
                 <img className='nav-img' src={burger} alt="menu"
                 width='50px' height='50px'
@@ -169,8 +169,8 @@ const NavBar = () => {
                     )} */}
                 </ul>
             </nav>
-            <StyledHr Primary/>
-        </header>
+            {/* <StyledHr Primary/> */}
+        </StyledHeaderNav>
 
     )
 }

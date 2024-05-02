@@ -5,7 +5,7 @@ import Projects from './Pages/Projects/Projects'
 import Articles from './Pages/Articles/Articles'
 import Error from './Pages/Error/Error'
 import Shop from './Pages/Shop/Shop';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 import CreateArticle from './Pages/Articles/CreateArticle'
 import { DataProvider } from './GlobalState';
 import ArticleItem from './Pages/Articles/Article/Article';
@@ -32,8 +32,229 @@ const About = lazy(() => import("./Pages/About/About"));
 const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
 
+// const App = () => {
+import Tools from './Pages/Tools';
+import Games from './Pages/Games';
+import GameHome from './Pages/GameStore/GameHome';
+import Game from './Pages/GameStore/Game';
+import { AnimatePresence } from "framer-motion";
+import games from './Constants/games';
+import filterNames from './Constants/filterNames';
+import Browser from './Pages/GameStore/Browser';
+
 const App = () => {
+  const [currentFilter, setCurrentFilter] = useState("none");
+  const [allGames, setAllGames] = useState(games);
+  const [cart, setCart] = useState([]);
+  const [cartAmount, setCartAmount] = useState(0);
+  const [shownGames, setShownGames] = useState(allGames);
+  const [reviewDisplay, setReviewDisplay] = useState(false);
+  const [cartDisplayed, setCartDisplayed] = useState(false);
+  const [search, setSearch] = useState("");
+  const [overlap, setOverlap] = useState(false);
+  const [searching, setSearching] = useState(false);
+  const [browsing, setBrowsing] = useState(true);
+  const [selectedGame, setSelectedGame] = useState(false);
+  const [extended, setExtended] = useState(false);
+  const [textExtended, setTextExtended] = useState(false);
+  const [hoverState, setHoverState] = useState([
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+        hovered: false,
+        selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    },
+    {
+      hovered: false,
+      selected: false
+    }
+  ]);
+  // render() {
     const history = createBrowserHistory();
+    // const navigate = useNavigate();
+    // const location = useLocation();
+    const handleSearch = (e) => {
+      setSearch(e.target.value);
+      setSearching(false);
+    }
+    
+    const handleSearchSubmit = (e) => {
+      setCurrentFilter("none");
+      e.preventDefault();
+      setSearching(true);
+    
+      // if (location.pathname != "/react-ecommerce-store/browse") {
+      //   // navigate('/react-ecommerce-store/browse');
+      // }
+    }
+
+
+const handleSelect = (e) => {
+  setCurrentFilter(filterNames[e.target.id - 8]);
+  console.log(filterNames[e.target.id - 8])
+  console.log(currentFilter)
+}
+
+const handleSelectGame = (e) => {
+  if (e.target.tagName === "BUTTON") {
+    return
+  } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
+        setSelectedGame(games[e.target.parentNode.id]);
+        window.location.href = `/gamecorner/game/${e.target.parentNode.id}`
+        console.log(e)
+  }
+}
+
+const handleHome = () => {
+  window.location.href = '/gamecorner'
+}
+
+const handleLike = (e) => {
+  let handledLike = allGames.map((game, i) => {
+    if (e.target.parentNode.id == i) {
+      game.isLiked = !game.isLiked
+      return game
+    } else {
+      return game;
+    }
+  });
+
+  setAllGames(handledLike);
+}
+
+const clearFilter = () => {
+  setCurrentFilter("none");
+  setSearch("");
+  setReviewDisplay(false);
+}
+
+const openGamePage = (e) => {
+  setCartDisplayed(false);
+  let selectedGameSurname = e.target.id;
+  // navigate(`/react-ecommerce-store/games/${selectedGameSurname}`);
+}
+
+const handleHover = (e) => {
+  if (hoverState[e.target.id].selected) {
+    return;
+  }
+
+  let newHoverState = hoverState.map((element, i) => {
+    if (e.target.id == i) {
+      element.hovered = !element.hovered;
+      return element
+    } else {
+      return element;
+    }
+  });
+    
+  setHoverState(newHoverState);
+}
+
+const handleHoverGame = (e) => {
+  let handledHoveredGame = allGames.map((game, i) => {
+    if (e.target.id == i) {
+      game.isHovered = !game.isHovered
+      return game
+    } else {
+      return game;
+    }
+  });
+
+  setAllGames(handledHoveredGame);
+}
+
+
     return (
       <BrowserRouter history={history}>
         <Switch>
@@ -81,6 +302,57 @@ const App = () => {
               <PrivateRoute type={"login"} path="/shop/products/history/:id" exact={true} element={OrderDetails} />
               <PrivateRoute type={"login"} path="/shop/cart" exact={true} element={Checkout} />
               {/* Shop */}
+              {/* GameStore */}
+              <Route path="/tools" exact render={() => ( <Tools/>)}/>
+              <Route path="/onlinegaming" exact render={() => ( <Games/>)}/>
+              <Route path="/shop" exact render={() => (<Shop/>)}/>
+              <Route path="/gamecorner" exact render={() => (<GameHome
+                 handleHover={handleHover} 
+                 hoverState={hoverState} 
+                 shownGames={shownGames} 
+                 handleLike={handleLike}
+                 handleHoverGame={handleHoverGame}
+                 handleSelectGame={handleSelectGame}
+                 setHoverState={setHoverState}
+                 overlap={overlap}
+                 setExtended={setExtended}
+                 setOverlap={setOverlap}
+                 openGamePage={openGamePage}
+              />)}/>
+              <Route path="/gamecorner/game/:id" exact render={() => (<Game
+                 handleHover={handleHover} 
+                 hoverState={hoverState} 
+                 shownGames={shownGames} 
+                 handleLike={handleLike}
+                 handleHoverGame={handleHoverGame}
+                 handleSelectGame={handleSelectGame}
+                 setHoverState={setHoverState}
+                 overlap={overlap}
+                 setOverlap={setOverlap}
+                 openGamePage={openGamePage}
+                 setExtended={setExtended}
+              />)}/>
+              <Route path="/gamecorner/browser" exact render={() => (<Browser
+                 handleHover={handleHover} 
+                 hoverState={hoverState} 
+                 shownGames={shownGames}
+                 allGames={allGames}
+                 currentFilter={currentFilter}
+                 clearFilter={clearFilter}
+                 setShownGames={setShownGames} 
+                 setReviewDisplay={setReviewDisplay}
+                 handleLike={handleLike}
+                 handleHome={handleHome}
+                 handleSelect={handleSelect}
+                 handleHoverGame={handleHoverGame}
+                 handleSelectGame={handleSelectGame}
+                 setHoverState={setHoverState}
+                 overlap={overlap}
+                 setOverlap={setOverlap}
+                 setExtended={setExtended}
+                 openGamePage={openGamePage}
+              />)} />
+              {/* GameStore */}
               {/* 404 */}
               {/* <Route component={Error} /> */}
               {/* 404 */}
@@ -89,6 +361,79 @@ const App = () => {
         </Switch>
       </BrowserRouter>
     );
+          {/* <DataProvider> */}
+            {/* <AnimatePresence exitBeforeEnter> */}
+              {/* <NavBar/> */}
+              // <Route exact path="/" render={() => (<Home/>)}/>
+              // <Route path="/about" exact render={() => ( <About/>)}/>
+              // <Route path="/tools" exact render={() => ( <Tools/>)}/>
+              // <Route path="/onlinegaming" exact render={() => ( <Games/>)}/>
+              // <Route path="/shop" exact render={() => (<Shop/>)}/>
+              // <Route path="/gamecorner" exact render={() => (<GameHome
+              //    handleHover={handleHover} 
+              //    hoverState={hoverState} 
+              //    shownGames={shownGames} 
+              //    handleLike={handleLike}
+              //    handleHoverGame={handleHoverGame}
+              //    handleSelectGame={handleSelectGame}
+              //    setHoverState={setHoverState}
+              //    overlap={overlap}
+              //    setExtended={setExtended}
+              //    setOverlap={setOverlap}
+              //    openGamePage={openGamePage}
+              // />)}/>
+              // <Route path="/gamecorner/game/:id" exact render={() => (<Game
+              //    handleHover={handleHover} 
+              //    hoverState={hoverState} 
+              //    shownGames={shownGames} 
+              //    handleLike={handleLike}
+              //    handleHoverGame={handleHoverGame}
+              //    handleSelectGame={handleSelectGame}
+              //    setHoverState={setHoverState}
+              //    overlap={overlap}
+              //    setOverlap={setOverlap}
+              //    openGamePage={openGamePage}
+              //    setExtended={setExtended}
+              // />)}/>
+              // <Route path="/gamecorner/browser" exact render={() => (<Browser
+              //    handleHover={handleHover} 
+              //    hoverState={hoverState} 
+              //    shownGames={shownGames}
+              //    allGames={allGames}
+              //    currentFilter={currentFilter}
+              //    clearFilter={clearFilter}
+              //    setShownGames={setShownGames} 
+              //    setReviewDisplay={setReviewDisplay}
+              //    handleLike={handleLike}
+              //    handleHome={handleHome}
+              //    handleSelect={handleSelect}
+              //    handleHoverGame={handleHoverGame}
+              //    handleSelectGame={handleSelectGame}
+              //    setHoverState={setHoverState}
+              //    overlap={overlap}
+              //    setOverlap={setOverlap}
+              //    setExtended={setExtended}
+              //    openGamePage={openGamePage}
+              // />)}/>
+              // <Route path="/profile" exact component={Profile}/>
+              // <Route path="/edit" exact component={Editprofile}/>
+              // <Route path="/project" exact component={Projects}/>
+              // <Route path="/project/:id" exact component={ProjectItem}/>
+              // <Route path="/login" exact component={Login} />
+              // <Route path="/register" exact component={Register} />
+              // <Route path="/blog" exact component={Articles} />
+              // <Route path="/blog/:id" exact component={ArticleItem} />
+              // <Route path="/blog/new" exact component={CreateArticle} />
+              // <Route path="/blog/edit" exact component={CreateArticle} />
+              // <Route path="/contact" exact component={Contact} />
+              {/* <Footer/> */}
+            {/* </AnimatePresence> */}
+          {/* </DataProvider> */}
+            {/* <Route path="*" component={Error} /> */}
+      //   </Switch>
+      // </BrowserRouter>
+    // );
+  // }
 }
 
 

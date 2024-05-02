@@ -6,6 +6,7 @@ import moment from 'moment-timezone'
 import SideBar from '../../../Components/NavBar/SideBar';
 import RightColumn from '../../../Components/Article/RightColumn';
 import MainContainer from '../../../Components/Article/MainContainer';
+import { BlogContent } from '../../../Layout/Container/styledArticle'
 
 const ArticleItem = () => {
     const params = useParams()

@@ -267,7 +267,17 @@ async function updateArticleComment(req, res) {
 
 async function updateArticle(req, res) {
   try {
-    const { title, subtitle, description, content, images, category, comments } = req.body;
+    const {
+      title,
+      subtitle,
+      description,
+      content,
+      images,
+      category,
+      comments,
+      draft,
+      archive,
+    } = req.body;
 
     const originalArticle = await Articles.findOne({ _id: req.params.id });
 
@@ -275,18 +285,42 @@ async function updateArticle(req, res) {
 
     const originalBody = req.body;
 
-    await Articles.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        // title: title.toLowerCase(),
-        // subtitle,
-        // description,
-        // content,
-        // images,
-        // category,
-        comments: [originalArticle.comments, ...comments],
-      }
-    );
+    if (comments) {
+      await Articles.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          // title: title.toLowerCase(),
+          // subtitle,
+          // description,
+          // content,
+          // images,
+          // category,
+          comments: [originalArticle.comments, ...comments],
+        }
+      );
+    }
+
+    if (draft) {
+      console.log(`draft`);
+      console.log(draft);
+      await Articles.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          draft: draft,
+        }
+      );
+    }
+
+    if (archive) {
+      console.log(`archive`);
+      console.log(archive);
+      await Articles.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          archived: archive,
+        }
+      );
+    }
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 
@@ -295,7 +329,7 @@ async function updateArticle(req, res) {
     res.json({ msg: "Updated a article" });
   } catch (err) {
     logger.error(err);
-    console.log(err.message)
+    console.log(err.message);
 
     return res.status(500).json({ msg: err.message });
   }

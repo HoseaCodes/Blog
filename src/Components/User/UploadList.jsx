@@ -3,8 +3,6 @@ import { Button, Row, Table, Card, Container, } from 'react-bootstrap';
 import {CircleImage} from '../../Layout/Image/styledImage';
 import { GlobalState } from '../../GlobalState';
 import axios from "axios";
-import NavBar from '../NavBar/NavBar';
-import Footer from '../Footer/Footer';
 import Loading from '../Loading/Loading';
 import moment from 'moment-timezone'
 import { useHistory } from 'react-router-dom';
@@ -106,7 +104,6 @@ const addUpload = async e => {
   const adduploadView = () => {
     return (
       <>
-      <NavBar/>
         <Container style={{minHeight: '60vh', display: 'flex', alignItems: 'center'}}>
             <Row>
             <h3>Add Photo</h3>
@@ -133,7 +130,6 @@ const addUpload = async e => {
               </Card.Body>
             </Row>
           </Container>
-        <Footer/>
       </>
   )}
 
@@ -173,7 +169,6 @@ const addUpload = async e => {
               {uploadView && adduploadView()}
               {!uploadView &&
               <>
-              <NavBar/>
               <Container style={{minHeight: '80vh'}}>
                 <h2 className="text-center" style={{padding:"1em"}}>Upload Management</h2>
                 <div style={{textAlign:'left'}}>
@@ -207,7 +202,6 @@ const addUpload = async e => {
                       </Table>
                   </Row>
                 </Container>
-                <Footer/>
               </>
               }
             </>

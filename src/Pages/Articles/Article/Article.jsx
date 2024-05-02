@@ -10,9 +10,12 @@ import MainContainer from '../../../Components/Article/MainContainer';
 const ArticleItem = () => {
     const params = useParams()
     const state = useContext(GlobalState)
+    const [isLoggedIn] = state.userAPI.isLoggedIn;
+    const [isAdmin] = state.userAPI.isAdmin;
     const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
     const [detailArticle, setdetailArticle] = useState([])
+    const [viewComment, setViewComment] = useState(false)
 
     useEffect(() => {
         if (params.id) {
@@ -35,10 +38,11 @@ const ArticleItem = () => {
           <main className="blog-content">
             {
                 user.name !== "" && 
-                <SideBar/>
+                <SideBar user={user} article={detailArticle} className='d-none d-lg-block'/>
             }
-            <MainContainer user={user} articles={articles} timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
-            <RightColumn user={user} articles={articles}/>
+            <MainContainer isAdmin={isAdmin} isLoggedIn={isLoggedIn} viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} 
+            timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
+            <RightColumn setViewComment={setViewComment} viewComment={viewComment} user={user} articles={articles}/>
           </main>
         </>
     )

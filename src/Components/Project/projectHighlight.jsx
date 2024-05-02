@@ -4,7 +4,8 @@ import {projectData} from '../../Pages/Projects/ProjectsData';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import './projectHighlight.css'
-import { StyledButtonATag, StyledButtonH2, StyledDivButton } from '../../Layout/Button/styledButton';
+import { StyledButtonH2, StyledDivButton } from '../../Layout/Button/styledButton';
+import { AncorButton } from '../Button/AncorButton';
 
 function ProjectHighlight() {
   const highlights = projectData;
@@ -26,7 +27,7 @@ function ProjectHighlight() {
             )})}
             <StyledDivButton>
               <StyledButtonH2>Visit my portfolio for more</StyledButtonH2>
-              <StyledButtonATag href="http://www.dominiquehosea.com" rel="noopener noreferrer" target="_blank">My Portfolio</StyledButtonATag>
+              <AncorButton primary href="http://www.dominiquehosea.com" target="_blank" label="My Portfolio"/>
             </StyledDivButton>
         </div>
     )

@@ -7,14 +7,22 @@ import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
-
+import { useCookies } from "react-cookie";
+import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const location = useLocation();
+  const currentPath = location.pathname;
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn
   const [isAdmin] = state.userAPI.isAdmin
   const [user] = state.userAPI.user
   const [cart] = state.userAPI.cart;
+  if (currentPath.includes("/blog/")) {
+    return null;
+  }
+
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
       true
@@ -23,6 +31,8 @@ const NavBar = () => {
   const logoutUser = async () => {
     await axios.post("/api/user/logout");
     localStorage.removeItem("firstLogin");
+    localStorage.removeItem("isLoggedIn");
+    removeCookie("accesstoken");
     window.location.href = "/";
   };
 
@@ -47,76 +57,76 @@ const NavBar = () => {
 			</>
 		)};
 
-    const publicRouter = () => {
-      return (
-        <>
-          <Link to="/" className="nav-link active">Home</Link>
-          <Link to="/blog" className="nav-link">Blog</Link>
-          <li className="dropdown">
-            <a className="nav-link dropdown-toggle" href="/"
-                id="navdrop" role="button" data-toggle="dropdown"
-                data-hover="dropdown">Portfolio</a>
-            <div className="dropdown-menu" aria-labelledby="navdrop">
-              <a href="http://www.dominiquehosea.com" target="_blank" rel="noopener noreferrer"
-              className="dropdown-item nav-link">Backend Portfolio</a>
-              <Link to="/project" rel="noopener noreferrer"
-                 className="dropdown-item nav-link">Project Case Studies</Link>
-            </div>
-          </li>
-          <Link to="/about" className="nav-link">About</Link>
-          <Link to="/contact" className="nav-link">Contact</Link>
-        </>
-      )};
+  const publicRouter = () => {
+    return (
+      <>
+        <Link to="/" className="nav-link active">Home</Link>
+        <Link to="/blog" className="nav-link">Blog</Link>
+        <li className="dropdown">
+          <a className="nav-link dropdown-toggle" href="/"
+              id="navdrop" role="button" data-toggle="dropdown"
+              data-hover="dropdown">Portfolio</a>
+          <div className="dropdown-menu" aria-labelledby="navdrop">
+            <a href="http://www.dominiquehosea.com" target="_blank" rel="noopener noreferrer"
+            className="dropdown-item nav-link">Backend Portfolio</a>
+            <Link to="/project" rel="noopener noreferrer"
+                className="dropdown-item nav-link">Project Case Studies</Link>
+          </div>
+        </li>
+        <Link to="/about" className="nav-link">About</Link>
+        <Link to="/contact" className="nav-link">Contact</Link>
+      </>
+    )};
 
-    const loggedInRouter = () => {
-      return (
-        <>
-          {/* <Link to="/blog/new" className="nav-link">Create Post</Link> */}
-          {
-            isAdmin  ?
-            null
-            :
-          <Link to="/" className="nav-link active">Home</Link>
-          }
-          <li className="dropdown">
-            <a className="nav-link dropdown-toggle" href="/"
-                id="navdrop" role="button" data-toggle="dropdown"
-                data-hover="dropdown">Blog</a>
-            <div className="dropdown-menu" aria-labelledby="navdrop">
-                <Link to={"/blog/new"} className="dropdown-item nav-link">Create Post</Link>
-                <Link to={"/blog"} rel="noopener noreferrer"
-                  className="dropdown-item nav-link">View Blogs</Link>
-            </div>
-          </li>
-          {/* <li className="dropdown">
-            <a className="nav-link dropdown-toggle" href="/"
-                id="navdrop" role="button" data-toggle="dropdown"
-                data-hover="dropdown">Shop</a>
-            <div className="dropdown-menu" aria-labelledby="navdrop">
-                <Link to="/shop" className="nav-link"> View Shop</Link>
-                <Link className="nav-link" to="/history">View Order History</Link>
-                <div className="nav-link" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                  <span >{cart.length}</span>
-                  <Link to="/cart">
-                    {" "}
-                    <AiOutlineShoppingCart style={{marginLeft: '1rem',color: 'white'}}/>
-                    <img src={""} alt="Shoppingcart" width="30" />
-                  </Link>
-                </div>
-            </div>
-          </li> */}
-          {/* <li className="dropdown">
-            <a className="nav-link dropdown-toggle" href="/"
-                id="navdrop" role="button" data-toggle="dropdown"
-                data-hover="dropdown">Settings</a>
-            <div className="dropdown-menu" aria-labelledby="navdrop">
-                <Link to="/profile" className="nav-link">View Profile</Link>
-                <Link to="/settings" className="nav-link">View Settings</Link>
-            </div>
-          </li> */}
-          <Link className="nav-link" onClick={logoutUser}>Logout</Link>
-        </>
-      )};
+  const loggedInRouter = () => {
+    return (
+      <>
+        {/* <Link to="/blog/new" className="nav-link">Create Post</Link> */}
+        {
+          isAdmin  ?
+          null
+          :
+        <Link to="/" className="nav-link active">Home</Link>
+        }
+        <li className="dropdown">
+          <a className="nav-link dropdown-toggle" href="/"
+              id="navdrop" role="button" data-toggle="dropdown"
+              data-hover="dropdown">Blog</a>
+          <div className="dropdown-menu" aria-labelledby="navdrop">
+              <Link to={"/admin/blog/new"} className="dropdown-item nav-link">Create Post</Link>
+              <Link to={"/blog"} rel="noopener noreferrer"
+                className="dropdown-item nav-link">View Blogs</Link>
+          </div>
+        </li>
+        {/* <li className="dropdown">
+          <a className="nav-link dropdown-toggle" href="/"
+              id="navdrop" role="button" data-toggle="dropdown"
+              data-hover="dropdown">Shop</a>
+          <div className="dropdown-menu" aria-labelledby="navdrop">
+              <Link to="/shop" className="nav-link"> View Shop</Link>
+              <Link className="nav-link" to="/history">View Order History</Link>
+              <div className="nav-link" style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                <span >{cart.length}</span>
+                <Link to="/cart">
+                  {" "}
+                  <AiOutlineShoppingCart style={{marginLeft: '1rem',color: 'white'}}/>
+                  <img src={""} alt="Shoppingcart" width="30" />
+                </Link>
+              </div>
+          </div>
+        </li> */}
+        {/* <li className="dropdown">
+          <a className="nav-link dropdown-toggle" href="/"
+              id="navdrop" role="button" data-toggle="dropdown"
+              data-hover="dropdown">Settings</a>
+          <div className="dropdown-menu" aria-labelledby="navdrop">
+              <Link to="/profile" className="nav-link">View Profile</Link>
+              <Link to="/settings" className="nav-link">View Settings</Link>
+          </div>
+        </li> */}
+        <Link className="nav-link" onClick={logoutUser}>Logout</Link>
+      </>
+    )};
 
     return (
         <header className="header-nav conatiner">

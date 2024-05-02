@@ -98,4 +98,7 @@
   .left-nav.open {
     height: auto;
   }
+  .nav-combo {
+    justify-content: start;
+  }
 }

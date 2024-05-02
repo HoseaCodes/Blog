@@ -7,8 +7,6 @@ import { useHistory, useParams } from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import { GlobalState } from '../../GlobalState';
 import './CreateProduct.css';
-import NavBar from '../NavBar/NavBar';
-import Footer from '../Footer/Footer';
 
 const initialState = {
     product_id: uuidv4().split('-').join(""),
@@ -136,7 +134,6 @@ function CreateProduct() {
 
     return (
       <>
-        <NavBar/>
         <div className="create_product">
             <div className="upload">
                 <input type="file" name="file" id="file_up"
@@ -205,7 +202,6 @@ function CreateProduct() {
                 <button type="submit">{onEdit ? "Update" : "Create"}</button>
             </form>
         </div>
-        <Footer/>
       </>
     )
 }

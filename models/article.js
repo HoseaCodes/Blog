@@ -13,10 +13,10 @@ const articleSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    // postedBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Users'
-    // },
+    postedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Users'
+    },
     title: {
         type: String,
         required: true,
@@ -35,10 +35,15 @@ const articleSchema = new mongoose.Schema({
         required: true,
         default: "https://i.imgur.com/19i5Whc.png",
     },
-    category: {
+    categories: {
         type: [String],
+        required: false   
     },
     archived: {
+        type: Boolean,
+        default: false,
+    },
+    draft: {
         type: Boolean,
         default: false,
     },
@@ -50,21 +55,26 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // tags: {
-    //   type: [String]
-    // },
-    // slug: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    // },
-    // comments: [{
-    //     text: String,
-    //     postedBy: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       ref: 'Users'
-    //     }
-    // }],
+    likes: {
+        type: Number,
+        default: 0
+    },
+    tags: {
+        type: [String],
+        required: false
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    comments: [{
+        text: String,
+        postedBy: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Comments'
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now

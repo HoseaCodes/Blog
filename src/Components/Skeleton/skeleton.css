@@ -68,7 +68,8 @@
   width: 50%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.2);
-  transform: skewX(-20deg);
+  border-radius: 5%;
+  /* transform: skewX(-20deg); */
   box-shadow: 0 0 30px 30px rgba(255, 255, 255, 0.05);
 }
 

@@ -13,7 +13,7 @@ export const Inherit = styled.span`
 
 export const StyledRightContainer = styled.section`
   width: 45rem;
-  padding: 4% 2% 0% 2%;
+  padding: 2% 2% 0% 2%;
   border: 1px solid #ccc;
   margin: 0;
   max-height: calc(105vh - 4rem);
@@ -49,7 +49,7 @@ export const JustifyContent = styled.div`
   ${props => props.MiniPost && css`
     justify-content: space-between;
     align-items: center;
-    width: 80%;
+    width: 100%;
     margin-top: 4%;
     `}
     ${props => props.SpaceAroundPaddingRight && css`
@@ -137,7 +137,7 @@ export const BlogPost = styled.div`
   padding: 1%;
 `;
 
-export const BlogNewsletter = styled.div`
+export const BlogNewsletter = styled.form`
   background-color: whitesmoke;
   padding: 4%;
   margin-top: 8%;
@@ -154,6 +154,7 @@ export const SideUserContainer = styled.div`
   ${props => props.ButtonGroup && css`
     flex-direction: row;
     margin-top: 8%;
+    justify-content: space-evenly;
   `}
   ${props => props.Main && css`
   padding: 6%;

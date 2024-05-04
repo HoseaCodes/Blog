@@ -17,8 +17,8 @@ import { Link, useHistory } from "react-router-dom";
 import Cart from "../../Components/Cart/Cart";
 import AnimatedScroll from "./AnimatedScroll";
 import games from "./games";
-import gameOverlay from "../../Assets/Videos/pyke.mp4";
-import scarySound from "../../Assets/Sounds/garden-vocal-experimental-26509.mp3";
+// import gameOverlay from "../../Assets/Videos/pyke.mp4";
+// import scarySound from "../../Assets/Sounds/garden-vocal-experimental-26509.mp3";
 import AutoplayAudio from "./AutoplayAudio";
 
 const GameHome = (props) => {
@@ -118,12 +118,9 @@ const GameHome = (props) => {
       )}
       <div className={styles.home}>
         <video autoPlay muted loop className={styles.video}>
-          <source src={gameOverlay} type="video/mp4" />
+          <source src="https://i.imgur.com/MiKpHQ4.mp4" type="video/mp4" />
         </video>
-        {/* <audio controls loop autoPlay src={scarySound}>
-          <source src={scarySound} type="audio/mpeg" />
-        </audio> */}
-        <AutoplayAudio src={scarySound} />
+        {/* <AutoplayAudio src={scarySound} /> */}
         <div className={styles.container}>
           <div className={styles.left}>
             <div className={styles.splash}>

@@ -11,7 +11,7 @@ import Slider from './Slider';
 import games from '../../Constants/games';
 import AnimatedText from './AnimatedText';
 import { ReactComponent as Add } from "./image/add.svg";
-import templateGame from '../../utils/templateGame';
+import templateGame from '../../Utils/templateGame';
 import { Link } from "react-router-dom";
 import GameComponent from './GameComponent';
 import styled from 'styled-components';

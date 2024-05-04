@@ -9,13 +9,16 @@ const About = () => {
     return (
         <>
           <HeroImage About/>
-          <StyledHr Primary/>
+        <StyledHr Primary />
+        <StyledQuoteContainer>
+
             <StyledQuote>
               {quotes['about']['quote']}
             </StyledQuote>
             <StyledQuoteAuthor>
                 {quotes['about']['author']}
             </StyledQuoteAuthor>
+        </StyledQuoteContainer>
           <StyledHr Primary/>
           <Timeline/>
           <StyledHr Primary/>

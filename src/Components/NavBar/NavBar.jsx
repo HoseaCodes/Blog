@@ -1,10 +1,11 @@
-import React, {useReducer, useContext } from "react";
+import React, {useReducer, useContext, useEffect } from "react";
 import axios from "axios";
 import "./NavBar.css";
 import burger from '../../Assets/Images/burger-min.png';
 import Logo from '../../Assets/Images/logo-min.png';
 import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
+import { StyledHeaderNav } from '../../Layout/Container/styledContainer'
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useCookies } from "react-cookie";
@@ -19,9 +20,15 @@ const NavBar = () => {
   const [isAdmin] = state.userAPI.isAdmin
   const [user] = state.userAPI.user
   const [cart] = state.userAPI.cart;
-  if (currentPath.includes("/blog/")) {
+  if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
     return null;
   }
+
+  useEffect(() => {
+    
+      console.log(currentPath);
+    
+  }, []);
 
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
@@ -129,7 +136,7 @@ const NavBar = () => {
     )};
 
     return (
-        <StyledHeaderNav className="conatiner">
+        <header className="header-nav conatiner">
             <div className='burger-nav'>
                 <img className='nav-img' src={burger} alt="menu"
                 width='50px' height='50px'
@@ -170,7 +177,7 @@ const NavBar = () => {
                 </ul>
             </nav>
             {/* <StyledHr Primary/> */}
-        </StyledHeaderNav>
+        </header>
 
     )
 }

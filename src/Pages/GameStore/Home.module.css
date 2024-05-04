@@ -110,7 +110,8 @@ a {
 .buttons {
     display: flex;
     position: relative;
-    width: 630px;
+    width: fit-content;
+    
     height: 70px;
     box-sizing: border-box;
     padding: 14px 20px 15px 20px;
@@ -120,6 +121,7 @@ a {
     z-index: 6;
     backdrop-filter: blur(8px);
     justify-content: space-between;
+    gap: 0.5rem;
 }
 
 .cta {
@@ -170,7 +172,7 @@ a {
     border-radius: 30px;
     inset: 0.01%;
     height: inherit;
-    width: inherit;
+    /* width: inherit; */
     z-index: -1;
     background-color: white;
     opacity: 0.285;

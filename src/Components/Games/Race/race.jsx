@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import mouse from '../../../utils/useMousePosition'
+import mouse from '../../../Utils/useMousePosition'
 import '../games.css';
 
 import crunch from '../../../Assets/Sounds/429591__inspectorj__chewing-breadstick-single-d.wav'

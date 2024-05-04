@@ -7,7 +7,7 @@ import { ReactComponent as Dot } from "./image/dot.svg";
 // import { useLocation } from 'react-router-dom';
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
-import templateGame from '../../utils/templateGame';
+import templateGame from '../../Utils/templateGame';
 
 const Slider = props => {
   const {

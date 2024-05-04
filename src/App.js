@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import * as Sentry from "@sentry/react";
 import Home from './Pages/Home/Home'
 import Projects from './Pages/Projects/Projects'
@@ -270,8 +270,18 @@ const handleHoverGame = (e) => {
               {/* Blog */}
               <Route path="/blog" exact={true} component={Articles} />
               <Route path="/blog/:id" exact={true} component={ArticleItem} />
-              <PrivateRoute type={"admin"} path="/admin/blog/new" exact={true} element={CreateArticle} />
-              <PrivateRoute type={"admin"} path="/admin/blog/edit/:id" exact={true} element={CreateArticle} />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/blog/new"
+                exact={true}
+                element={CreateArticle}
+              />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/blog/edit/:id"
+                exact={true}
+                element={CreateArticle}
+              />
               {/* Blog */}
               {/* Authentication */}
               <Route path="/login" exact={true} component={Login} />
@@ -282,76 +292,154 @@ const handleHoverGame = (e) => {
               <Route path="/project/:id" exact={true} component={ProjectItem} />
               {/* Showcase */}
               {/* UserManagement */}
-              <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} >
+              <PrivateRoute
+                type={"login"}
+                path="/profile"
+                exact={true}
+                element={Profile}
+              >
                 <Profile />
               </PrivateRoute>
               {/* <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} /> */}
-              <PrivateRoute type={"login"} path="/profile/edit" exact={true} element={Editprofile} />
+              <PrivateRoute
+                type={"login"}
+                path="/profile/edit"
+                exact={true}
+                element={Editprofile}
+              />
               {/* UserManagement */}
               {/* AdminManagement */}
-              <PrivateRoute type={"admin"} path="/admin/users" exact={true} element={UsersList} />
-              <PrivateRoute type={"admin"} path="/admin/uploads" exact={true} element={UploadList} />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/users"
+                exact={true}
+                element={UsersList}
+              />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/uploads"
+                exact={true}
+                element={UploadList}
+              />
               {/* AdminManagement */}
               {/* Shop */}
-              <PrivateRoute type={"login"} path="/shop" exact={true} element={Shop}/>
-              <PrivateRoute type={"login"} path="/shop/products" exact={true} element={Products} />
-              <PrivateRoute type={"login"} path="/shop/products/detail/:id" exact={true} element={DetailProduct} />
-              <PrivateRoute type={"admin"} path="/admin/shop/create_product" exact={true} element={CreateProduct} />
-              <PrivateRoute type={"admin"} path="/admin/shop/edit_product/:id" exact={true} element={CreateProduct} />
-              <PrivateRoute type={"login"} path="/shop/products/history" exact={true} element={History} />
-              <PrivateRoute type={"login"} path="/shop/products/history/:id" exact={true} element={OrderDetails} />
-              <PrivateRoute type={"login"} path="/shop/cart" exact={true} element={Checkout} />
+              <PrivateRoute
+                type={"login"}
+                path="/shop"
+                exact={true}
+                element={Shop}
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/shop/products"
+                exact={true}
+                element={Products}
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/shop/products/detail/:id"
+                exact={true}
+                element={DetailProduct}
+              />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/shop/create_product"
+                exact={true}
+                element={CreateProduct}
+              />
+              <PrivateRoute
+                type={"admin"}
+                path="/admin/shop/edit_product/:id"
+                exact={true}
+                element={CreateProduct}
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/shop/products/history"
+                exact={true}
+                element={History}
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/shop/products/history/:id"
+                exact={true}
+                element={OrderDetails}
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/shop/cart"
+                exact={true}
+                element={Checkout}
+              />
               {/* Shop */}
               {/* GameStore */}
-              <Route path="/tools" exact render={() => ( <Tools/>)}/>
-              <Route path="/onlinegaming" exact render={() => ( <Games/>)}/>
-              <Route path="/shop" exact render={() => (<Shop/>)}/>
-              <Route path="/gamecorner" exact render={() => (<GameHome
-                 handleHover={handleHover} 
-                 hoverState={hoverState} 
-                 shownGames={shownGames} 
-                 handleLike={handleLike}
-                 handleHoverGame={handleHoverGame}
-                 handleSelectGame={handleSelectGame}
-                 setHoverState={setHoverState}
-                 overlap={overlap}
-                 setExtended={setExtended}
-                 setOverlap={setOverlap}
-                 openGamePage={openGamePage}
-              />)}/>
-              <Route path="/gamecorner/game/:id" exact render={() => (<Game
-                 handleHover={handleHover} 
-                 hoverState={hoverState} 
-                 shownGames={shownGames} 
-                 handleLike={handleLike}
-                 handleHoverGame={handleHoverGame}
-                 handleSelectGame={handleSelectGame}
-                 setHoverState={setHoverState}
-                 overlap={overlap}
-                 setOverlap={setOverlap}
-                 openGamePage={openGamePage}
-                 setExtended={setExtended}
-              />)}/>
-              <Route path="/gamecorner/browser" exact render={() => (<Browser
-                 handleHover={handleHover} 
-                 hoverState={hoverState} 
-                 shownGames={shownGames}
-                 allGames={allGames}
-                 currentFilter={currentFilter}
-                 clearFilter={clearFilter}
-                 setShownGames={setShownGames} 
-                 setReviewDisplay={setReviewDisplay}
-                 handleLike={handleLike}
-                 handleHome={handleHome}
-                 handleSelect={handleSelect}
-                 handleHoverGame={handleHoverGame}
-                 handleSelectGame={handleSelectGame}
-                 setHoverState={setHoverState}
-                 overlap={overlap}
-                 setOverlap={setOverlap}
-                 setExtended={setExtended}
-                 openGamePage={openGamePage}
-              />)} />
+              {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
+              {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
+              <Route
+                path="/gamecorner"
+                exact
+                render={() => (
+                  <GameHome
+                    cartDisplayed={cartDisplayed}
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    handleLike={handleLike}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setExtended={setExtended}
+                    setOverlap={setOverlap}
+                    openGamePage={openGamePage}
+                  />
+                )}
+              />
+              <Route
+                path="/gamecorner/game/:id"
+                exact
+                render={() => (
+                  <Game
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    handleLike={handleLike}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setOverlap={setOverlap}
+                    openGamePage={openGamePage}
+                    setExtended={setExtended}
+                  />
+                )}
+              />
+              <Route
+                path="/gamecorner/browser"
+                exact
+                render={() => (
+                  <Browser
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    allGames={allGames}
+                    currentFilter={currentFilter}
+                    clearFilter={clearFilter}
+                    setShownGames={setShownGames}
+                    setReviewDisplay={setReviewDisplay}
+                    handleLike={handleLike}
+                    handleHome={handleHome}
+                    handleSelect={handleSelect}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setOverlap={setOverlap}
+                    setExtended={setExtended}
+                    openGamePage={openGamePage}
+                  />
+                )}
+              />
               {/* GameStore */}
               {/* 404 */}
               {/* <Route component={Error} /> */}

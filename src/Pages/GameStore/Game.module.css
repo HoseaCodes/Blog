@@ -9,11 +9,11 @@
     flex-direction: column;
 }
 
-header {
+/* header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-}
+} */
 
 header h1 {
     font-family: "GT Ultrabold";

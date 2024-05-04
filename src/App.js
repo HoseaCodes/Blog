@@ -372,10 +372,12 @@ const App = () => {
             {/* GameStore */}
             {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
             {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
-            <Route
+            <PrivateRoute
+              type={"login"}
               path="/gamecorner"
-              exact
-              render={() => (
+              exact={true}
+              isGame={true}
+              Game={
                 <GameHome
                   cartDisplayed={cartDisplayed}
                   handleHover={handleHover}
@@ -390,12 +392,14 @@ const App = () => {
                   setOverlap={setOverlap}
                   openGamePage={openGamePage}
                 />
-              )}
+              }
             />
-            <Route
+            <PrivateRoute
+              type={"login"}
               path="/gamecorner/game/:id"
-              exact
-              render={() => (
+              exact={true}
+              isGame={true}
+              Game={
                 <Game
                   handleHover={handleHover}
                   hoverState={hoverState}
@@ -409,12 +413,14 @@ const App = () => {
                   openGamePage={openGamePage}
                   setExtended={setExtended}
                 />
-              )}
+              }
             />
-            <Route
+            <PrivateRoute
+              type={"login"}
               path="/gamecorner/browser"
-              exact
-              render={() => (
+              exact={true}
+              isGame={true}
+              Game={
                 <Browser
                   handleHover={handleHover}
                   hoverState={hoverState}
@@ -435,7 +441,7 @@ const App = () => {
                   setExtended={setExtended}
                   openGamePage={openGamePage}
                 />
-              )}
+              }
             />
             {/* GameStore */}
             {/* 404 */}

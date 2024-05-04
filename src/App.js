@@ -1,46 +1,45 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { lazy, Suspense, useState } from "react";
 import * as Sentry from "@sentry/react";
-import Home from './Pages/Home/Home'
-import Projects from './Pages/Projects/Projects'
-import Articles from './Pages/Articles/Articles'
-import Error from './Pages/Error/Error'
-import Shop from './Pages/Shop/Shop';
-import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
-import CreateArticle from './Pages/Articles/CreateArticle'
-import { DataProvider } from './GlobalState';
-import ArticleItem from './Pages/Articles/Article/Article';
-import ProjectItem from './Pages/Projects/Project/Project';
-import Login from './Pages/Auth/login';
-import Register from './Pages/Auth/register';
-import ProLoader from './Components/Loading/ProLoader';
-import Editprofile from './Pages/User/editProfile';
-import { createBrowserHistory } from 'history';
-import Profile from './Pages/User/profile';
-import Layout from './Layout/Layout';
-import Loading from './Loading';
-import Products from './Pages/Products/Products';
-import CreateProduct from './Components/Product/CreateProduct';
-import DetailProduct from './Components/Product/DetailProduct';
-import OrderDetails from './Components/Order/OrderDetials';
-import Checkout from './Pages/Checkout/Checkout';
-import UsersList from './Components/User/ListUser';
-import History from './Pages/Order/History';
-import UploadList from './Components/User/UploadList';
-import PrivateRoute from './PrivateRouter';
+import Home from "./Pages/Home/Home";
+import Projects from "./Pages/Projects/Projects";
+import Articles from "./Pages/Articles/Articles";
+import Error from "./Pages/Error/Error";
+import Shop from "./Pages/Shop/Shop";
+import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
+import CreateArticle from "./Pages/Articles/CreateArticle";
+import { DataProvider } from "./GlobalState";
+import ArticleItem from "./Pages/Articles/Article/Article";
+import ProjectItem from "./Pages/Projects/Project/Project";
+import Login from "./Pages/Auth/login";
+import Register from "./Pages/Auth/register";
+import ProLoader from "./Components/Loading/ProLoader";
+import Editprofile from "./Pages/User/editProfile";
+import { createBrowserHistory } from "history";
+import Profile from "./Pages/User/profile";
+import Layout from "./Layout/Layout";
+import Loading from "./Loading";
+import Products from "./Pages/Products/Products";
+import CreateProduct from "./Components/Product/CreateProduct";
+import DetailProduct from "./Components/Product/DetailProduct";
+import OrderDetails from "./Components/Order/OrderDetials";
+import Checkout from "./Pages/Checkout/Checkout";
+import UsersList from "./Components/User/ListUser";
+import History from "./Pages/Order/History";
+import UploadList from "./Components/User/UploadList";
+import PrivateRoute from "./PrivateRouter";
 
 const About = lazy(() => import("./Pages/About/About"));
 const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
-
 // const App = () => {
-import Tools from './Pages/Tools';
-import Games from './Pages/Games';
-import GameHome from './Pages/GameStore/GameHome';
-import Game from './Pages/GameStore/Game';
+import Tools from "./Pages/Tools";
+import Games from "./Pages/Games";
+import GameHome from "./Pages/GameStore/GameHome";
+import Game from "./Pages/GameStore/Game";
 import { AnimatePresence } from "framer-motion";
-import games from './Constants/games';
-import filterNames from './Constants/filterNames';
-import Browser from './Pages/GameStore/Browser';
+import games from "./Constants/games";
+import filterNames from "./Constants/filterNames";
+import Browser from "./Pages/GameStore/Browser";
 
 const App = () => {
   const [currentFilter, setCurrentFilter] = useState("none");
@@ -59,470 +58,481 @@ const App = () => {
   const [textExtended, setTextExtended] = useState(false);
   const [hoverState, setHoverState] = useState([
     {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
-    },
-    {
-        hovered: false,
-        selected: false
+      hovered: false,
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
+      selected: false,
     },
     {
       hovered: false,
-      selected: false
-    }
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
   ]);
   // render() {
-    const history = createBrowserHistory();
-    // const navigate = useNavigate();
-    // const location = useLocation();
-    const handleSearch = (e) => {
-      setSearch(e.target.value);
-      setSearching(false);
+  const history = createBrowserHistory();
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    setSearching(false);
+  };
+
+  const handleSearchSubmit = (e) => {
+    setCurrentFilter("none");
+    e.preventDefault();
+    setSearching(true);
+
+    // if (location.pathname != "/react-ecommerce-store/browse") {
+    //   // navigate('/react-ecommerce-store/browse');
+    // }
+  };
+
+  const handleSelect = (e) => {
+    setCurrentFilter(filterNames[e.target.id - 8]);
+    console.log(filterNames[e.target.id - 8]);
+    console.log(currentFilter);
+  };
+
+  const handleSelectGame = (e) => {
+    if (e.target.tagName === "BUTTON") {
+      return;
+    } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
+      setSelectedGame(games[e.target.parentNode.id]);
+      window.location.href = `/gamecorner/game/${e.target.parentNode.id}`;
+      console.log(e);
     }
-    
-    const handleSearchSubmit = (e) => {
-      setCurrentFilter("none");
-      e.preventDefault();
-      setSearching(true);
-    
-      // if (location.pathname != "/react-ecommerce-store/browse") {
-      //   // navigate('/react-ecommerce-store/browse');
-      // }
+  };
+
+  const handleHome = () => {
+    window.location.href = "/gamecorner";
+  };
+
+  const handleLike = (e) => {
+    let handledLike = allGames.map((game, i) => {
+      if (e.target.parentNode.id == i) {
+        game.isLiked = !game.isLiked;
+        return game;
+      } else {
+        return game;
+      }
+    });
+
+    setAllGames(handledLike);
+  };
+
+  const clearFilter = () => {
+    setCurrentFilter("none");
+    setSearch("");
+    setReviewDisplay(false);
+  };
+
+  const openGamePage = (e) => {
+    setCartDisplayed(false);
+    let selectedGameSurname = e.target.id;
+    // navigate(`/react-ecommerce-store/games/${selectedGameSurname}`);
+  };
+
+  const handleHover = (e) => {
+    if (hoverState[e.target.id].selected) {
+      return;
     }
 
+    let newHoverState = hoverState.map((element, i) => {
+      if (e.target.id == i) {
+        element.hovered = !element.hovered;
+        return element;
+      } else {
+        return element;
+      }
+    });
 
-const handleSelect = (e) => {
-  setCurrentFilter(filterNames[e.target.id - 8]);
-  console.log(filterNames[e.target.id - 8])
-  console.log(currentFilter)
-}
+    setHoverState(newHoverState);
+  };
 
-const handleSelectGame = (e) => {
-  if (e.target.tagName === "BUTTON") {
-    return
-  } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
-        setSelectedGame(games[e.target.parentNode.id]);
-        window.location.href = `/gamecorner/game/${e.target.parentNode.id}`
-        console.log(e)
+  const handleHoverGame = (e) => {
+    let handledHoveredGame = allGames.map((game, i) => {
+      if (e.target.id == i) {
+        game.isHovered = !game.isHovered;
+        return game;
+      } else {
+        return game;
+      }
+    });
+
+    setAllGames(handledHoveredGame);
+  };
+
+  return (
+    <BrowserRouter history={history}>
+      <Switch>
+        <DataProvider>
+          <Layout>
+            <Route exact={true} path="/" render={() => <Home />} />
+            <Suspense fallback={<ProLoader />}>
+              {/* Static */}
+              <Route path="/about" exact={true} component={About} />
+              <Route path="/contact" exact={true} component={Contact} />
+              {/* Static */}
+            </Suspense>
+            {/* Blog */}
+            <Route path="/blog" exact={true} component={Articles} />
+            <Route path="/blog/:id" exact={true} component={ArticleItem} />
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/blog/new"
+              exact={true}
+              element={CreateArticle}
+            />
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/blog/edit/:id"
+              exact={true}
+              element={CreateArticle}
+            />
+            {/* Blog */}
+            {/* Authentication */}
+            <Route path="/login" exact={true} component={Login} />
+            <Route path="/register" exact={true} component={Register} />
+            {/* Authentication */}
+            {/* Showcase */}
+            <Route path="/project" exact={true} component={Projects} />
+            <Route path="/project/:id" exact={true} component={ProjectItem} />
+            {/* Showcase */}
+            {/* UserManagement */}
+            <PrivateRoute
+              type={"login"}
+              path="/profile"
+              exact={true}
+              element={Profile}
+            >
+              <Profile />
+            </PrivateRoute>
+            {/* <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} /> */}
+            <PrivateRoute
+              type={"login"}
+              path="/profile/edit"
+              exact={true}
+              element={Editprofile}
+            />
+            {/* UserManagement */}
+            {/* AdminManagement */}
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/users"
+              exact={true}
+              element={UsersList}
+            />
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/uploads"
+              exact={true}
+              element={UploadList}
+            />
+            {/* AdminManagement */}
+            {/* Shop */}
+            <PrivateRoute
+              type={"login"}
+              path="/shop"
+              exact={true}
+              element={Shop}
+            />
+            <PrivateRoute
+              type={"login"}
+              path="/shop/products"
+              exact={true}
+              element={Products}
+            />
+            <PrivateRoute
+              type={"login"}
+              path="/shop/products/detail/:id"
+              exact={true}
+              element={DetailProduct}
+            />
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/shop/create_product"
+              exact={true}
+              element={CreateProduct}
+            />
+            <PrivateRoute
+              type={"admin"}
+              path="/admin/shop/edit_product/:id"
+              exact={true}
+              element={CreateProduct}
+            />
+            <PrivateRoute
+              type={"login"}
+              path="/shop/products/history"
+              exact={true}
+              element={History}
+            />
+            <PrivateRoute
+              type={"login"}
+              path="/shop/products/history/:id"
+              exact={true}
+              element={OrderDetails}
+            />
+            <PrivateRoute
+              type={"login"}
+              path="/shop/cart"
+              exact={true}
+              element={Checkout}
+            />
+            {/* Shop */}
+            {/* GameStore */}
+            {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
+            {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
+            <Route
+              path="/gamecorner"
+              exact
+              render={() => (
+                <GameHome
+                  cartDisplayed={cartDisplayed}
+                  handleHover={handleHover}
+                  hoverState={hoverState}
+                  shownGames={shownGames}
+                  handleLike={handleLike}
+                  handleHoverGame={handleHoverGame}
+                  handleSelectGame={handleSelectGame}
+                  setHoverState={setHoverState}
+                  overlap={overlap}
+                  setExtended={setExtended}
+                  setOverlap={setOverlap}
+                  openGamePage={openGamePage}
+                />
+              )}
+            />
+            <Route
+              path="/gamecorner/game/:id"
+              exact
+              render={() => (
+                <Game
+                  handleHover={handleHover}
+                  hoverState={hoverState}
+                  shownGames={shownGames}
+                  handleLike={handleLike}
+                  handleHoverGame={handleHoverGame}
+                  handleSelectGame={handleSelectGame}
+                  setHoverState={setHoverState}
+                  overlap={overlap}
+                  setOverlap={setOverlap}
+                  openGamePage={openGamePage}
+                  setExtended={setExtended}
+                />
+              )}
+            />
+            <Route
+              path="/gamecorner/browser"
+              exact
+              render={() => (
+                <Browser
+                  handleHover={handleHover}
+                  hoverState={hoverState}
+                  shownGames={shownGames}
+                  allGames={allGames}
+                  currentFilter={currentFilter}
+                  clearFilter={clearFilter}
+                  setShownGames={setShownGames}
+                  setReviewDisplay={setReviewDisplay}
+                  handleLike={handleLike}
+                  handleHome={handleHome}
+                  handleSelect={handleSelect}
+                  handleHoverGame={handleHoverGame}
+                  handleSelectGame={handleSelectGame}
+                  setHoverState={setHoverState}
+                  overlap={overlap}
+                  setOverlap={setOverlap}
+                  setExtended={setExtended}
+                  openGamePage={openGamePage}
+                />
+              )}
+            />
+            {/* GameStore */}
+            {/* 404 */}
+            {/* <Route component={Error} /> */}
+            {/* 404 */}
+          </Layout>
+        </DataProvider>
+      </Switch>
+    </BrowserRouter>
+  );
+  {
+    /* <DataProvider> */
   }
-}
-
-const handleHome = () => {
-  window.location.href = '/gamecorner'
-}
-
-const handleLike = (e) => {
-  let handledLike = allGames.map((game, i) => {
-    if (e.target.parentNode.id == i) {
-      game.isLiked = !game.isLiked
-      return game
-    } else {
-      return game;
-    }
-  });
-
-  setAllGames(handledLike);
-}
-
-const clearFilter = () => {
-  setCurrentFilter("none");
-  setSearch("");
-  setReviewDisplay(false);
-}
-
-const openGamePage = (e) => {
-  setCartDisplayed(false);
-  let selectedGameSurname = e.target.id;
-  // navigate(`/react-ecommerce-store/games/${selectedGameSurname}`);
-}
-
-const handleHover = (e) => {
-  if (hoverState[e.target.id].selected) {
-    return;
+  {
+    /* <AnimatePresence exitBeforeEnter> */
   }
-
-  let newHoverState = hoverState.map((element, i) => {
-    if (e.target.id == i) {
-      element.hovered = !element.hovered;
-      return element
-    } else {
-      return element;
-    }
-  });
-    
-  setHoverState(newHoverState);
-}
-
-const handleHoverGame = (e) => {
-  let handledHoveredGame = allGames.map((game, i) => {
-    if (e.target.id == i) {
-      game.isHovered = !game.isHovered
-      return game
-    } else {
-      return game;
-    }
-  });
-
-  setAllGames(handledHoveredGame);
-}
-
-
-    return (
-      <BrowserRouter history={history}>
-        <Switch>
-          <DataProvider>
-            <Layout>
-              <Route exact={true} path="/" render={() => <Home />} />
-              <Suspense fallback={<ProLoader />}>
-                {/* Static */}
-                <Route path="/about" exact={true} component={About} />
-                <Route path="/contact" exact={true} component={Contact} />
-                {/* Static */}
-              </Suspense>
-              {/* Blog */}
-              <Route path="/blog" exact={true} component={Articles} />
-              <Route path="/blog/:id" exact={true} component={ArticleItem} />
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/blog/new"
-                exact={true}
-                element={CreateArticle}
-              />
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/blog/edit/:id"
-                exact={true}
-                element={CreateArticle}
-              />
-              {/* Blog */}
-              {/* Authentication */}
-              <Route path="/login" exact={true} component={Login} />
-              <Route path="/register" exact={true} component={Register} />
-              {/* Authentication */}
-              {/* Showcase */}
-              <Route path="/project" exact={true} component={Projects} />
-              <Route path="/project/:id" exact={true} component={ProjectItem} />
-              {/* Showcase */}
-              {/* UserManagement */}
-              <PrivateRoute
-                type={"login"}
-                path="/profile"
-                exact={true}
-                element={Profile}
-              >
-                <Profile />
-              </PrivateRoute>
-              {/* <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} /> */}
-              <PrivateRoute
-                type={"login"}
-                path="/profile/edit"
-                exact={true}
-                element={Editprofile}
-              />
-              {/* UserManagement */}
-              {/* AdminManagement */}
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/users"
-                exact={true}
-                element={UsersList}
-              />
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/uploads"
-                exact={true}
-                element={UploadList}
-              />
-              {/* AdminManagement */}
-              {/* Shop */}
-              <PrivateRoute
-                type={"login"}
-                path="/shop"
-                exact={true}
-                element={Shop}
-              />
-              <PrivateRoute
-                type={"login"}
-                path="/shop/products"
-                exact={true}
-                element={Products}
-              />
-              <PrivateRoute
-                type={"login"}
-                path="/shop/products/detail/:id"
-                exact={true}
-                element={DetailProduct}
-              />
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/shop/create_product"
-                exact={true}
-                element={CreateProduct}
-              />
-              <PrivateRoute
-                type={"admin"}
-                path="/admin/shop/edit_product/:id"
-                exact={true}
-                element={CreateProduct}
-              />
-              <PrivateRoute
-                type={"login"}
-                path="/shop/products/history"
-                exact={true}
-                element={History}
-              />
-              <PrivateRoute
-                type={"login"}
-                path="/shop/products/history/:id"
-                exact={true}
-                element={OrderDetails}
-              />
-              <PrivateRoute
-                type={"login"}
-                path="/shop/cart"
-                exact={true}
-                element={Checkout}
-              />
-              {/* Shop */}
-              {/* GameStore */}
-              {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
-              {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
-              <Route
-                path="/gamecorner"
-                exact
-                render={() => (
-                  <GameHome
-                    cartDisplayed={cartDisplayed}
-                    handleHover={handleHover}
-                    hoverState={hoverState}
-                    shownGames={shownGames}
-                    handleLike={handleLike}
-                    handleHoverGame={handleHoverGame}
-                    handleSelectGame={handleSelectGame}
-                    setHoverState={setHoverState}
-                    overlap={overlap}
-                    setExtended={setExtended}
-                    setOverlap={setOverlap}
-                    openGamePage={openGamePage}
-                  />
-                )}
-              />
-              <Route
-                path="/gamecorner/game/:id"
-                exact
-                render={() => (
-                  <Game
-                    handleHover={handleHover}
-                    hoverState={hoverState}
-                    shownGames={shownGames}
-                    handleLike={handleLike}
-                    handleHoverGame={handleHoverGame}
-                    handleSelectGame={handleSelectGame}
-                    setHoverState={setHoverState}
-                    overlap={overlap}
-                    setOverlap={setOverlap}
-                    openGamePage={openGamePage}
-                    setExtended={setExtended}
-                  />
-                )}
-              />
-              <Route
-                path="/gamecorner/browser"
-                exact
-                render={() => (
-                  <Browser
-                    handleHover={handleHover}
-                    hoverState={hoverState}
-                    shownGames={shownGames}
-                    allGames={allGames}
-                    currentFilter={currentFilter}
-                    clearFilter={clearFilter}
-                    setShownGames={setShownGames}
-                    setReviewDisplay={setReviewDisplay}
-                    handleLike={handleLike}
-                    handleHome={handleHome}
-                    handleSelect={handleSelect}
-                    handleHoverGame={handleHoverGame}
-                    handleSelectGame={handleSelectGame}
-                    setHoverState={setHoverState}
-                    overlap={overlap}
-                    setOverlap={setOverlap}
-                    setExtended={setExtended}
-                    openGamePage={openGamePage}
-                  />
-                )}
-              />
-              {/* GameStore */}
-              {/* 404 */}
-              {/* <Route component={Error} /> */}
-              {/* 404 */}
-            </Layout>
-          </DataProvider>
-        </Switch>
-      </BrowserRouter>
-    );
-          {/* <DataProvider> */}
-            {/* <AnimatePresence exitBeforeEnter> */}
-              {/* <NavBar/> */}
-              // <Route exact path="/" render={() => (<Home/>)}/>
-              // <Route path="/about" exact render={() => ( <About/>)}/>
-              // <Route path="/tools" exact render={() => ( <Tools/>)}/>
-              // <Route path="/onlinegaming" exact render={() => ( <Games/>)}/>
-              // <Route path="/shop" exact render={() => (<Shop/>)}/>
-              // <Route path="/gamecorner" exact render={() => (<GameHome
-              //    handleHover={handleHover} 
-              //    hoverState={hoverState} 
-              //    shownGames={shownGames} 
-              //    handleLike={handleLike}
-              //    handleHoverGame={handleHoverGame}
-              //    handleSelectGame={handleSelectGame}
-              //    setHoverState={setHoverState}
-              //    overlap={overlap}
-              //    setExtended={setExtended}
-              //    setOverlap={setOverlap}
-              //    openGamePage={openGamePage}
-              // />)}/>
-              // <Route path="/gamecorner/game/:id" exact render={() => (<Game
-              //    handleHover={handleHover} 
-              //    hoverState={hoverState} 
-              //    shownGames={shownGames} 
-              //    handleLike={handleLike}
-              //    handleHoverGame={handleHoverGame}
-              //    handleSelectGame={handleSelectGame}
-              //    setHoverState={setHoverState}
-              //    overlap={overlap}
-              //    setOverlap={setOverlap}
-              //    openGamePage={openGamePage}
-              //    setExtended={setExtended}
-              // />)}/>
-              // <Route path="/gamecorner/browser" exact render={() => (<Browser
-              //    handleHover={handleHover} 
-              //    hoverState={hoverState} 
-              //    shownGames={shownGames}
-              //    allGames={allGames}
-              //    currentFilter={currentFilter}
-              //    clearFilter={clearFilter}
-              //    setShownGames={setShownGames} 
-              //    setReviewDisplay={setReviewDisplay}
-              //    handleLike={handleLike}
-              //    handleHome={handleHome}
-              //    handleSelect={handleSelect}
-              //    handleHoverGame={handleHoverGame}
-              //    handleSelectGame={handleSelectGame}
-              //    setHoverState={setHoverState}
-              //    overlap={overlap}
-              //    setOverlap={setOverlap}
-              //    setExtended={setExtended}
-              //    openGamePage={openGamePage}
-              // />)}/>
-              // <Route path="/profile" exact component={Profile}/>
-              // <Route path="/edit" exact component={Editprofile}/>
-              // <Route path="/project" exact component={Projects}/>
-              // <Route path="/project/:id" exact component={ProjectItem}/>
-              // <Route path="/login" exact component={Login} />
-              // <Route path="/register" exact component={Register} />
-              // <Route path="/blog" exact component={Articles} />
-              // <Route path="/blog/:id" exact component={ArticleItem} />
-              // <Route path="/blog/new" exact component={CreateArticle} />
-              // <Route path="/blog/edit" exact component={CreateArticle} />
-              // <Route path="/contact" exact component={Contact} />
-              {/* <Footer/> */}
-            {/* </AnimatePresence> */}
-          {/* </DataProvider> */}
-            {/* <Route path="*" component={Error} /> */}
-      //   </Switch>
-      // </BrowserRouter>
-    // );
+  {
+    /* <NavBar/> */
+  }
+  // <Route exact path="/" render={() => (<Home/>)}/>
+  // <Route path="/about" exact render={() => ( <About/>)}/>
+  // <Route path="/tools" exact render={() => ( <Tools/>)}/>
+  // <Route path="/onlinegaming" exact render={() => ( <Games/>)}/>
+  // <Route path="/shop" exact render={() => (<Shop/>)}/>
+  // <Route path="/gamecorner" exact render={() => (<GameHome
+  //    handleHover={handleHover}
+  //    hoverState={hoverState}
+  //    shownGames={shownGames}
+  //    handleLike={handleLike}
+  //    handleHoverGame={handleHoverGame}
+  //    handleSelectGame={handleSelectGame}
+  //    setHoverState={setHoverState}
+  //    overlap={overlap}
+  //    setExtended={setExtended}
+  //    setOverlap={setOverlap}
+  //    openGamePage={openGamePage}
+  // />)}/>
+  // <Route path="/gamecorner/game/:id" exact render={() => (<Game
+  //    handleHover={handleHover}
+  //    hoverState={hoverState}
+  //    shownGames={shownGames}
+  //    handleLike={handleLike}
+  //    handleHoverGame={handleHoverGame}
+  //    handleSelectGame={handleSelectGame}
+  //    setHoverState={setHoverState}
+  //    overlap={overlap}
+  //    setOverlap={setOverlap}
+  //    openGamePage={openGamePage}
+  //    setExtended={setExtended}
+  // />)}/>
+  // <Route path="/gamecorner/browser" exact render={() => (<Browser
+  //    handleHover={handleHover}
+  //    hoverState={hoverState}
+  //    shownGames={shownGames}
+  //    allGames={allGames}
+  //    currentFilter={currentFilter}
+  //    clearFilter={clearFilter}
+  //    setShownGames={setShownGames}
+  //    setReviewDisplay={setReviewDisplay}
+  //    handleLike={handleLike}
+  //    handleHome={handleHome}
+  //    handleSelect={handleSelect}
+  //    handleHoverGame={handleHoverGame}
+  //    handleSelectGame={handleSelectGame}
+  //    setHoverState={setHoverState}
+  //    overlap={overlap}
+  //    setOverlap={setOverlap}
+  //    setExtended={setExtended}
+  //    openGamePage={openGamePage}
+  // />)}/>
+  // <Route path="/profile" exact component={Profile}/>
+  // <Route path="/edit" exact component={Editprofile}/>
+  // <Route path="/project" exact component={Projects}/>
+  // <Route path="/project/:id" exact component={ProjectItem}/>
+  // <Route path="/login" exact component={Login} />
+  // <Route path="/register" exact component={Register} />
+  // <Route path="/blog" exact component={Articles} />
+  // <Route path="/blog/:id" exact component={ArticleItem} />
+  // <Route path="/blog/new" exact component={CreateArticle} />
+  // <Route path="/blog/edit" exact component={CreateArticle} />
+  // <Route path="/contact" exact component={Contact} />
+  {
+    /* <Footer/> */
+  }
+  {
+    /* </AnimatePresence> */
+  }
+  {
+    /* </DataProvider> */
+  }
+  {
+    /* <Route path="*" component={Error} /> */
+  }
+  //   </Switch>
+  // </BrowserRouter>
+  // );
   // }
-}
-
+};
 
 export default Sentry.withProfiler(App);

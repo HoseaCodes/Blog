@@ -10,6 +10,7 @@ import Hero from "../../Components/Hero/hero";
 import { StyledHr } from "../../Layout/Hr/styledHr";
 import { AncorButton } from "../../Components/Button/AncorButton";
 import { GlobalState } from "../../GlobalState";
+import { truncate } from "../../Utils/helperFunctions";
 // import PrivateHome from "../../Components/Cards/privateHome";
 import { HeroText } from "../../Layout/Hero/styledHero";
 import moment from "moment-timezone";
@@ -18,19 +19,18 @@ const Home = () => {
   const state = useContext(GlobalState);
   const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [articles] = state.articlesAPI.articles;
-  const [user] = state.userAPI.user;
-  const mainPosts = articles.sort(
-    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-  );
   useEffect(() => {
     console.log({ articles });
   }, [articles]);
 
   if (!articles && isLoggedIn) return <>loading...</>;
-
+  const mainPosts = articles.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   const loggedInHome = () => {
     return (
       <>
+        <StyledHr Primary />
         <div className="homepage-combo">
           <div className="d-none d-md-block">
             <HeroText>All Blog Posts</HeroText>
@@ -42,13 +42,133 @@ const Home = () => {
                 .utc(article.updatedAt)
                 .format("MMMM Do YYYY");
               return (
-                <></>
-                // <PrivateHome
-                //   article={article}
-                //   user={user}
-                //   timeFormater={timeFormater}
-                //   updateTimeFormater={updateTimeFormater}
-                // />
+                <section className="list-group">
+                  <li className="list-group-item">
+                    <div className="mr-5 d-flex flex-row justify-content-end align-items-center">
+                      <div className="p-2 d-flex flex-row justify-content-between align-items-center">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckChecked"
+                          // checked
+                        />
+                        &nbsp;&nbsp;
+                        <label
+                          className="form-check-label"
+                          for="flexCheckChecked"
+                        >
+                          Draft
+                        </label>
+                      </div>
+                      <br />
+                      <div className="p-2 d-flex flex-row justify-content-between align-items-center">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckChecked"
+                          // checked
+                        />
+                        &nbsp;&nbsp;
+                        <label
+                          className="form-check-label"
+                          for="flexCheckChecked"
+                        >
+                          Archive
+                        </label>
+                      </div>
+                      <div className="p-2 d-flex flex-row justify-content-between align-items-center">
+                        <input
+                          className="form-check-input"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckChecked"
+                          // checked
+                        />
+                        &nbsp;&nbsp;
+                        <label
+                          className="form-check-label"
+                          for="flexCheckChecked"
+                        >
+                          Delete
+                        </label>
+                      </div>
+                    </div>
+
+                    <a
+                      href={`/blog/${article._id}`}
+                      className={`list-group-item list-group-item-action ${
+                        article[0] && "active"
+                      }`}
+                      aria-current="true"
+                    >
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1">{article.title}</h5>
+                        <div>
+                          <small>Created On: {timeFormater}</small>
+                          <br />
+                          <small>Last Updated On: {updateTimeFormater}</small>
+                          <h6 className="mb-1">
+                            Comments: &nbsp;
+                            <span className="badge text-bg-primary rounded-pill">
+                              {article.comments.length}
+                            </span>
+                          </h6>
+                          <h6 className="mb-1">
+                            Likes: &nbsp;
+                            <span className="badge text-bg-primary rounded-pill">
+                              {article.likes}
+                            </span>
+                          </h6>
+                        </div>
+                      </div>
+                      <br />
+                      <p className="mb-1">{truncate(article.description)}</p>
+                      <span>Categories: </span>
+                      {article.categories.length >= 1 ? (
+                        article.categories.map((category) => {
+                          return (
+                            <small
+                              key={category}
+                              style={{
+                                backgroundColor: "#206a5d",
+                                color: "white",
+                                padding: ".5rem",
+                                borderRadius: "5px",
+                              }}
+                            >
+                              {category}
+                            </small>
+                          );
+                        })
+                      ) : (
+                        <small>None</small>
+                      )}
+                      <br />
+                      <span>Tags: </span>
+                      {article.tags.length >= 1 ? (
+                        article.tags.map((tag) => {
+                          return (
+                            <small
+                              key={tag}
+                              style={{
+                                backgroundColor: "#206a5d",
+                                color: "white",
+                                padding: ".5rem",
+                                borderRadius: "5px",
+                              }}
+                            >
+                              {tag}
+                            </small>
+                          );
+                        })
+                      ) : (
+                        <small>None</small>
+                      )}
+                    </a>
+                  </li>
+                </section>
               );
             })}
           </div>

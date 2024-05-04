@@ -11,10 +11,10 @@
     z-index: 12;
 }
 
-form {
+/* form {
     display: flex;
     align-items: center;
-}
+} */
 
 form button {
     background: transparent;

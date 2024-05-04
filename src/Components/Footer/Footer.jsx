@@ -97,6 +97,9 @@ const Footer = (props) => {
                     <li>
                       <a href="http://webenlance.com">Image Cropping</a>
                     </li>
+                    <li>
+                      <a href="/gamecorner">Game Corner</a>
+                    </li>
                   </ul>
                 </div>
                 <div className=" col-sm-4 col-md col-12 col twitter-footer">

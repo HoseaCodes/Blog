@@ -141,8 +141,8 @@ docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
 - Syntax/Code Highlighting
 - Tags - Topics
 - Reactions
-- ~~View Comment~~
-- ~~Minutes Read~~
+- [x] ~~View Comment~~
+- [x] ~~Minutes Read~~
 
   https://github.com/saadpasta/react-blog-github
 
@@ -151,13 +151,13 @@ docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
 - Sign up to newletter on blog page.
   - with Brevo
 - Article Updates
-  - Save a blog post to favorites
-  - Save blog post as a draft
-  - Schedule blog post
-  - Track views to blog post
-  - Like a comment
-  - Handle notifications button on blog post
-  - Allow signed in user the ability to edit post.
+  - [ ] Save a blog post to favorites
+  - [x] Save blog post as a draft
+  - [ ] Schedule blog post
+  - [ ] Track views to blog post
+  - [ ] Like a comment
+  - [ ] Handle notifications button on blog post
+  - [ ] Allow signed in user the ability to edit post.
 - User Updates
   - Save user to favorite authors
   - Follow the author

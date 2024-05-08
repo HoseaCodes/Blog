@@ -410,6 +410,24 @@ function CreatArticle() {
                           />
                         </div>
                       </div>
+                      <div id="div_id_downloads" className=" required">
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Save To Drafts
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="draft"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
                     </div>
                     {!isMobileView && (
                       <div className="blog__categoryMobile">

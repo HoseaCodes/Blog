@@ -29,17 +29,12 @@ const Articles = () => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const mainPosts = articles.sort(
+
+  const cleanArticles = articles.filter(article => article.draft === false && article.archived === false);
+
+  const mainPosts = cleanArticles.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
-  const archivedPosts = [];
-
-  mainPosts.map(article => {
-    if (article.archived) {
-      archivedPosts.push(article);
-      mainPosts.pop(article);
-    }
-  });
 
   const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost);
   const shuffleArray = arr => arr.sort(() => 0.5 - Math.random());

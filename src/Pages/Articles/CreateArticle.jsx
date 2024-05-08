@@ -17,7 +17,7 @@ function CreatArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
   const initialState = {
     article_id: uuidv4(),
-    title: "",
+    title: "Demo",
     subtitle: "",
     description: "Description",
     markdown: markdown,
@@ -149,6 +149,10 @@ function CreatArticle() {
           ["article_id"]: uuidv4(),
           categories: [selectedCategory],
           id: user.id,
+        });
+        setArticle({
+          ...article,
+          ["slug"]: article.title.toLowerCase().replace(/ /g, "-"),
         });
         await axios.post("/api/articles", { ...article, images, ...user });
         setImages(false);

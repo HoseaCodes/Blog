@@ -16,6 +16,7 @@ import userRouter from './routes/user.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
+import { initScheduledPostJob } from './cron/scheduledPost.js';
 
 dotenv.config();
 imageOp();
@@ -51,6 +52,8 @@ const limiter = rateLimit({
 
 // Apply the rate limiting middleware to all requests
 // app.use(limiter);
+
+initScheduledPostJob();
 
 // Put API routes here, before the "catch all" route
 app.use('/api', articleRouter);

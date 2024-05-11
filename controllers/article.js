@@ -66,6 +66,8 @@ async function createArticle(req, res) {
       markdown,
       description,
       draft,
+      scheduled,
+      scheduledDateTime,
       images,
       categories,
       dev,
@@ -111,12 +113,24 @@ async function createArticle(req, res) {
       return res.status(400).json({ msg: "This article already exists." });
     }
 
+    if (scheduled & scheduledDateTime) {
+      if (new Date(scheduledDateTime) < new Date()) {
+        logger.error("Scheduled date is in the past.");
+        return res
+          .status(400)
+          .json({ msg: "Scheduled date is in the past." });
+      }
+      
+    }
+
     const newArticle = new Articles({
       article_id,
       title,
       subtitle,
       markdown,
       draft,
+      scheduled,
+      scheduledDateTime,
       description,
       images,
       postedBy,

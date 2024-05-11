@@ -47,6 +47,18 @@ const articleSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    published: {
+        type: Boolean,
+        default: false,
+    },
+    scheduled: {
+        type: Boolean,
+        default: false,
+    },
+    scheduledDateTime: {
+        type: Date,
+        default: null
+    },
     checked: {
         type: Boolean,
         default: false,

@@ -116,13 +116,27 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 Build image locally
 
 ```docker
-docker build -t hoseacodes_blog .  
+docker build -t hoseacodes-blog .  
 ```
 Run local image in container
 
 ```docker
-docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
+docker run --name hoseacodes-blog-c -p 3001:3001 -d hoseacodes-blog
 ```
+
+Tag Image for push
+
+```docker
+docker tag ${imageID} hoseacodes/hoseacodes/hoseacodes-blog:latest
+```
+
+Push Docker Image 
+
+```docker
+docker push hoseacodes/hoseacodes-blog:latest    
+```
+
+
 
 ## Unsolved Problems
 

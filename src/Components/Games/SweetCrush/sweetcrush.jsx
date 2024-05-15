@@ -247,7 +247,15 @@ const SweetCrush = () => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "4%",
+      }}
+    >
       <Grid color={"rgb(4 114 208 / 50%)"}>
         {candyArray.map(({ img, scale }, i) => (
           <CandyImage
@@ -261,8 +269,10 @@ const SweetCrush = () => {
         ))}
         <Background src={BgImg} />
       </Grid>
-      <Score>{score}</Score>
-      <Button onClick={restartGame}>(Re)Start</Button>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Score>{score}</Score>
+        <Button onClick={restartGame}>(Re)Start</Button>
+      </div>
     </div>
   );
 };

@@ -136,31 +136,31 @@ const games = [
     //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238450/halflife_3_xgil4x.jpg"
     //     ]
     // },
-    {
-        name: "Bird Shooter",
-        surname: "birdshooter",
-        price: "4.99",
-        desc: 'Counter-Strike: Global Offensive (CS:GO) is a first-person shooter video game which is a part of the Counter-Strike series. It was announced to the public on August 12, 2011, and is developed by Valve Corporation and their partner, Hidden Path Entertainment. The game was later released on August 21, 2012 for the Playstation 3, Xbox 360, Microsoft Windows, macOS and later Linux as a downloadable title.',
-        link: <Birds />,
-        release: '21st of August, 2012',
-        platforms: 'Linux, Xbox 360, Mac, PC, PlayStation 3',
-        genre: 'Shooter',
-        developers: 'Valve / Hidden Path Entertainment',
-        publishers: 'Valve',
-        inCart: false,
-        selected: false,
-        isHovered: false,
-        isLiked: false,
-        rating: 82,
-        id: 6,
-        cover: "https://i.imgur.com/EpxF5SI.jpg",
-        footage: [
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658188600/csgo_o9whdd.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238547/csgo_1_gne318.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238546/csgo_2_j1tgfo.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238546/csgo_3_qgcwjw.jpg"
-        ]
-    },
+    // {
+    //     name: "Bird Shooter",
+    //     surname: "birdshooter",
+    //     price: "4.99",
+    //     desc: 'Counter-Strike: Global Offensive (CS:GO) is a first-person shooter video game which is a part of the Counter-Strike series. It was announced to the public on August 12, 2011, and is developed by Valve Corporation and their partner, Hidden Path Entertainment. The game was later released on August 21, 2012 for the Playstation 3, Xbox 360, Microsoft Windows, macOS and later Linux as a downloadable title.',
+    //     link: <Birds />,
+    //     release: '21st of August, 2012',
+    //     platforms: 'Linux, Xbox 360, Mac, PC, PlayStation 3',
+    //     genre: 'Shooter',
+    //     developers: 'Valve / Hidden Path Entertainment',
+    //     publishers: 'Valve',
+    //     inCart: false,
+    //     selected: false,
+    //     isHovered: false,
+    //     isLiked: false,
+    //     rating: 82,
+    //     id: 6,
+    //     cover: "https://i.imgur.com/EpxF5SI.jpg",
+    //     footage: [
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658188600/csgo_o9whdd.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238547/csgo_1_gne318.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238546/csgo_2_j1tgfo.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238546/csgo_3_qgcwjw.jpg"
+    //     ]
+    // },
     // {
     //     name: "Connect Four",
     //     surname: "connectfour",
@@ -236,58 +236,58 @@ const games = [
             "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238578/detroit_3_truscr.jpg"
         ]
     },
-    {
-        name: "Space Invaders",
-        surname: "spaceinvaders",
-        price: "17.99",
-        desc: 'Space Invaders is a classic arcade game in which you need to shoot down all the aliens. Release Date. 1978. Developer. Space Invaders was made by Taito. Version.',
-        link: <SpaceInvaders />,
-        release: '4th of March, 2013',
-        platforms: 'PC',
-        genre: 'Shooter',
-        developers: 'Jazzie-z',
-        publishers: 'HoseaCodes',
-        inCart: false,
-        selected: false,
-        isHovered: false,
-        isLiked: false,
-        isActive: true,
-        rating: 85,
-        id: 10,
-        cover: "https://i.imgur.com/0ykyWwZ.png",
-        footage: [
-            "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
-        ]
-    },
-    {
-        name: "Tic Tac Toe",
-        surname: "tictactoe",
-        price: "17.99",
-        desc: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.',
-        link: <TicTacToe/>,
-        release: '4th of March, 2013',
-        platforms: 'PC',
-        genre: 'Strategy',
-        developers: 'Crystal Dynamics',
-        publishers: 'Square Enix Europe',
-        inCart: false,
-        selected: true,
-        isHovered: false,
-        isLiked: false,
-        isActive: true,
-        rating: 85,
-        id: 11,
-        cover: "https://i.imgur.com/b32NKSk.jpg",
-        footage: [
-            "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
-            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
-        ]
-    },
+    // {
+    //     name: "Space Invaders",
+    //     surname: "spaceinvaders",
+    //     price: "17.99",
+    //     desc: 'Space Invaders is a classic arcade game in which you need to shoot down all the aliens. Release Date. 1978. Developer. Space Invaders was made by Taito. Version.',
+    //     link: <SpaceInvaders />,
+    //     release: '4th of March, 2013',
+    //     platforms: 'PC',
+    //     genre: 'Shooter',
+    //     developers: 'Jazzie-z',
+    //     publishers: 'HoseaCodes',
+    //     inCart: false,
+    //     selected: false,
+    //     isHovered: false,
+    //     isLiked: false,
+    //     isActive: true,
+    //     rating: 85,
+    //     id: 10,
+    //     cover: "https://i.imgur.com/0ykyWwZ.png",
+    //     footage: [
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
+    //     ]
+    // },
+    // {
+    //     name: "Tic Tac Toe",
+    //     surname: "tictactoe",
+    //     price: "17.99",
+    //     desc: 'Tic-tac-toe, noughts and crosses, or Xs and Os is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid with X or O. The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row is the winner.',
+    //     link: <TicTacToe/>,
+    //     release: '4th of March, 2013',
+    //     platforms: 'PC',
+    //     genre: 'Strategy',
+    //     developers: 'Crystal Dynamics',
+    //     publishers: 'Square Enix Europe',
+    //     inCart: false,
+    //     selected: true,
+    //     isHovered: false,
+    //     isLiked: false,
+    //     isActive: true,
+    //     rating: 85,
+    //     id: 11,
+    //     cover: "https://i.imgur.com/b32NKSk.jpg",
+    //     footage: [
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
+    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
+    //     ]
+    // },
 ]
 
 export default games;

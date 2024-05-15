@@ -184,7 +184,13 @@ const PacMan = () => {
     }
   };
   return (
-    <div>
+    <div style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "4%",
+    }}>
       <Grid color={"black"} width={401} height={401}>
         {cells.map((e, i) => {
           if (i === pacman)
@@ -208,9 +214,11 @@ const PacMan = () => {
           );
         })}
       </Grid>
-      <Button onClick={toggleGame}>{start ? "Stop" : "Start"}</Button>
-      {score}
-      {gameOver ? <Result>{gameOver}</Result> : ""}
+      <div>
+        <Button onClick={toggleGame}>{start ? "Stop" : "Start"}</Button>
+        {score}
+        {gameOver ? <Result>{gameOver}</Result> : ""}
+      </div>
     </div>
   );
 };

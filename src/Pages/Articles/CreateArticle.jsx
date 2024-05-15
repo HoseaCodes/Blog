@@ -11,7 +11,7 @@ import { articleTempltes } from "./ArticleTemplate";
 import Preview from "../../Components/Article/Preview";
 import AITemplate from "../../Components/OpenAI/AITemplate";
 import { Button } from "../../Components/Button/Button";
-import { sleep } from "../../Utils/helperFunctions";
+import { sleep, getBasicAuth } from "../../Utils/helperFunctions";
 
 function CreatArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
@@ -154,7 +154,18 @@ function CreatArticle() {
           ...article,
           ["slug"]: article.title.toLowerCase().replace(/ /g, "-"),
         });
-        await axios.post("/api/articles", { ...article, images, ...user });
+        const username = process.env.USERNAME || "admin";
+        const password = process.env.PASSWORD || "password";
+        const auth = getBasicAuth(username, password);
+        await axios.post(
+          "/api/articles",
+          { ...article, images, ...user },
+          {
+            headers: {
+              Authorization: auth,
+            },
+          },
+        );
         setImages(false);
         setArticle(initialState);
       }

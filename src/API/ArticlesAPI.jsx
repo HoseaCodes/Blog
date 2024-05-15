@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios'
+import { getBasicAuth } from '../Utils/helperFunctions';
 
 function ArticlesAPI() {
     const [articles, setArticles] = useState([])
@@ -9,7 +10,14 @@ function ArticlesAPI() {
 
     useEffect(() => {
         const getArticles = async () => {
-            const res = await axios.get(`/api/articles`)
+            const username = process.env.USERNAME || 'admin';
+            const password = process.env.PASSWORD || 'password';
+            const auth = getBasicAuth(username, password);
+            const res = await axios.get(`/api/articles`, {
+              headers: {
+                Authorization: auth,
+              }
+            });
             setArticles(res.data.articles)
             setResult(res.data.result)
         }

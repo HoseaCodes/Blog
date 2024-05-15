@@ -75,6 +75,13 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Frontend) for details.
 
 ## Backend
 
+### Security
+
+#### Basic Auth
+
+![Security](https://i.imgur.com/ZD1gtVH.png)
+
+
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
 ## Dev Ops

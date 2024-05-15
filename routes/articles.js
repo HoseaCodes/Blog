@@ -14,15 +14,17 @@ import {
   createComment,
   deleteComment
 } from '../controllers/comment.js';
-import {nodecache} from '../utils/cache.js';
+import { nodecache } from '../utils/cache.js';
+import { basicAuth } from '../utils/auth.js';
 
 const router = express.Router();
 const commentRouter = express.Router({mergeParams: true});
 router.use('/articles/:id/comments', commentRouter);
 
-router.route('/articles')
-  .get(nodecache, getArticle)
-  .post(createArticle)
+router
+  .route("/articles")
+  .get(basicAuth, nodecache, getArticle)
+  .post(basicAuth, createArticle);
 
 router.route('/articles/:id')
   .get(getArticleByID)

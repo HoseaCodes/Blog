@@ -73,6 +73,10 @@ Dependencies used:
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Frontend) for details.
 
+## Data
+
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/Data) for details.
+
 ## Backend
 
 ### Security

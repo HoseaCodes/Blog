@@ -12,9 +12,14 @@ import Preview from "../../Components/Article/Preview";
 import AITemplate from "../../Components/OpenAI/AITemplate";
 import { Button } from "../../Components/Button/Button";
 import { sleep, getBasicAuth } from "../../Utils/helperFunctions";
+import moment from "moment";
 
 function CreatArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
+  const todaysDate = moment().format("YYYY-MM-DD");
+  const tomorrowsDate = moment().add(1, "days").format("YYYY-MM-DD");
+  const threeMonthsFromToday = moment().add(3, "months").format("YYYY-MM-DD");
+
   const initialState = {
     article_id: uuidv4(),
     title: "Demo",
@@ -28,6 +33,8 @@ function CreatArticle() {
     medium: false,
     archived: false,
     draft: false,
+    scheduled: false,
+    scheduledDate: todaysDate,
   };
   const state = useContext(GlobalState);
   const [article, setArticle] = useState(initialState);
@@ -144,6 +151,9 @@ function CreatArticle() {
           images,
         });
       } else {
+        article.scheduledDate <= todaysDate
+          ? (article.scheduledDate = null)
+          : (article.scheduled = true);
         setArticle({
           ...article,
           ["article_id"]: uuidv4(),
@@ -164,7 +174,7 @@ function CreatArticle() {
             headers: {
               Authorization: auth,
             },
-          },
+          }
         );
         setImages(false);
         setArticle(initialState);
@@ -315,75 +325,6 @@ function CreatArticle() {
                       </div>
                     </div>
                     <div className="col-md-6">
-                      <div id="div_id_image" className="required">
-                        <label
-                          for="id_image"
-                          className="control-label requiredField"
-                        >
-                          Article Image
-                          <span className="asteriskField">*</span>{" "}
-                        </label>
-                        <div className="controls mb upload">
-                          <input
-                            className="input-md emailinput form-control mb"
-                            name="file"
-                            id="file_up"
-                            onChange={handleUpload}
-                            placeholder="Enter Project Id"
-                            type="file"
-                          />
-                          {loading ? (
-                            <div id="file_img">
-                              <Loading />
-                            </div>
-                          ) : (
-                            <div id="file_img" style={styleUpload}>
-                              <img src={images ? images.url : ""} alt="" />
-                              <span onClick={handleDestory}>X</span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div
-                        id="div_id_downloads"
-                        className="form-group required"
-                      >
-                        <div className="controls">
-                          <label
-                            for="markdown"
-                            className="control-label"
-                            requiredField
-                          >
-                            Article Template
-                            <span className="asteriskField">*</span>
-                            &nbsp;&nbsp;
-                            <span className="qs">
-                              ?{" "}
-                              <span className="popover above">
-                                These templates will give you a starting point
-                                to start writing a blog.
-                              </span>
-                            </span>
-                          </label>
-                          <select
-                            onChange={updateMarkdown}
-                            name="markdown"
-                            type="text"
-                            className="form-control mb"
-                            style={{ height: "auto" }}
-                          >
-                            {articleTempltes.map((article) => (
-                              <option key={article.id} value={article.name}>
-                                {article.name}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
                       <div id="div_id_downloads" className="required">
                         <div className="controls d-flex flex-row align-items-center">
                           <label
@@ -440,6 +381,110 @@ function CreatArticle() {
                         </div>
                       </div>
                     </div>
+                    <div className="col-md-6">
+                      <div id="div_id_image" className="required">
+                        <label
+                          for="id_image"
+                          className="control-label requiredField"
+                        >
+                          Article Image
+                          <span className="asteriskField">*</span>{" "}
+                        </label>
+                        <div className="controls mb upload">
+                          <input
+                            className="input-md emailinput form-control mb"
+                            name="file"
+                            id="file_up"
+                            onChange={handleUpload}
+                            placeholder="Enter Project Id"
+                            type="file"
+                          />
+                          {loading ? (
+                            <div id="file_img">
+                              <Loading />
+                            </div>
+                          ) : (
+                            <div id="file_img" style={styleUpload}>
+                              <img src={images ? images.url : ""} alt="" />
+                              <span onClick={handleDestory}>X</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div id="div_id_downloads" className="required">
+                        <div className="controls d-flex flex-column ">
+                          <label
+                            for="markdown"
+                            className="control-label mb-8"
+                            requiredField
+                          >
+                            Schedule Post Time
+                            <span className="asteriskField">*</span>
+                            &nbsp;&nbsp;
+                            <span className="qs">
+                              ?{" "}
+                              <span className="popover above">
+                                This will allow for scheduling a post time/date
+                                for your post.
+                              </span>
+                            </span>
+                          </label>
+                          <input
+                            className="w-25"
+                            aria-label="Date"
+                            type="date"
+                            id="start"
+                            name="scheduledDate"
+                            onChange={handleChangeInput}
+                            value={article.scheduledDate}
+                            placeholder={tomorrowsDate}
+                            min={tomorrowsDate}
+                            max={threeMonthsFromToday}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div
+                        id="div_id_downloads"
+                        className="form-group required"
+                      >
+                        <div className="controls">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Article Template
+                            <span className="asteriskField">*</span>
+                            &nbsp;&nbsp;
+                            <span className="qs">
+                              ?{" "}
+                              <span className="popover above">
+                                These templates will give you a starting point
+                                to start writing a blog.
+                              </span>
+                            </span>
+                          </label>
+                          <select
+                            onChange={updateMarkdown}
+                            name="markdown"
+                            type="text"
+                            className="form-control mb"
+                            style={{ height: "auto" }}
+                          >
+                            {articleTempltes.map((article) => (
+                              <option key={article.id} value={article.name}>
+                                {article.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
                     {!isMobileView && (
                       <div className="blog__categoryMobile">
                         <label className="blog__categoryList__label">

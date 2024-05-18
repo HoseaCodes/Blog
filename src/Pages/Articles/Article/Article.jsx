@@ -26,6 +26,15 @@ const ArticleItem = () => {
         }
     }, [params.id, articles])
 
+    useEffect(async () => {
+        if (params.id) {
+            let orgArticle = articles.filter((article) => article._id === params.id);
+            await axios.put(`/api/articles/${params.id}`, {
+              views: orgArticle.views += 1,
+            });
+        }
+    }, [params.id])
+
     if (detailArticle.length === 0) return null;
 
     const { createdAt, markdown } = detailArticle;

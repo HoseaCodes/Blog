@@ -40,8 +40,18 @@ import { AnimatePresence } from "framer-motion";
 import games from "./Constants/games";
 import filterNames from "./Constants/filterNames";
 import Browser from "./Pages/GameStore/Browser";
+import ReactGA from 'react-ga4';
 
 const App = () => {
+  const history = createBrowserHistory();
+  ReactGA.initialize(process.env.GOOGLE_MEASUREMENT_ID);
+  history.listen((location, action) => {
+    ReactGA.pageview(location.pathname + location.search);
+  });
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
+
   const [currentFilter, setCurrentFilter] = useState("none");
   const [allGames, setAllGames] = useState(games);
   const [cart, setCart] = useState([]);
@@ -159,7 +169,6 @@ const App = () => {
     },
   ]);
   // render() {
-  const history = createBrowserHistory();
   // const navigate = useNavigate();
   // const location = useLocation();
   const handleSearch = (e) => {

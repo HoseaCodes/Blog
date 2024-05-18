@@ -116,11 +116,8 @@ async function createArticle(req, res) {
     if (scheduled & scheduledDateTime) {
       if (new Date(scheduledDateTime) < new Date()) {
         logger.error("Scheduled date is in the past.");
-        return res
-          .status(400)
-          .json({ msg: "Scheduled date is in the past." });
+        return res.status(400).json({ msg: "Scheduled date is in the past." });
       }
-      
     }
 
     const newArticle = new Articles({
@@ -283,42 +280,23 @@ async function updateArticleComment(req, res) {
 
 async function updateArticle(req, res) {
   try {
-    const {
-      title,
-      subtitle,
-      description,
-      content,
-      images,
-      category,
-      comments,
-      draft,
-      archive,
-    } = req.body;
+    const originalBody = req.body;
+    const { title, comments, draft, archive, ...rest } = originalBody;
 
     const originalArticle = await Articles.findOne({ _id: req.params.id });
 
     res.clearCookie("articles-cache");
 
-    const originalBody = req.body;
-
     if (comments) {
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
-          // title: title.toLowerCase(),
-          // subtitle,
-          // description,
-          // content,
-          // images,
-          // category,
           comments: [originalArticle.comments, ...comments],
         }
       );
     }
 
     if (draft) {
-      console.log(`draft`);
-      console.log(draft);
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -328,8 +306,6 @@ async function updateArticle(req, res) {
     }
 
     if (archive) {
-      console.log(`archive`);
-      console.log(archive);
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -337,6 +313,8 @@ async function updateArticle(req, res) {
         }
       );
     }
+
+    await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 

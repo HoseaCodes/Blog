@@ -80,6 +80,10 @@ const articleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    views: {
+        type: Number,
+        default: 0
+    },
     comments: [{
         text: String,
         postedBy: {

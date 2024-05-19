@@ -7,6 +7,7 @@ import SideBar from '../../../Components/NavBar/SideBar';
 import RightColumn from '../../../Components/Article/RightColumn';
 import MainContainer from '../../../Components/Article/MainContainer';
 import { BlogContent } from '../../../Layout/Container/styledArticle'
+import axios from 'axios';
 
 const ArticleItem = () => {
     const params = useParams()

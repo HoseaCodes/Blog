@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import * as Sentry from "@sentry/react";
 import Home from "./Pages/Home/Home";
 import Projects from "./Pages/Projects/Projects";
@@ -44,13 +44,25 @@ import ReactGA from 'react-ga4';
 
 const App = () => {
   const history = createBrowserHistory();
-  ReactGA.initialize(process.env.GOOGLE_MEASUREMENT_ID);
-  history.listen((location, action) => {
-    ReactGA.pageview(location.pathname + location.search);
-  });
-  useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
-  }, []);
+  if (process.env.NODE_ENV === 'production') {
+    ReactGA.initialize(process.env.GOOGLE_MEASUREMENT_ID);
+    history.listen((location, action) => {
+      ReactGA.send({
+        hitType: "pageview",
+        page: location.pathname,
+        title: location.search,
+      });
+    });
+    useEffect(() => {
+      ReactGA.send({
+        hitType: "pageview",
+        page: window.location.pathname,
+        title: window.location.search,
+      });
+    }, []);
+
+  }
+
 
   const [currentFilter, setCurrentFilter] = useState("none");
   const [allGames, setAllGames] = useState(games);

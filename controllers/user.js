@@ -231,36 +231,20 @@ async function getUser(req, res) {
 
 async function updateProfile(req, res) {
   try {
+  
+    const originalBody = req.body;
     const {
-      name,
-      avatar,
-      title,
-      work,
-      education,
-      skills,
-      location,
-      phone,
-      socialMedia,
-      websites,
-      socialMediaHandles,
-      articles,
-      cart,
-      role,
-      username,
-      aboutMe,
-      projects,
       notifications,
       favoriteArticles,
       savedArticles,
-      likedArticles
-    } = req.body;
+      likedArticles,
+      ...rest
+    } = originalBody;
 
-    const originalBody = req.body;
     const originalUser = await Users.findOne({ _id: req.params.id });
-    if (originalBody.notifications) {
+    if (notifications) {
       const newNotifications = originalUser.notifications.concat(notifications);
       const uniqueNotifications = [...new Set(newNotifications)];
-      console.log({ newNotifications });
       await Users.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -269,10 +253,9 @@ async function updateProfile(req, res) {
       );
     }
     
-    if (originalBody.favoriteArticles) {
-      console.log(`favoriteArticles`);
+    if (favoriteArticles) {
       const newFavoriteArticles =
-        originalUser.favoriteArticles.concat(favoriteArticles);
+      originalUser.favoriteArticles.concat(favoriteArticles);
       const uniqueFavoriteArticles = [...new Set(newFavoriteArticles)];
       await Users.findOneAndUpdate(
         { _id: req.params.id },
@@ -282,11 +265,9 @@ async function updateProfile(req, res) {
       );
     }
     
-    if (originalBody.savedArticles) {
-      console.log(`savedArticles`);
+    if (savedArticles) {
       const newSavedArticles = originalUser.savedArticles.concat(savedArticles);
       const uniqueSavedArticles = [...new Set(newSavedArticles)];
-      console.log({ newSavedArticles });
       await Users.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -295,11 +276,9 @@ async function updateProfile(req, res) {
       );
     }
 
-    if (originalBody.likedArticles) {
-      console.log(`likedArticles`);
+    if (likedArticles) {
       const newLikedArticles = originalUser.likedArticles.concat(likedArticles);
       const uniqueLikedArticles = [...new Set(newLikedArticles)];
-      console.log({ newLikedArticles });
       await Users.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -308,28 +287,12 @@ async function updateProfile(req, res) {
       );
     }
 
-    // await Users.findOneAndUpdate(
-    //   { _id: req.params.id },
-    //   {
-    //     name,
-    //     avatar,
-    //     title,
-    //     work,
-    //     education,
-    //     skills,
-    //     location,
-    //     phone,
-    //     socialMedia,
-    //     websites,
-    //     socialMediaHandles,
-    //     articles,
-    //     cart,
-    //     role,
-    //     username,
-    //     aboutMe,
-    //     projects
-    //   }
-    // );
+    await Users.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        ...rest,
+      }
+    );
 
     res.clearCookie("users-cache");
     res.clearCookie("user-cache");

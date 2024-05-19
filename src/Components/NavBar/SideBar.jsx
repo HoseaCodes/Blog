@@ -27,8 +27,6 @@ const SideBar = (props) => {
 
   const handleSave = async e => {
     e.preventDefault();
-    // Create save post function on backend
-    alert("Save the post to user profile.")
      if (props.user) {
        console.log(props.user);
        await axios.put(`/api/user/${props.user._id}`, {

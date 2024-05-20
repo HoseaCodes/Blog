@@ -269,8 +269,6 @@ async function updateProfile(req, res) {
       const existingSavedArticle = originalUser.savedArticles.filter(
         (article) => article !== req.params.id
       );
-      console.log(existingSavedArticle.length);
-      console.log(existingSavedArticle);
       if (existingSavedArticle.length == 1) {
         const removeSavedArticles = originalUser.savedArticles.filter(
           (article) => article == req.params.id

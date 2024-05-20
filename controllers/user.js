@@ -266,14 +266,33 @@ async function updateProfile(req, res) {
     }
     
     if (savedArticles) {
-      const newSavedArticles = originalUser.savedArticles.concat(savedArticles);
-      const uniqueSavedArticles = [...new Set(newSavedArticles)];
-      await Users.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          savedArticles: uniqueSavedArticles,
-        }
+      const existingSavedArticle = originalUser.savedArticles.filter(
+        (article) => article !== req.params.id
       );
+      console.log(existingSavedArticle.length);
+      console.log(existingSavedArticle);
+      if (existingSavedArticle.length == 1) {
+        const removeSavedArticles = originalUser.savedArticles.filter(
+          (article) => article == req.params.id
+        );
+        console.log('removeSavedArticles', req.params.id, removeSavedArticles);
+        await Users.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            savedArticles: removeSavedArticles,
+          }
+        );
+      } else {
+        const newSavedArticles = originalUser.savedArticles.concat(savedArticles);
+        const uniqueSavedArticles = [...new Set(newSavedArticles)];
+        console.log('uniqueSavedArticles', req.params.id, uniqueSavedArticles);
+        await Users.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            savedArticles: uniqueSavedArticles,
+          }
+        );
+      }
     }
 
     if (likedArticles) {

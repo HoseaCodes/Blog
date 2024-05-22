@@ -1,9 +1,9 @@
 import React from "react";
 import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
-import bootstrap from '../../Assets/Images/Bootstrap-min.png';
 
 const Client = () => {
+    const bootstrap = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Bootstrap-min.png";
     return (<>
         <div className='client-header'>
             <div className='client-logo' id='client-logo'>

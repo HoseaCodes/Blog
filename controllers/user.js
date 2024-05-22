@@ -231,7 +231,6 @@ async function getUser(req, res) {
 
 async function updateProfile(req, res) {
   try {
-  
     const originalBody = req.body;
     const {
       notifications,
@@ -242,20 +241,44 @@ async function updateProfile(req, res) {
     } = originalBody;
 
     const originalUser = await Users.findOne({ _id: req.params.id });
+
     if (notifications) {
-      const newNotifications = originalUser.notifications.concat(notifications);
-      const uniqueNotifications = [...new Set(newNotifications)];
-      await Users.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          notifications: uniqueNotifications,
-        }
+      const existingNotificationsArticle = originalUser.notifications.filter(
+        (notification) => notification !== req.params.id
       );
+      if (existingNotificationsArticle.length == 1) {
+        const removeNotificationsArticles = originalUser.notifications.filter(
+          (notification) => notification == req.params.id
+        );
+        console.log(
+          "removeNotificationsArticles",
+          req.params.id,
+          removeNotificationsArticles
+        );
+        await Users.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            notifications: removeNotificationsArticles,
+          }
+        );
+      } else {
+        const newNotifications =
+          originalUser.notifications.concat(notifications);
+        const uniqueNotifications = [...new Set(newNotifications)];
+        console.log({notifications})
+        console.log("uniqueNotifications", req.params.id, uniqueNotifications);
+        await Users.findOneAndUpdate(
+          { _id: req.params.id },
+          {
+            notifications: uniqueNotifications,
+          }
+        );
+      }
     }
-    
+
     if (favoriteArticles) {
       const newFavoriteArticles =
-      originalUser.favoriteArticles.concat(favoriteArticles);
+        originalUser.favoriteArticles.concat(favoriteArticles);
       const uniqueFavoriteArticles = [...new Set(newFavoriteArticles)];
       await Users.findOneAndUpdate(
         { _id: req.params.id },
@@ -264,7 +287,7 @@ async function updateProfile(req, res) {
         }
       );
     }
-    
+
     if (savedArticles) {
       const existingSavedArticle = originalUser.savedArticles.filter(
         (article) => article !== req.params.id
@@ -273,7 +296,7 @@ async function updateProfile(req, res) {
         const removeSavedArticles = originalUser.savedArticles.filter(
           (article) => article == req.params.id
         );
-        console.log('removeSavedArticles', req.params.id, removeSavedArticles);
+        console.log("removeSavedArticles", req.params.id, removeSavedArticles);
         await Users.findOneAndUpdate(
           { _id: req.params.id },
           {
@@ -281,9 +304,10 @@ async function updateProfile(req, res) {
           }
         );
       } else {
-        const newSavedArticles = originalUser.savedArticles.concat(savedArticles);
+        const newSavedArticles =
+          originalUser.savedArticles.concat(savedArticles);
         const uniqueSavedArticles = [...new Set(newSavedArticles)];
-        console.log('uniqueSavedArticles', req.params.id, uniqueSavedArticles);
+        console.log("uniqueSavedArticles", req.params.id, uniqueSavedArticles);
         await Users.findOneAndUpdate(
           { _id: req.params.id },
           {

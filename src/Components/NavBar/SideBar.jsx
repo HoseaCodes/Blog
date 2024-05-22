@@ -7,7 +7,7 @@ import { LogoImage } from "../../Layout/Image/styledImage";
 import { StackedAlignn } from "../../Layout/Icon/styledIcons";
 import { ArticleHr } from "../../Layout/Hr/styledHr";
 import { HiOutlinePencilAlt } from "react-icons/hi";
-import { BsHouseDoor, BsBell } from "react-icons/bs";
+import { BsHouseDoor, BsBell, BsBellFill } from "react-icons/bs";
 import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
 import logo from "../../Assets/Images/newLogo.png";
 import { Link } from "react-router-dom";
@@ -18,6 +18,9 @@ import axios from "axios";
 const SideBar = (props) => {
   const [savedArticleState, setSavedArticleState] = useState(
     props.user.savedArticles.includes(props.article._id)
+  );
+  const [notifications, setNotifications] = useState(
+    props.user.notifications.includes(props.article._id)
   );
   const param = useParams();
   const state = useContext(GlobalState);
@@ -34,6 +37,7 @@ const SideBar = (props) => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    alert("Start being alerted when user makes posts.");
     if (props.user) {
       await axios.put(`/api/user/${props.user._id}`, {
         savedArticles: [props.article._id],
@@ -49,11 +53,11 @@ const SideBar = (props) => {
     if (props.user) {
       console.log(props.user);
       await axios.put(`/api/user/${props.user._id}`, {
-        notifications: [props.user._id],
+        notifications: [props.article._id],
       });
+      setNotifications(!notifications);
     }
   };
-  console.log(props);
   return (
     <StyledLeftContainer>
       <JustifyContent>
@@ -65,7 +69,17 @@ const SideBar = (props) => {
         <Link to="/">
           <BsHouseDoor style={{ marginBottom: "5rem" }} />
         </Link>
-        <BsBell onClick={handleNotification} style={{ marginBottom: "5rem" }} />
+        {notifications ? (
+          <BsBellFill
+            onClick={handleNotification}
+            style={{ marginBottom: "5rem" }}
+          />
+        ) : (
+          <BsBell
+            onClick={handleNotification}
+            style={{ marginBottom: "5rem" }}
+          />
+        )}
         {!savedArticleState ? (
           <MdBookmarkBorder
             onClick={handleSave}

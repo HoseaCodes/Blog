@@ -2,13 +2,13 @@ import React from 'react';
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-import SneakerAPI1 from '../../icons/SneakerAPI1.png';
-import SneakerAPI2 from '../../icons/SneakerAPI2.png';
-import SneakerAPI3 from '../../icons/SneakerAPI3.png';
 import Modal from '../Modal/Modal'
 
 
 function CarouselSneakerAPI() {
+    const SneakerAPI1 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI1.png';
+    const SneakerAPI2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI2.png';
+    const SneakerAPI3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI3.png';
     let project1 = [
         <ImgComp className='cover' src={SneakerAPI1} />,
         <ImgComp className='cover' src={SneakerAPI2} />,

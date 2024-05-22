@@ -2,15 +2,15 @@ import React from 'react';
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-import CalorieKitchen from '../../icons/CalorieKitchen.png';
-import CaloriesKitchen2 from '../../icons/CaloriesKitchen2.png';
-import caloriekitchen2 from '../../icons/caloriekitchen2.png';
-import caloriekitchen3 from '../../icons/caloriekitchen3.png';
-import caloriekitchen4 from '../../icons/caloriekitchen4.png';
 import Modal from '../Modal/Modal'
 
 
 function Carousel() {
+    const CalorieKitchen = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/CalorieKitchen.png';
+    const CaloriesKitchen2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/CaloriesKitchen2.png';
+    const caloriekitchen2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen2.png';
+    const caloriekitchen3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen3.png';
+    const caloriekitchen4 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen4.png';
     let project1 = [
         <ImgComp className='cover' src={CalorieKitchen} />,
         <ImgComp className='cover' src={CaloriesKitchen2} />,

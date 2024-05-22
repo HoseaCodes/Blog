@@ -1,8 +1,8 @@
 import React from 'react';
 import './ProLoader.css';
-import logo from '../../Assets/Images/newLogo.png';
 
 const ProLoader = () => {
+  const logo = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
   return (
     <div class="loading-screen">
       <div class="loading-animation">

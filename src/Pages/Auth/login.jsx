@@ -6,10 +6,11 @@ import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 
 import "./auth.css";
-import Logo from "../../Assets/Images/newLogo.png";
 import { useCookies } from "react-cookie";
 
 const Login = () => {
+  const logo =
+    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
   const state = useContext(GlobalState);
   const [user, setUser] = state.userAPI.user;
   const [isLoggedIn, setIsLoggedIn] = state.userAPI.isLoggedIn;
@@ -19,17 +20,17 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
-  const onChangeInput = e => {
+  const onChangeInput = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const loginSubmit = async e => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
     try {
       const login = await axios.post("/api/user/login", {
         ...user,
-        rememberMe
+        rememberMe,
       });
       await handleSubmittion(login);
     } catch (err) {
@@ -38,7 +39,7 @@ const Login = () => {
     }
   };
 
-  const handleSubmittion = async login => {
+  const handleSubmittion = async (login) => {
     try {
       if (!cookies.accesstoken && login.data)
         setCookie("accesstoken", login.data.accesstoken);

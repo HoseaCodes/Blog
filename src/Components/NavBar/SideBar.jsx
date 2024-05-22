@@ -9,13 +9,14 @@ import { ArticleHr } from "../../Layout/Hr/styledHr";
 import { HiOutlinePencilAlt } from "react-icons/hi";
 import { BsHouseDoor, BsBell, BsBellFill } from "react-icons/bs";
 import { MdBookmarkBorder, MdBookmark } from "react-icons/md";
-import logo from "../../Assets/Images/newLogo.png";
 import { Link } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const SideBar = (props) => {
+  const logo =
+    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
   const [savedArticleState, setSavedArticleState] = useState(
     props.user.savedArticles.includes(props.article._id)
   );
@@ -42,7 +43,7 @@ const SideBar = (props) => {
       await axios.put(`/api/user/${props.user._id}`, {
         savedArticles: [props.article._id],
       });
-      setSavedArticleState(!savedArticleState)
+      setSavedArticleState(!savedArticleState);
     }
   };
 

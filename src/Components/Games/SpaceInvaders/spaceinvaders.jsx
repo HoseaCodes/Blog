@@ -1,11 +1,11 @@
 import { Button, Grid, Result } from "../common";
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import AlienImage from "../../../Assets/Images/alien.png";
-import Jet from "../../../Assets/Images/jet.png";
 import ExplosionGif from "../../../Assets/Gif/explosion.gif";
 import Sound from "../../../Assets/Sounds/laser.mp3";
 
+const Jet = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/jet.png";
+const AlienImage = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/alien.png";
 const Shooter = css`
   background-image: url(${Jet});
   background-size: cover;

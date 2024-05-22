@@ -2,13 +2,14 @@ import { Button, Grid, Result } from "../common";
 import { layout, legends } from "./resource";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import BlinkyImg from "../../../Assets/Images/blinky.png";
-import ClydeImg from "../../../Assets/Images/clyde.png";
-import InkyImg from "../../../Assets/Images/inky.png";
-import PinkyImg from "../../../Assets/Images/pinky.png";
-import GhostImg from "../../../Assets/Images/scared-ghost.png";
 import PacmanImg from "../../../Assets/Gif/pacman.gif";
 
+
+const ClydeImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/clyde.png";
+const BlinkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/blinky.png";
+const InkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/inky.png";
+const PinkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/pinky.png";
+const GhostImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/scared-ghost.png";
 const Block = styled.div`
   display: flex;
   align-items: center;

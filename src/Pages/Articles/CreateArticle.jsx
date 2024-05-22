@@ -35,6 +35,9 @@ function CreatArticle() {
     draft: false,
     scheduled: false,
     scheduledDate: todaysDate,
+    images: {
+      secure_url: "",
+    },
   };
   const state = useContext(GlobalState);
   const [article, setArticle] = useState(initialState);
@@ -81,7 +84,7 @@ function CreatArticle() {
         articles.forEach((article) => {
           if (article._id === param.id) {
             setArticle(article);
-            // setImages(article.images)
+            setImages(article.images)
           }
         });
       }
@@ -201,6 +204,7 @@ function CreatArticle() {
     setArticle({ ...article, [name]: checked });
   };
 
+  console.log({ article });
   return (
     <>
       {loggedIn ? (
@@ -324,7 +328,7 @@ function CreatArticle() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div id="div_id_downloads" className="required">
                         <div className="controls d-flex flex-row align-items-center">
                           <label
@@ -409,10 +413,16 @@ function CreatArticle() {
                               <span onClick={handleDestory}>X</span>
                             </div>
                           )}
+                          {onEdit && (
+                            <div id="file_img" style={styleUpload}>
+                              <img src={images ? images.url : ""} alt="" />
+                              <span onClick={handleDestory}>X</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div id="div_id_downloads" className="required">
                         <div className="controls d-flex flex-column ">
                           <label
@@ -446,7 +456,7 @@ function CreatArticle() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div
                         id="div_id_downloads"
                         className="form-group required"

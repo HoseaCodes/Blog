@@ -26,11 +26,13 @@ const Home = () => {
 
   useEffect(() => {
     articles.forEach((article) => {
-      if (user.articles.includes(article.article_id)) {
-        console.log(article)
-        setUserArticles((prev) => [...prev, article]);
+      if (isLoggedIn) {
+        if (user.articles.includes(article.article_id)) {
+          console.log(article)
+          setUserArticles((prev) => [...prev, article]);
+        }
       }
-    });
+      });
   }, [articles]);
 
   if (!userArticles && isLoggedIn) return <>loading...</>;

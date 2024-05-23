@@ -15,8 +15,8 @@ const Footer = (props) => {
         console.log(currentPath, 'footer')
     }, [])
 
-    if (currentPath.includes('/blog/')) {
-        return null;
+    if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
+      return null;
     }
 
     if (defaultFooter === true) {
@@ -96,6 +96,9 @@ const Footer = (props) => {
                     </li>
                     <li>
                       <a href="http://webenlance.com">Image Cropping</a>
+                    </li>
+                    <li>
+                      <a href="/gamecorner">Game Corner</a>
                     </li>
                   </ul>
                 </div>

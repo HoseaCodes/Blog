@@ -73,7 +73,19 @@ Dependencies used:
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Frontend) for details.
 
+## Data
+
+See [wiki](https://github.com/HoseaCodes/Blog/wiki/Data) for details.
+
 ## Backend
+
+### Security
+
+#### Basic Auth & JWT
+
+![Security](https://i.imgur.com/ZD1gtVH.png)
+
+![JWT](https://i.imgur.com/lFIJa0b.png)
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
@@ -116,13 +128,32 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 Build image locally
 
 ```docker
-docker build -t hoseacodes_blog .  
+docker build -t hoseacodes-blog .  
 ```
 Run local image in container
 
 ```docker
-docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
+docker run --name hoseacodes-blog-c -p 3001:3001 -d hoseacodes-blog
 ```
+
+Tag Image for push
+
+```docker
+docker tag ${imageID} hoseacodes/hoseacodes/hoseacodes-blog:latest
+```
+
+Push Docker Image 
+
+```docker
+docker push hoseacodes/hoseacodes-blog:latest    
+```
+
+## How To Deploy App
+
+```bash
+git push heroku-staging HEAD:main  
+```
+
 
 ## Unsolved Problems
 
@@ -141,8 +172,8 @@ docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
 - Syntax/Code Highlighting
 - Tags - Topics
 - Reactions
-- ~~View Comment~~
-- ~~Minutes Read~~
+- [x] ~~View Comment~~
+- [x] ~~Minutes Read~~
 
   https://github.com/saadpasta/react-blog-github
 
@@ -151,13 +182,13 @@ docker run --name hoseacodes_blog_c -p 3000:3000 -d hoseacodes_blog
 - Sign up to newletter on blog page.
   - with Brevo
 - Article Updates
-  - Save a blog post to favorites
-  - Save blog post as a draft
-  - Schedule blog post
-  - Track views to blog post
-  - Like a comment
-  - Handle notifications button on blog post
-  - Allow signed in user the ability to edit post.
+  - [ ] Save a blog post to favorites
+  - [x] Save blog post as a draft
+  - [ ] Schedule blog post
+  - [ ] Track views to blog post
+  - [ ] Like a comment
+  - [ ] Handle notifications button on blog post
+  - [ ] Allow signed in user the ability to edit post.
 - User Updates
   - Save user to favorite authors
   - Follow the author

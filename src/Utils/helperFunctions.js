@@ -87,4 +87,11 @@ const truncate = (str) => {
   return str.length > 10 ? str.substring(0, 150) + "..." : str;
 };
 
-export { copyTextToClipboard, responsive, sleep, truncate };
+const getBasicAuth = (username, password) => {
+  const encoded = btoa(`${username}:${password}`);
+  const auth = `Basic ${encoded}`;
+  return auth;
+};
+
+
+export { copyTextToClipboard, responsive, sleep, truncate, getBasicAuth };

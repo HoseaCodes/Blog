@@ -15,7 +15,7 @@ const initialState = {
   skills: [],
   phone: "",
   socialMedia: [],
-  websites: []
+  websites: [],
 };
 
 function UserAPI(token) {
@@ -25,7 +25,7 @@ function UserAPI(token) {
   const [user, setUser] = useState(initialState);
   const [authenticated, isAuthenticated] = useState(false);
   const [cart, setCart] = useState([]);
-  const [cookies] = useCookies(["cookie-name"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
 
   useEffect(() => {
     if (cookies.accesstoken) setIsLoggedIn(true);
@@ -34,7 +34,7 @@ function UserAPI(token) {
         const accesstoken = token ? token : cookies.accesstoken;
         try {
           const res = await axios.get("/api/user/info", {
-            headers: { Authorization: accesstoken }
+            headers: { Authorization: accesstoken },
           });
           console.log(res, "huh");
           setIsLoggedIn(true);
@@ -42,6 +42,13 @@ function UserAPI(token) {
           setUser(res.data.users);
           res.data.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
         } catch (err) {
+          await axios.post("/api/user/logout");
+          localStorage.removeItem("firstLogin");
+          localStorage.removeItem("isLoggedIn");
+          removeCookie("accesstoken");
+          setUser(initialState);
+          setIsLoggedIn(false);
+          isAuthenticated(false);
           alert(err.response.data.msg);
         }
       };
@@ -49,10 +56,10 @@ function UserAPI(token) {
     }
   }, [token, cookies]);
 
-  const addCart = async product => {
+  const addCart = async (product) => {
     if (!isLoggedIn) return alert("Please login to continue buying");
 
-    const check = cart.every(item => {
+    const check = cart.every((item) => {
       return item._id !== product._id;
     });
 
@@ -63,7 +70,7 @@ function UserAPI(token) {
         "/api/user/addcart",
         { cart: [...cart, { ...product, quantity: 1 }] },
         {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         }
       );
     } else {
@@ -78,7 +85,7 @@ function UserAPI(token) {
     user: [user, setUser],
     cart: [cart, setCart],
     addCart: addCart,
-    authenticated: [authenticated, isAuthenticated]
+    authenticated: [authenticated, isAuthenticated],
   };
 }
 

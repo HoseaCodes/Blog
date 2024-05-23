@@ -1,10 +1,10 @@
 /* @font-face {
   font-family: "Oregon";
-  src: url("../../../Fonts/Oregon_LDO/Oregon_LDO.ttf");
+  src: url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Fonts/Oregon_LDO/Oregon_LDO.ttf");
 }
 @font-face {
   font-family: "NewYork";
-  src: url("../../../Fonts/newyork/newyork.woff");
+  src: url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Fonts/newyork/newyork.woff");
 } */
 .history-page {
   overflow-x: auto;

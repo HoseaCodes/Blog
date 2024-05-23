@@ -81,10 +81,11 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Data) for details.
 
 ### Security
 
-#### Basic Auth
+#### Basic Auth & JWT
 
 ![Security](https://i.imgur.com/ZD1gtVH.png)
 
+![JWT](https://i.imgur.com/lFIJa0b.png)
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 

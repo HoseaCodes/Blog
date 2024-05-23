@@ -148,6 +148,11 @@ Push Docker Image
 docker push hoseacodes/hoseacodes-blog:latest    
 ```
 
+## How To Deploy App
+
+```bash
+git push heroku-staging HEAD:main  
+```
 
 
 ## Unsolved Problems

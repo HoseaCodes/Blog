@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "./auth.css";
 
 const Register = () => {
-  const logo =
+  const Logo =
     "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const [showRole, setShowRole] = useState(false);
   const [secret, setSecret] = useState("");

@@ -2,9 +2,9 @@ import { Button, Grid, Result } from "../common";
 import { layout, legends } from "./resource";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import PacmanImg from "../../../Assets/Gif/pacman.gif";
 
 
+const PacmanImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Gif/pacman.gif";
 const ClydeImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/clyde.png";
 const BlinkyImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/blinky.png";
 const InkyImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/inky.png";

@@ -1,9 +1,10 @@
 import { Button, Grid } from "../common";
 import React, { useEffect, useState } from "react";
-import Confetti from "../../../Assets/Gif/confetti.gif";
 import styled, { css, keyframes } from "styled-components";
 
 
+const Confetti =
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Gif/confetti.gif";
 const Candy1 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_1.png";
 const Candy2 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_2.png";
 const Candy3 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_3.png";

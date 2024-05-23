@@ -1,9 +1,10 @@
 import { Button, Grid, Result } from "../common";
 import React, { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import ExplosionGif from "../../../Assets/Gif/explosion.gif";
-import Sound from "../../../Assets/Sounds/laser.mp3";
 
+const ExplosionGif =
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Gif/explosion.gif";
+const Sound = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Sounds/laser.mp3";
 const Jet = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/jet.png";
 const AlienImage = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/alien.png";
 const Shooter = css`
@@ -140,7 +141,15 @@ const SpaceInvaders = () => {
     setStart((prev) => !prev);
   };
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        padding: "4%",
+      }}
+    >
       <Grid color={"black"}>
         {[...Array(width * width)].map((e, i) => (
           <Cell

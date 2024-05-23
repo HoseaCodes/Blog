@@ -236,32 +236,32 @@ const games = [
             "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238578/detroit_3_truscr.jpg"
         ]
     },
-    // {
-    //     name: "Space Invaders",
-    //     surname: "spaceinvaders",
-    //     price: "17.99",
-    //     desc: 'Space Invaders is a classic arcade game in which you need to shoot down all the aliens. Release Date. 1978. Developer. Space Invaders was made by Taito. Version.',
-    //     link: <SpaceInvaders />,
-    //     release: '4th of March, 2013',
-    //     platforms: 'PC',
-    //     genre: 'Shooter',
-    //     developers: 'Jazzie-z',
-    //     publishers: 'HoseaCodes',
-    //     inCart: false,
-    //     selected: false,
-    //     isHovered: false,
-    //     isLiked: false,
-    //     isActive: true,
-    //     rating: 85,
-    //     id: 10,
-    //     cover: "https://i.imgur.com/0ykyWwZ.png",
-    //     footage: [
-    //         "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
-    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
-    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
-    //         "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
-    //     ]
-    // },
+    {
+        name: "Space Invaders",
+        surname: "spaceinvaders",
+        price: "17.99",
+        desc: 'Space Invaders is a classic arcade game in which you need to shoot down all the aliens. Release Date. 1978. Developer. Space Invaders was made by Taito. Version.',
+        link: <SpaceInvaders />,
+        release: '4th of March, 2013',
+        platforms: 'PC',
+        genre: 'Shooter',
+        developers: 'Jazzie-z',
+        publishers: 'HoseaCodes',
+        inCart: false,
+        selected: false,
+        isHovered: false,
+        isLiked: false,
+        isActive: true,
+        rating: 85,
+        id: 10,
+        cover: "https://i.imgur.com/0ykyWwZ.png",
+        footage: [
+            "https://res.cloudinary.com/gianlucajahn/image/upload/c_scale,q_100,w_1920/v1658188613/tombraider_qx2xiy.jpg",
+            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_1_jxeua4.jpg",
+            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_2_fnhmmd.jpg",
+            "https://res.cloudinary.com/gianlucajahn/image/upload/v1658238650/tombraider_3_cr0yee.jpg"
+        ]
+    },
     // {
     //     name: "Tic Tac Toe",
     //     surname: "tictactoe",

@@ -1,9 +1,10 @@
 import React from "react";
 import "./PersonalBrand.css";
-import Resume2020 from "../../Assets/Files/Resume2020.pdf";
 import { Button } from "../Button/Button";
 
 const PersonalBrand = () => {
+  const Resume2020 =
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/PDFs/Resume2020.pdf";
   const nique =
     "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/nique-min.jpg";
   function handleClick(e) {

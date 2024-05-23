@@ -564,15 +564,15 @@
   }
   
   @keyframes birdflap {
-    0% {background-image: url('../../Assets/SVG/frame-1v.svg')}
-    12.5% {background-image: url('../../Assets/SVG/frame-2v.svg')}
-    25% {background-image: url('../../Assets/SVG/frame-3v.svg')}
-    37.5% {background-image: url('../../Assets/SVG/frame-4v.svg')}
-    50% {background-image: url('../../Assets/SVG/frame-5v.svg')}
-    62.5% {background-image: url('../../Assets/SVG/frame-6v.svg')}
-    75% {background-image: url('../../Assets/SVG/frame-7v.svg')}
-    87.5% {background-image: url('../../Assets/SVG/frame-8v.svg')}
-    100% {background-image: url('../../Assets/SVG/frame-1v.svg')}
+    0% {background-image: url('../SVG/frame-1v.svg')}
+    12.5% {background-image: url('../SVG/frame-2v.svg')}
+    25% {background-image: url('../SVG/frame-3v.svg')}
+    37.5% {background-image: url('../SVG/frame-4v.svg')}
+    50% {background-image: url('../SVG/frame-5v.svg')}
+    62.5% {background-image: url('../SVG/frame-6v.svg')}
+    75% {background-image: url('../SVG/frame-7v.svg')}
+    87.5% {background-image: url('../SVG/frame-8v.svg')}
+    100% {background-image: url('../SVG/frame-1v.svg')}
   }
   
   @keyframes birdfly {
@@ -584,8 +584,8 @@
   }
   
   @keyframes birdhit {
-    0% {background-image: url('../../Assets/SVG/frame-1v.svg'); transform:translateY(0vh) translateX(0vw) rotate(0deg)}
-    100% {background-image: url('../../Assets/SVG/frame-1v.svg'); transform:translateY(120vh) translateX(50vw) rotate(360deg)}
+    0% {background-image: url('../SVG/frame-1v.svg'); transform:translateY(0vh) translateX(0vw) rotate(0deg)}
+    100% {background-image: url('../SVG/frame-1v.svg'); transform:translateY(120vh) translateX(50vw) rotate(360deg)}
   }
   
   .crosshairs {

@@ -5,11 +5,11 @@ import ImgComp from './ImgComp'
 import Modal2 from '../Modal/Modal2'
 
 function CarouselCareerconnect() {
-    const careerconnect = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/careerconnect.png'
-    const careerconnect2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/careerconnect2.png'
-    const careerconnect3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/careerconnect3.png'
-    const careerconnect4 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/careerconnect4.png'
-    const careerconnect5 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/careerconnect5.png'
+    const careerconnect = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect.png'
+    const careerconnect2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect2.png'
+    const careerconnect3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect3.png'
+    const careerconnect4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect4.png'
+    const careerconnect5 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect5.png'
     let connect = [
         <ImgComp src={careerconnect} />,
         <ImgComp src={careerconnect2} />,

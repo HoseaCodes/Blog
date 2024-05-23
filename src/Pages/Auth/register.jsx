@@ -7,7 +7,7 @@ import "./auth.css";
 
 const Register = () => {
   const logo =
-    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const [showRole, setShowRole] = useState(false);
   const [secret, setSecret] = useState("");
   const [pass, setPass] = useState(false);

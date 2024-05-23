@@ -16,7 +16,7 @@ import axios from "axios";
 
 const SideBar = (props) => {
   const logo =
-    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const [savedArticleState, setSavedArticleState] = useState(
     props.user.savedArticles.includes(props.article._id)
   );

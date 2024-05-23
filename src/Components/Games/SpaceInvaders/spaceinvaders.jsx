@@ -4,8 +4,8 @@ import styled, { css } from "styled-components";
 import ExplosionGif from "../../../Assets/Gif/explosion.gif";
 import Sound from "../../../Assets/Sounds/laser.mp3";
 
-const Jet = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/jet.png";
-const AlienImage = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/alien.png";
+const Jet = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/jet.png";
+const AlienImage = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/alien.png";
 const Shooter = css`
   background-image: url(${Jet});
   background-size: cover;

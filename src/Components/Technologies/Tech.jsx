@@ -4,49 +4,49 @@ import "./Technologies.css";
 class Tech extends Component {
   render() {
     const Bootstrap =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Bootstrap-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Bootstrap-min.png";
     const JS =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/JS-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/JS-min.png";
     const Django =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/django-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/django-min.png";
     const MongoDB =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/MongoDB-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/MongoDB-min.png";
     const Node =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Node-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Node-min.png";
     const postgresql =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/postgresql-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/postgresql-min.png";
     const Py =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Py-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Py-min.png";
     const Reactt =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Reactt-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Reactt-min.png";
     const Swift =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/swift-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/swift-min.png";
     const JQuery =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/jquery-min.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/jquery-min.png";
     const Azure =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/azure.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/azure.png";
     const AWS =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/aws.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/aws.png";
     const Arch =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/architecture.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/architecture.png";
     const DevOps =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/devops.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/devops.png";
     const Firebase =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/firebase.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/firebase.png";
     const Github =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/GitHub.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/GitHub.png";
     const GitLab =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/gitlab.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/gitlab.png";
     const Splunk =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/splunk.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/splunk.png";
     const NPM =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/npm.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/npm.png";
     const SpringBoot =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/springboot.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/springboot.png";
     const Terraform =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/terraform.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/terraform.png";
     const Tailwind =
-      "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/tailwind.png";
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/tailwind.png";
     const imgSlide = {
       AWS: AWS,
       azure: Azure,

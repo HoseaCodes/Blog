@@ -4,13 +4,13 @@ import Confetti from "../../../Assets/Gif/confetti.gif";
 import styled, { css, keyframes } from "styled-components";
 
 
-const Candy1 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_1.png";
-const Candy2 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_2.png";
-const Candy3 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_3.png";
-const Candy4 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_4.png";
-const Candy5 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_5.png";
-const Candy6 = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/candy_6.png";
-const BgImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/cupcake_bg.jpg";
+const Candy1 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_1.png";
+const Candy2 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_2.png";
+const Candy3 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_3.png";
+const Candy4 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_4.png";
+const Candy5 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_5.png";
+const Candy6 = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/candy_6.png";
+const BgImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/cupcake_bg.jpg";
 const ShakeAnim = keyframes`
     0% { transform: translateX(0px) }
     10% { transform: translateX(2px) }

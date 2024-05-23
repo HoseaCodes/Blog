@@ -3,7 +3,7 @@ import SocialRing from "../../Components/Clients/SocialRing";
 import './Client.css';
 
 const Client = () => {
-    const bootstrap = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Bootstrap-min.png";
+    const bootstrap = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Bootstrap-min.png";
     return (<>
         <div className='client-header'>
             <div className='client-logo' id='client-logo'>

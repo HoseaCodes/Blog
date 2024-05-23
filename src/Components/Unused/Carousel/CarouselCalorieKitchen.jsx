@@ -6,11 +6,11 @@ import Modal from '../Modal/Modal'
 
 
 function Carousel() {
-    const CalorieKitchen = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/CalorieKitchen.png';
-    const CaloriesKitchen2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/CaloriesKitchen2.png';
-    const caloriekitchen2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen2.png';
-    const caloriekitchen3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen3.png';
-    const caloriekitchen4 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/caloriekitchen4.png';
+    const CalorieKitchen = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/CalorieKitchen.png';
+    const CaloriesKitchen2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/CaloriesKitchen2.png';
+    const caloriekitchen2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/caloriekitchen2.png';
+    const caloriekitchen3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/caloriekitchen3.png';
+    const caloriekitchen4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/caloriekitchen4.png';
     let project1 = [
         <ImgComp className='cover' src={CalorieKitchen} />,
         <ImgComp className='cover' src={CaloriesKitchen2} />,

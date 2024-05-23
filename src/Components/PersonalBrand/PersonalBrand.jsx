@@ -7,8 +7,8 @@ import Row from 'react-bootstrap/Row'
 import { BsEnvelope, BsEnvelopeOpen } from "react-icons/bs";
 
 const PersonalBrand = () => {
-    const nique = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/nique-min.jpg'
-    const dom = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/hosea3.png'
+    const nique = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/nique-min.jpg'
+    const dom = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/hosea3.png'
     const [modalShow, setModalShow] = React.useState(false);
 
     function handleClick(e) {

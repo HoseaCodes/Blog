@@ -6,9 +6,9 @@ import Modal from '../Modal/Modal'
 
 
 function CarouselSneakerAPI() {
-    const SneakerAPI1 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI1.png';
-    const SneakerAPI2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI2.png';
-    const SneakerAPI3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/SneakerAPI3.png';
+    const SneakerAPI1 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/SneakerAPI1.png';
+    const SneakerAPI2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/SneakerAPI2.png';
+    const SneakerAPI3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/SneakerAPI3.png';
     let project1 = [
         <ImgComp className='cover' src={SneakerAPI1} />,
         <ImgComp className='cover' src={SneakerAPI2} />,

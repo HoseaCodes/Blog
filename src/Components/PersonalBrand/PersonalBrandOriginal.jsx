@@ -5,7 +5,7 @@ import { Button } from "../Button/Button";
 
 const PersonalBrand = () => {
   const nique =
-    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/nique-min.jpg";
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/nique-min.jpg";
   function handleClick(e) {
     e.preventDefault();
     window.location.href = "/about";

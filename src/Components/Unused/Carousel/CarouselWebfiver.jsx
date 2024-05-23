@@ -5,10 +5,10 @@ import ImgComp from './ImgComp'
 import Modal5 from '../Modal/Modal5'
 
 function CarouselWebfiver() {
-    const Webfiver = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Webfiver.png'
-    const Webfiver2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Webfiver2.png'
-    const Webfiver3 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Webfiver3.png'
-    const Webfiver4 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Webfiver4.png'
+    const Webfiver = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver.png'
+    const Webfiver2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver2.png'
+    const Webfiver3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver3.png'
+    const Webfiver4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver4.png'
     let Web = [
         <ImgComp src={Webfiver} />,
         <ImgComp src={Webfiver2} />,

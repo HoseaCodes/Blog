@@ -1,6 +1,6 @@
 import styled, {css} from 'styled-components';
-const wireframe = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/wireframe-min.jpg';
-const houston = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/besomeone-min.jpg';
+const wireframe = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/wireframe-min.jpg';
+const houston = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/besomeone-min.jpg';
 
 const HeroContainer = styled.div`
   background-size: cover;

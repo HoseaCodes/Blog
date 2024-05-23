@@ -5,11 +5,11 @@ import styled from "styled-components";
 import PacmanImg from "../../../Assets/Gif/pacman.gif";
 
 
-const ClydeImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/clyde.png";
-const BlinkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/blinky.png";
-const InkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/inky.png";
-const PinkyImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/pinky.png";
-const GhostImg = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/scared-ghost.png";
+const ClydeImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/clyde.png";
+const BlinkyImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/blinky.png";
+const InkyImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/inky.png";
+const PinkyImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/pinky.png";
+const GhostImg = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/scared-ghost.png";
 const Block = styled.div`
   display: flex;
   align-items: center;

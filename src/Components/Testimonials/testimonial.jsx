@@ -2,11 +2,11 @@ import React from "react";
 import "./testimonial.css";
 
 const Aaron =
-  "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/aaron-min.png";
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/aaron-min.png";
 const Chengu =
-  "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Chengu-min.png";
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Chengu-min.png";
 const Nathan =
-  "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/Nathan-min.png";
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Nathan-min.png";
 
 const steps = [
   {

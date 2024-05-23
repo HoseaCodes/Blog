@@ -11,9 +11,9 @@ import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
   const Logo =
-    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/logo-min.png";
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/logo-min.png";
   const burger =
-    '  const logo = "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/burger-min.png';
+    '  const logo = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/burger-min.png';
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const location = useLocation();
   const currentPath = location.pathname;

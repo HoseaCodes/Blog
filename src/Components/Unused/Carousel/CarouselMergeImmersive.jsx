@@ -5,8 +5,8 @@ import ImgComp from './ImgComp'
 import Modal4 from '../Modal/Modal4'
 
 function CarouselMergeImmersive() {
-    const MergeImmersive = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/MergeImmersive.png'
-    const MergeImmersive2 = 'https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/MergeImmersive2.png'
+    const MergeImmersive = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/MergeImmersive.png'
+    const MergeImmersive2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/MergeImmersive2.png'
     let merge = [
         <ImgComp src={MergeImmersive} />,
         <ImgComp src={MergeImmersive2} />,

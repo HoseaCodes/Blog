@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 
 const Login = () => {
   const logo =
-    "https://hoseacodes-blog.s3.amazonaws.com/Assets/Images/newLogo.png";
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const state = useContext(GlobalState);
   const [user, setUser] = state.userAPI.user;
   const [isLoggedIn, setIsLoggedIn] = state.userAPI.isLoggedIn;

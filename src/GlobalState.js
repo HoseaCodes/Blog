@@ -12,12 +12,9 @@ import KayneWestAPI from "./API/KanyeWestAPI";
 import JokeAPI from "./API/JokeAPI";
 import axios from "axios";
 import { v4 } from "uuid";
-// import ArticlesAPI from "./API/ArticlesAPI";
 import ProductsAPI from "./API/ProductsAPI";
-// import UserAPI from "./API/UserAPI";
 import Notification from "./Components/Notification/Notification";
 import { useCookies } from "react-cookie";
-import { refresh } from "aos";
 
 export const GlobalState = createContext();
 
@@ -39,6 +36,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     const initialToken = cookies.accesstoken;
+    setToken(initialToken);
     if (firstLogin && !initialToken) {
       const refreshToken = async () => {
         try {

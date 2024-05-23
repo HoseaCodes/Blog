@@ -19,7 +19,7 @@ function CreatArticle() {
   const todaysDate = moment().format("YYYY-MM-DD");
   const tomorrowsDate = moment().add(1, "days").format("YYYY-MM-DD");
   const threeMonthsFromToday = moment().add(3, "months").format("YYYY-MM-DD");
-
+  
   const initialState = {
     article_id: uuidv4(),
     title: "Demo",
@@ -40,6 +40,7 @@ function CreatArticle() {
     },
   };
   const state = useContext(GlobalState);
+  const [token] = state.token;
   const [article, setArticle] = useState(initialState);
   const [images, setImages] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -84,7 +85,7 @@ function CreatArticle() {
         articles.forEach((article) => {
           if (article._id === param.id) {
             setArticle(article);
-            setImages(article.images)
+            setImages(article.images);
           }
         });
       }
@@ -149,10 +150,16 @@ function CreatArticle() {
     try {
       if (!images) return alert("No Image Upload");
       if (onEdit) {
-        await axios.put(`/api/articles/${article._id}`, {
-          ...articles,
-          images,
-        });
+        await axios.put(
+          `/api/articles/${article._id}`,
+          {
+            ...articles,
+            images,
+          },
+          {
+            headers: { Authorization: token },
+          }
+        );
       } else {
         article.scheduledDate <= todaysDate
           ? (article.scheduledDate = null)

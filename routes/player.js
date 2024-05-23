@@ -3,15 +3,18 @@ import auth from '../utils/auth.js';
 import {
   getPlayers,
   updatePlayer,
-  createPlater,
+  createPlayer,
   deletePlayer,
   getbadges,
   createbadge
 } from '../controllers/player.js';
+import loginRequired from "../utils/loginRequired.js";
+
+
 const router = express.Router();
 
 router.route('/new')
-    .post(auth, createPlater)
+    .post(auth, createPlayer)
 
 router.route('/:id')
     .get(getPlayers)

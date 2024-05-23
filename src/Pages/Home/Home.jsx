@@ -18,8 +18,9 @@ import axios from "axios";
 
 const Home = () => {
   const state = useContext(GlobalState);
-  const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [token] = state.token;
   const [user] = state.userAPI.user;
+  const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [articles] = state.articlesAPI.articles;
   const [userArticles, setUserArticles] = useState([]);
   const [mainPosts, setMainPosts] = useState([]);
@@ -49,25 +50,40 @@ const Home = () => {
   const handleDelete = async (e, id) => {
     e.preventDefault();
     if (user) {
-      await axios.delete(`/api/articles/${id}`);
+      await axios.delete(`/api/articles/${id}`, {
+        headers: { Authorization: token }
+      }
+      );
     }
   };
 
   const handleArchive = async (e, id, archive) => {
     e.preventDefault();
     if (user) {
-      await axios.put(`/api/articles/${id}`, {
-        archive: archive ? false : true,
-      });
+      await axios.put(
+        `/api/articles/${id}`,
+        {
+          archive: archive ? false : true,
+        },
+        {
+          headers: { Authorization: token },
+        }
+      );
     }
   };
 
   const handleDraft = async (e, id, draft) => {
     e.preventDefault();
     if (user) {
-      await axios.put(`/api/articles/${id}`, {
-        draft: draft,
-      });
+      await axios.put(
+        `/api/articles/${id}`,
+        {
+          draft: draft,
+        },
+        {
+          headers: { Authorization: token },
+        }
+      );
     }
   };
 

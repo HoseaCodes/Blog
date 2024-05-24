@@ -27,11 +27,6 @@ import UsersList from "./Components/User/ListUser";
 import History from "./Pages/Order/History";
 import UploadList from "./Components/User/UploadList";
 import PrivateRoute from "./PrivateRouter";
-
-const About = lazy(() => import("./Pages/About/About"));
-const Contact = lazy(() => import("./Pages/Contact/Contact"));
-
-// const App = () => {
 import Tools from "./Pages/Tools";
 import Games from "./Pages/Games";
 import GameHome from "./Pages/GameStore/GameHome";
@@ -41,6 +36,9 @@ import games from "./Constants/games";
 import filterNames from "./Constants/filterNames";
 import Browser from "./Pages/GameStore/Browser";
 import ReactGA from 'react-ga4';
+
+const About = lazy(() => import("./Pages/About/About"));
+const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
 const App = () => {
   const history = createBrowserHistory();
@@ -397,7 +395,7 @@ const App = () => {
             />
             {/* Shop */}
             {/* GameStore */}
-            {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
+            <Route path="/tools" exact render={() => ( <Tools/>)}/>
             {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
             <PrivateRoute
               type={"login"}

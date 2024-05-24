@@ -5,7 +5,6 @@ import axios from 'axios'
 // import {projectData} from './ProjectsData';
 // import ProjectCard from '../../Components/Cards/project';
 import { StyledHr } from '../Layout/Hr/styledHr';
-import Test from './Test';
 import { GlobalState } from '../GlobalState';
 import useModal from '../Components/Modal/useModal';
 import CustomModal from '../Components/Modal/customModal';

@@ -154,6 +154,11 @@ docker push hoseacodes/hoseacodes-blog:latest
 git push heroku-staging HEAD:main  
 ```
 
+## How To Restart App
+
+```bash
+heroku restart -a app_name
+```
 
 ## Unsolved Problems
 

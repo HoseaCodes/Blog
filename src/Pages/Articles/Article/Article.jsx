@@ -8,6 +8,7 @@ import RightColumn from "../../../Components/Article/RightColumn";
 import MainContainer from "../../../Components/Article/MainContainer";
 import { BlogContent } from "../../../Layout/Container/styledArticle";
 import axios from "axios";
+import { countWords } from "../../../Utils/helperFunctions";
 
 const ArticleItem = () => {
   const params = useParams();
@@ -50,7 +51,7 @@ const ArticleItem = () => {
 
   const timeFormater = moment.utc(createdAt).format("MMMM Do YYYY");
   const avgWordsMinRead = 238;
-  const wordCount = markdown.length + 700;
+  const wordCount = countWords(markdown);
   const readTime = Math.round(wordCount / avgWordsMinRead);
   return (
     <>

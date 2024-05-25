@@ -93,5 +93,11 @@ const getBasicAuth = (username, password) => {
   return auth;
 };
 
+function countWords(text) {
+  text = text.trim();
+  const words = text.split(/\s+/);
+  const wordCount = words.filter((word) => word.length > 0).length;
+  return wordCount;
+}
 
-export { copyTextToClipboard, responsive, sleep, truncate, getBasicAuth };
+export { copyTextToClipboard, responsive, sleep, truncate, getBasicAuth, countWords };

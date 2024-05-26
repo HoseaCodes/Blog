@@ -162,7 +162,7 @@ const Home = () => {
                       </div>
 
                       <a
-                        href={`/admin/blog/${article._id}`}
+                        href={`/admin/blog/edit/${article._id}`}
                         className={`list-group-item list-group-item-action ${
                           article[0] && "active"
                         }`}

@@ -294,12 +294,6 @@ const App = () => {
             />
             <PrivateRoute
               type={"admin"}
-              path="/admin/blog/:id"
-              exact={true}
-              element={CreateArticle}
-            />
-            <PrivateRoute
-              type={"admin"}
               path="/admin/blog/edit/:id"
               exact={true}
               element={CreateArticle}

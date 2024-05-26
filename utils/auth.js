@@ -28,7 +28,7 @@ export function basicAuth(req, res, next) {
   console.log({ authheader });
   if (!authheader) {
     res.setHeader("WWW-Authenticate", "Basic");
-    return res.status(401).json({ msg: "Unauthentication - Auth401" });
+    return res.status(401).json({ msg: "Unauthentication - Auth401 Missing Header" });
   }
 
   const auth = new Buffer.from(authheader.split(" ")[1], "base64")

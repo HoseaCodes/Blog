@@ -58,35 +58,42 @@ jobs:
     #   - name: lint
     #     continue-on-error: true
     #     run: npm run lint
-  # build:
+  build:
   #   needs: [static-scan, dependency-scan, lint]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v2
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '20'
-  #     - name: Install Dependencies
-  #       run: npm install --legacy-peer-deps
-        # - name: Archive build output
-        #   run: tar -czf build.tar.gz build/
-          # - name: Upload Release Asset
-          #   uses: actions/upload-release-asset@v1
-          #   env:
-          #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          #   with:
-          #     upload_url: ${{ steps.create_release.outputs.upload_url }}
-          #     asset_path: build.tar.gz
-          #     asset_name: build.tar.gz
-          #     asset_content_type: application/gzip
-  #     - name: Deploy to Heroku
-  #       uses: akhileshns/heroku-deploy@v3.12.12
-  #       with:
-  #         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-  #         heroku_app_name: hoseacodes-dev
-  #         heroku_email: "dominique11h@yahoo.com"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+      - name: Build project
+        run: |
+          export SKIP_PREFLIGHT_CHECK=true
+          npm run build
+      - name: Archive build output
+        id: archive_build
+        run: |
+          tar -czf build.tar.gz build/
+          echo "::set-output name=build_path::build.tar.gz"
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build.tar.gz
+          asset_name: build.tar.gz
+          asset_content_type: application/gzip
+      # - name: Deploy to Heroku
+      #   uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #     heroku_app_name: hoseacodes-dev
+      #     heroku_email: "dominique11h@yahoo.com"
   # release:
     # needs: [build]
     # name: Release pushed tag
@@ -122,33 +129,34 @@ jobs:
     #           --generate-notes \
     #           --draft \
     #           ./dist/*.tgz
-  build:
-    runs-on: ubuntu-latest
-    outputs:
-      build_path: ${{ steps.archive_build.outputs.build_path }}
+ 
+  # build:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     build_path: ${{ steps.archive_build.outputs.build_path }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '20'
 
-      - name: Install dependencies
-        run: npm install --legacy-peer-deps
+  #     - name: Install dependencies
+  #       run: npm install --legacy-peer-deps
 
-      - name: Build project
-        run: |
-          export SKIP_PREFLIGHT_CHECK=true
-          npm run build
+  #     - name: Build project
+  #       run: |
+  #         export SKIP_PREFLIGHT_CHECK=true
+  #         npm run build
 
-      - name: Archive build output
-        id: archive_build
-        run: |
-          tar -czf build.tar.gz build/
-          echo "::set-output name=build_path::build.tar.gz"
+  #     - name: Archive build output
+  #       id: archive_build
+  #       run: |
+  #         tar -czf build.tar.gz build/
+  #         echo "::set-output name=build_path::build.tar.gz"
 
   release:
     runs-on: ubuntu-latest

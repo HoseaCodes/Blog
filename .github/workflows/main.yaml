@@ -58,26 +58,26 @@ jobs:
       - name: lint
         continue-on-error: true
         run: npm run lint
-  build:
-    needs: [static-scan, dependency-scan, lint]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: hoseacodes-dev
-          heroku_email: "dominique11h@yahoo.com"
+  # build:
+  #   needs: [static-scan, dependency-scan, lint]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '20'
+  #     - name: Install Dependencies
+  #       run: npm install --legacy-peer-deps
+  #     - name: Deploy to Heroku
+  #       uses: akhileshns/heroku-deploy@v3.12.12
+  #       with:
+  #         heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+  #         heroku_app_name: hoseacodes-dev
+  #         heroku_email: "dominique11h@yahoo.com"
   release:
-    needs: [build]
+    # needs: [build]
     name: Release pushed tag
     runs-on: ubuntu-22.04
     steps:
@@ -95,17 +95,23 @@ jobs:
         uses: 'WyriHaximus/github-action-next-semvers@v1'
         with:
           version: ${{ steps.previoustag.outputs.tag }}
+      - name: Create Tag
+        uses: rickstaa/action-create-tag@v1.7.2
+        with:
+          tag: ${{ github.ref_name }} ${{ steps.semver.outputs.patch }}
       - name: Create release
         id: create_release_id
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref_name }} ${{ steps.semver.outputs.patch }}
         run: |
-          git tag -a $tag -m "Release $tag"
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \
               --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
               --generate-notes \
               --draft
-     
+        with:
+          tag_name: ${{ steps.semver.outputs.patch }}
+          release_name: Release ${{ steps.semver.outputs.patch }}
+        
         

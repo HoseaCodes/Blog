@@ -81,6 +81,11 @@ jobs:
         run: |
           tar -czf build.tar.gz build/
           echo "::set-output name=build_path::build.tar.gz"
+      - name: Create conventional changelog action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@latest
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
@@ -90,8 +95,7 @@ jobs:
         with:
           tag_name: v.0.1
           release_name: Release v.0.1
-          body: |
-            Release notes for "$tag"
+          body:  ${{steps.changelog.outputs.clean_changelog}}
           draft: false
           prerelease: false
       - name: Upload Release Asset

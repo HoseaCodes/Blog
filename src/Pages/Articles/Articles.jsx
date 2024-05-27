@@ -4,7 +4,7 @@ import Subscribe from "../../Components/Subscribe/Subscribe";
 import ArticleCard from "./ArticleCard";
 import { GlobalState } from "../../GlobalState";
 // import Loading from '../../Loading';
-import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
+import SkeletonBlog from "../../Components/Skeleton/skeletonBlog";
 import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 import Pagination from "../../Components/Pagination/pagination";
@@ -18,7 +18,7 @@ const Articles = () => {
   const [isLoggedIn] = state.userAPI.isLoggedIn;
   const [isAdmin] = state.userAPI.isAdmin;
   const [articles] = state.articlesAPI.articles;
-  // const [token] = state.token
+  const [token] = state.token
   const [callback, setCallback] = state.articlesAPI.callback;
   const [loading, setLoading] = useState(false);
   const [tagsShow, setTagsShow] = useState("All");
@@ -29,25 +29,22 @@ const Articles = () => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const mainPosts = articles.sort(
+
+  const cleanArticles = articles.filter(
+    (article) => article.draft === false && article.archived === false
+  );
+
+  const mainPosts = cleanArticles.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
-  const archivedPosts = [];
-
-  mainPosts.map(article => {
-    if (article.archived) {
-      archivedPosts.push(article);
-      mainPosts.pop(article);
-    }
-  });
 
   const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const shuffleArray = arr => arr.sort(() => 0.5 - Math.random());
+  const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
   const popularPosts = shuffleArray(mainPosts)
-    .filter(article => article !== currentPosts)
+    .filter((article) => article !== currentPosts)
     .slice(0, 5);
 
-  const paginate = pageNum => setCurrentPage(pageNum);
+  const paginate = (pageNum) => setCurrentPage(pageNum);
 
   const nextPage = () => {
     if (currentPage > articles.length) return;
@@ -65,7 +62,9 @@ const Articles = () => {
     try {
       setLoading(true);
       const destroyImg = axios.post("/api/destory", { public_id });
-      const deleteArticle = axios.delete(`/api/articles/${id}`);
+      const deleteArticle = axios.delete(`/api/articles/${id}`, {
+        headers: { Authorization: token },
+      });
       await destroyImg;
       await deleteArticle;
       setLoading(false);
@@ -79,7 +78,11 @@ const Articles = () => {
     try {
       const archive = !archived;
       setLoading(true);
-      const archiveArticle = axios.patch(`/api/articles/${id}`, { archive });
+      const archiveArticle = axios.patch(`/api/articles/${id}`,
+        { archive },
+        {
+          headers: { Authorization: token },
+        });
       await archiveArticle;
       setLoading(false);
       setCallback(!callback);
@@ -89,22 +92,22 @@ const Articles = () => {
   };
 
   const handleCheck = async (id) => {
-      articles.forEach(article => {
-          if (article._id === id) article.checked = !article.checked
-      })
-      setArticles([...articles])
-  }
+    articles.forEach((article) => {
+      if (article._id === id) article.checked = !article.checked;
+    });
+    setArticles([...articles]);
+  };
 
-  const filteredArticles = currentPosts.filter(article => {
+  const filteredArticles = currentPosts.filter((article) => {
     return article.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
   });
 
-  const updateSearch = event => {
+  const updateSearch = (event) => {
     const { value } = event.target;
     setSearch(value.substr(0, 20));
   };
 
-  const updateItemsShow = str => {
+  const updateItemsShow = (str) => {
     setTagsShow(str);
     setStatus("active");
   };
@@ -113,15 +116,15 @@ const Articles = () => {
   if (tagsShow === "All") {
     taggedArticles = filteredArticles;
   } else if (tagsShow === "JavaScript") {
-    taggedArticles = filteredArticles.filter(item =>
+    taggedArticles = filteredArticles.filter((item) =>
       item.category.includes("JavaScript")
     );
   } else if (tagsShow === "Python") {
-    taggedArticles = filteredArticles.filter(item =>
+    taggedArticles = filteredArticles.filter((item) =>
       item.category.includes("Python")
     );
   } else if (tagsShow === "Software Engineer") {
-    taggedArticles = filteredArticles.filter(item =>
+    taggedArticles = filteredArticles.filter((item) =>
       item.category.includes("Software Engineer")
     );
   }
@@ -253,7 +256,7 @@ const Articles = () => {
               </section>
             ) : (
               <section className="articleList">
-                {taggedArticles.map(article => {
+                {taggedArticles.map((article) => {
                   return (
                     <ArticleCard
                       isAdmin={isAdmin}
@@ -282,7 +285,7 @@ const Articles = () => {
                 <div className="popular">
                   <h2 className="article-card-header">Popular Post</h2>
                   <section className="popular-articles">
-                    {popularPosts.map(article => {
+                    {popularPosts.map((article) => {
                       return (
                         <a
                           key={article.id}

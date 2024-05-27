@@ -1,92 +1,115 @@
-import React, {useContext, useState, useEffect } from 'react';
-import {PageLinks, StyledRightContainer, AlignContent, SideUserContainer,
-  PostContainer} from '../../Layout/Container/styledArticle';
-import {SquareImage, CircleImage} from '../../Layout/Image/styledImage';
-import {UserInfo, PostText, Subtitle} from '../../Layout/Text/styledText';
-import {ArticleLink, ArticleLinkColor} from '../../Layout/ATag/styledATag';
-import {MdBookmarkBorder, MdClose} from 'react-icons/md';
-import {FaRegThumbsUp} from 'react-icons/fa';
-import {BiCheckShield, BiDotsHorizontalRounded} from 'react-icons/bi';
-import { MarginTop } from '../../Layout/Margin/styledMargin';
-import { ArticleInput } from '../../Layout/Input/styledInput';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
-import { GlobalState } from '../../GlobalState';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
-import { Button } from '../Button/Button';
+import React, { useContext, useState, useEffect } from "react";
+import {
+  PageLinks,
+  StyledRightContainer,
+  AlignContent,
+  SideUserContainer,
+  PostContainer,
+} from "../../Layout/Container/styledArticle";
+import { SquareImage, CircleImage } from "../../Layout/Image/styledImage";
+import { UserInfo, PostText, Subtitle } from "../../Layout/Text/styledText";
+import { ArticleLink, ArticleLinkColor } from "../../Layout/ATag/styledATag";
+import { MdBookmarkBorder, MdClose } from "react-icons/md";
+import { FaRegThumbsUp } from "react-icons/fa";
+import { BiCheckShield, BiDotsHorizontalRounded } from "react-icons/bi";
+import { MarginTop } from "../../Layout/Margin/styledMargin";
+import { ArticleInput } from "../../Layout/Input/styledInput";
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { GlobalState } from "../../GlobalState";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import { Button } from "../Button/Button";
 
 const RightColumn = (props) => {
-
   const history = useHistory();
   // const uri = window.location.pathname;
   const state = useContext(GlobalState);
-  const [currentUser, setCurrentUser] = useState(props.user);
-  const [user] = state.userAPI.user
+  const [token] = state.token;
+  const [user] = state.userAPI.user;
   const [isLoggedIn] = state.userAPI.isLoggedIn;
-  const [search, setSearch] = useState('')
-  const [comments, setComments] = useState({comments: []})
-  const [comment, setComment] = useState("")
-  const param = useParams()
+  const [currentUser, setCurrentUser] = useState(props.user);
+  const [search, setSearch] = useState("");
+  const [comments, setComments] = useState({ comments: [] });
+  const [comment, setComment] = useState("");
+
+  const param = useParams();
 
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
   const recentPosts = shuffleArray(props.articles)
-        .filter((article) => {
-          // article._id !== uri.split('/')[2]
-          return article.title.toLowerCase().indexOf(
-            search.toLowerCase()) !== -1;
-        })
-        .slice(0, 5);
+    .filter((article) => {
+      // article._id !== uri.split('/')[2]
+      return article.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
+    })
+    .slice(0, 5);
 
-  const updateSearch = event => {
-    const { value } = event.target
-    setSearch(value.substr(0, 20))
-  }
-  const handleClick= async (e) => {
-    history.push(`/${e}`)
-  }
+  const updateSearch = (event) => {
+    const { value } = event.target;
+    setSearch(value.substr(0, 20));
+  };
+  const handleClick = async (e) => {
+    history.push(`/${e}`);
+  };
 
   useEffect(() => {
-    const id =  param.id   
+    const id = param.id;
 
     if (id) {
-        const getComments = async () => {
-          const res = await axios.get(`/api/articles/${id}/comments`)
-          let filteredComments = res.data.comments.filter((comment) => {
-              return comment.blog === id;
-          });
-          setComments({ comments: filteredComments });
-          await axios.put(`/api/articles/${id}`, {
-            comments: filteredComments
-          })
-        }
-        getComments()
+      const getComments = async () => {
+        const res = await axios.get(`/api/articles/${id}/comments`);
+        let filteredComments = res.data.comments.filter((comment) => {
+          return comment.blog === id;
+        });
+        setComments({ comments: filteredComments });
+        
+        await axios.put(
+          `/api/articles/${id}`,
+          {
+            comments: filteredComments,
+          },
+          {
+            headers: { Authorization: token },
+          }
+        );
+      };
+      getComments();
     }
-  }, [param.id, comment])
+  }, [param.id, comment]);
 
   const postComment = async () => {
     try {
-      await axios.post(`/api/articles/${param.id}/comments`, {postId: param.id, comment, user})
-      const res = await axios.get(`/api/articles/${id}/comments`)
+      await axios.post(`/api/articles/${param.id}/comments`, {
+        postId: param.id,
+        comment,
+        user,
+      });
+      const res = await axios.get(`/api/articles/${id}/comments`);
       let filteredComments = res.data.comments.filter((comment) => {
-          return comment.blog === id;
+        return comment.blog === id;
       });
       setComments({ comments: filteredComments });
-       await axios.put(`/api/articles/${id}`, {
-         comments: filteredComments,
-       });
+
+      await axios.put(
+        `/api/articles/${id}`,
+        {
+          comments: filteredComments,
+        },
+        {
+          headers: { Authorization: token },
+        }
+      );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
-  const handleChangeInput = e => {
-      const { name, value } = e.target
-      console.log(name, value)
-      setComment(value)
-  }
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    setComment(value);
+  };
 
-  console.log(user)
+  console.log(user);
 
   return (
     <>
@@ -288,7 +311,12 @@ const RightColumn = (props) => {
           <AlignContent Center>
             {!isLoggedIn ? (
               <>
-                <Button size="large" onClick={() => handleClick("register")} backgroundColor="black" label="Get Started" />
+                <Button
+                  size="large"
+                  onClick={() => handleClick("register")}
+                  backgroundColor="black"
+                  label="Get Started"
+                />
                 <ArticleLinkColor Green href="/login">
                   Sign In
                 </ArticleLinkColor>
@@ -306,38 +334,45 @@ const RightColumn = (props) => {
               onChange={updateSearch}
             />
           </MarginTop>
-          {
-            isLoggedIn && (
-              <>
-                <SideUserContainer Primary>
-                  <CircleImage
-                    Secondary
-                    src={
-                      currentUser.avatar ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
-                    }
-                    alt="author"
-                  />
-                  <UserInfo Padding4>{currentUser.name || "Will Smith"}</UserInfo>
-                  <UserInfo GrayWPadding>119 Followers</UserInfo>
-                  <UserInfo GrayWPadding>
-                    Software Engineer | Python Programmer | Java Programmer | Tech
-                    Enthusiast | JavaScript Programmer | React Lover | Mobile
-                    Developer
-                  </UserInfo>
-                </SideUserContainer>
-                <SideUserContainer ButtonGroup>
-                  <Button size="small" backgroundColor="green" label="Follow" />
-                  <Button
-                    icon={<MdBookmarkBorder style={{ fontSize: "2rem", position: 'absolute', left: '66%',  top: '59%' }} />}
-                    size="small"
-                    backgroundColor="green"
-                    shape={"round"}
-                  />
-                </SideUserContainer>
-              </>
-            )
-          }
+          {isLoggedIn && (
+            <>
+              <SideUserContainer Primary>
+                <CircleImage
+                  Secondary
+                  src={
+                    currentUser.avatar ||
+                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
+                  }
+                  alt="author"
+                />
+                <UserInfo Padding4>{currentUser.name || "Will Smith"}</UserInfo>
+                <UserInfo GrayWPadding>119 Followers</UserInfo>
+                <UserInfo GrayWPadding>
+                  Software Engineer | Python Programmer | Java Programmer | Tech
+                  Enthusiast | JavaScript Programmer | React Lover | Mobile
+                  Developer
+                </UserInfo>
+              </SideUserContainer>
+              <SideUserContainer ButtonGroup>
+                <Button size="small" backgroundColor="green" label="Follow" />
+                <Button
+                  icon={
+                    <MdBookmarkBorder
+                      style={{
+                        fontSize: "2rem",
+                        position: "absolute",
+                        left: "66%",
+                        top: "59%",
+                      }}
+                    />
+                  }
+                  size="small"
+                  backgroundColor="green"
+                  shape={"round"}
+                />
+              </SideUserContainer>
+            </>
+          )}
           <SideUserContainer Primary>
             <PostText>Related</PostText>
             {recentPosts.map((article) => {
@@ -374,7 +409,6 @@ const RightColumn = (props) => {
       )}
     </>
   );
-}
-
+};
 
 export default RightColumn;

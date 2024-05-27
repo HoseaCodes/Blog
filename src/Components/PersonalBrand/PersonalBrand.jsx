@@ -1,14 +1,15 @@
 import React from 'react';
 import './PersonalBrand.css'
-import nique from '../../Assets/Icons/nique.jpg'
-import dom from '../../Assets/Icons/hosea3.png'
-import Resume2020 from '../../Assets/Files/Resume2020.pdf'
 import Modal from 'react-bootstrap/Modal'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import { BsEnvelope, BsEnvelopeOpen } from "react-icons/bs";
 
 const PersonalBrand = () => {
+    const Resume2020 =
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/PDFs/Resume2020.pdf";
+    const nique = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/nique-min.jpg'
+    const dom = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/hosea3.png'
     const [modalShow, setModalShow] = React.useState(false);
 
     function handleClick(e) {

@@ -47,9 +47,29 @@ const articleSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    published: {
+        type: Boolean,
+        default: false,
+    },
+    scheduled: {
+        type: Boolean,
+        default: false,
+    },
+    scheduledDateTime: {
+        type: Date,
+        default: null
+    },
     checked: {
         type: Boolean,
         default: false,
+    },
+    linkedin: {
+        type: Boolean,
+        default: false,
+    },
+    linkedinContent: {
+        type: String,
+        default: null,
     },
     markdown: {
         type: String,
@@ -67,6 +87,10 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    views: {
+        type: Number,
+        default: 0
     },
     comments: [{
         text: String,

@@ -2,9 +2,6 @@ import React from 'react';
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-// import Socialring from '../../icons/socialring.png';
-// import Socialring2 from '../../icons/socialring2.png';
-// import Socialring3 from '../../icons/socialring3.png';
 import Modal from '../Modal/Modal'
 
 

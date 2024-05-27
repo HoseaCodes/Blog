@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Translation({ input, selectOption, doStuff, handleChangeInputOPENPAI, result }) {
+function Translation({ input, selectOption, generateAIResponse, handleChangeInputOPENPAI, result }) {
     return (
         <div>
             <textarea
@@ -12,7 +12,7 @@ function Translation({ input, selectOption, doStuff, handleChangeInputOPENPAI, r
                 onChange={handleChangeInputOPENPAI}
                 value={result.length > 0 ? result : input}
             ></textarea>
-            <button className="action-btn" onClick={doStuff}>
+            <button className="action-btn" onClick={generateAIResponse}>
                 Create Content
             </button>
             <button className="action-btn" onClick={() => selectOption({})}>

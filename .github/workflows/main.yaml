@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - v*
 jobs:
   static-scan:
     runs-on: ubuntu-latest
@@ -58,6 +60,8 @@ jobs:
   build:
     needs: [static-scan, dependency-scan, lint]
     runs-on: ubuntu-latest
+    outputs:
+      build_path: ${{ steps.archive_build.outputs.build_path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -67,10 +71,45 @@ jobs:
           node-version: '20'
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
-      - name: Deploy to Heroku
+      - name: Build project
         run: |
-          git remote add heroku https://git.heroku.com/hoseacodes-dev.git
-          git push heroku main
+          export SKIP_PREFLIGHT_CHECK=true
+          npm run build
+      - name: Archive build output
+        id: archive_build
+        run: |
+          tar -czf build.tar.gz build/
+          echo "::set-output name=build_path::build.tar.gz"
+      - name: Create conventional changelog action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@latest
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag-prefix: "dev.v"
+          git-push: false
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-       
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: Release ${{ steps.changelog.outputs.tag }}
+          body:  ${{steps.changelog.outputs.clean_changelog}}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build.tar.gz
+          asset_name: build.tar.gz
+          asset_content_type: application/gzip
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: hoseacodes-dev
+          heroku_email: "dominique11h@yahoo.com"

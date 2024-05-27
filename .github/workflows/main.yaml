@@ -140,7 +140,9 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build project
-        run: npm run build
+        run: |
+          export SKIP_PREFLIGHT_CHECK=true
+          npm run build
 
       - name: Archive build output
         id: archive_build

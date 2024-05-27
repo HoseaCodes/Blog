@@ -93,8 +93,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: v${{ github.ref_name }} 
         with:
-          tag_name: v.0.1
-          release_name: Release v.0.1
+          tag_name: $tag
+          release_name: Release $tag
           body:  ${{steps.changelog.outputs.clean_changelog}}
           draft: false
           prerelease: false

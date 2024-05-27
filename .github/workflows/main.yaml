@@ -4,6 +4,8 @@ on:
     branches:
       - main
       - fix/article
+    tags:
+      - v*
 jobs:
   static-scan:
     runs-on: ubuntu-latest
@@ -74,5 +76,19 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: hoseacodes-dev
           heroku_email: "dominique11h@yahoo.com"
+  release:
+    needs: [build]
+    name: Release pushed tag
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes
         
-       
+        

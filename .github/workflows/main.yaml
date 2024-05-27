@@ -98,12 +98,12 @@ jobs:
       - name: Create Tag
         uses: rickstaa/action-create-tag@v1.7.2
         with:
-          tag: ${{ github.ref_name }} ${{ steps.semver.outputs.patch }}
+          tag: v${{ steps.semver.outputs.patch }}-${{ github.ref_name }} 
       - name: Create release
         id: create_release_id
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref_name }} ${{ steps.semver.outputs.patch }}
+          tag: Release v${{ steps.semver.outputs.patch }}-${{ github.ref_name }} 
         run: |
           gh release create "$tag" \
               --repo="$GITHUB_REPOSITORY" \

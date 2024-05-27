@@ -88,8 +88,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           tag: v${{ github.ref_name }} 
         with:
-          # tag_name: "$tag"
-          release_name: Release "$tag"
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           body: |
             Release notes for "$tag"
           draft: false

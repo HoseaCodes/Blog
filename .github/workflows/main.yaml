@@ -97,9 +97,15 @@ jobs:
           version: ${{ steps.previoustag.outputs.tag }}
       - name: Create release
         id: create_release_id
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+        run: |
+          gh release create "$tag ${{ steps.semver.outputs.patch }}" \
+              --repo="$GITHUB_REPOSITORY" \
+              --title="${GITHUB_REPOSITORY#*/} ${tag#v}" \
+              --generate-notes \
+              --draft
         with:
           tag_name: ${{ steps.semver.outputs.patch }}
           release_name: Release ${{ steps.semver.outputs.patch }}

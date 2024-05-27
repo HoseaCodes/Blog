@@ -189,8 +189,8 @@ function CreateArticle() {
           ...article,
           ["slug"]: article.title.toLowerCase().replace(/ /g, "-"),
         });
-        const username = process.env.USERNAME || "admin";
-        const password = process.env.PASSWORD || "password";
+        const username = process.env.REACT_APP_USERNAME || "admin";
+        const password = process.env.REACT_APP_PASSWORD || "password";
         const auth = getBasicAuth(username, password);
         await axios.post(
           "/api/articles",

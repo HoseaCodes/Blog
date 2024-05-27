@@ -3,63 +3,62 @@ on:
   push:
     branches:
       - main
-      - fix/article
     tags:
       - v*
 jobs:
-  # static-scan:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     JSON_OUTPUT: snyk-static-scan.json
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - uses: snyk/actions/setup@master
-  #     - uses: actions/setup-go@v1
-  #     - name: Run Snyk to check for vulnerabilities
-  #       continue-on-error: true
-  #       run: |
-  #         snyk code test
-  #         snyk-to-html -i $JSON_OUTPUT -o snyk.html 
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #     - name: Archive snyk results
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: snyk-report
-  #         path: output/scan/snyk.html
-  #         retention-days: 5
-  # dependency-scan:
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     JSON_OUTPUT: snyk-dependency-scan.json
-  #   steps:
-  #     - uses: actions/checkout@master
-  #     - uses: snyk/actions/setup@master
-  #     - uses: actions/setup-go@v1
-  #     - name: Run Snyk to check for vulnerabilities
-  #       continue-on-error: true
-  #       run: |
-  #         snyk test
-  #         snyk-to-html -i $JSON_OUTPUT -o snyk.html 
-  #       env:
-  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  #     - name: Archive snyk results
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: snyk-report
-  #         path: output/scan/snyk.html
-  #         retention-days: 5
-  # lint:
-    # needs: [static-scan, dependency-scan]
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - uses: actions/checkout@v2
-    #   - run: npm i --legacy-peer-deps
-    #   - name: lint
-    #     continue-on-error: true
-    #     run: npm run lint
+  static-scan:
+    runs-on: ubuntu-latest
+    env:
+      JSON_OUTPUT: snyk-static-scan.json
+    steps:
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-go@v1
+      - name: Run Snyk to check for vulnerabilities
+        continue-on-error: true
+        run: |
+          snyk code test
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Archive snyk results
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-report
+          path: output/scan/snyk.html
+          retention-days: 5
+  dependency-scan:
+    runs-on: ubuntu-latest
+    env:
+      JSON_OUTPUT: snyk-dependency-scan.json
+    steps:
+      - uses: actions/checkout@master
+      - uses: snyk/actions/setup@master
+      - uses: actions/setup-go@v1
+      - name: Run Snyk to check for vulnerabilities
+        continue-on-error: true
+        run: |
+          snyk test
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      - name: Archive snyk results
+        uses: actions/upload-artifact@v3
+        with:
+          name: snyk-report
+          path: output/scan/snyk.html
+          retention-days: 5
+  lint:
+    needs: [static-scan, dependency-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: npm i --legacy-peer-deps
+      - name: lint
+        continue-on-error: true
+        run: npm run lint
   build:
-  #   needs: [static-scan, dependency-scan, lint]
+    needs: [static-scan, dependency-scan, lint]
     runs-on: ubuntu-latest
     outputs:
       build_path: ${{ steps.archive_build.outputs.build_path }}
@@ -108,121 +107,9 @@ jobs:
           asset_path: build.tar.gz
           asset_name: build.tar.gz
           asset_content_type: application/gzip
-      # - name: Deploy to Heroku
-      #   uses: akhileshns/heroku-deploy@v3.12.12
-      #   with:
-      #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-      #     heroku_app_name: hoseacodes-dev
-      #     heroku_email: "dominique11h@yahoo.com"
-  # release:
-    # needs: [build]
-    # name: Release pushed tag
-    # runs-on: ubuntu-22.04
-    # steps:
-    #   - name: Checkout
-    #     uses: actions/checkout@v3
-    #     with:
-    #       fetch-depth: 0 # required for github-action-get-previous-tag
-    #   - name: Get previous tag
-    #     id: previoustag
-    #     uses: 'WyriHaximus/github-action-get-previous-tag@v1'
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   - name: Get next minor version
-    #     id: semver
-    #     uses: 'WyriHaximus/github-action-next-semvers@v1'
-    #     with:
-    #       version: ${{ steps.previoustag.outputs.tag }}
-    #   - name: Create Tag
-    #     uses: rickstaa/action-create-tag@v1.7.2
-    #     with:
-    #       tag: v${{ steps.semver.outputs.patch }}-${{ github.ref_name }} 
-    #   - name: Create release
-    #     id: create_release_id
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #       tag: Release v${{ steps.semver.outputs.patch }}-${{ github.ref_name }} 
-    #     run: |
-    #       gh release create "$tag" \
-    #           --repo="$GITHUB_REPOSITORY" \
-    #           --title="${tag#v}" \
-    #           --generate-notes \
-    #           --draft \
-    #           ./dist/*.tgz
- 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     build_path: ${{ steps.archive_build.outputs.build_path }}
-
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v2
-
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: '20'
-
-  #     - name: Install dependencies
-  #       run: npm install --legacy-peer-deps
-
-  #     - name: Build project
-  #       run: |
-  #         export SKIP_PREFLIGHT_CHECK=true
-  #         npm run build
-
-  #     - name: Archive build output
-  #       id: archive_build
-  #       run: |
-  #         tar -czf build.tar.gz build/
-  #         echo "::set-output name=build_path::build.tar.gz"
-
-#   release:
-#     runs-on: ubuntu-latest
-#     needs: build
-#     outputs:
-#       upload_url: ${{ steps.create_release.outputs.upload_url }}
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-
-#       - name: Create GitHub Release
-#         id: create_release
-#         uses: actions/create-release@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           tag: v${{ github.ref_name }} 
-#         with:
-#           tag_name: "$tag"
-#           release_name: Release "$tag"
-#           body: |
-#             Release notes for "$tag"
-#           draft: false
-#           prerelease: false
-
-#   deploy:
-#     runs-on: ubuntu-latest
-#     needs: [build, release]
-
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-
-#       - name: Download build artifact
-#         run: |
-#           echo "Downloading build artifact..."
-#           curl -L -o build.tar.gz ${{ needs.build.outputs.build_path }}
-
-#       - name: Upload Release Asset
-#         uses: actions/upload-release-asset@v1
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         with:
-#           upload_url: ${{ needs.release.outputs.upload_url }}
-#           asset_path: build.tar.gz
-#           asset_name: build.tar.gz
-#           asset_content_type: application/gzip
-
-# #
+      - name: Deploy to Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: hoseacodes-dev
+          heroku_email: "dominique11h@yahoo.com"

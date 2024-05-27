@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - fix/article
 jobs:
   static-scan:
     runs-on: ubuntu-latest
@@ -68,9 +69,10 @@ jobs:
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
       - name: Deploy to Heroku
-        run: |
-          git remote add heroku https://git.heroku.com/hoseacodes-dev.git
-          git push heroku main
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        uses: CDNievas/heroku-action@v1.0
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: hoseacodes-dev
+          heroku_email: "dominique11h@yahoo.com"
+        
        

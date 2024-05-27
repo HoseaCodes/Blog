@@ -74,6 +74,9 @@ async function createArticle(req, res) {
       medium,
       postedBy,
       series,
+      linkedin,
+      linkedinContent,
+      linkedinAccessToken,
     } = req.body;
 
     switch (req.body) {
@@ -134,10 +137,23 @@ async function createArticle(req, res) {
       tags: ["api", "hoseacodes"],
       categories,
       slug: title.toLowerCase().replace(/ /g, "-"),
+      dev,
+      medium,
+      linkedin,
+      linkedinContent,
     });
 
     try {
-      if (dev) {
+    } catch (error) {
+      logger.error(error);
+      return res.status(error.response.status).json({
+        code: error.response.statusText,
+        msg: error.response.data,
+      });
+    }
+
+    if (dev) {
+      try {
         if (!title || !markdown || !series) {
           logger.error("No title, markdown or series provided.");
           return res
@@ -164,9 +180,17 @@ async function createArticle(req, res) {
           }
         );
         logger.info("Published to Dev To");
+      } catch (error) {
+        logger.error(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
       }
+    }
 
-      if (medium) {
+    if (medium) {
+      try {
         if (!series) {
           logger.error("No series provided.");
           return res.status(400).json({ msg: "No series upload" });
@@ -193,13 +217,75 @@ async function createArticle(req, res) {
           }
         );
         logger.info("Published to Medium");
+      } catch (error) {
+        logger.error(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
       }
-    } catch (error) {
-      logger.error(error);
-      return res.status(error.response.status).json({
-        code: error.response.statusText,
-        msg: error.response.data,
-      });
+    }
+
+    if (linkedin) {
+      try {
+        const redirectUri = "http://localhost:3000/admin/blog/new";
+        const clientId = process.env.LINKEDIN_CLIENT_ID || "86s5czbllv0b9s";
+        const clientSecret =
+          process.env.LINKEDIN_CLIENT_SECRET || "VvcAdF8uDmIddv2J";
+        const getAccessToken = async () => {
+          const response = await axios.post(
+            "https://www.linkedin.com/oauth/v2/accessToken",
+            null,
+            {
+              params: {
+                grant_type: "authorization_code",
+                code: linkedinAccessToken,
+                redirect_uri: redirectUri,
+                client_id: clientId,
+                client_secret: clientSecret,
+              },
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            }
+          );
+          return response.data.access_token;
+        };
+        const accessToken = await getAccessToken();
+        const response = await axios.post(
+          "https://api.linkedin.com/v2/ugcPosts",
+          {
+            author: `urn:li:person:ZGV337BIbm`,
+            lifecycleState: "PUBLISHED",
+            specificContent: {
+              "com.linkedin.ugc.ShareContent": {
+                shareCommentary: {
+                  text: linkedinContent,
+                },
+                shareMediaCategory: "NONE",
+              },
+            },
+            visibility: {
+              "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "X-Restli-Protocol-Version": "2.0.0",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        logger.info("Published to LinkedIn", { res: response.data });
+      } catch (error) {
+        logger.error(error);
+        console.log(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
+      }
     }
 
     res.clearCookie("artilces-cache");

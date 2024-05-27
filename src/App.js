@@ -27,11 +27,6 @@ import UsersList from "./Components/User/ListUser";
 import History from "./Pages/Order/History";
 import UploadList from "./Components/User/UploadList";
 import PrivateRoute from "./PrivateRouter";
-
-const About = lazy(() => import("./Pages/About/About"));
-const Contact = lazy(() => import("./Pages/Contact/Contact"));
-
-// const App = () => {
 import Tools from "./Pages/Tools";
 import Games from "./Pages/Games";
 import GameHome from "./Pages/GameStore/GameHome";
@@ -42,10 +37,13 @@ import filterNames from "./Constants/filterNames";
 import Browser from "./Pages/GameStore/Browser";
 import ReactGA from 'react-ga4';
 
+const About = lazy(() => import("./Pages/About/About"));
+const Contact = lazy(() => import("./Pages/Contact/Contact"));
+
 const App = () => {
   const history = createBrowserHistory();
   if (process.env.NODE_ENV === 'production') {
-    ReactGA.initialize(process.env.GOOGLE_MEASUREMENT_ID);
+    ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID);
     history.listen((location, action) => {
       ReactGA.send({
         hitType: "pageview",
@@ -296,12 +294,6 @@ const App = () => {
             />
             <PrivateRoute
               type={"admin"}
-              path="/admin/blog/:id"
-              exact={true}
-              element={CreateArticle}
-            />
-            <PrivateRoute
-              type={"admin"}
               path="/admin/blog/edit/:id"
               exact={true}
               element={CreateArticle}
@@ -397,7 +389,7 @@ const App = () => {
             />
             {/* Shop */}
             {/* GameStore */}
-            {/* <Route path="/tools" exact render={() => ( <Tools/>)}/> */}
+            <Route path="/tools" exact render={() => ( <Tools/>)}/>
             {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
             <PrivateRoute
               type={"login"}

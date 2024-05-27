@@ -13,13 +13,13 @@ import AITemplate from "../../Components/OpenAI/AITemplate";
 import { Button } from "../../Components/Button/Button";
 import { sleep, getBasicAuth } from "../../Utils/helperFunctions";
 import moment from "moment";
+import LinkedInLogin from "../../Components/SocialMedia/LinkedInLogin";
 
-function CreatArticle() {
+function CreateArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
   const todaysDate = moment().format("YYYY-MM-DD");
   const tomorrowsDate = moment().add(1, "days").format("YYYY-MM-DD");
   const threeMonthsFromToday = moment().add(3, "months").format("YYYY-MM-DD");
-  
   const initialState = {
     article_id: uuidv4(),
     title: "Demo",
@@ -34,6 +34,8 @@ function CreatArticle() {
     archived: false,
     draft: false,
     scheduled: false,
+    linkedin: false,
+    linkedinContent: "",
     scheduledDate: todaysDate,
     images: {
       secure_url: "",
@@ -57,6 +59,16 @@ function CreatArticle() {
   const loggedIn = localStorage.getItem("isLoggedIn");
   const [selectedCategory, setselectedCategory] = useState("Programming");
   const [allBlogCategory, setAllBlogCategory] = useState([]);
+  const [linkedinResult, setLinkedinResult] = useState("");
+  const [linkedinAccessToken, setLinkedinAccessToken] = useState("");
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      setLinkedinAccessToken(code);
+    }
+  }, []);
 
   useEffect(async () => {
     const config = { headers: { "Content-Type": "application/json" } };
@@ -115,7 +127,10 @@ function CreatArticle() {
       setLoading(true);
 
       const res = await axios.post("/api/upload", formData, {
-        headers: { "content-type": "multipart/form-data" },
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+        },
       });
       setLoading(false);
       setImages(res.data.result);
@@ -174,12 +189,12 @@ function CreatArticle() {
           ...article,
           ["slug"]: article.title.toLowerCase().replace(/ /g, "-"),
         });
-        const username = process.env.USERNAME || "admin";
-        const password = process.env.PASSWORD || "password";
+        const username = process.env.REACT_APP_USERNAME || "admin";
+        const password = process.env.REACT_APP_PASSWORD || "password";
         const auth = getBasicAuth(username, password);
         await axios.post(
           "/api/articles",
-          { ...article, images, ...user },
+          { ...article, images, ...user, linkedinAccessToken },
           {
             headers: {
               Authorization: auth,
@@ -337,6 +352,28 @@ function CreatArticle() {
                     </div>
                     <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div id="div_id_downloads" className="required">
+                        {
+                          !linkedinAccessToken && (
+                            <LinkedInLogin />
+                          )
+                        }
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Publish To LinkedIn
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            className="bg-transparent"
+                            type="checkbox"
+                            name="linkedin"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
                         <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
@@ -460,6 +497,38 @@ function CreatArticle() {
                             min={tomorrowsDate}
                             max={threeMonthsFromToday}
                           />
+                        </div>
+                      </div>
+                      <div id="div_description" className=" required">
+                        <br />
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          LinkedIn Content
+                          <span className="asteriskField">*</span>{" "}
+                        </label>{" "}
+                        &nbsp;&nbsp;
+                        {article.markdown !== "" && article.markdown && (
+                          <AITemplate
+                            articleInput={article.markdown}
+                            showAITemplate={showAITemplate}
+                            setShowAITemplate={setShowAITemplate}
+                            setLinkedinResult={setLinkedinResult}
+                          />
+                        )}
+                        <div className="controls ">
+                          <br />
+                          <textarea
+                            className="mb bg-transparent"
+                            name="linkedinContent"
+                            required
+                            value={article.linkedinContent || linkedinResult}
+                            onChange={handleChangeInput}
+                            style={{ width: "100%" }}
+                            rows="5"
+                            cols="50"
+                          ></textarea>
                         </div>
                       </div>
                     </div>
@@ -595,4 +664,4 @@ function CreatArticle() {
   );
 }
 
-export default CreatArticle;
+export default CreateArticle;

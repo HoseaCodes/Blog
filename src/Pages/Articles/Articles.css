@@ -1,6 +1,17 @@
 /*──────────────────
      Skeleton
 ──────────────────*/
+ol {
+  margin-left: 2%;
+}
+
+ol li {
+  margin-left: 4%;
+}
+
+p ul li {
+  margin-left: 5%;
+}
 
 .post {
   display: flex;

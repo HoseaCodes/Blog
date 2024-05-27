@@ -63,6 +63,14 @@ const articleSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    linkedin: {
+        type: Boolean,
+        default: false,
+    },
+    linkedinContent: {
+        type: String,
+        default: null,
+    },
     markdown: {
         type: String,
         required: true

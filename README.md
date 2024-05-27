@@ -91,6 +91,15 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
 ## Dev Ops
 
+### Pipelines
+
+| Job Name                                              | Use Case    |
+| ----------------------------------------------------- | ----------- |
+| Static-Scan                                           | Static application security testing (SAST) or static code analysis, analyzes source code to find security vulnerabilities that make the organization's applications susceptible to attack.   |
+| Dependency-Scan                                       | Dependency scanning generates an alert for any open-source component, direct or transitive, found to be vulnerable that the code depends upon.   |
+| Lint-Scan                                             | Lint scans source code for errors and potential issues that could lead to bugs, vulnerabilities, and other problems.   |
+| Build                                                 |   Build and deploying the project.          |
+
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 
 ## 3rd Party Packages
@@ -154,6 +163,11 @@ docker push hoseacodes/hoseacodes-blog:latest
 git push heroku-staging HEAD:main  
 ```
 
+## How To Restart App
+
+```bash
+heroku restart -a app_name
+```
 
 ## Unsolved Problems
 

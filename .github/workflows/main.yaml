@@ -61,6 +61,8 @@ jobs:
   build:
   #   needs: [static-scan, dependency-scan, lint]
     runs-on: ubuntu-latest
+    outputs:
+      build_path: ${{ steps.archive_build.outputs.build_path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -79,6 +81,19 @@ jobs:
         run: |
           tar -czf build.tar.gz build/
           echo "::set-output name=build_path::build.tar.gz"
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: v${{ github.ref_name }} 
+        with:
+          tag_name: "$tag"
+          release_name: Release "$tag"
+          body: |
+            Release notes for "$tag"
+          draft: false
+          prerelease: false
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:

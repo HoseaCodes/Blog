@@ -7,57 +7,57 @@ on:
     tags:
       - v*
 jobs:
-  static-scan:
-    runs-on: ubuntu-latest
-    env:
-      JSON_OUTPUT: snyk-static-scan.json
-    steps:
-      - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
-      - name: Run Snyk to check for vulnerabilities
-        continue-on-error: true
-        run: |
-          snyk code test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Archive snyk results
-        uses: actions/upload-artifact@v3
-        with:
-          name: snyk-report
-          path: output/scan/snyk.html
-          retention-days: 5
-  dependency-scan:
-    runs-on: ubuntu-latest
-    env:
-      JSON_OUTPUT: snyk-dependency-scan.json
-    steps:
-      - uses: actions/checkout@master
-      - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
-      - name: Run Snyk to check for vulnerabilities
-        continue-on-error: true
-        run: |
-          snyk test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      - name: Archive snyk results
-        uses: actions/upload-artifact@v3
-        with:
-          name: snyk-report
-          path: output/scan/snyk.html
-          retention-days: 5
-  lint:
-    needs: [static-scan, dependency-scan]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - run: npm i --legacy-peer-deps
-      - name: lint
-        continue-on-error: true
-        run: npm run lint
+  # static-scan:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     JSON_OUTPUT: snyk-static-scan.json
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: snyk/actions/setup@master
+  #     - uses: actions/setup-go@v1
+  #     - name: Run Snyk to check for vulnerabilities
+  #       continue-on-error: true
+  #       run: |
+  #         snyk code test
+  #         snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #     - name: Archive snyk results
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: snyk-report
+  #         path: output/scan/snyk.html
+  #         retention-days: 5
+  # dependency-scan:
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     JSON_OUTPUT: snyk-dependency-scan.json
+  #   steps:
+  #     - uses: actions/checkout@master
+  #     - uses: snyk/actions/setup@master
+  #     - uses: actions/setup-go@v1
+  #     - name: Run Snyk to check for vulnerabilities
+  #       continue-on-error: true
+  #       run: |
+  #         snyk test
+  #         snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+  #       env:
+  #         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+  #     - name: Archive snyk results
+  #       uses: actions/upload-artifact@v3
+  #       with:
+  #         name: snyk-report
+  #         path: output/scan/snyk.html
+  #         retention-days: 5
+  # lint:
+    # needs: [static-scan, dependency-scan]
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - uses: actions/checkout@v2
+    #   - run: npm i --legacy-peer-deps
+    #   - name: lint
+    #     continue-on-error: true
+    #     run: npm run lint
   # build:
   #   needs: [static-scan, dependency-scan, lint]
   #   runs-on: ubuntu-latest

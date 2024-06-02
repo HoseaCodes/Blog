@@ -61,6 +61,7 @@ function CreateArticle() {
   const [allBlogCategory, setAllBlogCategory] = useState([]);
   const [linkedinResult, setLinkedinResult] = useState("");
   const [linkedinAccessToken, setLinkedinAccessToken] = useState("");
+  const [keywords, setKeywords] = useState([]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -226,6 +227,43 @@ function CreateArticle() {
     setArticle({ ...article, [name]: checked });
   };
 
+  const extractKeywords = async (text) => {
+    setLoading(true);
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.REACT_APP_Open_AI_Key}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo-instruct",
+        prompt:
+          "Extract keywords from this text. Make the first letter of every word uppercase and separate with commas:\n\n" +
+          text +
+          "",
+        temperature: 0.5,
+        max_tokens: 60,
+        top_p: 1.0,
+        frequency_penalty: 0.8,
+        presence_penalty: 0.0,
+      }),
+    };
+
+    try {
+      const response = await fetch(
+        "https://api.openai.com/v1/completions",
+        options
+      );
+      const json = await response.json();
+      console.log(json.choices[0].text.trim());
+      setKeywords(json.choices[0].text.trim());
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
   console.log({ article });
   return (
     <>
@@ -352,11 +390,7 @@ function CreateArticle() {
                     </div>
                     <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div id="div_id_downloads" className="required">
-                        {
-                          !linkedinAccessToken && (
-                            <LinkedInLogin />
-                          )
-                        }
+                        {!linkedinAccessToken && <LinkedInLogin />}
                         <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
@@ -530,6 +564,34 @@ function CreateArticle() {
                             cols="50"
                           ></textarea>
                         </div>
+                      </div>
+                      <div id="div_description" className=" required">
+                        <br />
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          AI Keyword Extractor
+                          <span className="asteriskField">*</span>{" "}
+                        </label>{" "}
+                        &nbsp;&nbsp;  
+                        <div>
+                          <Button
+                            onClick={() => extractKeywords(article.markdown)}
+                            primary label="Generate Keywords" type="submit" />
+                          {
+                            keywords.length > 1 && 
+                            (
+                              <ul>
+                                Keywords: &nbsp;
+                                {keywords.split(",").map((keyword) => (
+                                  <li className="badge bg-primary">{keyword}</li>
+                                ))}
+                              </ul>
+                            )
+                          }
+                        </div>
+                      
                       </div>
                     </div>
                     <div className={onEdit ? "d-none" : `col-md-6`}>

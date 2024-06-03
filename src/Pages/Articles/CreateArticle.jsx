@@ -62,6 +62,7 @@ function CreateArticle() {
   const [linkedinResult, setLinkedinResult] = useState("");
   const [linkedinAccessToken, setLinkedinAccessToken] = useState("");
   const [keywords, setKeywords] = useState([]);
+  const [keywords2, setKeywords2] = useState([{ word: "", count: 0, percentage: "" }]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -108,6 +109,18 @@ function CreateArticle() {
       // setImages(false)
     }
   }, [param.id, articles]);
+
+  useEffect(() => {
+    let kwords = extractKeywords2(article.markdown);
+    kwords = kwords.splice(0, 5);
+    setKeywords2(kwords);
+    console.log(kwords)
+    kwords.forEach((keyword) => {
+      console.log(
+        `${keyword.word}: Count - ${keyword.count}, Percentage - ${keyword.percentage}`
+      );
+    });
+}, [article.markdown]);
 
   const styleUpload = {
     display: images ? "block" : "none",
@@ -263,6 +276,84 @@ function CreateArticle() {
     }
   };
 
+function extractKeywords2(text) {
+  // Define words to ignore (definite articles, determiners, and conjunctions)
+  const ignoreWords = [
+    "a",
+    "an",
+    "the",
+    "and",
+    "but",
+    "or",
+    "for",
+    "nor",
+    "so",
+    "if",
+    "as",
+    "at",
+    "by",
+    "in",
+    "of",
+    "on",
+    "to",
+    "with",
+    "from",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+
+  ];
+
+  // Step 1: Normalize the text
+  text = text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+  text = text.replace(/[^\w\s]/g, '');
+ 
+  // Step 2: Split the text into words
+  const words = text.split(/\s+/);
+
+  // Step 3: Filter out the words to ignore
+  const filteredWords = words.filter((word) => !ignoreWords.includes(word));
+
+  // Step 4: Count the frequency of each word
+  const wordCount = {};
+  filteredWords.forEach((word) => {
+    if (wordCount[word]) {
+      wordCount[word]++;
+    } else {
+      wordCount[word] = 1;
+    }
+  });
+
+  // Step 5: Calculate the total number of valid words
+  const totalWords = filteredWords.length;
+
+  // Step 6: Calculate the percentage of each word
+  const wordStats = [];
+  for (let word in wordCount) {
+    const count = wordCount[word];
+    const percentage = ((count / totalWords) * 100).toFixed(2);
+    const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+    wordStats.push({
+      word: capitalizedWord,
+      count,
+      percentage: `${percentage}%`,
+    });
+  }
+
+  // Step 7: Sort words by frequency
+  wordStats.sort((a, b) => b.count - a.count);
+
+  // Step 8: Return the formatted result
+  return wordStats;
+}
+
 
   console.log({ article });
   return (
@@ -388,8 +479,11 @@ function CreateArticle() {
                         </div>
                       </div>
                     </div>
-                    <div className={onEdit ? "d-none" : `col-md-6`}>
-                      <div id="div_id_downloads" className="required">
+                    <div
+                      style={{ display: "flex", width: "100%", flexDirection: "row-reverse", width: "100%"}}
+                      className={onEdit ? "d-none" : `col-md-6`}
+                    >
+                      <div className="d-flex flex-column h-90 w-100 justify-content-between">
                         {!linkedinAccessToken && <LinkedInLogin />}
                         <div className="controls d-flex flex-row align-items-center">
                           <label
@@ -426,7 +520,37 @@ function CreateArticle() {
                           />
                         </div>
                       </div>
-                      <div id="div_id_downloads" className=" required">
+                      <div className="d-flex flex-column h-90 w-100 justify-content-between">
+                        <div className="controls d-flex flex-column ">
+                          <label
+                            for="markdown"
+                            className="control-label mb-8"
+                            requiredField
+                          >
+                            Schedule Post Time
+                            <span className="asteriskField">*</span>
+                            &nbsp;&nbsp;
+                            <span className="qs">
+                              ?{" "}
+                              <span className="popover above">
+                                This will allow for scheduling a post time/date
+                                for your post.
+                              </span>
+                            </span>
+                          </label>
+                          <input
+                            className="w-75"
+                            aria-label="Date"
+                            type="date"
+                            id="start"
+                            name="scheduledDate"
+                            onChange={handleChangeInput}
+                            value={article.scheduledDate}
+                            placeholder={tomorrowsDate}
+                            min={tomorrowsDate}
+                            max={threeMonthsFromToday}
+                          />
+                        </div>
                         <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
@@ -443,8 +567,6 @@ function CreateArticle() {
                             aria-label="Checkbox for following text input"
                           />
                         </div>
-                      </div>
-                      <div id="div_id_downloads" className=" required">
                         <div className="controls d-flex flex-row align-items-center">
                           <label
                             for="markdown"
@@ -501,38 +623,6 @@ function CreateArticle() {
                       </div>
                     </div>
                     <div className={onEdit ? "d-none" : `col-md-6`}>
-                      <div id="div_id_downloads" className="required">
-                        <div className="controls d-flex flex-column ">
-                          <label
-                            for="markdown"
-                            className="control-label mb-8"
-                            requiredField
-                          >
-                            Schedule Post Time
-                            <span className="asteriskField">*</span>
-                            &nbsp;&nbsp;
-                            <span className="qs">
-                              ?{" "}
-                              <span className="popover above">
-                                This will allow for scheduling a post time/date
-                                for your post.
-                              </span>
-                            </span>
-                          </label>
-                          <input
-                            className="w-25"
-                            aria-label="Date"
-                            type="date"
-                            id="start"
-                            name="scheduledDate"
-                            onChange={handleChangeInput}
-                            value={article.scheduledDate}
-                            placeholder={tomorrowsDate}
-                            min={tomorrowsDate}
-                            max={threeMonthsFromToday}
-                          />
-                        </div>
-                      </div>
                       <div id="div_description" className=" required">
                         <br />
                         <label
@@ -571,27 +661,51 @@ function CreateArticle() {
                           for="p_name"
                           className="control-label requiredField"
                         >
-                          AI Keyword Extractor
-                          <span className="asteriskField">*</span>{" "}
+                          Keyword
                         </label>{" "}
-                        &nbsp;&nbsp;  
+                        &nbsp;&nbsp;
                         <div>
+                          <table className="table table-striped">
+                            <tbody className="container">
+                              {keywords2.length > 1 &&
+                                keywords2.map((keyword) => (
+                                  <tr className="row">
+                                    <td className="col">{keyword.word}</td>
+                                    <td className="col">{keyword.count}</td>
+                                    <td className="col">
+                                      {keyword.percentage}
+                                    </td>
+                                  </tr>
+                                ))}
+                            </tbody>
+                          </table>
+                          <br />
+                          <label
+                            for="p_name"
+                            className="control-label requiredField"
+                          >
+                            AI Keyword Extractor
+                            <span className="asteriskField">*</span>{" "}
+                          </label>{" "}
+                          &nbsp;&nbsp;
+                          <br />
                           <Button
                             onClick={() => extractKeywords(article.markdown)}
-                            primary label="Generate Keywords" type="submit" />
-                          {
-                            keywords.length > 1 && 
-                            (
-                              <ul>
-                                Keywords: &nbsp;
-                                {keywords.split(",").map((keyword) => (
-                                  <li className="badge bg-primary">{keyword}</li>
-                                ))}
-                              </ul>
-                            )
-                          }
+                            primary
+                            label="Generate Keywords"
+                            type="submit"
+                          />
+                          {keywords.length > 1 && (
+                            <ul>
+                              Keywords: &nbsp;
+                              {keywords.split(",").map((keyword) => (
+                                <li className="badge bg-primary">{keyword}</li>
+                              ))}
+                            </ul>
+                          )}
+                          <br />
+                          <br />
                         </div>
-                      
                       </div>
                     </div>
                     <div className={onEdit ? "d-none" : `col-md-6`}>
@@ -666,6 +780,42 @@ function CreateArticle() {
                         </label>
                         <div className="controls col-lg-6">
                           <h5 className="text-center">Enter your markdown</h5>
+                          <div className="d-flex justify-content-around text-center">
+                            <div>
+                              <h6>Words</h6>
+                              <h3>
+                                {article.markdown.trim().split(/\s+/).length}
+                              </h3>
+                            </div>
+                            <div>
+                              <h6>Characters</h6>
+                              <h3>{article.markdown.length}</h3>
+                            </div>
+                            <div>
+                              <h6>Sentences</h6>
+                              <h3>
+                                {article.markdown.match(/[^.!?]*[.!?]/g).length}
+                              </h3>
+                            </div>
+                            <div>
+                              <h6>Paragraph</h6>
+                              <h3>
+                                {
+                                  article.markdown
+                                    .split(/\n+/)
+                                    .filter(
+                                      (paragraph) => paragraph.trim().length > 0
+                                    ).length
+                                }
+                              </h3>
+                            </div>
+                            <div>
+                              <h6>Pages</h6>
+                              <h3>
+                                {Math.ceil(article.markdown.length / 1800)}
+                              </h3>
+                            </div>
+                          </div>
                           <textarea
                             className="preview d-flex jusify-self-center h-100 w-100 mb bg-transparent"
                             name="markdown"

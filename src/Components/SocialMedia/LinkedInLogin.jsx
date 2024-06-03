@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "../Button/Button";
 
 const LinkedInLogin = () => {
 
@@ -12,7 +13,12 @@ const LinkedInLogin = () => {
 
   return (
     <div>
-      <button onClick={() => getLinkedInUrl()}>Login with LinkedIn</button>
+      <Button
+        onClick={() => getLinkedInUrl()}
+        primary
+        label="Login with LinkedIn"
+        type="submit"
+      />
     </div>
   );
 };

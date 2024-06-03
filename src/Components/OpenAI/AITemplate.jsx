@@ -45,7 +45,7 @@ function AITemplate(props) {
     setShowAITemplate(!showAITemplate);
   };
 
-  if (!articleInput) return <h1>Loading...</h1>;
+  if (!articleInput && showAITemplate) return <h1>Loading...</h1>;
   return (
     <>
       <Button variant="primary" onClick={handleState}>

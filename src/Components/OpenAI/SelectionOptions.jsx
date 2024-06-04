@@ -44,6 +44,18 @@ function OptionSelection(props) {
         presence_penalty: 0.0,
       },
     },
+    {
+      name: "Generate Tweet",
+      description: `${templates.twitter}: ${articleInput} with tone: ${templates.tone}`,
+      option: {
+        model: "gpt-3.5-turbo",
+        temperature: 0.7,
+        max_tokens: 64,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+      },
+    },
     // {
     //     name: "Summarize for a 2nd grader",
     //     id: "summary",
@@ -202,7 +214,7 @@ function OptionSelection(props) {
     // },
   ];
   const handleClick = (item) => {
-    selectOption(item.option);
+    selectOption(item.name);
     setInput(item.description);
   };
  

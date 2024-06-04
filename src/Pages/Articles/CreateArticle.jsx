@@ -36,6 +36,8 @@ function CreateArticle() {
     scheduled: false,
     linkedin: false,
     linkedinContent: "",
+    tweet: false,
+    tweetContent: "",
     scheduledDate: todaysDate,
     images: {
       secure_url: "",
@@ -62,7 +64,10 @@ function CreateArticle() {
   const [linkedinResult, setLinkedinResult] = useState("");
   const [linkedinAccessToken, setLinkedinAccessToken] = useState("");
   const [keywords, setKeywords] = useState([]);
-  const [keywords2, setKeywords2] = useState([{ word: "", count: 0, percentage: "" }]);
+  const [keywords2, setKeywords2] = useState([
+    { word: "", count: 0, percentage: "" },
+  ]);
+  const [twitterResult, setTwitterResult] = useState("");
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -114,13 +119,13 @@ function CreateArticle() {
     let kwords = extractKeywords2(article.markdown);
     kwords = kwords.splice(0, 5);
     setKeywords2(kwords);
-    console.log(kwords)
+    console.log(kwords);
     kwords.forEach((keyword) => {
       console.log(
         `${keyword.word}: Count - ${keyword.count}, Percentage - ${keyword.percentage}`
       );
     });
-}, [article.markdown]);
+  }, [article.markdown]);
 
   const styleUpload = {
     display: images ? "block" : "none",
@@ -276,84 +281,82 @@ function CreateArticle() {
     }
   };
 
-function extractKeywords2(text) {
-  // Define words to ignore (definite articles, determiners, and conjunctions)
-  const ignoreWords = [
-    "a",
-    "an",
-    "the",
-    "and",
-    "but",
-    "or",
-    "for",
-    "nor",
-    "so",
-    "if",
-    "as",
-    "at",
-    "by",
-    "in",
-    "of",
-    "on",
-    "to",
-    "with",
-    "from",
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "0",
+  function extractKeywords2(text) {
+    // Define words to ignore (definite articles, determiners, and conjunctions)
+    const ignoreWords = [
+      "a",
+      "an",
+      "the",
+      "and",
+      "but",
+      "or",
+      "for",
+      "nor",
+      "so",
+      "if",
+      "as",
+      "at",
+      "by",
+      "in",
+      "of",
+      "on",
+      "to",
+      "with",
+      "from",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+    ];
 
-  ];
+    // Step 1: Normalize the text
+    text = text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+    text = text.replace(/[^\w\s]/g, "");
 
-  // Step 1: Normalize the text
-  text = text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-  text = text.replace(/[^\w\s]/g, '');
- 
-  // Step 2: Split the text into words
-  const words = text.split(/\s+/);
+    // Step 2: Split the text into words
+    const words = text.split(/\s+/);
 
-  // Step 3: Filter out the words to ignore
-  const filteredWords = words.filter((word) => !ignoreWords.includes(word));
+    // Step 3: Filter out the words to ignore
+    const filteredWords = words.filter((word) => !ignoreWords.includes(word));
 
-  // Step 4: Count the frequency of each word
-  const wordCount = {};
-  filteredWords.forEach((word) => {
-    if (wordCount[word]) {
-      wordCount[word]++;
-    } else {
-      wordCount[word] = 1;
-    }
-  });
-
-  // Step 5: Calculate the total number of valid words
-  const totalWords = filteredWords.length;
-
-  // Step 6: Calculate the percentage of each word
-  const wordStats = [];
-  for (let word in wordCount) {
-    const count = wordCount[word];
-    const percentage = ((count / totalWords) * 100).toFixed(2);
-    const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
-    wordStats.push({
-      word: capitalizedWord,
-      count,
-      percentage: `${percentage}%`,
+    // Step 4: Count the frequency of each word
+    const wordCount = {};
+    filteredWords.forEach((word) => {
+      if (wordCount[word]) {
+        wordCount[word]++;
+      } else {
+        wordCount[word] = 1;
+      }
     });
+
+    // Step 5: Calculate the total number of valid words
+    const totalWords = filteredWords.length;
+
+    // Step 6: Calculate the percentage of each word
+    const wordStats = [];
+    for (let word in wordCount) {
+      const count = wordCount[word];
+      const percentage = ((count / totalWords) * 100).toFixed(2);
+      const capitalizedWord = word.charAt(0).toUpperCase() + word.slice(1);
+      wordStats.push({
+        word: capitalizedWord,
+        count,
+        percentage: `${percentage}%`,
+      });
+    }
+
+    // Step 7: Sort words by frequency
+    wordStats.sort((a, b) => b.count - a.count);
+
+    // Step 8: Return the formatted result
+    return wordStats;
   }
-
-  // Step 7: Sort words by frequency
-  wordStats.sort((a, b) => b.count - a.count);
-
-  // Step 8: Return the formatted result
-  return wordStats;
-}
-
 
   console.log({ article });
   return (
@@ -480,7 +483,12 @@ function extractKeywords2(text) {
                       </div>
                     </div>
                     <div
-                      style={{ display: "flex", width: "100%", flexDirection: "row-reverse", width: "100%"}}
+                      style={{
+                        display: "flex",
+                        width: "100%",
+                        flexDirection: "row-reverse",
+                        width: "100%",
+                      }}
                       className={onEdit ? "d-none" : `col-md-6`}
                     >
                       <div className="d-flex flex-column h-90 w-100 justify-content-between">
@@ -515,6 +523,23 @@ function extractKeywords2(text) {
                             className="bg-transparent"
                             type="checkbox"
                             name="dev"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Publish To Twitter
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            className="bg-transparent"
+                            type="checkbox"
+                            name="twitter"
                             onChange={(e) => handlePublish(e)}
                             aria-label="Checkbox for following text input"
                           />
@@ -629,7 +654,7 @@ function extractKeywords2(text) {
                           for="p_name"
                           className="control-label requiredField"
                         >
-                          LinkedIn Content
+                          Twitter Content
                           <span className="asteriskField">*</span>{" "}
                         </label>{" "}
                         &nbsp;&nbsp;
@@ -638,9 +663,34 @@ function extractKeywords2(text) {
                             articleInput={article.markdown}
                             showAITemplate={showAITemplate}
                             setShowAITemplate={setShowAITemplate}
+                            setTwitterResult={setTwitterResult}
                             setLinkedinResult={setLinkedinResult}
                           />
                         )}
+                        <div className="controls ">
+                          <br />
+                          <textarea
+                            className="mb bg-transparent"
+                            name="tweetContent"
+                            required
+                            value={article.tweetContent || twitterResult}
+                            onChange={handleChangeInput}
+                            style={{ width: "100%" }}
+                            rows="5"
+                            cols="50"
+                          ></textarea>
+                        </div>
+                      </div>
+                      <div id="div_description" className=" required">
+                        <br />
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          LinkedIn Content
+                          <span className="asteriskField">*</span>{" "}
+                        </label>{" "}
+                        &nbsp;&nbsp;
                         <div className="controls ">
                           <br />
                           <textarea
@@ -858,10 +908,10 @@ function extractKeywords2(text) {
                       article={article}
                     />
                   </div>
-                  <AITemplate
+                  {/* <AITemplate
                     showAITemplate={showAITemplate}
                     setShowAITemplate={setShowAITemplate}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

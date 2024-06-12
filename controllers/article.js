@@ -77,6 +77,8 @@ async function createArticle(req, res) {
       linkedin,
       linkedinContent,
       linkedinAccessToken,
+      tweet,
+      tweetConent,
     } = req.body;
 
     switch (req.body) {
@@ -191,6 +193,8 @@ async function createArticle(req, res) {
       }
     }
     if (tweet) {
+      console.log({ tweet });
+      console.log({ "yo": "no" });
       try {
         const response = await axios.get("https://api.twitter.com/2/tweets", {
           headers: {

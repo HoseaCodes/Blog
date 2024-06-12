@@ -77,6 +77,8 @@ async function createArticle(req, res) {
       linkedin,
       linkedinContent,
       linkedinAccessToken,
+      tweet,
+      tweetConent,
     } = req.body;
 
     switch (req.body) {
@@ -141,6 +143,8 @@ async function createArticle(req, res) {
       medium,
       linkedin,
       linkedinContent,
+      tweet,
+      tweetConent,
     });
 
     try {
@@ -180,6 +184,28 @@ async function createArticle(req, res) {
           }
         );
         logger.info("Published to Dev To");
+      } catch (error) {
+        logger.error(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
+      }
+    }
+    if (tweet) {
+      console.log({ tweet });
+      console.log({ "yo": "no" });
+      try {
+        const response = await axios.get("https://api.twitter.com/2/tweets", {
+          headers: {
+            Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
+          },
+          body: {
+            tweet: tweetConent,
+          },
+        });
+        console.log(response);
+        logger.info("Published to Twitter/X");
       } catch (error) {
         logger.error(error);
         return res.status(error.response.status).json({

@@ -6,8 +6,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function AITemplate(props) {
-  const { articleInput, showAITemplate, setShowAITemplate, setLinkedinResult } =
-    props;
+  const {
+    articleInput,
+    showAITemplate,
+    setShowAITemplate,
+    setLinkedinResult,
+    setTwitterResult,
+  } = props;
   const [result, setResult] = useState("");
   const [input, setInput] = useState("");
   const [option, setOption] = useState({});
@@ -23,8 +28,11 @@ function AITemplate(props) {
         messages: [{ role: "assistant", content: input }],
         model: "gpt-3.5-turbo",
       });
-      setResult(response.choices[0].message.content);
-      setLinkedinResult(response.choices[0].message.content);
+      if (option.includes("LinkedIn")) {
+        setLinkedinResult(response.choices[0].message.content);
+      } else {
+        setTwitterResult(response.choices[0].message.content);
+      }
     } catch (error) {
       console.log(error);
       alert("Error in AI", error);
@@ -45,7 +53,7 @@ function AITemplate(props) {
     setShowAITemplate(!showAITemplate);
   };
 
-  if (!articleInput) return <h1>Loading...</h1>;
+  if (!articleInput && showAITemplate) return <h1>Loading...</h1>;
   return (
     <>
       <Button variant="primary" onClick={handleState}>

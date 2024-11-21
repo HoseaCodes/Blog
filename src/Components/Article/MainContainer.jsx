@@ -47,7 +47,10 @@ const MainContainer = (props) => {
                 <GrayText>{timeFormater}</GrayText>
                 <span>&nbsp;&#183;&nbsp;</span>
                 <DisplayItem>
-                  {readTime} min read &nbsp; <AiFillStar />
+                  {readTime > 60
+                    ? Math.floor(readTime / 60) + " Hours " + (readTime % 60)
+                    : readTime}{" "}
+                  min read &nbsp; <AiFillStar />
                 </DisplayItem>
                 <span>&nbsp;&#183;&nbsp;</span>
                 <TextToSpeech text={markdown} />

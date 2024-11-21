@@ -1,46 +1,63 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Sticky from 'react-sticky-state';
-import {ArticleHr} from '../../Layout/Hr/styledHr';
-import {AiFillTwitterCircle } from 'react-icons/ai';
-import {FaRegThumbsUp, FaRegComment, FaFacebook} from 'react-icons/fa';
-import {Font2} from '../../Layout/Text/styledText';
-import {JustifyContent} from '../../Layout/Container/styledArticle';
-import {MdBookmarkBorder} from 'react-icons/md';
-import {RiShareCircleFill} from 'react-icons/ri';
-import {TiSocialLinkedinCircular} from 'react-icons/ti';
+import Sticky from "react-sticky-state";
+import { ArticleHr } from "../../Layout/Hr/styledHr";
+import { AiFillTwitterCircle } from "react-icons/ai";
+import { FaRegThumbsUp, FaRegComment, FaFacebook } from "react-icons/fa";
+import { Font2 } from "../../Layout/Text/styledText";
+import { JustifyContent } from "../../Layout/Container/styledArticle";
+import { RiShareCircleFill } from "react-icons/ri";
+import { TiSocialLinkedinCircular } from "react-icons/ti";
 
-import './StickyState.css';
+import "./StickyState.css";
 
-const StickyFooter = ({id, likes, setViewComment, comments, user, article}) => {
-  const [postLikes, setPostLikes] = useState(likes)
+const StickyFooter = ({
+  id,
+  likes,
+  setViewComment,
+  comments,
+  user,
+  article,
+}) => {
+  const [postLikes, setPostLikes] = useState(likes);
+  const [copySuccess, setCopySuccess] = useState("");
 
-  console.log(comments)
-  useEffect(() => {
+  async function copyToClip() {
+    await navigator.clipboard.writeText(window.location.href);
+    setCopySuccess("Copied");
+  }
 
-	}, [likes]);
+  useEffect(() => {}, [likes]);
 
   const handleLike = async () => {
-		try {
-			const updateLike = await axios.put(`/api/articles/${id}/likes`, { likes: postLikes });
-      setPostLikes(parseInt(updateLike.data.totalLikes))
-      if (user) {
+    try {
+      if (user && user.likedArticles.includes(id)) {
+        alert("You have already liked this article");
+        return;
+      } else if (user && !user.likedArticles.includes(id)) {
+        const updateLike = await axios.put(`/api/articles/${id}/likes`, {
+          likes: postLikes,
+        });
+        setPostLikes(parseInt(updateLike.data.totalLikes));
+        return;
+      } else if (user) {
         await axios.put(`/api/user/${user._id}`, {
           likedArticles: [article._id],
         });
+        return; 
       }
-		} catch (err) {
-			alert(err.response.data.msg);
-		}
-	};
+    } catch (err) {
+      alert(err.response.data.msg);
+    }
+  };
 
   const handleComment = async () => {
     try {
-      setViewComment(true)
+      setViewComment(true);
     } catch (error) {
       alert(error);
     }
-  }
+  };
 
   return (
     <Sticky>
@@ -79,13 +96,15 @@ const StickyFooter = ({id, likes, setViewComment, comments, user, article}) => {
             >
               <TiSocialLinkedinCircular style={{ color: "green" }} />
             </a>
-            {/* <RiShareCircleFill/> */}
-            {/* <MdBookmarkBorder/> */}
+            <RiShareCircleFill
+              onClick={copyToClip}
+              style={{ color: "green" }}
+            />
           </Font2>
         </JustifyContent>
       </div>
     </Sticky>
   );
-}
+};
 
 export default StickyFooter;

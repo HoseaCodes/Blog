@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 
-audio,
+/* audio,
 embed,
 iframe,
 img,
@@ -15,8 +15,8 @@ picture,
 video {
   max-width: 100%;
   margin: 0;
-}
-img {
+} */
+/* img {
   display: inline-block;
   vertical-align: middle;
   border: 0;
@@ -28,15 +28,15 @@ img[src*=".svg"] {
 a:hover img {
   border: none;
   background: none;
-}
+} */
 
-img[src*=".svg"],
+/* img[src*=".svg"],
 x::-ms-reveal {
   width: 100%;
 }
 a img {
   border: none;
-}
+} */
 
 .case-study-single-button,
 button {
@@ -55,12 +55,12 @@ button {
   vertical-align: middle;
 }
 
-button:active,
+/* button:active,
 button:focus {
   outline: none;
   box-shadow: none;
   border: none;
-}
+} */
 .case-study-single-button {
   font-family: League Spartan, Helvetica, Arial, sans-serif;
   font-size: 0.875em;
@@ -607,8 +607,8 @@ button:focus {
   }
 }
 
-section {
-  width: 100%;
+/* section {
+  width: 50%;
   display: block;
   position: relative;
 }
@@ -619,7 +619,7 @@ section:before {
 }
 section:after {
   clear: both;
-}
+} */
 .project-content {
   margin: 0 auto;
   /* color: #fff; */

@@ -28,6 +28,10 @@
   font-size: 3em;
 }
 
+.brand {
+  max-width: 100%;
+}
+
 #password {
   padding-left: 25px;
   /* <img src="https://img.icons8.com/material-sharp/24/null/visible.png" /> */

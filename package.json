@@ -27,7 +27,7 @@
     "express-rate-limit": "^6.7.0",
     "framer-motion": "^4.1.17",
     "imagemin": "^8.0.1",
-    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-jpegtran": "^8.0.0",
     "imagemin-pngquant": "^9.0.2",
     "imagemin-webp": "^6.0.0",
     "jsdom": "^16.7.0",

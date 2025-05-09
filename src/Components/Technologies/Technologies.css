@@ -1,126 +1,540 @@
-.tech-container {
-  background-color: rgb(35, 41, 47);
-  background-color: whitesmoke;
-  background-image: linear-gradient(
-      to right bottom,
-      rgba(119, 119, 119, 0.6),
-      rgba(119, 119, 119, 0.6)
-    ),
-    url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/keyboard-min.jpeg");
-  background-size: cover;
-  background-position: top;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  width: 100%;
-  height: 40vh;
+/* TechOrbit.css - Space-themed Technology Orbits */
+:root {
+  --primary-color: #206a5d;
+  --secondary-color: #3ddC97;
+  --dark-color: #0a0e17;
+  --space-color: #060b14;
+  --light-color: #f2f0ea;
+  --accent-color: #008080;
+  --text-color: #ffffff;
+  --teal-gradient: linear-gradient(135deg, #004c4c, #008080, #66b2b2);
+  --star-color: #ffffff;
+  --orbit-color: rgba(32, 106, 93, 0.2);
+  --orbit-highlight: rgba(61, 220, 151, 0.4);
 }
 
-.tech-title {
-  font-size: 8rem;
-  margin: 0 auto;
-  color: white;
-  opacity: 0.8;
-  text-transform: uppercase;
-  text-shadow: 2px 2px 2px #206a5d;
-  letter-spacing: 1rem;
-  display: flex;
-  justify-content: center;
-  padding-bottom: 6%;
-}
-
-@-webkit-keyframes scroll {
-  0% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(calc(-250px * 7));
-    transform: translateX(calc(-250px * 7));
-  }
-}
-
-@keyframes scroll {
-  0% {
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-  }
-  100% {
-    -webkit-transform: translateX(calc(-150px * 7));
-    transform: translateX(calc(-150px * 7));
-  }
-}
-.client-slider {
-  background: whitesmoke;
-  background: transparent;
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.125);
-  height: 100px;
-  margin: auto;
-  overflow: hidden;
+.tech-orbit-section {
   position: relative;
-}
-.client-slider::before,
-.client-slider::after {
-  background: -webkit-gradient(
-    linear,
-    left top,
-    right top,
-    from(#1a1f23),
-    to(rgba(255, 255, 255, 0))
+  width: 100%;
+  height: 100vh;
+  min-height: 700px;
+  background-color: var(--space-color);
+  background-image: radial-gradient(
+    circle at center,
+    rgba(16, 25, 40, 1) 0%,
+    rgba(10, 14, 23, 1) 50%,
+    rgba(6, 11, 20, 1) 100%
   );
-  background: linear-gradient(
-    to right,
-    #1a1f23 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  content: "";
-  height: 100px;
-  position: absolute;
-  width: 200px;
-  z-index: 2;
-}
-.client-slider::after {
-  right: 0;
-  top: 0;
-  -webkit-transform: rotateZ(180deg);
-  transform: rotateZ(180deg);
-}
-.client-slider::before {
-  left: 0;
-  top: 0;
-}
-.client-slider .client-slide-track {
-  -webkit-animation: scroll 40s linear infinite;
-  animation: scroll 40s linear infinite;
-  display: -webkit-box;
+  overflow: hidden;
   display: flex;
-  width: calc(250px * 11);
-}
-.client-slider .client-slide {
-  height: 100px;
+  flex-direction: column;
 }
 
-.pinklemonade {
-  border-radius: 12px;
+.tech-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 2rem 1rem;
 }
 
-.client-slide {
-  padding-left: 0.5%;
-  padding-right: 0.5%;
+.tech-heading {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--text-color);
+  opacity: 0.9;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--accent-color);
+  letter-spacing: 0.5rem;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
 }
 
-@media only screen and (min-device-width: 375px) and (max-device-width: 768px) {
-  .tech-title {
+.tech-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  margin-top: 0.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Orbit Container */
+.orbit-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Central Element (Your Logo or Image) */
+.central-element {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  z-index: 15;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 30% 30%, var(--primary-color), var(--dark-color));
+  box-shadow: 0 0 30px var(--accent-color), 0 0 50px rgba(0, 128, 128, 0.3);
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.logo-placeholder {
+  color: var(--text-color);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Orbit Rings */
+.orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--orbit-color);
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.orbit.visible {
+  opacity: 1;
+}
+
+.orbit-1 {
+  width: 200px;
+  height: 200px;
+  border-color: var(--orbit-highlight);
+}
+
+.orbit-2 {
+  width: 300px;
+  height: 300px;
+}
+
+.orbit-3 {
+  width: 400px;
+  height: 400px;
+  border-color: var(--orbit-highlight);
+}
+
+.orbit-4 {
+  width: 500px;
+  height: 500px;
+}
+
+.orbit-5 {
+  width: 600px;
+  height: 600px;
+  border-color: var(--orbit-highlight);
+}
+
+.orbit-6 {
+  width: 700px;
+  height: 700px;
+}
+
+/* Technology Elements */
+.tech-element {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  cursor: pointer;
+  transition: transform 0.3s ease-out, opacity 1s ease-in-out;
+  opacity: 0;
+  width: auto;
+  height: auto;
+  animation: orbitMotion linear infinite;
+  transform-origin: center;
+}
+
+/* Hover state styles for tech elements */
+.tech-element.hovered .tech-icon-container {
+  transform: scale(1.2);
+  box-shadow: 0 0 15px var(--tech-color), 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Make the label visible on hover */
+.tech-element.hovered .tech-label {
+  opacity: 1;
+}
+
+.tech-element.visible {
+  opacity: 1;
+}
+
+.tech-element.selected {
+  z-index: 20;
+  animation-play-state: paused;
+}
+
+.tech-element.selected .tech-icon-container {
+  transform: scale(1.5);
+  box-shadow: 0 0 20px var(--tech-color), 0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+.tech-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); */
+  padding: 0.5rem;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(10, 14, 23, 0.8);
+  box-shadow: 0 0 10px var(--tech-color);
+  border: 1px solid var(--tech-color);
+  position: relative;
+  transition: all 0.2s ease-out; /* Shorter, smoother transition */
+  will-change: transform; /* Performance optimization */
+}
+
+/* .tech-element:hover .tech-icon-container {
+  transform: scale(1.2);
+} */
+
+.tech-icon {
+  font-size: 1.5rem;
+  color: var(--tech-color);
+  filter: drop-shadow(0 0 3px var(--tech-color));
+}
+
+/* Style the tech label for better visibility */
+.tech-label {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  /* transform: translateX(-50%); */
+  background-color: rgba(6, 11, 20, 0.85);
+  color: #ffffff;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.2s ease-out; /* Shorter transition */
+  will-change: opacity; /* Performance optimization */
+}
+
+/* .tech-element:hover .tech-label {
+  opacity: 1;
+} */
+
+/* Style the comet trail */
+.tech-trail {
+  position: absolute;
+  top: 50%;
+  right: 70%;
+  width: 40px;
+  height: 3px;
+  border-radius: 3px;
+  transform: translateY(-50%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+/* .tech-element:hover .tech-trail {
+  opacity: 0.7;
+} */
+
+/* Stars Background */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  background-color: var(--star-color);
+  border-radius: 50%;
+  animation: twinkle 5s ease-in-out infinite;
+}
+
+/* Tech Details Panel */
+.tech-details {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(10, 14, 23, 0.9);
+  border: 1px solid var(--primary-color);
+  border-radius: 10px;
+  padding: 1rem;
+  z-index: 100;
+  box-shadow: 0 0 20px rgba(32, 106, 93, 0.5);
+  width: 300px;
+  max-width: 90%;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.tech-details-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tech-details h3 {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 5px var(--accent-color);
+}
+
+.tech-details-icon {
+  font-size: 3rem;
+  margin: 0.5rem 0;
+  filter: drop-shadow(0 0 5px currentColor);
+}
+
+.tech-details p {
+  color: var(--text-color);
+  opacity: 0.8;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+}
+
+.close-details {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.close-details:hover {
+  background-color: var(--accent-color);
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 0 30px var(--accent-color), 0 0 50px rgba(0, 128, 128, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--accent-color), 0 0 70px rgba(0, 128, 128, 0.5);
+  }
+}
+
+@keyframes orbitMotion {
+  0% {
+    transform: rotate(0deg) translateX(calc(var(--orbit-distance) * 1px)) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(calc(var(--orbit-distance) * 1px)) rotate(-360deg);
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Set up orbit distances for each ring */
+.tech-element.orbit-1 {
+  --orbit-distance: 100;
+}
+
+.tech-element.orbit-2 {
+  --orbit-distance: 150;
+}
+
+.tech-element.orbit-3 {
+  --orbit-distance: 200;
+}
+
+.tech-element.orbit-4 {
+  --orbit-distance: 250;
+}
+
+.tech-element.orbit-5 {
+  --orbit-distance: 300;
+}
+
+.tech-element.orbit-6 {
+  --orbit-distance: 350;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .orbit-6 {
+    width: 600px;
+    height: 600px;
+  }
+  
+  .tech-element.orbit-6 {
+    --orbit-distance: 300;
+  }
+}
+
+@media (max-width: 900px) {
+  .tech-heading {
     font-size: 3rem;
   }
-}
-
-@media only screen and (max-device-width: 1024px) {
-  .client-slider {
-    top: 50%;
+  
+  .orbit-5 {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .orbit-6 {
+    width: 550px;
+    height: 550px;
+  }
+  
+  .tech-element.orbit-5 {
+    --orbit-distance: 250;
+  }
+  
+  .tech-element.orbit-6 {
+    --orbit-distance: 275;
   }
 }
-@media only screen and (max-device-width: 768px) {
-  .client-slider {
-    top: 35%;
+
+@media (max-width: 768px) {
+  .tech-orbit-section {
+    height: auto;
+    min-height: 600px;
+    padding-bottom: 3rem;
+  }
+  
+  .tech-heading {
+    font-size: 2.5rem;
+    letter-spacing: 0.25rem;
+  }
+  
+  .orbit-container {
+    height: 500px;
+  }
+  
+  .orbit-4 {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .orbit-5 {
+    width: 450px;
+    height: 450px;
+  }
+  
+  .orbit-6 {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .tech-element.orbit-4 {
+    --orbit-distance: 200;
+  }
+  
+  .tech-element.orbit-5 {
+    --orbit-distance: 225;
+  }
+  
+  .tech-element.orbit-6 {
+    --orbit-distance: 250;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-heading {
+    font-size: 2rem;
+  }
+  
+  .central-element {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .orbit-container {
+    height: 400px;
+  }
+  
+  .orbit-3 {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .orbit-4 {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .orbit-5 {
+    width: 350px;
+    height: 350px;
+  }
+  
+  .orbit-6 {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .tech-element.orbit-3 {
+    --orbit-distance: 125;
+  }
+  
+  .tech-element.orbit-4 {
+    --orbit-distance: 150;
+  }
+  
+  .tech-element.orbit-5 {
+    --orbit-distance: 175;
+  }
+  
+  .tech-element.orbit-6 {
+    --orbit-distance: 200;
+  }
+  
+  .tech-icon-container {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .tech-icon {
+    font-size: 1.2rem;
   }
 }

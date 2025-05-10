@@ -2,13 +2,13 @@ import React from 'react'
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp'
-import Webfiver from '../../icons/Webfiver.png'
-import Webfiver2 from '../../icons/Webfiver2.png'
-import Webfiver3 from '../../icons/Webfiver3.png'
-import Webfiver4 from '../../icons/Webfiver4.png'
 import Modal5 from '../Modal/Modal5'
 
 function CarouselWebfiver() {
+    const Webfiver = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver.png'
+    const Webfiver2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver2.png'
+    const Webfiver3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver3.png'
+    const Webfiver4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Webfiver4.png'
     let Web = [
         <ImgComp src={Webfiver} />,
         <ImgComp src={Webfiver2} />,

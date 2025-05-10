@@ -11,13 +11,18 @@ import { articleTempltes } from "./ArticleTemplate";
 import Preview from "../../Components/Article/Preview";
 import AITemplate from "../../Components/OpenAI/AITemplate";
 import { Button } from "../../Components/Button/Button";
-import { sleep } from "../../Utils/helperFunctions";
+import { sleep, getBasicAuth } from "../../Utils/helperFunctions";
+import moment from "moment";
+import LinkedInLogin from "../../Components/SocialMedia/LinkedInLogin";
 
-function CreatArticle() {
+function CreateArticle() {
   const [markdown, setMarkdown] = useState(articleTempltes[3].markdown);
+  const todaysDate = moment().format("YYYY-MM-DD");
+  const tomorrowsDate = moment().add(1, "days").format("YYYY-MM-DD");
+  const threeMonthsFromToday = moment().add(3, "months").format("YYYY-MM-DD");
   const initialState = {
     article_id: uuidv4(),
-    title: "",
+    title: "Demo",
     subtitle: "",
     description: "Description",
     markdown: markdown,
@@ -28,8 +33,16 @@ function CreatArticle() {
     medium: false,
     archived: false,
     draft: false,
+    scheduled: false,
+    linkedin: false,
+    linkedinContent: "",
+    scheduledDate: todaysDate,
+    images: {
+      secure_url: "",
+    },
   };
   const state = useContext(GlobalState);
+  const [token] = state.token;
   const [article, setArticle] = useState(initialState);
   const [images, setImages] = useState(false);
   const [isMobileView, setIsMobileView] = useState(false);
@@ -46,6 +59,16 @@ function CreatArticle() {
   const loggedIn = localStorage.getItem("isLoggedIn");
   const [selectedCategory, setselectedCategory] = useState("Programming");
   const [allBlogCategory, setAllBlogCategory] = useState([]);
+  const [linkedinResult, setLinkedinResult] = useState("");
+  const [linkedinAccessToken, setLinkedinAccessToken] = useState("");
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    if (code) {
+      setLinkedinAccessToken(code);
+    }
+  }, []);
 
   useEffect(async () => {
     const config = { headers: { "Content-Type": "application/json" } };
@@ -74,7 +97,7 @@ function CreatArticle() {
         articles.forEach((article) => {
           if (article._id === param.id) {
             setArticle(article);
-            // setImages(article.images)
+            setImages(article.images);
           }
         });
       }
@@ -104,7 +127,10 @@ function CreatArticle() {
       setLoading(true);
 
       const res = await axios.post("/api/upload", formData, {
-        headers: { "content-type": "multipart/form-data" },
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: token,
+        },
       });
       setLoading(false);
       setImages(res.data.result);
@@ -139,18 +165,42 @@ function CreatArticle() {
     try {
       if (!images) return alert("No Image Upload");
       if (onEdit) {
-        await axios.put(`/api/articles/${article._id}`, {
-          ...articles,
-          images,
-        });
+        await axios.put(
+          `/api/articles/${article._id}`,
+          {
+            ...articles,
+            images,
+          },
+          {
+            headers: { Authorization: token },
+          }
+        );
       } else {
+        article.scheduledDate <= todaysDate
+          ? (article.scheduledDate = null)
+          : (article.scheduled = true);
         setArticle({
           ...article,
           ["article_id"]: uuidv4(),
           categories: [selectedCategory],
           id: user.id,
         });
-        await axios.post("/api/articles", { ...article, images, ...user });
+        setArticle({
+          ...article,
+          ["slug"]: article.title.toLowerCase().replace(/ /g, "-"),
+        });
+        const username = process.env.REACT_APP_USERNAME || "admin";
+        const password = process.env.REACT_APP_PASSWORD || "password";
+        const auth = getBasicAuth(username, password);
+        await axios.post(
+          "/api/articles",
+          { ...article, images, ...user, linkedinAccessToken },
+          {
+            headers: {
+              Authorization: auth,
+            },
+          }
+        );
         setImages(false);
         setArticle(initialState);
       }
@@ -176,6 +226,7 @@ function CreatArticle() {
     setArticle({ ...article, [name]: checked });
   };
 
+  console.log({ article });
   return (
     <>
       {loggedIn ? (
@@ -299,6 +350,85 @@ function CreatArticle() {
                         </div>
                       </div>
                     </div>
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
+                      <div id="div_id_downloads" className="required">
+                        {
+                          !linkedinAccessToken && (
+                            <LinkedInLogin />
+                          )
+                        }
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Publish To LinkedIn
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            className="bg-transparent"
+                            type="checkbox"
+                            name="linkedin"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Publish To Dev
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            className="bg-transparent"
+                            type="checkbox"
+                            name="dev"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
+                      <div id="div_id_downloads" className=" required">
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Publish To Medium
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="medium"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
+                      <div id="div_id_downloads" className=" required">
+                        <div className="controls d-flex flex-row align-items-center">
+                          <label
+                            for="markdown"
+                            className="control-label"
+                            requiredField
+                          >
+                            Save To Drafts
+                            <span className="pr-1 asteriskField">*</span>
+                          </label>
+                          <input
+                            type="checkbox"
+                            name="draft"
+                            onChange={(e) => handlePublish(e)}
+                            aria-label="Checkbox for following text input"
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <div className="col-md-6">
                       <div id="div_id_image" className="required">
                         <label
@@ -327,10 +457,82 @@ function CreatArticle() {
                               <span onClick={handleDestory}>X</span>
                             </div>
                           )}
+                          {onEdit && (
+                            <div id="file_img" style={styleUpload}>
+                              <img src={images ? images.url : ""} alt="" />
+                              <span onClick={handleDestory}>X</span>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
+                      <div id="div_id_downloads" className="required">
+                        <div className="controls d-flex flex-column ">
+                          <label
+                            for="markdown"
+                            className="control-label mb-8"
+                            requiredField
+                          >
+                            Schedule Post Time
+                            <span className="asteriskField">*</span>
+                            &nbsp;&nbsp;
+                            <span className="qs">
+                              ?{" "}
+                              <span className="popover above">
+                                This will allow for scheduling a post time/date
+                                for your post.
+                              </span>
+                            </span>
+                          </label>
+                          <input
+                            className="w-25"
+                            aria-label="Date"
+                            type="date"
+                            id="start"
+                            name="scheduledDate"
+                            onChange={handleChangeInput}
+                            value={article.scheduledDate}
+                            placeholder={tomorrowsDate}
+                            min={tomorrowsDate}
+                            max={threeMonthsFromToday}
+                          />
+                        </div>
+                      </div>
+                      <div id="div_description" className=" required">
+                        <br />
+                        <label
+                          for="p_name"
+                          className="control-label requiredField"
+                        >
+                          LinkedIn Content
+                          <span className="asteriskField">*</span>{" "}
+                        </label>{" "}
+                        &nbsp;&nbsp;
+                        {article.markdown !== "" && article.markdown && (
+                          <AITemplate
+                            articleInput={article.markdown}
+                            showAITemplate={showAITemplate}
+                            setShowAITemplate={setShowAITemplate}
+                            setLinkedinResult={setLinkedinResult}
+                          />
+                        )}
+                        <div className="controls ">
+                          <br />
+                          <textarea
+                            className="mb bg-transparent"
+                            name="linkedinContent"
+                            required
+                            value={article.linkedinContent || linkedinResult}
+                            onChange={handleChangeInput}
+                            style={{ width: "100%" }}
+                            rows="5"
+                            cols="50"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={onEdit ? "d-none" : `col-md-6`}>
                       <div
                         id="div_id_downloads"
                         className="form-group required"
@@ -368,45 +570,7 @@ function CreatArticle() {
                         </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div id="div_id_downloads" className="required">
-                        <div className="controls d-flex flex-row align-items-center">
-                          <label
-                            for="markdown"
-                            className="control-label"
-                            requiredField
-                          >
-                            Publish To Dev
-                            <span className="pr-1 asteriskField">*</span>
-                          </label>
-                          <input
-                            className="bg-transparent"
-                            type="checkbox"
-                            name="dev"
-                            onChange={(e) => handlePublish(e)}
-                            aria-label="Checkbox for following text input"
-                          />
-                        </div>
-                      </div>
-                      <div id="div_id_downloads" className=" required">
-                        <div className="controls d-flex flex-row align-items-center">
-                          <label
-                            for="markdown"
-                            className="control-label"
-                            requiredField
-                          >
-                            Publish To Medium
-                            <span className="pr-1 asteriskField">*</span>
-                          </label>
-                          <input
-                            type="checkbox"
-                            name="medium"
-                            onChange={(e) => handlePublish(e)}
-                            aria-label="Checkbox for following text input"
-                          />
-                        </div>
-                      </div>
-                    </div>
+
                     {!isMobileView && (
                       <div className="blog__categoryMobile">
                         <label className="blog__categoryList__label">
@@ -500,4 +664,4 @@ function CreatArticle() {
   );
 }
 
-export default CreatArticle;
+export default CreateArticle;

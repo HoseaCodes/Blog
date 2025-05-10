@@ -1,0 +1,11 @@
+<?xml version="1.0"?><svg width="640" height="480" xmlns="http://www.w3.org/2000/svg">
+ <title>computer mouse with wheel</title>
+ <g>
+  <title>Layer 1</title>
+  <path fill="#ffffff" fill-rule="evenodd" stroke="#000000" stroke-width="3.125" id="path617" d="m110.595802,341.928223c-73.239632,0 -84.312634,-65.018311 -83.555092,-85.617523l0,0l0,0l0,0l0,0l0,0c1.12756,-19.429291 2.06543,-97.585999 -1.169689,-163.397186c0.824329,-71.924118 55.772511,-70.20491 84.712582,-70.20491c28.939896,0 83.888092,-1.719208 84.712402,70.20491c-3.235107,65.811188 -2.297211,143.967896 -1.169708,163.392975l0,0l0,0l0,0l0,0l0,0c0.757599,20.599213 -10.315399,85.617523 -83.555,85.617523"/>
+  <path fill="none" fill-rule="evenodd" stroke="#000000" stroke-width="3.25" id="path618" d="m110.573402,19.132401l0,118.578201"/>
+  <path fill="none" fill-rule="evenodd" stroke="#000000" stroke-width="3.25" stroke-linecap="round" id="path619" d="m110.357597,137.651093c-82.346008,0 -80.161407,3.296997 -82.622337,3.921997"/>
+  <path fill="none" fill-rule="evenodd" stroke="#000000" stroke-width="3.25" stroke-linecap="round" id="path620" d="m110.573402,137.647797c83.169395,0 82.881996,4.667297 82.881996,4.667297"/>
+  <path fill-rule="evenodd" fill="#ff0000" stroke-width="1pt" d="m126.125,79.620926a15.624997,43.124992 0 1 0-31.25,0a15.624997,43.124992 0 1 031.25,0z" id="path655"/>
+ </g>
+</svg>

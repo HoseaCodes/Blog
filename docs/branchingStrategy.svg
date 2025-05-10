@@ -1,0 +1,78 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#f8f9fa" rx="5" ry="5"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial" font-size="24" text-anchor="middle" font-weight="bold">Git Branching Strategy: hoseacodes.com</text>
+  
+  <!-- Main Branch Lines -->
+  <line x1="40" y1="140" x2="760" y2="140" stroke="#333" stroke-width="4"/>
+  <line x1="40" y1="220" x2="760" y2="220" stroke="#0066cc" stroke-width="4"/>
+  <line x1="40" y1="300" x2="760" y2="300" stroke="#009933" stroke-width="4"/>
+  <line x1="40" y1="380" x2="760" y2="380" stroke="#cc3300" stroke-width="4"/>
+  
+  <!-- Branch Labels -->
+  <rect x="20" y="130" width="120" height="20" fill="#333" rx="3" ry="3"/>
+  <text x="80" y="145" font-family="Arial" font-size="14" text-anchor="middle" fill="white">master</text>
+  
+  <rect x="20" y="210" width="120" height="20" fill="#0066cc" rx="3" ry="3"/>
+  <text x="80" y="225" font-family="Arial" font-size="14" text-anchor="middle" fill="white">release/prep</text>
+  
+  <rect x="20" y="290" width="120" height="20" fill="#009933" rx="3" ry="3"/>
+  <text x="80" y="305" font-family="Arial" font-size="14" text-anchor="middle" fill="white">develop/staging</text>
+  
+  <rect x="20" y="370" width="120" height="20" fill="#cc3300" rx="3" ry="3"/>
+  <text x="80" y="385" font-family="Arial" font-size="14" text-anchor="middle" fill="white">hotfix/breakfix</text>
+  
+  <!-- Feature Branch -->
+  <path d="M200,300 C200,350 200,400 300,400 C350,400 350,350 350,300" fill="none" stroke="#9966ff" stroke-width="2.5" stroke-dasharray="5,5"/>
+  <rect x="220" y="405" width="120" height="20" fill="#9966ff" rx="3" ry="3"/>
+  <text x="280" y="420" font-family="Arial" font-size="12" text-anchor="middle" fill="white">feature/branch</text>
+  
+  <!-- Flow Arrows - Normal Flow -->
+  <polygon points="350,300 345,295 345,305" fill="#009933"/>
+  <path d="M350,300 C400,300 400,220 450,220" fill="none" stroke="#009933" stroke-width="2"/>
+  <polygon points="450,220 445,215 445,225" fill="#009933"/>
+  
+  <path d="M450,220 C500,220 500,140 550,140" fill="none" stroke="#0066cc" stroke-width="2"/>
+  <polygon points="550,140 545,135 545,145" fill="#0066cc"/>
+  
+  <!-- Breakfix Flow -->
+  <path d="M400,380 C450,380 450,300 500,300" fill="none" stroke="#cc3300" stroke-width="2"/>
+  <polygon points="500,300 495,295 495,305" fill="#cc3300"/>
+  
+  <path d="M400,380 C500,380 500,220 550,220" fill="none" stroke="#cc3300" stroke-width="2" stroke-dasharray="5,5"/>
+  <polygon points="550,220 545,215 545,225" fill="#cc3300"/>
+  
+  <!-- Legend -->
+  <rect x="550" y="420" width="230" height="70" fill="white" stroke="#ccc" rx="5" ry="5"/>
+  <text x="565" y="440" font-family="Arial" font-size="14" font-weight="bold">Legend:</text>
+  
+  <line x1="565" y1="455" x2="585" y2="455" stroke="#009933" stroke-width="2"/>
+  <text x="590" y="458" font-family="Arial" font-size="12">Regular Feature Flow</text>
+  
+  <line x1="670" y1="455" x2="690" y2="455" stroke="#cc3300" stroke-width="2"/>
+  <text x="695" y="458" font-family="Arial" font-size="12">Hotfix Flow</text>
+  
+  <line x1="565" y1="475" x2="585" y2="475" stroke="#000" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="590" y="478" font-family="Arial" font-size="12">Optional Path</text>
+  
+  <!-- Process Labels -->
+  <text x="250" y="285" font-family="Arial" font-size="14" font-weight="bold">1. Develop</text>
+  <text x="400" y="285" font-family="Arial" font-size="14" font-weight="bold">2. Test & Integrate</text>
+  <text x="500" y="205" font-family="Arial" font-size="14" font-weight="bold">3. Stabilize</text>
+  <text x="600" y="125" font-family="Arial" font-size="14" font-weight="bold">4. Production</text>
+  
+  <!-- Environment Indicators -->
+  <rect x="600" y="150" width="140" height="20" fill="#f1f1f1" stroke="#333" rx="3" ry="3"/>
+  <text x="670" y="165" font-family="Arial" font-size="12" text-anchor="middle">Production (Live)</text>
+  
+  <rect x="600" y="230" width="140" height="20" fill="#f1f1f1" stroke="#0066cc" rx="3" ry="3"/>
+  <text x="670" y="245" font-family="Arial" font-size="12" text-anchor="middle">Pre-Production</text>
+  
+  <rect x="600" y="310" width="140" height="20" fill="#f1f1f1" stroke="#009933" rx="3" ry="3"/>
+  <text x="670" y="325" font-family="Arial" font-size="12" text-anchor="middle">Development</text>
+  
+  <rect x="600" y="390" width="140" height="20" fill="#f1f1f1" stroke="#cc3300" rx="3" ry="3"/>
+  <text x="670" y="405" font-family="Arial" font-size="12" text-anchor="middle">Emergency Fixes</text>
+</svg>

@@ -6,7 +6,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 import { truncate } from "../../Utils/helperFunctions";
 import { projectData } from '../Projects/ProjectsData';
-import faqs from "../../constants/faq";
+import faqs from "../../Constants/faq";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const TechGuide = () => {
@@ -39,12 +39,7 @@ const TechGuide = () => {
   // Data preparation from Articles component
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-
-  const cleanArticles = articles.filter(
-    (article) => article.draft === false && article.archived === false
-  );
-
-  const mainPosts = cleanArticles.sort(
+  const mainPosts = articles.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
   const archivedPosts = [];
@@ -83,9 +78,7 @@ const TechGuide = () => {
     try {
       setLoading(true);
       const destroyImg = axios.post("/api/destory", { public_id });
-      const deleteArticle = axios.delete(`/api/articles/${id}`, {
-        headers: { Authorization: token },
-      });
+      const deleteArticle = axios.delete(`/api/articles/${id}`);
       await destroyImg;
       await deleteArticle;
       setLoading(false);
@@ -99,11 +92,7 @@ const TechGuide = () => {
     try {
       const archive = !archived;
       setLoading(true);
-      const archiveArticle = axios.patch(`/api/articles/${id}`,
-        { archive },
-        {
-          headers: { Authorization: token },
-        });
+      const archiveArticle = axios.patch(`/api/articles/${id}`, { archive });
       await archiveArticle;
       setLoading(false);
       setCallback(!callback);
@@ -126,12 +115,12 @@ const TechGuide = () => {
     return article.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
   });
 
-  const updateSearch = (event) => {
+  const updateSearch = event => {
     const { value } = event.target;
     setSearch(value.substr(0, 20));
   };
 
-  const updateItemsShow = (str) => {
+  const updateItemsShow = str => {
     setTagsShow(str);
     setStatus("active");
   };
@@ -140,15 +129,15 @@ const TechGuide = () => {
   if (tagsShow === "All") {
     taggedArticles = filteredArticles;
   } else if (tagsShow === "JavaScript") {
-    taggedArticles = filteredArticles.filter((item) =>
+    taggedArticles = filteredArticles.filter(item =>
       item.category.includes("JavaScript")
     );
   } else if (tagsShow === "Python") {
-    taggedArticles = filteredArticles.filter((item) =>
+    taggedArticles = filteredArticles.filter(item =>
       item.category.includes("Python")
     );
   } else if (tagsShow === "Software Engineer") {
-    taggedArticles = filteredArticles.filter((item) =>
+    taggedArticles = filteredArticles.filter(item =>
       item.category.includes("Software Engineer")
     );
   }

@@ -170,3 +170,10 @@ export const PostContainer = styled.div`
   margin-top: 15%;
   `}
 `;
+
+export const BlogContent = styled.main`
+  display: flex;
+  background-color: white;
+  width: 100%;
+  font-family: sans-serif;
+`;

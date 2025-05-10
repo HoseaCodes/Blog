@@ -2,11 +2,11 @@ import React from 'react'
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp'
-import MergeImmersive from '../../icons/MergeImmersive.png'
-import MergeImmersive2 from '../../icons/MergeImmersive2.png'
 import Modal4 from '../Modal/Modal4'
 
 function CarouselMergeImmersive() {
+    const MergeImmersive = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/MergeImmersive.png'
+    const MergeImmersive2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/MergeImmersive2.png'
     let merge = [
         <ImgComp src={MergeImmersive} />,
         <ImgComp src={MergeImmersive2} />,

@@ -1,0 +1,695 @@
+
+.start {
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .start h4 {
+    font-size: 40px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+  }
+  
+  .start h2 {
+    font-size: 140px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+    margin: 0px;
+    cursor: pointer;
+  }
+  
+  .toucan {
+    height: 20vh;
+    position: fixed;
+    top: 20vh;
+  }
+  
+  .doge {
+    height: 20vh;
+    position: fixed;
+    bottom: 20vh;
+    right: 0;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+  
+  .raceWrapper {
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
+    cursor: none;
+  }
+  
+  .snail {
+    height: 15vh;
+    position: relative;
+    top: 1vh;
+    cursor: none;
+    user-select: none;
+  }
+  
+  .finish {
+    height: 10vh;
+    position: fixed;
+    bottom: 5vh;
+    right: 10vw;
+    padding: 80px;
+  }
+  
+  .moleContainer {
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
+    cursor: none;
+  }
+  
+  .wackAnimal {
+    width: 10vw;
+    position: fixed;
+    user-select: none;
+  }
+  
+  .animalPop {
+    animation-name: animalPop;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+  }
+  
+  @keyframes animalPop {
+    0% {width: 10vw; transform:translate(0px, 0px)}
+    40% {width: 0vw; transform:translate(75px, 150px)}
+    60% {width: 0vw; transform:translate(75px, 150px)}
+    100% {width: 10vw; transform:translate(0px, 0px)}
+  }
+  
+  .mound {
+    width: 20vw;
+    opacity: 0.5;
+    padding-bottom: 8vh;
+    user-select: none;
+    pointer-events: none;
+  }
+  
+  .moundContainer {
+    position: fixed;
+    top: 15vh;
+    left: 0;
+    z-index: -2;
+    pointer-events: none;
+  }
+  
+  .bat {
+    position: fixed;
+    height: 180px;
+    pointer-events: none;
+    transform-origin: 0% 100% 0;
+    user-select: none;
+  }
+  
+  .click {
+    width: 10vw;
+    opacity: 0.5;
+    position: fixed;
+    left: 45vw;
+    top: 40vh;
+    animation-name: click;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  @keyframes click {
+    0% {left: 18vw; top: 25vh}
+    50% {left: 25vw; top: 30vh}
+    100% {left: 18vw; top: 25vh}
+  }
+  
+  .exampleMole {
+    height: 200px;
+    opacity: 0.7;
+  }
+  
+  .tick {
+    height: 100px;
+    margin-right: 40px;
+    opacity: 0.7;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    user-select: none;
+  }
+  
+  .cross {
+    height: 100px;
+    margin-left: 40px;
+    opacity: 0.7;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    user-select: none;
+  }
+  
+  @keyframes pulse {
+    0% {height: 100px}
+    50% {height: 130px}
+    100% {height: 100px}
+  }
+  
+  .exampleContainer {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    height: 200px;
+    margin-top: 200px;
+    width: 100%;
+  }
+  
+  .imgContainer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .monster {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    height: 40vh;
+  }
+  
+  .animal {
+    height: 20vh;
+    position: fixed;
+    z-index: 2;
+    cursor: none;
+  }
+  
+  .mouseIcon {
+    width: 15vw;
+    opacity: 0.5;
+    position: fixed;
+    left: 45vw;
+    top: 40vh;
+    animation-name: mouse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes mouse {
+    0% {left: 40vw; top: 35vh}
+    50% {left: 50vw; top: 45vh}
+    100% {left: 40vw; top: 35vh}
+  }
+  
+  .animalContainer {
+    height: 90vh;
+    width: 100vw;
+  }
+  
+  .duplicateContainer {
+    height: 90vh;
+    width: 100vw;
+    user-select: none;
+  }
+  
+  .end h2 {
+    font-size: 100px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+    cursor: pointer;
+  }
+  
+  .end h3 {
+    font-size: 60px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+  }
+  
+  .end h4 {
+    font-size: 40px;
+    font-weight: 100;
+    text-align: center;
+    font-family: 'Amatic SC', cursive;
+  }
+  
+  .deer {
+    position: fixed;
+    bottom: 0;
+    left: -80px;
+    height: 50vh;
+  }
+  
+  .lion {
+    position: fixed;
+    bottom: -60px;
+    right: 0;
+    height: 50vh;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+  
+  .score {
+    font-size: 50px;
+    font-family: 'Amatic SC', cursive;
+    margin-right: 10px;
+    user-select: none;
+  }
+  
+  .time {
+    font-size: 50px;
+    font-family: 'Amatic SC', cursive;
+    margin-left: 10px;
+    user-select: none;
+  }
+  
+  .title {
+    font-size: 60px;
+    font-family: 'Amatic SC', cursive;
+    user-select: none;
+  }
+  
+  .topBar {
+    display: flex;
+    justify-content: space-between;
+    height: 70px;
+  }
+  
+  .title {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .bug {
+    width: 100px;
+    position: fixed;
+    cursor: crosshair;
+  }
+  
+  .fish {
+    width: 200px;
+    position: fixed;
+    z-index: 2;
+  }
+  
+  .chips {
+    width: 75px;
+    position: fixed;
+  }
+  
+  .fishContainer {
+    display: flex;
+    justify-content: center;
+    height: 90vh;
+    align-items: center;
+  }
+  
+  .hiddenInput {
+    opacity: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    position: fixed;
+    cursor: none;
+    top: 0;
+    left: 0;
+  }
+  
+  .keys {
+    width: 400px;
+    opacity: 0.5;
+    animation-name: pulseKeys;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  }
+  
+  @keyframes pulseKeys {
+    0% {width: 400px}
+    50% {width: 500px}
+    100% {width: 400px}
+  }
+  
+  .letterContainer {
+    width: 200px;
+    position: fixed;
+  }
+  
+  .letter {
+    color: #4db8ff;
+    position: absolute;
+    left: 110px;
+    top: 25px;
+    font-size: 60px;
+    font-weight: 500;
+    font-family: 'Amatic SC', cursive;
+  }
+  
+  .foodWrapper {
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
+    cursor: none;
+  }
+  
+  .mouseCapture {
+    border: 2px solid black;
+    position: fixed;
+    width: 100vw;
+    height: 250px;
+    bottom: 0;
+    cursor: none;
+  }
+  
+  .plate {
+    width: 200px;
+    position: fixed;
+    bottom: 0;
+    cursor: none;
+  }
+  
+  .food2 {
+    width: 100px;
+    position: fixed;
+    padding: 50px;
+    z-index: 2;
+  }
+  
+  .exFoodContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .exampleFoodfallContainer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 200px;
+    margin-top: 200px;
+    width: 100%;
+  }
+  
+  .exampleFood {
+    height: 110px;
+    opacity: 0.65;
+    margin: 10px 40px
+  }
+  
+  .turtle {
+    height: 120px;
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+    position: fixed;
+    top: 40vh;
+    user-select: none;
+  }
+  
+  .finishLine {
+    border-left: 15px dashed #e6ffe66f;
+    height: 90vh;
+    width: 10vw;
+    position: fixed;
+    right: 0;
+    z-index: -1;
+  }
+  
+  .road {
+    background-color: #e6ffe66f;
+    height: 100vh;
+    width: 300px;
+    position: fixed;
+    top: 0px;
+    left: 40vw;
+    z-index: -2;
+  }
+  
+  .centreline {
+    border-right: 15px dashed #e6ffe66f;
+    height: 100vh;
+    width: 150px;
+  }
+  
+  .vehicle {
+    width: 120px;
+    position: absolute;
+    right: 15px;
+    top: 100px;
+  }
+  
+  .vehicle2 {
+    width: 120px;
+    position: absolute;
+    left: 15px;
+    bottom: 15px;
+  }
+  
+  .clickWrapper {
+    height: 90vh;
+    width: 100vw;
+    cursor: pointer;
+  }
+  
+  .clickLots {
+    opacity: 0.5;
+    position: fixed;
+    animation-name: clickclick;
+    animation-duration: 0.3s;
+    animation-iteration-count: infinite;
+    pointer-events: none;
+  }
+  
+  @keyframes clickclick {
+    0% {left: 25vw; top: 40vh; width: 10vw}
+    50% {left: 24vw; top: 39vh; width: 9vw}
+    100% {left: 25vw; top: 40vh; width: 10vw}
+  }
+  
+  .fly {
+    width: 100px;
+    position: fixed;
+    user-select: none;
+  
+    motion-path: path("M18.45,58.46s52.87-70.07,101.25-.75,101.75-6.23,101.75-6.23S246.38,5.59,165.33,9.08s-15,71.57-94.51,74.56S18.45,58.46,18.45,58.46Z");
+    offset-path: path("M18.45,58.46s52.87-70.07,101.25-.75,101.75-6.23,101.75-6.23S246.38,5.59,165.33,9.08s-15,71.57-94.51,74.56S18.45,58.46,18.45,58.46Z");
+    motion-rotation: reverse;
+    animation: move 3s linear infinite;
+  }
+  
+  .splatClass {
+    width: 100px;
+    position: fixed;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  .butterflySplatClass {
+    width: 200px;
+    position: fixed;
+    z-index: -1;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  @keyframes move {
+    100% { 
+      motion-offset: 100%;
+      offset-distance: 100%;
+    }
+  }
+  
+  .swat {
+    height: 200px;
+    position: fixed;
+    z-index: 2;
+    pointer-events: none;
+    user-select: none;
+    transform-origin: 0% 100% 0;
+  }
+  
+  .swatContainer {
+    height: 90vh;
+    width: 100vw;
+    position: fixed;
+    cursor: none;
+  }
+  
+  .seaweed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    opacity: 0.5;
+    height: 500px;
+    z-index: -1;
+  }
+  
+  .seaweed2 {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    opacity: 0.5;
+    height: 500px;
+    transform: scaleX(-1);
+    z-index: -1;
+  }
+  
+  .bird {
+    height: 150px;
+    width: 150px;
+    position: fixed;
+    background-size: 150px 150px;
+  }
+  
+  .birdTarget {
+    width: 150%;
+    height: 150%;
+    position: absolute;
+    bottom: -40px;
+    left: -40px;
+  }
+  
+  .birdfly {
+    animation: birdfly 6s infinite, birdflap linear 1s infinite;
+  }
+  
+  .birdhit {
+    animation: birdhit 2s 1 forwards;
+  }
+  
+  @keyframes birdflap {
+    0% {background-image: url('../SVG/frame-1v.svg')}
+    12.5% {background-image: url('../SVG/frame-2v.svg')}
+    25% {background-image: url('../SVG/frame-3v.svg')}
+    37.5% {background-image: url('../SVG/frame-4v.svg')}
+    50% {background-image: url('../SVG/frame-5v.svg')}
+    62.5% {background-image: url('../SVG/frame-6v.svg')}
+    75% {background-image: url('../SVG/frame-7v.svg')}
+    87.5% {background-image: url('../SVG/frame-8v.svg')}
+    100% {background-image: url('../SVG/frame-1v.svg')}
+  }
+  
+  @keyframes birdfly {
+    0% {left: -20vw; transform:translateY(-5vh)}
+    25% {transform:translateY(10vh)}
+    50% {transform:translateY(-5vh)}
+    75% {transform:translateY(10vh)}
+    100% {left: 120vw; transform:translateY(-5vh)}
+  }
+  
+  @keyframes birdhit {
+    0% {background-image: url('../SVG/frame-1v.svg'); transform:translateY(0vh) translateX(0vw) rotate(0deg)}
+    100% {background-image: url('../SVG/frame-1v.svg'); transform:translateY(120vh) translateX(50vw) rotate(360deg)}
+  }
+  
+  .crosshairs {
+    position: fixed;
+    width: 110px;
+    pointer-events: none;
+    user-select: none;
+  }
+  
+  .birdWrapper {
+    width: 100vw;
+    height: 90vh;
+    cursor: none;
+  }
+  
+  .cloud {
+    position: fixed;
+    width: 300px;
+    opacity: 0.5;
+    z-index: -1;
+  }
+  
+  .cloud1 {
+    top: 50px;
+    animation: 30s linear clouds -21s infinite;
+  }
+  
+  .cloud2 {
+    top: 100px;
+    animation: 30s linear clouds -1s infinite;
+  }
+  
+  .cloud3 {
+    top: 200px;
+    opacity: 0.4;
+    animation: 30s linear clouds -11s infinite;
+  }
+  
+  @keyframes clouds {
+    0% {left: 100vw}
+    100% {left: -35vw}
+  }
+  
+  .scrollContainer {
+    width: 100vw;
+    height: 90vh;
+    cursor: none;
+  }
+  
+  .scrollAnimal {
+    height: 150px;
+    position: fixed;
+  }
+  
+  .arrow {
+    width: 100px;
+    position: fixed;
+    transform: rotate(135deg);
+  }
+  
+  .axe {
+    width: 100px;
+    position: fixed;
+    animation: axespin 1s infinite reverse linear;
+  }
+  
+  .bomb {
+    width: 100px;
+    position: fixed;
+    animation: axespin 1s infinite reverse linear;
+  }
+  
+  @keyframes axespin {
+    0% {transform: rotate(0deg)}
+    100% {transform: rotate(360deg)}
+  }
+  
+  .exampleScrollContainer {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 200px;
+    margin-top: 200px;
+    width: 100%;
+  }
+  
+  .exampleMouse {
+    opacity: 0.3;
+    position: absolute;
+    left: 20vw;
+    top: 30vh;
+    animation: mousePulse 2s infinite;
+  }
+  
+  @keyframes mousePulse {
+    0% {height: 300px}
+    50% {height: 350px}
+    100% {height: 300px}
+  }
+  
+  .instructionText {
+    font-size: 40px;
+    font-weight: 100;
+    font-family: 'Amatic SC', cursive;
+    text-align: center;
+    user-select: none;
+  }

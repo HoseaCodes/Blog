@@ -54,9 +54,9 @@ const TechGuide = () => {
 
   const currentPosts = mainPosts.slice(indexOfFirstPost, indexOfLastPost);
   const shuffleArray = arr => arr.sort(() => 0.5 - Math.random());
-  const popularPosts = shuffleArray([...mainPosts])
-    .filter(article => !currentPosts.includes(article))
-    .slice(0, 5);
+  const postsAfterEight = mainPosts.slice(8, 12);
+  const popularPosts = shuffleArray([...postsAfterEight])
+    // .filter(article => !currentPosts.includes(article))
 
   // Pagination functions
   const paginate = pageNum => setCurrentPage(pageNum);
@@ -453,7 +453,7 @@ const TechGuide = () => {
               </div>
             )}
             <div className="blog-list">
-              {taggedArticles.slice(1, 4).map((article, i) => (
+              {mainPosts.slice(3, 6).map((article, i) => (
                 <div key={article._id} className="blog-list-item" 
                   data-aos="fade-up" 
                   data-aos-delay={300 + i * 100}

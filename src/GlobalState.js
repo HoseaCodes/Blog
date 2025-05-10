@@ -5,11 +5,14 @@ import React, {
   useEffect,
   useReducer
 } from "react";
+import ArticlesAPI from './API/ArticlesAPI';
+import GithubAPI from './API/GithubAPI';
+import UserAPI from "./API/UserAPI";
+import KayneWestAPI from "./API/KanyeWestAPI";
+import JokeAPI from "./API/JokeAPI";
 import axios from "axios";
 import { v4 } from "uuid";
-import ArticlesAPI from "./API/ArticlesAPI";
 import ProductsAPI from "./API/ProductsAPI";
-import UserAPI from "./API/UserAPI";
 import Notification from "./Components/Notification/Notification";
 import { useCookies } from "react-cookie";
 
@@ -33,6 +36,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     const initialToken = cookies.accesstoken;
+    setToken(initialToken);
     if (firstLogin && !initialToken) {
       const refreshToken = async () => {
         try {
@@ -46,7 +50,6 @@ export const DataProvider = ({ children }) => {
           console.log(error);
         }
       };
-
       refreshToken();
     }
   }, []);
@@ -57,6 +60,9 @@ export const DataProvider = ({ children }) => {
     articlesAPI: ArticlesAPI(),
     // commentsAPI: CommentsAPI(id),
     userAPI: UserAPI(token),
+    githubAPI: GithubAPI(),
+    kayneWestAPI: KayneWestAPI(),
+    jokeAPI: JokeAPI(),
     dispatch
   };
   ProductsAPI();

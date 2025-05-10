@@ -4,7 +4,7 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../Assets/Images/design-min.jpg");
+    url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/design-min.jpg");
   background-size: cover;
   background-position: top;
   background-repeat: no-repeat;
@@ -19,6 +19,7 @@
 .section-images {
   background-color: #435b69;
 }
+
 .image img {
   height: 200px;
   border-radius: 12px;
@@ -64,6 +65,7 @@
     top: 315px;
   }
 }
+
 .presentation .cards {
   margin-top: -160px;
   z-index: 7;

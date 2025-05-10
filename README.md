@@ -20,6 +20,36 @@ Welcome, to my personal blog and portfolio. Sharing information is vital and esp
 
 The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
 
+## Terminal Features
+
+The website includes an interactive terminal that you can use to navigate and learn more about me. Here's how to use it:
+
+### Opening the Terminal
+
+- Press Ctrl +  (backtick) or Cmd +  (Mac) to toggle the terminal open/closed
+- You can also close it by clicking the × button in the top right corner or pressing Escape
+
+### Available Commands
+
+- help - Lists all available commands
+- about - Displays information about me
+- cat - Opens a random cat picture in a new tab
+- echo <text> - Prints the given text to the console
+- twitter - Opens my Twitter profile
+- github - Opens my GitHub profile
+- linkedin - Opens my LinkedIn profile
+- languages - Shows programming languages I know and proficiency levels
+- skills - Displays my technical skills and proficiency levels
+- projects - Lists notable projects I've worked on
+- editor - Shows details about my current code editor setup
+- spotify - Displays my currently playing or recently played song on Spotify
+- clear - Clears the terminal screen
+- cd <directory> - Change directory
+- ls - List contents of current directory
+- mkdir <name> - Create a new directory
+
+Try typing help first to see all available commands!
+
 ## Technologies Used
 
 This application was developed with a full MERN stack. and written in JavaScript. Styling done with Bootstrap, Material UI, SASS or SCSS and CSS.

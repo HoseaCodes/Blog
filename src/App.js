@@ -27,13 +27,206 @@ import UsersList from './Components/User/ListUser';
 import History from './Pages/Order/History';
 import UploadList from './Components/User/UploadList';
 import PrivateRoute from './PrivateRouter';
+import Games from "./Pages/Games";
+import GameHome from "./Pages/GameStore/GameHome";
+import Game from "./Pages/GameStore/Game";
+import games from "./Constants/games";
+import Browser from "./Pages/GameStore/Browser";
+import GameCenterWrapper from './Components/GameCenterWrapper';
 
 const About = lazy(() => import("./Pages/About/About"));
 const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
 
 const App = () => {
-    const history = createBrowserHistory();
+  const [currentFilter, setCurrentFilter] = React.useState("none");
+  const [allGames, setAllGames] = React.useState(games);
+  const [shownGames, setShownGames] = React.useState(allGames);
+  const [selectedGame, setSelectedGame] = React.useState(false);
+  const [cartDisplayed, setCartDisplayed] = React.useState(false);
+  const [overlap, setOverlap] = React.useState(false);
+  const [extended, setExtended] = React.useState(false);
+  const [search, setSearch] = React.useState("");
+  const [reviewDisplay, setReviewDisplay] = React.useState(false);
+  const [hoverState, setHoverState] = React.useState([
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+    {
+      hovered: false,
+      selected: false,
+    },
+  ]);
+  const history = createBrowserHistory();
+
+  const handleSelect = (e) => {
+    setCurrentFilter(filterNames[e.target.id - 8]);
+    console.log(filterNames[e.target.id - 8]);
+    console.log(currentFilter);
+  };
+  
+  const clearFilter = () => {
+    setCurrentFilter("none");
+    setSearch("");
+    setReviewDisplay(false);
+  };
+
+  const handleSelectGame = (e) => {
+    if (e.target.tagName === "BUTTON") {
+      return;
+    } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
+      setSelectedGame(games[e.target.parentNode.id]);
+      window.location.href = `/gamecorner/game/${e.target.parentNode.id}`;
+      console.log(e);
+    }
+  };
+
+  const handleHome = () => {
+    window.location.href = "/gamecorner";
+  };
+
+  const handleLike = (e) => {
+    let handledLike = allGames.map((game, i) => {
+      if (e.target.parentNode.id == i) {
+        game.isLiked = !game.isLiked;
+        return game;
+      } else {
+        return game;
+      }
+    });
+
+    setAllGames(handledLike);
+  };
+
+  const openGamePage = (e) => {
+    setCartDisplayed(false);
+    let selectedGameSurname = e.target.id;
+    // navigate(`/react-ecommerce-store/games/${selectedGameSurname}`);
+  };
+
+  const handleHover = (e) => {
+    if (hoverState[e.target.id].selected) {
+      return;
+    }
+
+    let newHoverState = hoverState.map((element, i) => {
+      if (e.target.id == i) {
+        element.hovered = !element.hovered;
+        return element;
+      } else {
+        return element;
+      }
+    });
+
+    setHoverState(newHoverState);
+  };
+
+  const handleHoverGame = (e) => {
+    let handledHoveredGame = allGames.map((game, i) => {
+      if (e.target.id == i) {
+        game.isHovered = !game.isHovered;
+        return game;
+      } else {
+        return game;
+      }
+    });
+
+    setAllGames(handledHoveredGame);
+  };
+
     return (
       <BrowserRouter history={history}>
         <Switch>
@@ -60,6 +253,7 @@ const App = () => {
               <Route path="/project" exact={true} component={Projects} />
               <Route path="/project/:id" exact={true} component={ProjectItem} />
               {/* Showcase */}
+              <Route path="/games/*" element={<GameCenterWrapper />} />
               {/* UserManagement */}
               <PrivateRoute type={"login"} path="/profile" exact={true} element={Profile} >
                 <Profile />
@@ -81,6 +275,80 @@ const App = () => {
               <PrivateRoute type={"login"} path="/shop/products/history/:id" exact={true} element={OrderDetails} />
               <PrivateRoute type={"login"} path="/shop/cart" exact={true} element={Checkout} />
               {/* Shop */}
+              {/* Games */}
+              {/* <Route path="/onlinegaming" exact render={() => ( <Games/>)}/> */}
+              <PrivateRoute
+                type={"login"}
+                path="/gamecorner"
+                exact={true}
+                isGame={true}
+                Game={
+                  <GameHome
+                    cartDisplayed={cartDisplayed}
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    handleLike={handleLike}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setExtended={setExtended}
+                    setOverlap={setOverlap}
+                    openGamePage={openGamePage}
+                  />
+                }
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/gamecorner/game/:id"
+                exact={true}
+                isGame={true}
+                Game={
+                  <Game
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    handleLike={handleLike}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setOverlap={setOverlap}
+                    openGamePage={openGamePage}
+                    setExtended={setExtended}
+                  />
+                }
+              />
+              <PrivateRoute
+                type={"login"}
+                path="/gamecorner/browser"
+                exact={true}
+                isGame={true}
+                Game={
+                  <Browser
+                    handleHover={handleHover}
+                    hoverState={hoverState}
+                    shownGames={shownGames}
+                    allGames={allGames}
+                    currentFilter={currentFilter}
+                    clearFilter={clearFilter}
+                    setShownGames={setShownGames}
+                    setReviewDisplay={setReviewDisplay}
+                    handleLike={handleLike}
+                    handleHome={handleHome}
+                    handleSelect={handleSelect}
+                    handleHoverGame={handleHoverGame}
+                    handleSelectGame={handleSelectGame}
+                    setHoverState={setHoverState}
+                    overlap={overlap}
+                    setOverlap={setOverlap}
+                    setExtended={setExtended}
+                    openGamePage={openGamePage}
+                  />
+                }
+              />
+              {/* Games */}
               {/* 404 */}
               {/* <Route component={Error} /> */}
               {/* 404 */}

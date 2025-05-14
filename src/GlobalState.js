@@ -7,10 +7,10 @@ import React, {
 } from "react";
 import axios from "axios";
 import { v4 } from "uuid";
-import ArticlesAPI from "./API/ArticlesAPI";
-import ProductsAPI from "./API/ProductsAPI";
-import UserAPI from "./API/UserAPI";
-import Notification from "./Components/Notification/Notification";
+import ArticlesAPI from "./API/ArticlesAPI.jsx";
+import ProductsAPI from "./API/ProductsAPI.jsx";
+import UserAPI from "./API/UserAPI.jsx";
+import Notification from "./Components/Notification/Notification.jsx";
 import { useCookies } from "react-cookie";
 
 export const GlobalState = createContext();

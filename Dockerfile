@@ -17,14 +17,12 @@ COPY . .
 RUN npm run build 
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 8080
 
-# Set environment variables from .env file
+# Set environment variables
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
-
-# Copy .env file to the working directory
-COPY .env .
+ENV PORT=8080
 
 # Run the backend server
 CMD ["node", "server.js"]

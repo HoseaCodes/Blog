@@ -333,6 +333,7 @@ const RightColumn = (props) => {
                     size="small"
                     backgroundColor="green"
                     shape={"round"}
+                    label=""
                   />
                 </SideUserContainer>
               </>

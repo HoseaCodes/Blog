@@ -6,6 +6,7 @@ import moment from 'moment-timezone'
 import SideBar from '../../../Components/NavBar/SideBar';
 import RightColumn from '../../../Components/Article/RightColumn';
 import MainContainer from '../../../Components/Article/MainContainer';
+import axios from 'axios';
 
 const ArticleItem = () => {
     const params = useParams()
@@ -14,8 +15,30 @@ const ArticleItem = () => {
     const [isAdmin] = state.userAPI.isAdmin;
     const [user] = state.userAPI.user;
     const [articles] = state.articlesAPI.articles
+    const [callback, setCallback] = state.articlesAPI.callback
     const [detailArticle, setdetailArticle] = useState([])
     const [viewComment, setViewComment] = useState(false)
+
+    const deleteArticle = async (id, public_id) => {
+        try {
+            const destroyImg = axios.post('/api/destory', { public_id });
+            const deleteArticle = axios.delete(`/api/articles/${id}`);
+            await destroyImg;
+            await deleteArticle;
+            setCallback(!callback);
+        } catch (err) {
+            alert(err.response?.data?.msg || 'Error deleting article');
+        }
+    }
+
+    const handleCheck = async (id) => {
+        try {
+            await axios.patch(`/api/articles/${id}`, { checked: true });
+            setCallback(!callback);
+        } catch (err) {
+            alert(err.response?.data?.msg || 'Error updating article');
+        }
+    }
 
     useEffect(() => {
         if (params.id) {
@@ -41,7 +64,7 @@ const ArticleItem = () => {
                 <SideBar user={user} article={detailArticle} className='d-none d-lg-block'/>
             }
             <MainContainer isAdmin={isAdmin} isLoggedIn={isLoggedIn} viewComment={viewComment} setViewComment={setViewComment}  user={user} articles={articles} 
-            timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} />
+            timeFormater={timeFormater} readTime={readTime} detailArticle={detailArticle} deleteArticle={deleteArticle} handleCheck={handleCheck} />
             <RightColumn setViewComment={setViewComment} viewComment={viewComment} user={user} articles={articles}/>
           </main>
         </>

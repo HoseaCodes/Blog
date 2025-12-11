@@ -15,7 +15,7 @@ const PrivateRoute = ({ type, exact, path, element }) => {
   }
 
   if (type === "admin") {
-    return !isAdmin ? (
+    return isAdmin ? (
       <Route path={path} exact={exact} component={element} />
     ) : (
       <Route path={path} exact={exact} component={Home} />

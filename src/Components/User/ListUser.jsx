@@ -20,10 +20,13 @@ const UsersList = () =>  {
   const [userView, setUserView] = useState(false)
 	const [createdUser, setCreatedUser] = useState(initialState);
   const history = useHistory()
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com';
 
   useEffect(() => {
     const getAllUsers = async () => {
-        const res = await axios.get(`/api/user/${user._id}`)
+      const res = await axios.get(`${API_BASE_URL}/api/auth/admin/${user._id}`,
+        { headers: { Authorization: user.accesstoken } }
+        )
         console.log(res.data.location, 'res')
         setUsers(res.data.users)
         console.log(users, 'users from userslist')
@@ -45,7 +48,7 @@ const deleteUser = async (id) => {
 
 const addUser = async () => {
   try {
-      const addUser = axios.post(`/api/user/register`, { ...createdUser })
+      const addUser = axios.post(`${API_BASE_URL}/register`, { ...createdUser })
       await addUser
       setUserView(false)
       history.push('/users')

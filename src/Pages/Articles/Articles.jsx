@@ -6,7 +6,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
 import { truncate } from "../../Utils/helperFunctions";
 import { projectData } from '../Projects/ProjectsData';
-import faqs from "../../constants/faq.js";
+import faqs from "../../Constants/faq.js";
 import ThemeSwitcher from "./ThemeSwitcher";
 
 const TechGuide = () => {

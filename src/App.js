@@ -12,6 +12,9 @@ import ArticleItem from './Pages/Articles/Article/Article';
 import ProjectItem from './Pages/Projects/Project/Project';
 import Login from './Pages/Auth/login';
 import Register from './Pages/Auth/register';
+import ForgotPassword from './Pages/Auth/forgotPassword';
+import ResetPassword from './Pages/Auth/resetPassword';
+import CheckStatus from './Pages/Auth/checkStatus';
 import ProLoader from './Components/Loading/ProLoader';
 import Editprofile from './Pages/User/editProfile';
 import { createBrowserHistory } from 'history';
@@ -55,6 +58,9 @@ const App = () => {
               {/* Authentication */}
               <Route path="/login" exact={true} component={Login} />
               <Route path="/register" exact={true} component={Register} />
+              <Route path="/forgot-password" exact={true} component={ForgotPassword} />
+              <Route path="/reset-password" exact={true} component={ResetPassword} />
+              <Route path="/check-status" exact={true} component={CheckStatus} />
               {/* Authentication */}
               {/* Showcase */}
               <Route path="/project" exact={true} component={Projects} />

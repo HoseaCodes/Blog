@@ -42,3 +42,6 @@ src/.eslintrc.js
 test/coverage
 
 animation
+.vercel
+
+set-fly-secrets.sh

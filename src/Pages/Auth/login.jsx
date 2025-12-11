@@ -1,53 +1,62 @@
 import React, { useContext, useState } from "react";
-
-import axios from "axios";
-import { Link } from "react-router-dom";
-
+import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
-
 import "./auth.css";
 import Logo from "../../Assets/Images/newLogo.png";
 import { useCookies } from "react-cookie";
 
 const Login = () => {
   const state = useContext(GlobalState);
+  const history = useHistory();
   const [user, setUser] = state.userAPI.user;
   const [isLoggedIn, setIsLoggedIn] = state.userAPI.isLoggedIn;
+  const login = state.userAPI.login;
 
   const [pass, setPass] = useState(false);
   const [initialPress, setInitialPress] = useState(0);
   const [rememberMe, setRememberMe] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [cookies, setCookie] = useCookies(["cookie-name"]);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
 
   const onChangeInput = e => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setFormData({ ...formData, [name]: value });
   };
 
   const loginSubmit = async e => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
-      const login = await axios.post("/api/user/login", {
-        ...user,
+      const result = await login({
+        email: formData.email,
+        password: formData.password,
         rememberMe
       });
-      await handleSubmittion(login);
-    } catch (err) {
-      console.log({ err });
-      alert(err.message);
-    }
-  };
 
-  const handleSubmittion = async login => {
-    try {
-      if (!cookies.accesstoken && login.data)
-        setCookie("accesstoken", login.data.accesstoken);
-      localStorage.setItem("isLoggedIn", true);
-      setIsLoggedIn(true);
-      window.location.href = "/";
-    } catch (error) {
-      console.log({ error });
-      alert(error.message);
+      if (result.limitedAccess) {
+        setError(result.message || 'Your account is pending approval. Limited access granted.');
+        localStorage.setItem("isLoggedIn", true);
+        setIsLoggedIn(true);
+        setTimeout(() => history.push("/profile"), 2000);
+      } else {
+        localStorage.setItem("firstLogin", true);
+        localStorage.setItem("isLoggedIn", true);
+        setIsLoggedIn(true);
+        history.push("/");
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      setError(err.response?.data?.msg || "Login failed. Please check your credentials.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,7 +78,6 @@ const Login = () => {
           <div className="col-md-4 text-center company__info">
             <Link to="/">
               <img className="brand" src={Logo} alt="brand-name" />
-              {/* <img className="brand" src="https://i.imgur.com/xycLsso.png" alt="brand-name" /> */}
             </Link>
           </div>
           <div className="col-md-8 col-xs-12 col-sm-12 login_form ">
@@ -77,6 +85,13 @@ const Login = () => {
               <div className="row login-row">
                 <h2>Log In</h2>
               </div>
+              {error && (
+                <div className="row login-row">
+                  <div className="alert alert-danger" role="alert">
+                    {error}
+                  </div>
+                </div>
+              )}
               <div className="row login-row">
                 <form onSubmit={loginSubmit} className="">
                   <div className="row login-row">
@@ -87,7 +102,7 @@ const Login = () => {
                       id="e-mail"
                       required
                       placeholder="E-mail Address"
-                      value={user.email}
+                      value={formData.email}
                       onChange={onChangeInput}
                     />
                   </div>
@@ -99,7 +114,7 @@ const Login = () => {
                       required
                       autoComplete="on"
                       placeholder="Enter your password"
-                      value={user.password}
+                      value={formData.password}
                       className="form__input"
                       onChange={onChangeInput}
                       onClick={showPassword}
@@ -117,13 +132,20 @@ const Login = () => {
                     <label htmlFor="remember_me">Remember Me!</label>
                   </div>
                   <div className="row login-row">
-                    <input type="submit" value="Submit" className="login-btn" />
+                    <input 
+                      type="submit" 
+                      value={loading ? "Logging in..." : "Submit"} 
+                      className="login-btn"
+                      disabled={loading}
+                    />
                   </div>
                 </form>
               </div>
               <div className="row login-row">
                 <p>
-                  Not yet signed up? <Link to="/register">Sign up here!</Link>
+                  <Link to="/forgot-password">Forgot password?</Link>
+                  <span> • </span>
+                  <Link to="/register">Sign up here!</Link>
                 </p>
               </div>
             </div>

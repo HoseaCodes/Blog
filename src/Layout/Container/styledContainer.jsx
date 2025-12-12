@@ -7,3 +7,7 @@ export const StyledContainer = styled.section`
   `}
 `;
 
+export const StyledHeaderNav = styled.header`
+  background-color: #1a1e23;
+`;
+

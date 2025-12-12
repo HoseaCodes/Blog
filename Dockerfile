@@ -2,7 +2,7 @@
 FROM node:20
 
 # Set the working directory in the container
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -17,11 +17,7 @@ COPY . .
 RUN npm run build 
 
 # Expose the port the app runs on
-EXPOSE 3000
-
-# Set environment variables from .env file
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+EXPOSE 3001
 
 # Copy .env file to the working directory
 COPY .env .

@@ -14,7 +14,7 @@
     "aos": "^2.3.4",
     "aws-sdk": "^2.1621.0",
     "axios": "^0.21.4",
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^6.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^5.1.0",
     "cloudinary": "^1.26.3",

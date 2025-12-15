@@ -15,9 +15,7 @@ const auth = (req, res, next) => {
 				console.log('JWT verification error:', err.name, err.message);
 			}
       if (err instanceof jwt.TokenExpiredError) {
-        return res
-        .status(400)
-        .json({ msg: "Token Expired Error", err});
+        return res.status(400).json({ msg: "Token Expired Error", err });
       }
       if (err)
 				return res

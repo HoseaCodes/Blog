@@ -19,6 +19,9 @@ const PrivateRoute = ({ type, exact, path, element, isGame, Game, children, ...r
   }
   
   if (type === "login") {
+    if (isGame && isLoggedIn) {
+      return <Route path={path} exact={exact} render={() => Game} />;
+    }
     return isLoggedIn ? (
       <Route path={path} exact={exact} component={element}>{children}</Route>
     ) : (

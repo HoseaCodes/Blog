@@ -46,11 +46,13 @@ const ArticleItem = () => {
                 if (article._id === params.id) setdetailArticle(article)
             })
         }
-    }, [params.id, articles])
+      // );
+    // }
+  }, [params.id]);
 
-    if (detailArticle.length === 0) return null;
+  if (detailArticle.length === 0) return null;
 
-    const { createdAt, markdown } = detailArticle;
+  const { createdAt, markdown } = detailArticle;
 
     const timeFormater = moment.utc(createdAt).format('MMMM Do YYYY')
     const avgWordsMinRead = 238

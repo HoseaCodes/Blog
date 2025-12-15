@@ -45,3 +45,7 @@ animation
 .vercel
 
 set-fly-secrets.sh
+
+dump
+
+output.json

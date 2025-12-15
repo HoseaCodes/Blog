@@ -57,10 +57,10 @@ function UserAPI(token) {
     initAuth();
   }, [token, cookies]);
 
-  const addCart = async product => {
+  const addCart = async (product) => {
     if (!isLoggedIn) return alert("Please login to continue buying");
 
-    const check = cart.every(item => {
+    const check = cart.every((item) => {
       return item._id !== product._id;
     });
 
@@ -71,7 +71,7 @@ function UserAPI(token) {
         "/api/user/addcart",
         { cart: [...cart, { ...product, quantity: 1 }] },
         {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         }
       );
     } else {

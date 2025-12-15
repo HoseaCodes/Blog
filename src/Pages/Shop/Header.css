@@ -79,7 +79,6 @@ input:checked ~ label {
 label {
   padding-left: 10px;
   cursor: pointer;
-  margin: 0 !important;
 }
 
 .form-group:last-child {

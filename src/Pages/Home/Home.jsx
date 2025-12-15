@@ -42,7 +42,7 @@ const Home = () => {
                 .utc(article.updatedAt)
                 .format("MMMM Do YYYY");
               return (
-                <></>
+                <React.Fragment key={article._id || article.id}></React.Fragment>
                 // <PrivateHome
                 //   article={article}
                 //   user={user}

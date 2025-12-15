@@ -5,11 +5,21 @@ import React, {
   useEffect,
   useReducer
 } from "react";
+import ArticlesAPI from './API/ArticlesAPI';
+import GithubAPI from './API/GithubAPI';
+import UserAPI from "./API/UserAPI";
+import KayneWestAPI from "./API/KanyeWestAPI";
+import JokeAPI from "./API/JokeAPI";
+import BlogAPI from "./API/BlogAPI";
+import MediaAPI from "./API/MediaAPI";
+import CollaborationAPI from "./API/CollaborationAPI";
+import AnalyticsAPI from "./API/AnalyticsAPI";
+import SEOAPI from "./API/SEOAPI";
+import AIAPI from "./API/AIAPI";
+import CommentsAPI from "./API/CommentsAPI";
 import axios from "axios";
 import { v4 } from "uuid";
-import ArticlesAPI from "./API/ArticlesAPI";
 import ProductsAPI from "./API/ProductsAPI";
-import UserAPI from "./API/UserAPI";
 import Notification from "./Components/Notification/Notification";
 import { useCookies } from "react-cookie";
 
@@ -33,6 +43,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const firstLogin = localStorage.getItem("firstLogin");
     const initialToken = cookies.accesstoken;
+    setToken(initialToken);
     if (firstLogin && !initialToken) {
       const refreshToken = async () => {
         try {
@@ -46,7 +57,6 @@ export const DataProvider = ({ children }) => {
           console.log(error);
         }
       };
-
       refreshToken();
     }
   }, []);
@@ -55,8 +65,18 @@ export const DataProvider = ({ children }) => {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
     articlesAPI: ArticlesAPI(),
-    // commentsAPI: CommentsAPI(id),
+    commentsAPI: CommentsAPI,
     userAPI: UserAPI(token),
+    githubAPI: GithubAPI(),
+    kayneWestAPI: KayneWestAPI(),
+    jokeAPI: JokeAPI(),
+    // Enterprise Blog APIs
+    blogAPI: BlogAPI(token),
+    mediaAPI: MediaAPI(token),
+    collaborationAPI: CollaborationAPI(token),
+    analyticsAPI: AnalyticsAPI(token),
+    seoAPI: SEOAPI(token),
+    aiAPI: AIAPI(token),
     dispatch
   };
   ProductsAPI();

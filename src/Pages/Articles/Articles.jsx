@@ -136,6 +136,10 @@ const TechGuide = () => {
     taggedArticles = filteredArticles.filter(item =>
       item.category.includes("Python")
     );
+  } else if (tagsShow === "React") {
+    taggedArticles = filteredArticles.filter(item =>
+      item.category.includes("React")
+    );
   } else if (tagsShow === "Software Engineer") {
     taggedArticles = filteredArticles.filter(item =>
       item.category.includes("Software Engineer")
@@ -441,7 +445,7 @@ const TechGuide = () => {
                 <div 
                   className="blog-image placeholder"
                   style={{
-                    backgroundImage: taggedArticles[0].images ? `url(${taggedArticles[0].images.url})` : ''
+                    backgroundImage: taggedArticles[0].images?.url ? `url(${taggedArticles[0].images.url})` : ''
                   }}
                 >
                   {!taggedArticles[0].images && 'Featured Image'}
@@ -456,8 +460,8 @@ const TechGuide = () => {
               </div>
             )}
             <div className="blog-list">
-              {mainPosts.slice(3, 6).map((article, i) => (
-                <div key={article._id} className="blog-list-item" 
+              {taggedArticles.slice(1, 4).map((article, i) => (
+                <div key={article._id || i} className="blog-list-item" 
                   data-aos="fade-up" 
                   data-aos-delay={300 + i * 100}
                   onClick={() => {
@@ -467,7 +471,7 @@ const TechGuide = () => {
                   <div 
                     className="blog-image small placeholder"
                     style={{
-                      backgroundImage: article.images ? `url(${article.images.url})` : ''
+                      backgroundImage: article.images?.url ? `url(${article.images.url})` : ''
                     }}
                   >
                     {!article.images && 'Image'}
@@ -487,7 +491,7 @@ const TechGuide = () => {
               
               <div className="popular-post-list">
                 {popularPosts.slice(0, 3).map((article, i) => (
-                  <div key={article._id} className="popular-post" 
+                  <div key={article._id || i} className="popular-post" 
                     data-aos="fade-up" 
                     data-aos-delay={400 + i * 100}
                     onClick={() => {
@@ -497,7 +501,7 @@ const TechGuide = () => {
                     <div 
                       className="popular-post-image placeholder"
                       style={{
-                        backgroundImage: article.images ? `url(${article.images.url})` : ''
+                        backgroundImage: article.images?.url ? `url(${article.images.url})` : ''
                       }}
                     >
                       {!article.images && 'Image'}

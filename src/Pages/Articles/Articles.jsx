@@ -176,6 +176,7 @@ const TechGuide = () => {
       window.removeEventListener("resize", onresize);
     };
   }, []);
+  console.log({articles})
 
   return (
     <div className="tech-guide">
@@ -246,7 +247,7 @@ const TechGuide = () => {
               {currentPosts.slice(0, 1).map(article => (
                 <div key={article.id} className="trendy-article" 
                   style={{
-                    backgroundImage: 'url("https://d2nrcsymqn25pk.cloudfront.net/Assets/BG/ambitiousconcepts_Design_a_professional_website_background_with_c19abf7a-5e1d-4eda-8de5-ba89de1ee4ba.png")'
+                    backgroundImage: 'url("https://d2nrcsymqn25pk.cloudfront.net/Assets/BG/Gemini_Generated_Image_thsc45thsc45thsc.png")'
                   }}>
                   <div className="trendy-article-overlay"></div>
                   <div className="trendy-article-content">
@@ -280,7 +281,7 @@ const TechGuide = () => {
               {currentPosts.slice(1, 2).map(article => (
                 <div key={article.id} className="trendy-article"
                   style={{
-                    backgroundImage: 'url("https://d2nrcsymqn25pk.cloudfront.net/Assets/BG/ambitiousconcepts_Design_a_professional_website_background_with_16b4be9c-5862-4df1-8aa0-8ea41836f8a8.png")'
+                    backgroundImage: 'url("https://d2nrcsymqn25pk.cloudfront.net/Assets/BG/Gemini_Generated_Image_frxs0ffrxs0ffrxs.png")'
                   }}>
                   <div className="trendy-article-overlay"></div>
                   <div className="trendy-article-content">
@@ -332,7 +333,9 @@ const TechGuide = () => {
                    data-aos-delay={200 + i * 100}>
                 <div className="trending-image placeholder"
                   style={{
-                    backgroundImage: article.images ? `url(${article.images.secure_url})` : ''
+                    backgroundImage: article.images.url ?
+                      `url("https://d2nrcsymqn25pk.cloudfront.net/Assets/BG/Gemini_Generated_Image_x6kdx5x6kdx5x6kd.png")`
+                      : `url(${article.images.url})`
                   }}>
                   {!article.images && '1280 x 720'}
                 </div>
@@ -438,7 +441,7 @@ const TechGuide = () => {
                 <div 
                   className="blog-image placeholder"
                   style={{
-                    backgroundImage: taggedArticles[0].images ? `url(${taggedArticles[0].images.secure_url})` : ''
+                    backgroundImage: taggedArticles[0].images ? `url(${taggedArticles[0].images.url})` : ''
                   }}
                 >
                   {!taggedArticles[0].images && 'Featured Image'}
@@ -464,7 +467,7 @@ const TechGuide = () => {
                   <div 
                     className="blog-image small placeholder"
                     style={{
-                      backgroundImage: article.images ? `url(${article.images.secure_url})` : ''
+                      backgroundImage: article.images ? `url(${article.images.url})` : ''
                     }}
                   >
                     {!article.images && 'Image'}
@@ -494,7 +497,7 @@ const TechGuide = () => {
                     <div 
                       className="popular-post-image placeholder"
                       style={{
-                        backgroundImage: article.images ? `url(${article.images.secure_url})` : ''
+                        backgroundImage: article.images ? `url(${article.images.url})` : ''
                       }}
                     >
                       {!article.images && 'Image'}

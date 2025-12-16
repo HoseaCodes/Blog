@@ -17,10 +17,10 @@ const fetchNowPlaying = async () => {
 
 const ModalContainer = styled.div`
   position: fixed;
-  bottom: ${props => props.isOpen ? '0' : '-400px'};
+  bottom: ${props => props.isOpen ? '0' : '-500px'};
   left: 0;
   right: 0;
-  height: 400px;
+  height: 500px;
   background-color: #1e1e1e;
   color: #fff;
   transition: bottom 0.3s ease-in-out;
@@ -87,19 +87,24 @@ const TerminalModal = () => {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      // Ctrl/Cmd + ` to toggle terminal
-      if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === 'Backquote' || e.keyCode === 192)) {
+      // Cmd/Ctrl + H to toggle terminal
+      if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
         e.preventDefault();
+        e.stopPropagation();
         setIsOpen(prev => !prev);
+        return;
       }
       // Escape to close
       if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        e.stopPropagation();
         setIsOpen(false);
+        return;
       }
     };
 
-    window.addEventListener('keydown', handleKeyPress);
-    return () => window.removeEventListener('keydown', handleKeyPress);
+    window.addEventListener('keydown', handleKeyPress, true);
+    return () => window.removeEventListener('keydown', handleKeyPress, true);
   }, [isOpen]);
 
   useEffect(() => {

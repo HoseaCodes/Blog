@@ -26,7 +26,7 @@ The website includes an interactive terminal that you can use to navigate and le
 
 ### Opening the Terminal
 
-- Press Ctrl +  (backtick) or Cmd +  (Mac) to toggle the terminal open/closed
+- Press Cmd + h to toggle the terminal open/closed
 - You can also close it by clicking the × button in the top right corner or pressing Escape
 
 ### Available Commands

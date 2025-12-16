@@ -8,13 +8,10 @@ const APISelection = props => {
   switch (displayModal) {
     case "Test":
       return <div displayModal={"test"}>Test</div>
-      break;
     case "Github":
       return <Github />
-      break;
     case "KanyeWest":
       return <KanyeWest />
-      break;
     default:
       return <div displayModal={"test"}>Test</div>
   }

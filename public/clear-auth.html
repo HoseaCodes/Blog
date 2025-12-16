@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clear Authentication</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #764ba2;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔐 Clear Authentication</h1>
+        <p>Your JWT token has an invalid signature.</p>
+        <p>Click below to clear all authentication data and redirect to login.</p>
+        
+        <button onclick="clearAuth()">Clear Auth & Redirect to Login</button>
+        
+        <div id="status"></div>
+    </div>
+
+    <script>
+        function clearAuth() {
+            const statusDiv = document.getElementById('status');
+            
+            // Clear all cookies
+            document.cookie.split(";").forEach(function(c) { 
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+            });
+            
+            // Clear localStorage
+            localStorage.clear();
+            
+            // Clear sessionStorage
+            sessionStorage.clear();
+            
+            statusDiv.className = 'status success';
+            statusDiv.innerHTML = '✅ Authentication cleared!<br>Redirecting to login in 2 seconds...';
+            
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

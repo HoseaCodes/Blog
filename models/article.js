@@ -24,16 +24,17 @@ const articleSchema = new mongoose.Schema({
     },
     subtitle: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
+        default: ''
     },
     description: {
         type: String,
     },
     images: {
         type: Object,
-        required: true,
-        default: "https://i.imgur.com/19i5Whc.png",
+        required: false,
+        default: { url: "https://i.imgur.com/19i5Whc.png" },
     },
     categories: {
         type: [String],
@@ -73,7 +74,8 @@ const articleSchema = new mongoose.Schema({
     },
     markdown: {
         type: String,
-        required: true
+        required: false,
+        default: ''
     },
     likes: {
         type: Number,
@@ -105,7 +107,7 @@ const articleSchema = new mongoose.Schema({
     },
     sanitizedHtml: {
         type: String,
-        required: true
+        required: false
     }
 
 }, {

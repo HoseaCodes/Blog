@@ -1,5 +1,4 @@
-import React, {useReducer, useContext, useEffect } from "react";
-import axios from "axios";
+import React, {useReducer, useContext } from "react";
 import "./NavBar.css";
 import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
@@ -18,10 +17,12 @@ const NavBar = () => {
   const location = useLocation();
   const currentPath = location.pathname;
   const state = useContext(GlobalState);
-  const [isLoggedIn] = state.userAPI.isLoggedIn
-  const [isAdmin] = state.userAPI.isAdmin
-  const [user] = state.userAPI.user
+  const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [isAdmin] = state.userAPI.isAdmin;
+  const [user] = state.userAPI.user;
   const [cart] = state.userAPI.cart;
+  const logout = state.userAPI.logout;
+  
   if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
     return null;
   }
@@ -36,13 +37,22 @@ const NavBar = () => {
       (isActive) => !isActive,
       true
       );
+  
+  if (currentPath.includes("/blog/")) {
+    return null;
+  }
 
-  const logoutUser = async () => {
-    await axios.post("/api/user/logout");
-    localStorage.removeItem("firstLogin");
-    localStorage.removeItem("isLoggedIn");
-    removeCookie("accesstoken");
-    window.location.href = "/";
+  const logoutUser = () => {
+    if (logout) {
+      logout();
+    } else {
+      // Fallback to manual logout if logout method not available
+      localStorage.removeItem("firstLogin");
+      localStorage.removeItem("isLoggedIn");
+      removeCookie("accesstoken");
+      removeCookie("refreshtoken");
+      window.location.href = "/";
+    }
   };
 
   const adminRouter = () => {
@@ -152,7 +162,7 @@ const NavBar = () => {
                     <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                   </Link>
                   :
-                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user.name.split(' ')[0]}</h1>
+                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user?.name ? user.name.split(' ')[0] : 'User'}</h1>
                 }
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     {isAdmin && adminRouter()}

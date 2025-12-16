@@ -95,7 +95,7 @@ const MainContainer = (props) => {
                   onChange={() => props.handleCheck(_id)}
                 />
                 <BtnRender
-                  article={props.article}
+                  article={props.detailArticle}
                   deleteArticle={props.deleteArticle}
                 />
               </>

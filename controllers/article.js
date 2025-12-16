@@ -289,11 +289,19 @@ async function createArticle(req, res) {
     }
 
     res.clearCookie("artilces-cache");
-    await newArticle.save();
+    const savedArticle = await newArticle.save();
 
     logger.info(`New article ${title} has been created`);
 
-    res.json({ msg: "Created a new article" });
+    res.json({ 
+      success: true,
+      msg: "Created a new article",
+      article: {
+        article_id: savedArticle.article_id || savedArticle._id,
+        title: savedArticle.title,
+        slug: savedArticle.slug
+      }
+    });
   } catch (err) {
     logger.error(err);
     return res.status(500).json({ msg: err.message });

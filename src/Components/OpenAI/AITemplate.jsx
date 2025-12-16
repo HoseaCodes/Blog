@@ -1,30 +1,31 @@
 import React, { useState } from "react";
 import OptionSelection from "./SelectionOptions";
 import Translation from "./Translation";
-import OpenAI from "openai";
+import { Configuration, OpenAIApi } from "openai";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 function AITemplate(props) {
   const { articleInput, showAITemplate, setShowAITemplate, setLinkedinResult } =
-    props;
+      props;
+  console.log({props})
   const [result, setResult] = useState("");
   const [input, setInput] = useState("");
   const [option, setOption] = useState({});
 
-  const openai = new OpenAI({
+  const configuration = new Configuration({
     apiKey: process.env.REACT_APP_Open_AI_Key,
-    dangerouslyAllowBrowser: true,
   });
+  const openai = new OpenAIApi(configuration);
 
   const generateAIResponse = async () => {
     try {
-      const response = await openai.chat.completions.create({
+      const response = await openai.createChatCompletion({
         messages: [{ role: "assistant", content: input }],
         model: "gpt-3.5-turbo",
       });
-      setResult(response.choices[0].message.content);
-      setLinkedinResult(response.choices[0].message.content);
+      setResult(response.data.choices[0].message.content);
+      setLinkedinResult(response.data.choices[0].message.content);
     } catch (error) {
       console.log(error);
       alert("Error in AI", error);
@@ -45,7 +46,7 @@ function AITemplate(props) {
     setShowAITemplate(!showAITemplate);
   };
 
-  if (!articleInput) return <h1>Loading...</h1>;
+//   if (!articleInput) return <h1>Loading...</h1>;
   return (
     <>
       <Button variant="primary" onClick={handleState}>

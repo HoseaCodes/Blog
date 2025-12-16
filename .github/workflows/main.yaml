@@ -107,9 +107,9 @@ jobs:
           asset_path: build.tar.gz
           asset_name: build.tar.gz
           asset_content_type: application/gzip
-      - name: Deploy to Heroku
-        uses: akhileshns/heroku-deploy@v3.12.12
-        with:
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: hoseacodes-dev
-          heroku_email: "dominique11h@yahoo.com"
+      # - name: Deploy to Heroku
+      #   uses: akhileshns/heroku-deploy@v3.12.12
+      #   with:
+      #     heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+      #     heroku_app_name: hoseacodes-dev
+      #     heroku_email: "dominique11h@yahoo.com"

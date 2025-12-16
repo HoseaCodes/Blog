@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import authService from "../services/authService";
 
 const initialState = {
   role: 0,
@@ -16,6 +17,7 @@ const initialState = {
   phone: "",
   socialMedia: [],
   websites: [],
+  status: "APPROVED" // Default status
 };
 
 function UserAPI(token) {
@@ -25,35 +27,34 @@ function UserAPI(token) {
   const [user, setUser] = useState(initialState);
   const [authenticated, isAuthenticated] = useState(false);
   const [cart, setCart] = useState([]);
-  const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [cookies] = useCookies(["cookie-name"]);
 
   useEffect(() => {
-    if (cookies.accesstoken) setIsLoggedIn(true);
-    if (token || isLoggedIn || cookies.accesstoken) {
-      const getUser = async () => {
-        const accesstoken = token ? token : cookies.accesstoken;
+    const initAuth = async () => {
+      if (cookies.accesstoken) setIsLoggedIn(true);
+      if (token || isLoggedIn || cookies.accesstoken) {
         try {
-          const res = await axios.get("/api/user/info", {
-            headers: { Authorization: accesstoken },
-          });
-          console.log(res, "huh");
+          const userData = await authService.getMe();
+          console.log(userData, "user info");
           setIsLoggedIn(true);
           isAuthenticated(true);
-          setUser(res.data.users);
-          res.data.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
+          setUser(userData.user);
+          const isAdminUser = userData.user.role === "admin";
+          setIsAdmin(isAdminUser);
+          localStorage.setItem("isAdmin", isAdminUser);
         } catch (err) {
-          await axios.post("/api/user/logout");
+          console.error("Auth error:", err);
+          setError(err.response?.data?.msg || "Authentication failed");
+          // Clear auth state on error
           localStorage.removeItem("firstLogin");
           localStorage.removeItem("isLoggedIn");
-          removeCookie("accesstoken");
-          setUser(initialState);
-          setIsLoggedIn(false);
-          isAuthenticated(false);
-          alert(err.response.data.msg);
         }
-      };
-      getUser();
-    }
+      }
+      setLoading(false);
+    };
+    initAuth();
   }, [token, cookies]);
 
   const addCart = async (product) => {
@@ -78,6 +79,68 @@ function UserAPI(token) {
     }
   };
 
+  // Register method
+  const register = async (userData) => {
+    try {
+      setError(null);
+      const data = await authService.register(userData);
+      
+      if (data.requiresApproval) {
+        return { success: true, requiresApproval: true, message: data.msg };
+      }
+      
+      if (data.accesstoken) {
+        // Auto-login after successful registration
+        const userData = await authService.getMe();
+        setUser(userData.users);
+        setIsLoggedIn(true);
+        isAuthenticated(true);
+        userData.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
+        return { success: true, requiresApproval: false };
+      }
+    } catch (err) {
+      setError(err.response?.data?.msg || 'Registration failed');
+      throw err;
+    }
+  };
+
+  // Login method
+  const login = async (credentials) => {
+    try {
+      setError(null);
+      const data = await authService.login(credentials);
+      
+      if (data.limitedAccess) {
+        setUser({ ...data, status: 'PENDING' });
+        setIsLoggedIn(true);
+        return { success: true, limitedAccess: true, message: data.msg };
+      }
+      
+      const userData = await authService.getMe();
+      console.log({userData}, "logged in user data");
+      setUser(userData.user);
+      setIsLoggedIn(true);
+      isAuthenticated(true);
+      const isAdminUser = userData.user.role === "admin";
+      setIsAdmin(isAdminUser);
+      localStorage.setItem("isAdmin", isAdminUser);
+      return { success: true };
+    } catch (err) {
+      setError(err.response?.data?.msg || 'Login failed');
+      throw err;
+    }
+  };
+
+  // Logout method
+  const logout = () => {
+    authService.logout();
+    setUser(initialState);
+    setIsLoggedIn(false);
+    isAuthenticated(false);
+    setIsAdmin(false);
+    localStorage.removeItem("isAdmin");
+  };
+
   return {
     isLoggedIn: [isLoggedIn, setIsLoggedIn],
     isAdmin: [isAdmin, setIsAdmin],
@@ -86,6 +149,11 @@ function UserAPI(token) {
     cart: [cart, setCart],
     addCart: addCart,
     authenticated: [authenticated, isAuthenticated],
+    loading: [loading, setLoading],
+    error: [error, setError],
+    register,
+    login,
+    logout
   };
 }
 

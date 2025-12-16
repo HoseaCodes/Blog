@@ -88,6 +88,12 @@ const userSchema = new mongoose.Schema({
   cart: {
     type: Array,
     default: []
+  },
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpire: {
+    type: Date
   }
 }, {
   timestamps: true

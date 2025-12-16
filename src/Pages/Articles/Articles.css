@@ -119,6 +119,27 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Blog Content Layout */
+.blog-content {
+  display: grid;
+  grid-template-columns: 12rem 1fr 45rem;
+  gap: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
+@media (max-width: 1400px) {
+  .blog-content {
+    grid-template-columns: 12rem 1fr 35rem;
+  }
+}
+
+@media (max-width: 1180px) {
+  .blog-content {
+    grid-template-columns: 1fr;
+  }
+}
+
 .placeholder {
   background-color: var(--tertiary-bg);
   display: flex;

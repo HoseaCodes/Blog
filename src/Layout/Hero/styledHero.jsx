@@ -59,7 +59,7 @@ const HeroText = styled.span`
   text-align: center;
   text-transform: uppercase;
   position: relative;
-  font-size: 7rem;
+  font-size: 5rem;
   letter-spacing: 2.5rem;
   line-height: 100px;
   padding: 1rem;

@@ -128,11 +128,14 @@ const PersonalBrand = () => {
               <div className="personal-btn-wrapper">
                 <Button
                   primary
+                  size={"small"}
                   label="More about Dominique"
+                  className="download-btn"
                   onClick={handleClick}
                 />
                 <Button
                   primary
+                  size={"small"}
                   label="Download my Resume"
                   className="download-btn"
                   onClick={handleDownload}

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import "../Home/Home.css";
-import SocialMedia from "../../Components/SocialMedia/SocialMedia";
+import RecentArticles from "../../Components/SocialMedia/RecentArticles";
 import PersonalBrand from "../../Components/PersonalBrand/PersonalBrandOriginal";
-import Testimonial from "../../Components/Testimonials/testimonial";
+import TechnicalAchievements from "../../Components/TechnicalAchievements/TechnicalAchievements";
 import Tech from "../../Components/Technologies/Tech";
 import { MdEmail } from "react-icons/md";
 import ProjectHighlight from "../../Components/Project/projectHighlight";
@@ -261,43 +261,18 @@ const Home = () => {
         <div className="projects">
           <ProjectHighlight />
         </div>
-        <div className="testimonies-group">
-          <StyledHr Primary />
-          <h2
-            data-aos="fade-down"
-            data-aos-offset="500"
-            data-aos-duration="3000"
-            data-aos-easing="ease-in"
-            className="subTitle"
-          >
-            Testimonies
-          </h2>
+        <StyledHr Primary />
+        <div className="achievements-section-wrapper">
+          <TechnicalAchievements />
         </div>
         <StyledHr Primary />
-        <br />
-        <br />
-        <div className="homepage-combo">
-          <div className="socialmedia d-none d-md-block">
-            <SocialMedia />
-          </div>
-          <div className="testomonies mobile">
-            <Testimonial />
-          </div>
+        <div className="articles-section-wrapper">
+          <RecentArticles />
         </div>
         <div className="contact">
           <StyledHr Primary />
           <div className="contact-group">
-            <h2
-              style={{
-                fontSize: "5rem",
-                textAlign: "center",
-                color: "white",
-                opacity: ".8",
-                textTransform: "uppercase",
-                textShadow: "2px 2px 2px #206a5d",
-                letterSpacing: "1rem",
-              }}
-            >
+            <h2 className="contact-heading">
               Send Me A Message
             </h2>
             <a

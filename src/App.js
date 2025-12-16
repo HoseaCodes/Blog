@@ -45,7 +45,7 @@ const Contact = lazy(() => import("./Pages/Contact/Contact"));
 
 const App = () => {
   const history = createBrowserHistory();
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && process.env.REACT_APP_GOOGLE_MEASUREMENT_ID) {
     ReactGA.initialize(process.env.REACT_APP_GOOGLE_MEASUREMENT_ID);
     history.listen((location, action) => {
       ReactGA.send({

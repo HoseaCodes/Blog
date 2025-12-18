@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from 'openai';
+import OpenAI from 'openai';
 import Logger from '../utils/logger.js';
 import dotenv from 'dotenv';
 
@@ -6,10 +6,9 @@ dotenv.config();
 
 const logger = new Logger('ai');
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
-const openai = new OpenAIApi(configuration);
 
 // Generate content with AI
 export async function generateContent(req, res) {
@@ -29,7 +28,7 @@ export async function generateContent(req, res) {
       return res.status(500).json({ msg: 'OpenAI API key not configured' });
     }
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: options.model || 'gpt-3.5-turbo',
       messages: [
         {
@@ -45,7 +44,7 @@ export async function generateContent(req, res) {
       max_tokens: options.maxTokens || 1000
     });
 
-    const content = completion.data.choices[0].message.content;
+    const content = completion.choices[0].message.content;
 
     logger.info('Content generated successfully');
 
@@ -80,7 +79,7 @@ export async function improveContent(req, res) {
 
     const systemPrompt = prompts[improvementType] || prompts.grammar;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -96,7 +95,7 @@ export async function improveContent(req, res) {
       max_tokens: 2000
     });
 
-    const improvedContent = completion.data.choices[0].message.content;
+    const improvedContent = completion.choices[0].message.content;
 
     logger.info(`Content improved: ${improvementType}`);
 
@@ -115,7 +114,7 @@ export async function generateTitles(req, res) {
   try {
     const { content, count = 5 } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -131,7 +130,7 @@ export async function generateTitles(req, res) {
       max_tokens: 500
     });
 
-    const titles = completion.data.choices[0].message.content
+    const titles = completion.choices[0].message.content
       .split('\n')
       .filter(title => title.trim())
       .map(title => title.replace(/^\d+\.\s*/, '').trim());
@@ -159,7 +158,7 @@ export async function generateOutline(req, res) {
       comprehensive: 'Create a comprehensive outline with main sections, subsections, and key points'
     };
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -175,7 +174,7 @@ export async function generateOutline(req, res) {
       max_tokens: 1000
     });
 
-    const outline = completion.data.choices[0].message.content;
+    const outline = completion.choices[0].message.content;
 
     logger.info(`Outline generated for: ${topic}`);
 
@@ -194,7 +193,7 @@ export async function expandContent(req, res) {
   try {
     const { content, targetLength } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -210,7 +209,7 @@ export async function expandContent(req, res) {
       max_tokens: 2000
     });
 
-    const expandedContent = completion.data.choices[0].message.content;
+    const expandedContent = completion.choices[0].message.content;
 
     logger.info('Content expanded successfully');
 
@@ -235,7 +234,7 @@ export async function summarizeContent(req, res) {
       long: 'in 2-3 paragraphs with key points'
     };
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -251,7 +250,7 @@ export async function summarizeContent(req, res) {
       max_tokens: 500
     });
 
-    const summary = completion.data.choices[0].message.content;
+    const summary = completion.choices[0].message.content;
 
     logger.info('Content summarized successfully');
 
@@ -270,7 +269,7 @@ export async function translateContent(req, res) {
   try {
     const { content, targetLanguage } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -286,7 +285,7 @@ export async function translateContent(req, res) {
       max_tokens: 2000
     });
 
-    const translatedContent = completion.data.choices[0].message.content;
+    const translatedContent = completion.choices[0].message.content;
 
     logger.info(`Content translated to ${targetLanguage}`);
 
@@ -314,7 +313,7 @@ export async function generateSocialPosts(req, res) {
         facebook: 'Create a Facebook post promoting this content in an engaging, friendly tone'
       };
 
-      const completion = await openai.createChatCompletion({
+      const completion = await openai.chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [
           {
@@ -330,7 +329,7 @@ export async function generateSocialPosts(req, res) {
         max_tokens: 300
       });
 
-      posts[platform] = completion.data.choices[0].message.content;
+      posts[platform] = completion.choices[0].message.content;
     }
 
     logger.info(`Social posts generated for ${platforms.join(', ')}`);
@@ -350,7 +349,7 @@ export async function checkGrammar(req, res) {
   try {
     const { content } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -366,7 +365,7 @@ export async function checkGrammar(req, res) {
       max_tokens: 1000
     });
 
-    const analysis = completion.data.choices[0].message.content;
+    const analysis = completion.choices[0].message.content;
 
     logger.info('Grammar check completed');
 
@@ -385,7 +384,7 @@ export async function getStyleSuggestions(req, res) {
   try {
     const { content, targetStyle } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -401,7 +400,7 @@ export async function getStyleSuggestions(req, res) {
       max_tokens: 1000
     });
 
-    const suggestions = completion.data.choices[0].message.content;
+    const suggestions = completion.choices[0].message.content;
 
     logger.info(`Style suggestions generated: ${targetStyle}`);
 
@@ -420,7 +419,7 @@ export async function generateMetaTags(req, res) {
   try {
     const { content } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -436,7 +435,7 @@ export async function generateMetaTags(req, res) {
       max_tokens: 500
     });
 
-    const metaTags = completion.data.choices[0].message.content;
+    const metaTags = completion.choices[0].message.content;
 
     logger.info('Meta tags generated');
 
@@ -455,7 +454,7 @@ export async function extractKeyPoints(req, res) {
   try {
     const { content, count = 5 } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -471,7 +470,7 @@ export async function extractKeyPoints(req, res) {
       max_tokens: 500
     });
 
-    const keyPoints = completion.data.choices[0].message.content;
+    const keyPoints = completion.choices[0].message.content;
 
     logger.info(`Extracted ${count} key points`);
 
@@ -490,7 +489,7 @@ export async function generateCTA(req, res) {
   try {
     const { articleContext, goal } = req.body;
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -506,7 +505,7 @@ export async function generateCTA(req, res) {
       max_tokens: 300
     });
 
-    const ctas = completion.data.choices[0].message.content;
+    const ctas = completion.choices[0].message.content;
 
     logger.info('CTAs generated');
 

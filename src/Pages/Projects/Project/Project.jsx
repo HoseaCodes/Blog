@@ -438,7 +438,7 @@ const ProjectItem = () => {
                               <img
                                 style={{
                                   objectFit: "contain",
-                                  width: "80rem",
+                                  width: "30rem",
                                   padding: "30px",
                                   height: "20 rem",
                                 }}

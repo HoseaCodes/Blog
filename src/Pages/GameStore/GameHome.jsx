@@ -182,11 +182,11 @@ const GameHome = (props) => {
               </Link>
 
               <Link
-                to="/gamecorner/this-page"
+                to="/blog"
                 className={`${styles.cta} ${styles.browseBtn}`}
               >
                 <NotFound className={styles.ctaSVG} />
-                404 Page
+                Blog Page
               </Link>
 
               <Link

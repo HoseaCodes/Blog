@@ -26,7 +26,7 @@ const Card = props => {
   
     return (
           <motion.div 
-            className={hoverState[1].selected === false ? styles.card : game.id === 26 ? styles.fifa : game.id === 12 ? styles.tombraider : game.id === 3 ? styles.mariokart : game.id === 11 ? styles.minecraft : styles.cardHome}
+            className={styles.card}
             onClick={handleSelectGame}
             id={game.id}
             style={{ margin: 0, padding: 0 }}
@@ -35,8 +35,12 @@ const Card = props => {
             animate="animate"
             exit="exit"
           >
-            <img src={game.cover} className={styles.img} alt="Game Cover Image" />
-            <h2 className={styles.name}>{game.name}</h2>
+            <div className={styles.imageContainer}>
+              <img src={game.cover} className={styles.img} alt="Game Cover Image" />
+              <div className={styles.titleOverlay}>
+                <h2 className={styles.name}>{game.name}</h2>
+              </div>
+            </div>
             <button 
               className={styles.like} 
               id={game.id} 

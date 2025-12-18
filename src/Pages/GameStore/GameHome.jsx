@@ -16,7 +16,7 @@ import { motion, AnimatePresence, m } from "framer-motion";
 import { Link, useHistory } from "react-router-dom";
 import Cart from "../../Components/Cart/Cart";
 import AnimatedScroll from "./AnimatedScroll";
-import games from "./games";
+import games from "../../Constants/games";
 import AutoplayAudio from "./AutoplayAudio";
 
 const GameHome = (props) => {

@@ -8,6 +8,7 @@ import Shop from "./Pages/Shop/Shop";
 import { BrowserRouter, Switch, Route, useLocation } from "react-router-dom";
 import CreateArticle from "./Pages/Articles/CreateArticle";
 import { DataProvider } from "./GlobalState";
+import { GameScoreProvider } from "./Context/GameScoreContext";
 import ArticleItem from "./Pages/Articles/Article/Article";
 import ProjectItem from "./Pages/Projects/Project/Project";
 import Login from "./Pages/Auth/login";
@@ -208,8 +209,8 @@ const App = () => {
     if (e.target.tagName === "BUTTON") {
       return;
     } else if (e.target.classList[0] != "AddToCart_addToCart__zbJPe") {
-      setSelectedGame(games[e.target.parentNode.id]);
-      window.location.href = `/gamecorner/game/${e.target.parentNode.id}`;
+      setSelectedGame(games[e.currentTarget.id]);
+      window.location.href = `/gamecorner/game/${e.currentTarget.id}`;
       console.log(e);
     }
   };
@@ -276,8 +277,9 @@ const App = () => {
   return (
     <BrowserRouter history={history}>
       <Switch>
-        <DataProvider>
-          <Layout>
+        <GameScoreProvider>
+          <DataProvider>
+            <Layout>
             <Route exact={true} path="/" render={() => <Home />} />
             <Suspense fallback={<ProLoader />}>
               {/* Static */}
@@ -473,6 +475,7 @@ const App = () => {
             {/* 404 */}
           </Layout>
         </DataProvider>
+        </GameScoreProvider>
       </Switch>
     </BrowserRouter>
   );

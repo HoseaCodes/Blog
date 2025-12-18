@@ -20,6 +20,54 @@ Welcome, to my personal blog and portfolio. Sharing information is vital and esp
 
 The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
 
+
+## Game Zone
+
+What should I display here? The concept I was going for was like a main game center for my technical command center. Something like mini-games but with my own spin. I wanted users to have the ability to sign up and based off playing the high score, unlocks things on the website and allows you to buy things. The scores/points earned are more like crypto tokens. Also, during extended loading times, they have the ability to play the games to collect points.
+
+### Core Mini-Games for Your Technical Command Center
+
+1. Code Runner - Typing Speed Challenge
+
+```jsx
+// A coding-themed typing game where users type code snippets
+// Points based on WPM + accuracy
+// Unlocks: Advanced code templates, faster deployment tools
+```
+1. Load Balancer - Resource Management
+
+```jsx
+// Distribute incoming requests across servers
+// Players drag/drop requests to prevent server overload
+// Points for efficiency and uptime
+// Unlocks: Infrastructure monitoring tools, deployment credits
+``` 
+1. Memory Leak Hunter - Pattern Matching
+
+```jsx
+// Find and fix memory issues in visual code blocks
+// Similar to matching games but with technical concepts
+// Points for speed and accuracy
+// Unlocks: Debugging tools, performance insights
+```
+
+1. API Tetris - System Architecture
+
+```jsx
+// Stack API components to build microservices
+// Different shapes = different services (auth, database, cache)
+// Points for clean architecture and completed systems
+// Unlocks: Architecture templates, service blueprints
+``` 
+
+1. Crypto Miner - Simple Clicker Game
+
+```jsx
+// Perfect for loading screens - just click to mine tokens
+// Minimal interaction required
+// Steady point accumulation
+// Unlocks: Token multipliers, auto-mining tools
+```
 ## Terminal Features
 
 The website includes an interactive terminal that you can use to navigate and learn more about me. Here's how to use it:

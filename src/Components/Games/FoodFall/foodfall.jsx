@@ -1,279 +1,482 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
+import styled, { keyframes } from "styled-components";
 
-import mouse from "../../../Utils/useMousePosition";
-import useWindowSize from "../../../Utils/useWindowSize";
-import "../games.css";
+// Animation keyframes
+const fallAnimation = keyframes`
+  0% { transform: translateY(-100px) scale(1); }
+  100% { transform: translateY(400px) scale(1); }
+`;
 
-import plate from "../../SVG/baby-animal-shaped-plate-svgrepo-com.svg";
-import burger from "../../SVG/burger-svgrepo-com.svg";
-import burrito from "../../SVG/burrito-svgrepo-com.svg";
-import donut from "../../SVG/donut-svgrepo-com.svg";
-import pizza from "../../SVG/pizza-svgrepo-com.svg";
+const plateAnimation = keyframes`
+  0% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  100% { transform: translateX(-10px); }
+`;
 
-import fire from "../../SVG/campfire-svgrepo-com.svg";
+const shrinkAnimation = keyframes`
+  0% { transform: scale(1); }
+  100% { transform: scale(0); }
+`;
 
-import tick from "../../SVG/checked-tick-svgrepo-com.svg";
-import cross from "../../SVG/cancel-svgrepo-com.svg";
+// Styled components
+const GameWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background: linear-gradient(180deg, #ffcccc 0%, #ffb3b3 50%, #ff9999 100%);
+  cursor: none;
+  overflow: hidden;
+  border-radius: 8px;
+`;
 
-let showInst = true;
+const InstructionText = styled.p`
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 100;
+  font-family: 'Amatic SC', cursive;
+  text-align: center;
+  user-select: none;
+  margin: 0;
+  z-index: 15;
+  color: #8B0000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
 
-// function FoodFall({ handleWin, losePoint, setPaused }) {
-function FoodFall() {
-  const winSound =
-    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Sounds/445974__breviceps__cartoon-slurp.wav";
-  const loseSound =
-    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Sounds/burn.wav";
-  document.body.style.backgroundColor = "#ffb3b3";
-  const { x } = mouse();
-  const [positionX, setPositionX] = useState(x);
-  const buffet = [burger, burrito, donut, pizza, fire];
+  @media (max-width: 600px) {
+    font-size: 18px;
+    top: 15px;
+    padding: 8px 16px;
+  }
+`;
 
-  const size = useWindowSize();
+const GameArea = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  background: transparent;
+`;
 
-  const [food, setFood] = useState(buffet[0]);
-  const [foodY, setFoodY] = useState(2);
-  const [spawnPosition, setSpawnPosition] = useState(10);
-  const [foodScale, setFoodScale] = useState(1);
+const Plate = styled.div`
+  position: absolute;
+  bottom: 30px;
+  left: ${props => props.x}px;
+  width: 80px;
+  height: 60px;
+  font-size: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: left 0.1s ease;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+  user-select: none;
 
-  const [food2, setFood2] = useState(buffet[4]);
-  const [foodY2, setFoodY2] = useState(2);
-  const [spawnPosition2, setSpawnPosition2] = useState(75);
-  const [foodScale2, setFoodScale2] = useState(1);
+  @media (max-width: 600px) {
+    width: 60px;
+    height: 45px;
+    font-size: 45px;
+    bottom: 20px;
+  }
+`;
 
-  const [food3, setFood3] = useState(buffet[2]);
-  const [foodY3, setFoodY3] = useState(-20);
-  const [spawnPosition3, setSpawnPosition3] = useState(40);
-  const [foodScale3, setFoodScale3] = useState(1);
+const FallingFood = styled.div`
+  position: absolute;
+  left: ${props => props.x}px;
+  top: ${props => props.y}px;
+  width: 50px;
+  height: 50px;
+  font-size: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transform: scale(${props => props.scale});
+  filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.4));
+  transition: transform 0.1s ease;
+  user-select: none;
 
-  const [localPause, setLocalPause] = useState(true);
+  @media (max-width: 600px) {
+    width: 40px;
+    height: 40px;
+    font-size: 32px;
+  }
+`;
 
-  function handleMove() {
-    setPositionX(x - 100);
+const ScoreDisplay = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  font-family: 'Amatic SC', cursive;
+  font-weight: bold;
+  color: #8B0000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.3);
+  padding: 10px 16px;
+  border-radius: 20px;
+  user-select: none;
+  z-index: 15;
+  backdrop-filter: blur(5px);
+
+  @media (max-width: 600px) {
+    font-size: 20px;
+    top: 15px;
+    right: 15px;
+    padding: 8px 12px;
+  }
+`;
+
+const ExampleContainer = styled.div`
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  z-index: 15;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+
+  @media (max-width: 600px) {
+    bottom: 60px;
+    padding: 15px;
+    gap: 10px;
+  }
+`;
+
+const FoodExamples = styled.div`
+  display: flex;
+  gap: 15px;
+  align-items: center;
+
+  @media (max-width: 600px) {
+    gap: 10px;
+  }
+`;
+
+const ExampleFood = styled.div`
+  font-size: 35px;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+  opacity: 0.8;
+
+  @media (max-width: 600px) {
+    font-size: 28px;
+  }
+`;
+
+const IndicatorContainer = styled.div`
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  margin-top: 10px;
+
+  @media (max-width: 600px) {
+    gap: 20px;
+  }
+`;
+
+const Indicator = styled.div`
+  font-size: 50px;
+  animation: ${plateAnimation} 2s infinite;
+  filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+
+  @media (max-width: 600px) {
+    font-size: 40px;
+  }
+`;
+
+const StartButton = styled.button`
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(139, 0, 0, 0.3);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-family: 'Amatic SC', cursive;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 15;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  color: #8B0000;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: translateX(-50%) scale(1.05);
   }
 
-  useEffect(() => {
-    if (localPause === false) {
-      let y = 2;
-      const foodDrop = setInterval(() => {
-        y++;
-        setFoodY(y);
-        if (y > 100) {
-          y = -15;
-          setFoodScale(1);
-          setFood(buffet[Math.floor(Math.random() * buffet.length)]);
-          setSpawnPosition(Math.floor(80 * Math.random()));
-        }
-      }, 12);
-      return () => clearInterval(foodDrop);
-    }
-  }, [localPause]);
-
-  useEffect(() => {
-    if (localPause === false) {
-      let y2 = 2;
-      const foodDrop = setInterval(() => {
-        y2++;
-        setFoodY2(y2);
-        if (y2 > 100) {
-          y2 = -15;
-          setFoodScale2(1);
-          setFood2(buffet[Math.floor(Math.random() * buffet.length)]);
-          setSpawnPosition2(Math.floor(80 * Math.random()));
-        }
-      }, 15);
-      return () => clearInterval(foodDrop);
-    }
-  }, [localPause]);
-
-  useEffect(() => {
-    if (localPause === false) {
-      let y3 = 2;
-      const foodDrop = setInterval(() => {
-        y3++;
-        setFoodY3(y3);
-        if (y3 > 100) {
-          y3 = -15;
-          setFoodScale3(1);
-          setFood3(buffet[Math.floor(Math.random() * buffet.length)]);
-          setSpawnPosition3(Math.floor(80 * Math.random()));
-        }
-      }, 18);
-      return () => clearInterval(foodDrop);
-    }
-  }, [localPause]);
-
-  useEffect(() => {
-    if (
-      foodY === 75 &&
-      (spawnPosition * size.width) / 100 - x > -200 &&
-      (spawnPosition * size.width) / 100 - x < 50
-    ) {
-      let f = 1;
-      let i = 0;
-      const scaleInt = setInterval(() => {
-        setFoodScale((f -= 0.1));
-        i++;
-        if (i === 10) {
-          clearInterval(scaleInt);
-        }
-      }, 10);
-      if (food.search("fire") === -1) {
-        // win()
-        let winGame = new Audio(winSound);
-        winGame.loop = false;
-        winGame.play();
-        // handleWin()
-      } else {
-        // lose()
-        let lose = new Audio(loseSound);
-        lose.loop = false;
-        lose.play();
-        // losePoint()
-      }
-    }
-  }, [foodY]);
-
-  useEffect(() => {
-    if (
-      foodY2 === 75 &&
-      (spawnPosition2 * size.width) / 100 - x > -200 &&
-      (spawnPosition2 * size.width) / 100 - x < 50
-    ) {
-      let f = 1;
-      let i = 0;
-      const scaleInt = setInterval(() => {
-        setFoodScale2((f -= 0.1));
-        i++;
-        if (i === 10) {
-          clearInterval(scaleInt);
-        }
-      }, 10);
-      if (food2.search("fire") === -1) {
-        // win()
-        let winGame = new Audio(winSound);
-        winGame.loop = false;
-        winGame.play();
-        // handleWin()
-      } else {
-        lose();
-        let lose = new Audio(loseSound);
-        lose.loop = false;
-        lose.play();
-        // losePoint()
-      }
-    }
-  }, [foodY2]);
-
-  useEffect(() => {
-    if (
-      foodY3 === 75 &&
-      (spawnPosition3 * size.width) / 100 - x > -200 &&
-      (spawnPosition3 * size.width) / 100 - x < 50
-    ) {
-      let f = 1;
-      let i = 0;
-      const scaleInt = setInterval(() => {
-        setFoodScale3((f -= 0.1));
-        i++;
-        if (i === 10) {
-          clearInterval(scaleInt);
-        }
-      }, 10);
-      if (food3.search("fire") === -1) {
-        // win()
-        let winGame = new Audio(winSound);
-        winGame.loop = false;
-        winGame.play();
-        // handleWin()
-      } else {
-        lose();
-        let lose = new Audio(loseSound);
-        lose.loop = false;
-        lose.play();
-        // losePoint()
-      }
-    }
-  }, [foodY3]);
-
-  function startGame() {
-    setLocalPause(false);
-    showInst = false;
-    // setPaused(false)
+  &:active {
+    transform: translateX(-50%) scale(0.95);
   }
+
+  @media (max-width: 600px) {
+    font-size: 18px;
+    padding: 10px 20px;
+    bottom: 15px;
+  }
+`;
+
+// Food emoji mapping
+const FOOD_EMOJIS = {
+  burger: "🍔",
+  pizza: "🍕", 
+  burrito: "🌯",
+  donut: "🍩",
+  fire: "🔥"
+};
+
+const GOOD_FOODS = ["🍔", "🍕", "🌯", "🍩"];
+
+export default function FoodFall({ gameStarted: gameStartedProp, isTimerRunning, soundEnabled, musicEnabled, onScoreUpdate, onGameComplete }) {
+  const winSound = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Sounds/445974__breviceps__cartoon-slurp.wav";
+  const loseSound = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Sounds/burn.wav";
+
+  const [plateX, setPlateX] = useState(200);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  // Food items state - using pixel coordinates
+  const [foods, setFoods] = useState([
+    { id: 1, emoji: "🍔", x: 50, y: -50, scale: 1, speed: 2 },
+    { id: 2, emoji: "🔥", x: 200, y: -50, scale: 1, speed: 2.5 },
+    { id: 3, emoji: "🍩", x: 150, y: -100, scale: 1, speed: 2 }
+  ]);
+
+  const gameRef = useRef();
+
+  // Start game when gameStartedProp changes
+  useEffect(() => {
+    if (gameStartedProp) {
+      setGameStarted(true);
+      setScore(0);
+      setLives(3);
+      setPlateX(200);
+    }
+  }, [gameStartedProp]);
+
+  // Generate random food
+  const getRandomFood = () => {
+    const allFoods = [...GOOD_FOODS, "🔥"];
+    return allFoods[Math.floor(Math.random() * allFoods.length)];
+  };
+
+  // Mouse tracking
+  const handleMouseMove = (e) => {
+    if (!gameRef.current || !gameStarted) return;
+
+    const rect = gameRef.current.getBoundingClientRect();
+    
+    // Set container width on first move
+    if (containerWidth === 0) {
+      setContainerWidth(rect.width);
+    }
+    
+    const relativeX = e.clientX - rect.left;
+    
+    // Center the plate on mouse position and keep within bounds
+    setPlateX(Math.max(0, Math.min(rect.width - 80, relativeX - 40)));
+  };
+
+  // Game loop
+  useEffect(() => {
+    if (!gameStarted || !containerWidth) return;
+
+    const gameLoop = setInterval(() => {
+      setFoods(prevFoods => {
+        return prevFoods.map(food => {
+          let newY = food.y + food.speed;
+          let newFood = { ...food, y: newY };
+
+          // Plate is at the bottom (around 430px in a 500px container)
+          const plateY = 430;
+
+          // Reset food when it goes off screen or was eaten
+          if (newY > 500 || food.scale === 0) {
+            newFood = {
+              ...food,
+              y: -50,
+              x: Math.random() * (containerWidth - 50),
+              emoji: getRandomFood(),
+              scale: 1,
+              speed: 1.5 + Math.random() * 1.5
+            };
+          }
+
+          // Check collision when food is at plate level and not eaten yet
+          if (newY >= plateY - 25 && newY <= plateY + 25 && food.scale === 1) {
+            const foodRight = food.x + 50;
+            const plateLeft = plateX;
+            const plateRight = plateX + 80;
+
+            // Check if food hits the plate (with some tolerance)
+            if (foodRight >= plateLeft && food.x <= plateRight) {
+              // Mark food as eaten
+              newFood.scale = 0;
+              
+              // Play sound and update score
+              setTimeout(() => {
+                if (GOOD_FOODS.includes(food.emoji)) {
+                  try {
+                    let winGame = new Audio(winSound);
+                    winGame.loop = false;
+                    winGame.volume = 0.3;
+                    winGame.play().catch(() => {});
+                  } catch (e) {}
+                  
+                  setScore(prev => prev + 1);
+                } else {
+                  try {
+                    let lose = new Audio(loseSound);
+                    lose.loop = false;
+                    lose.volume = 0.3;
+                    lose.play().catch(() => {});
+                  } catch (e) {}
+                  
+                  setLives(prev => Math.max(0, prev - 1));
+                }
+              }, 100);
+            }
+          }
+
+          return newFood;
+        });
+      });
+    }, 50);
+
+    return () => clearInterval(gameLoop);
+  }, [gameStarted, plateX, containerWidth, winSound, loseSound]);
+
+  // Game over check
+  useEffect(() => {
+    if (lives <= 0 && gameStarted) {
+      setGameStarted(false);
+      
+      // Trigger game complete callback with final score
+      if (onGameComplete) {
+        onGameComplete(score);
+      }
+    }
+  }, [lives, gameStarted, score, onGameComplete]);
+
+  // Update score callback
+  useEffect(() => {
+    if (onScoreUpdate && gameStarted) {
+      onScoreUpdate(score);
+    }
+  }, [score, gameStarted, onScoreUpdate]);
+
+  const startGame = () => {
+    setGameStarted(true);
+    setScore(0);
+    setLives(3);
+    
+    // Reset foods with pixel-based coordinates
+    const width = containerWidth || 400;
+    setFoods([
+      { id: 1, emoji: getRandomFood(), x: 50, y: -50, scale: 1, speed: 2 },
+      { id: 2, emoji: getRandomFood(), x: Math.random() * (width - 50), y: -100, scale: 1, speed: 2.5 },
+      { id: 3, emoji: getRandomFood(), x: Math.random() * (width - 50), y: -150, scale: 1, speed: 2 }
+    ]);
+  };
+
+  const resetGame = () => {
+    setGameStarted(false);
+    setScore(0);
+    setLives(3);
+    setPlateX(200);
+  };
 
   return (
-    <>
-      {showInst && (
-        <p className="instructionText">
-          catch food. don't catch fire. click to start
-        </p>
-      )}
+    <GameWrapper ref={gameRef} onMouseMove={handleMouseMove}>
+      <GameArea>
+        {!gameStarted && (
+          <InstructionText>
+            🍽️ Catch the good food! Avoid the fire! 🔥
+          </InstructionText>
+        )}
 
-      <div
-        className="foodWrapper"
-        onMouseMove={() => handleMove()}
-        onClick={() => startGame()}
-      >
-        <img
-          className="plate"
-          src={plate}
-          alt="plate"
-          style={{ left: positionX }}
-        />
+        {gameStarted && (
+          <ScoreDisplay>
+            Score: {score} | Lives: {"❤️".repeat(lives)}
+          </ScoreDisplay>
+        )}
 
-        <img
-          src={food}
-          alt="food"
-          className="food2"
-          style={{
-            left: `${spawnPosition}vw`,
-            top: `${foodY}vh`,
-            transform: `scale(${foodScale}, ${foodScale})`,
-          }}
-        />
+        <Plate x={plateX}>🍽️</Plate>
 
-        <img
-          src={food2}
-          alt="food"
-          className="food2"
-          style={{
-            left: `${spawnPosition2}vw`,
-            top: `${foodY2}vh`,
-            transform: `scale(${foodScale2}, ${foodScale2})`,
-          }}
-        />
+        {/* Render falling foods */}
+        {foods.map(food => (
+          <FallingFood
+            key={food.id}
+            emoji={food.emoji}
+            x={food.x}
+            y={food.y}
+            scale={food.scale}
+          >
+            {food.emoji}
+          </FallingFood>
+        ))}
 
-        <img
-          src={food3}
-          alt="food"
-          className="food2"
-          style={{
-            left: `${spawnPosition3}vw`,
-            top: `${foodY3}vh`,
-            transform: `scale(${foodScale3}, ${foodScale3})`,
-          }}
-        />
-
-        {showInst && (
+        {!gameStarted && lives > 0 && (
           <>
-            <div className="imgContainer">
-              <img alt="tick" className="tick" src={tick} />
-              <img alt="cross" className="cross" src={cross} />
-            </div>
-            <div className="exampleFoodfallContainer">
-              <div className="exFoodContainer">
-                <img className="exampleFood" src={burger} alt="" />
-                <img className="exampleFood" src={pizza} alt="" />
-                <img className="exampleFood" src={burrito} alt="" />
-                <img className="exampleFood" src={donut} alt="" />
+            <ExampleContainer>
+              <div style={{ fontSize: '16px', fontFamily: 'Amatic SC', color: '#8B0000', textAlign: 'center' }}>
+                Catch Good Food • Avoid Fire
               </div>
-              <img className="exampleFood" src={fire} alt="" />
-            </div>
+              
+              <FoodExamples>
+                <ExampleFood>🍔</ExampleFood>
+                <ExampleFood>🍕</ExampleFood>
+                <ExampleFood>🌯</ExampleFood>
+                <ExampleFood>🍩</ExampleFood>
+              </FoodExamples>
+              
+              <div style={{ fontSize: '24px', color: '#8B0000' }}>VS</div>
+              
+              <ExampleFood style={{ fontSize: '40px' }}>🔥</ExampleFood>
+              
+              <IndicatorContainer>
+                <Indicator>✅</Indicator>
+                <Indicator>❌</Indicator>
+              </IndicatorContainer>
+            </ExampleContainer>
+
+            <StartButton onClick={startGame}>
+              🚀 Start Game
+            </StartButton>
           </>
         )}
-      </div>
-    </>
+
+        {!gameStarted && lives <= 0 && (
+          <ExampleContainer>
+            <div style={{ fontSize: '24px', fontFamily: 'Amatic SC', color: '#8B0000', textAlign: 'center' }}>
+              Game Over!
+            </div>
+            <div style={{ fontSize: '20px', fontFamily: 'Amatic SC', color: '#8B0000' }}>
+              Final Score: {score}
+            </div>
+            <StartButton onClick={resetGame} style={{ position: 'relative', bottom: 'auto', left: 'auto', transform: 'none', marginTop: '15px' }}>
+              🔄 Play Again
+            </StartButton>
+          </ExampleContainer>
+        )}
+      </GameArea>
+    </GameWrapper>
   );
 }
-
-export default FoodFall;

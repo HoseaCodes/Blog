@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import OptionSelection from "./SelectionOptions";
 import Translation from "./Translation";
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
@@ -13,19 +13,19 @@ function AITemplate(props) {
   const [input, setInput] = useState("");
   const [option, setOption] = useState({});
 
-  const configuration = new Configuration({
+  const openai = new OpenAI({
     apiKey: process.env.REACT_APP_Open_AI_Key,
+    dangerouslyAllowBrowser: true
   });
-  const openai = new OpenAIApi(configuration);
 
   const generateAIResponse = async () => {
     try {
-      const response = await openai.createChatCompletion({
-        messages: [{ role: "assistant", content: input }],
+      const response = await openai.chat.completions.create({
+        messages: [{ role: "user", content: input }],
         model: "gpt-3.5-turbo",
       });
-      setResult(response.data.choices[0].message.content);
-      setLinkedinResult(response.data.choices[0].message.content);
+      setResult(response.choices[0].message.content);
+      setLinkedinResult(response.choices[0].message.content);
     } catch (error) {
       console.log(error);
       alert("Error in AI", error);

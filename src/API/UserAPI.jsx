@@ -33,7 +33,6 @@ function UserAPI(token) {
 
   useEffect(() => {
     const initAuth = async () => {
-      if (cookies.accesstoken) setIsLoggedIn(true);
       if (token || cookies.accesstoken) {
         try {
           const userData = await authService.getMe();

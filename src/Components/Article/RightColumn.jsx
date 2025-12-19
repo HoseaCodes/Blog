@@ -83,14 +83,14 @@ const RightColumn = (props) => {
         comment,
         user,
       });
-      const res = await axios.get(`/api/articles/${id}/comments`);
+      const res = await axios.get(`/api/articles/${param.id}/comments`);
       let filteredComments = res.data.comments.filter((comment) => {
-        return comment.blog === id;
+        return comment.blog === param.id;
       });
       setComments({ comments: filteredComments });
 
       await axios.put(
-        `/api/articles/${id}`,
+        `/api/articles/${param.id}`,
         {
           comments: filteredComments,
         },

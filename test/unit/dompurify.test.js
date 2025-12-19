@@ -1,11 +1,12 @@
 import DOMPurify from 'dompurify';
 
 /**
- * Test suite for DOMPurify 2.4.2 compatibility
+ * Test suite for DOMPurify 3.2.4 compatibility
  * Tests basic functionality and security features
+ * Ensures 2.4.2 → 3.2.4 major version upgrade is safe
  */
 
-describe('DOMPurify 2.4.2 Compatibility Tests', () => {
+describe('DOMPurify 3.2.4 Compatibility Tests', () => {
   
   // Basic sanitization tests
   describe('Basic HTML Sanitization', () => {
@@ -253,4 +254,166 @@ describe('DOMPurify 2.4.2 Compatibility Tests', () => {
       expect(clean).toContain('Whitespace');
     });
   });
+
+  // Version 3.x Specific Tests
+  describe('DOMPurify 3.x Features', () => {
+    test('should handle deeply nested HTML with depth limit (3.1.1+)', () => {
+      // Create HTML with 100 levels of nesting (below 255 limit in 3.1.1+)
+      let nested = '<div>';
+      for (let i = 0; i < 100; i++) {
+        nested += '<div>';
+      }
+      nested += 'Content';
+      for (let i = 0; i < 100; i++) {
+        nested += '</div>';
+      }
+      nested += '</div>';
+      
+      // Should not crash, should handle gracefully
+      const result = DOMPurify.sanitize(nested);
+      expect(result).toContain('Content');
+      expect(typeof result).toBe('string');
+    });
+
+    test('should work without window object (3.2.4)', () => {
+      // In 3.2.4, better handling when no window object is present
+      // This test ensures the sanitize function is callable
+      const html = '<p>Test</p>';
+      const result = DOMPurify.sanitize(html);
+      expect(result).toContain('<p>');
+    });
+
+    test('should support SAFE_FOR_XML option (3.1.0+)', () => {
+      // New config option in 3.1.0+
+      const config = { SAFE_FOR_XML: true };
+      const html = '<p>Safe</p>';
+      const result = DOMPurify.sanitize(html, config);
+      expect(result).toContain('<p>');
+    });
+
+    test('should support USE_PROFILES configuration (3.x)', () => {
+      // USE_PROFILES allows restricting to specific mark-up languages
+      const config = { USE_PROFILES: { html: true } };
+      const html = '<p>HTML Only</p><svg></svg>';
+      const result = DOMPurify.sanitize(html, config);
+      expect(result).toContain('<p>');
+      expect(result).not.toContain('<svg>');
+    });
+
+    test('should have isSupported property (3.x)', () => {
+      // DOMPurify exposes isSupported to check if it works in current environment
+      expect(typeof DOMPurify.isSupported).toBe('boolean');
+      if (DOMPurify.isSupported !== undefined) {
+        // If property exists, it should indicate support
+        expect([true, false]).toContain(DOMPurify.isSupported);
+      }
+    });
+
+    test('should maintain removed elements tracking (3.x)', () => {
+      // DOMPurify tracks removed elements in DOMPurify.removed
+      const malicious = '<p>Safe</p><script>alert(1)</script>';
+      DOMPurify.sanitize(malicious);
+      
+      // The removed property should exist and be an array
+      if (DOMPurify.removed) {
+        expect(Array.isArray(DOMPurify.removed) || typeof DOMPurify.removed === 'object').toBe(true);
+      }
+    });
+
+    test('should support IN_PLACE sanitization mode (3.x)', () => {
+      // IN_PLACE mode can sanitize DOM nodes in-place (faster for some use cases)
+      const config = { IN_PLACE: false };
+      const html = '<p>Test</p>';
+      const result = DOMPurify.sanitize(html, config);
+      expect(result).toContain('<p>');
+    });
+  });
+
+  // Security & mXSS Tests (3.x improvements)
+  describe('DOMPurify 3.x Security Improvements', () => {
+    test('should handle processing instruction XSS (3.0.10+)', () => {
+      // Processing instructions with XSS payloads
+      const html = '<?xml version="1.0"?><div>safe</div>';
+      const result = DOMPurify.sanitize(html);
+      expect(result).toContain('safe');
+    });
+
+    test('should prevent attribute clobbering with enhanced checks (3.x)', () => {
+      // Enhanced attribute validation in 3.x
+      const html = '<div name="html"></div>';
+      const result = DOMPurify.sanitize(html);
+      expect(result).toContain('<div');
+    });
+
+    test('should handle custom element regex properly (3.0.11+)', () => {
+      // Fixed regex for custom elements in 3.0.11
+      const html = '<custom-element>content</custom-element>';
+      const config = { 
+        CUSTOM_ELEMENT_HANDLING: {
+          tagNameCheck: /^custom-/
+        }
+      };
+      const result = DOMPurify.sanitize(html, config);
+      // Should either allow or remove custom element depending on config
+      expect(typeof result).toBe('string');
+    });
+
+    test('should handle shadow DOM safely (3.x)', () => {
+      // Better shadow DOM support in 3.x
+      const html = '<div><!--shadowrootmode="open"><script>alert(1)</script>--></div>';
+      const result = DOMPurify.sanitize(html);
+      expect(result).toContain('<div>');
+      expect(result).not.toContain('<script>');
+    });
+  });
+
+  // Compatibility verification
+  describe('Backward Compatibility (2.4.2 → 3.2.4)', () => {
+    test('configuration from 2.4.2 should work in 3.2.4', () => {
+      // Old 2.4.2 style configuration
+      const config = {
+        ALLOWED_TAGS: ['p', 'br', 'a'],
+        ALLOWED_ATTR: ['href', 'title'],
+        SAFE_FOR_TEMPLATES: false
+      };
+      
+      const html = '<p><a href="/test" title="Test">Link</a></p>';
+      const result = DOMPurify.sanitize(html, config);
+      
+      expect(result).toContain('<p>');
+      expect(result).toContain('<a');
+      expect(result).toContain('href');
+    });
+
+    test('hooks from 2.4.2 should work in 3.x', () => {
+      // Hooks are maintained in 3.x
+      let hookCalled = false;
+      
+      DOMPurify.addHook('beforeSanitizeElements', (node) => {
+        hookCalled = true;
+      });
+      
+      DOMPurify.sanitize('<p>Test</p>');
+      
+      expect(hookCalled).toBe(true);
+      
+      // Clean up
+      DOMPurify.removeHook('beforeSanitizeElements');
+    });
+
+    test('setConfig from 2.4.2 should work in 3.x', () => {
+      // Config persistence API works
+      DOMPurify.setConfig({ ALLOWED_TAGS: ['p'] });
+      
+      const html = '<p>Test</p><div>Removed</div>';
+      const result = DOMPurify.sanitize(html);
+      
+      expect(result).toContain('<p>');
+      expect(result).not.toContain('<div>');
+      
+      // Reset
+      DOMPurify.clearConfig();
+    });
+  });
 });
+

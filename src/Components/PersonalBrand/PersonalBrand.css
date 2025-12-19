@@ -49,7 +49,7 @@
 .bio-info {
   width: 75%;
   margin-top: 1rem;
-  font-size: 2.7rem;
+  font-size: 1.7rem;
   font-weight: 600;
   text-align: center;
   color: rgb(235, 183, 65);
@@ -92,9 +92,13 @@
   z-index: -1;
 }
 
+.download-btn {
+  font-size: 0.75rem !important;
+}
+
 .personal-card-title {
   text-transform: uppercase;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 400;
 }
 .personal-card-info {
@@ -103,7 +107,7 @@
 }
 .personal-card-content {
   overflow: scroll;
-  font-size: 2.2rem;
+  font-size: 1.25rem;
 }
 .personal-image {
   width: 45%;

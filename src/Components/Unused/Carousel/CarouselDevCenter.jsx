@@ -2,13 +2,13 @@ import React from 'react'
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp';
-import DevCenter from '../../icons/DevCenter.png'
-import DevCenter2 from '../../icons/DevCenter2.png'
-import DevCenter3 from '../../icons/DevCenter3.png'
-import DevCenter4 from '../../icons/DevCenter4.png'
 import Modal3 from '../Modal/Modal3'
 
 function CarouselDevCenter() {
+    const DevCenter = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/DevCenter.png'
+    const DevCenter2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/DevCenter2.png'
+    const DevCenter3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/DevCenter3.png'
+    const DevCenter4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/DevCenter4.png'
     let example = [
         <ImgComp className='cover' src={DevCenter} />,
         <ImgComp className='cover' src={DevCenter2} />,

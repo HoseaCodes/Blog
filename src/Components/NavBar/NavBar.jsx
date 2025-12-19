@@ -1,39 +1,58 @@
-import React, {useReducer, useContext } from "react";
-import axios from "axios";
+import React, { useReducer, useContext, useEffect } from "react";
 import "./NavBar.css";
-import burger from '../../Assets/Images/burger-min.png';
-import Logo from '../../Assets/Images/logo-min.png';
 import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
+import { StyledHeaderNav } from '../../Layout/Container/styledContainer'
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useCookies } from "react-cookie";
 import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
+  const Logo =
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/logo-min.png";
+  const burger =
+    '  const logo = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/burger-min.png';
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const location = useLocation();
   const currentPath = location.pathname;
   const state = useContext(GlobalState);
-  const [isLoggedIn] = state.userAPI.isLoggedIn
-  const [isAdmin] = state.userAPI.isAdmin
-  const [user] = state.userAPI.user
+  const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [isAdmin] = state.userAPI.isAdmin;
+  const [user] = state.userAPI.user;
   const [cart] = state.userAPI.cart;
-  if (currentPath.includes("/blog/")) {
+  const logout = state.userAPI.logout;
+  
+  if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
     return null;
   }
+
+  useEffect(() => {
+    
+      console.log(currentPath);
+    
+  }, []);
 
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
       true
       );
+  
+  if (currentPath.includes("/blog/")) {
+    return null;
+  }
 
-  const logoutUser = async () => {
-    await axios.post("/api/user/logout");
-    localStorage.removeItem("firstLogin");
-    localStorage.removeItem("isLoggedIn");
-    removeCookie("accesstoken");
-    window.location.href = "/";
+  const logoutUser = () => {
+    if (logout) {
+      logout();
+    } else {
+      // Fallback to manual logout if logout method not available
+      localStorage.removeItem("firstLogin");
+      localStorage.removeItem("isLoggedIn");
+      removeCookie("accesstoken");
+      removeCookie("refreshtoken");
+      window.location.href = "/";
+    }
   };
 
   const adminRouter = () => {
@@ -143,7 +162,7 @@ const NavBar = () => {
                     <img className='nav-logo' src={Logo} alt="HoseaCodes" />
                   </Link>
                   :
-                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user.name.split(' ')[0]}</h1>
+                  <h1 className='nav-title' style={{color: 'white'}}>Welcome, {user?.name ? user.name.split(' ')[0] : 'User'}</h1>
                 }
                 <ul className={`left-nav ${isActive ? "" : "left-nav open"}`}>
                     {isAdmin && adminRouter()}
@@ -169,7 +188,7 @@ const NavBar = () => {
                     )} */}
                 </ul>
             </nav>
-            <StyledHr Primary/>
+            {/* <StyledHr Primary/> */}
         </header>
 
     )

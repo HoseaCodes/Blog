@@ -2,7 +2,9 @@ name: Dev Pipeline
 on:
   push:
     branches:
-      - main
+      - staging
+    tags:
+      - v*
 jobs:
   static-scan:
     runs-on: ubuntu-latest
@@ -11,19 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
       - name: Run Snyk to check for vulnerabilities
         continue-on-error: true
         run: |
-          snyk code test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+          npm install -g snyk-to-html
+          snyk code test || true
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Archive snyk results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: snyk-report
-          path: output/scan/snyk.html
+          name: snyk-static-report
+          path: snyk.html
           retention-days: 5
   dependency-scan:
     runs-on: ubuntu-latest
@@ -32,19 +34,19 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - uses: snyk/actions/setup@master
-      - uses: actions/setup-go@v1
       - name: Run Snyk to check for vulnerabilities
         continue-on-error: true
         run: |
-          snyk test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+          npm install -g snyk-to-html
+          snyk test || true
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Archive snyk results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: snyk-report
-          path: output/scan/snyk.html
+          name: snyk-dependency-report
+          path: snyk.html
           retention-days: 5
   lint:
     needs: [static-scan, dependency-scan]
@@ -58,6 +60,8 @@ jobs:
   build:
     needs: [static-scan, dependency-scan, lint]
     runs-on: ubuntu-latest
+    outputs:
+      build_path: ${{ steps.archive_build.outputs.build_path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -65,12 +69,57 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
-      - name: Deploy to Heroku
+      - name: Clean install dependencies
         run: |
-          git remote add heroku https://git.heroku.com/hoseacodes-dev.git
-          git push heroku main
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
+      - name: Build project
+        run: npm run build
         env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-       
+          SKIP_PREFLIGHT_CHECK: "true"
+      - name: Archive build output
+        id: archive_build
+        run: |
+          tar -czf build.tar.gz build/
+          echo "::set-output name=build_path::build.tar.gz"
+      - name: Create conventional changelog action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@latest
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          tag-prefix: "dev.v"
+          git-push: false
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: Release ${{ steps.changelog.outputs.tag }}
+          body:  ${{steps.changelog.outputs.clean_changelog}}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build.tar.gz
+          asset_name: build.tar.gz
+          asset_content_type: application/gzip
+  promote-dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Deploy to Fly.io
+        uses: superfly/flyctl-actions@master
+        with:
+          args: "deploy"
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

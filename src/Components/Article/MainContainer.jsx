@@ -47,7 +47,12 @@ const MainContainer = (props) => {
                 <GrayText>{timeFormater}</GrayText>
                 <span>&nbsp;&#183;&nbsp;</span>
                 <DisplayItem>
-                  {readTime} min read &nbsp; <AiFillStar />
+                  {readTime > 60
+                    ? `${Math.floor(readTime / 60)} Hours${
+                        readTime % 60 ? ` ${readTime % 60} min` : ''
+                      } read`
+                    : `${readTime} min read`}{' '}
+                  &nbsp; <AiFillStar />
                 </DisplayItem>
                 <span>&nbsp;&#183;&nbsp;</span>
                 <TextToSpeech text={markdown} />
@@ -92,7 +97,7 @@ const MainContainer = (props) => {
                   onChange={() => props.handleCheck(_id)}
                 />
                 <BtnRender
-                  article={props.article}
+                  article={props.detailArticle}
                   deleteArticle={props.deleteArticle}
                 />
               </>

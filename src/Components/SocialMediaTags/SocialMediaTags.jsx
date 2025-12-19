@@ -1,8 +1,9 @@
 import React from 'react';
 import './SocialMediaTags.css'
-import Resume2020 from '../../Assets/Files/Resume2020.pdf'
 
 const SocialMediaTags = () => {
+    const Resume2020 =
+      "https://d2nrcsymqn25pk.cloudfront.net/Assets/PDFs/Resume2020.pdf";
     return (
         <ul className="social_footer_ul">
             <li><a rel="noopener noreferrer" href="https://github.com/HoseaCodes"><i className="fab fa-github"></i></a></li>

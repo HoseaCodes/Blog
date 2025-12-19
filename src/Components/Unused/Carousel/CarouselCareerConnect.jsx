@@ -2,14 +2,14 @@ import React from 'react'
 import '../Carousel/Carousel.css'
 import { useState } from 'react';
 import ImgComp from './ImgComp'
-import careerconnect from '../../icons/careerconnect.png'
-import careerconnect2 from '../../icons/careerconnect2.png'
-import careerconnect3 from '../../icons/careerconnect3.png'
-import careerconnect4 from '../../icons/careerconnect4.png'
-import careerconnect5 from '../../icons/careerconnect5.png'
 import Modal2 from '../Modal/Modal2'
 
 function CarouselCareerconnect() {
+    const careerconnect = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect.png'
+    const careerconnect2 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect2.png'
+    const careerconnect3 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect3.png'
+    const careerconnect4 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect4.png'
+    const careerconnect5 = 'https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/careerconnect5.png'
     let connect = [
         <ImgComp src={careerconnect} />,
         <ImgComp src={careerconnect2} />,

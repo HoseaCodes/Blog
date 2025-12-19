@@ -40,7 +40,7 @@ const AnimatedTextCharacter = ({ text }) => {
 
   return (
     <motion.div
-      style={{ overflow: "hidden", fontSize: "2rem" }}
+      style={{ overflow: "hidden", fontSize: "1rem" }}
       variants={container}
       initial="hidden"
       animate="visible"

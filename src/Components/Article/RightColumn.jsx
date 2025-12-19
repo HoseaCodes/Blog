@@ -74,7 +74,7 @@ const RightColumn = (props) => {
       };
       getComments();
     }
-  }, [param.id, comment]);
+  }, [param.id, comment, token]);
 
   const postComment = async () => {
     try {

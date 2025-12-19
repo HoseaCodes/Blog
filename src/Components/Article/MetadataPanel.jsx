@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import { 
@@ -219,7 +219,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
   const [suggestedKeywords, setSuggestedKeywords] = useState([]);
   const [loadingKeywords, setLoadingKeywords] = useState(false);
 
-  const fetchKeywordSuggestions = async () => {
+  const fetchKeywordSuggestions = useCallback(async () => {
     // FIXED: Use title or category for keyword suggestions, not entire content
     const topic = article.title || article.metadata?.category || 'blog post';
     
@@ -255,7 +255,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
     } finally {
       setLoadingKeywords(false);
     }
-  };
+  }, [article.title, article.metadata?.category, seoAPI]);
 
   // Fetch keyword suggestions when title or category changes (not content)
   useEffect(() => {
@@ -275,7 +275,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
     return () => {
       isMounted = false;
     };
-  }, [article.title, article.metadata?.category, seoAPI]); // Watch title and category, not content
+  }, [article.title, article.metadata?.category, seoAPI, fetchKeywordSuggestions]); // Watch title and category, not content
 
   const applySuggestedKeyword = (keyword) => {
     if (!keyword || !updateArticle) return;

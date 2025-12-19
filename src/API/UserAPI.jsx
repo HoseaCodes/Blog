@@ -54,7 +54,7 @@ function UserAPI(token) {
       setLoading(false);
     };
     initAuth();
-  }, [token, cookies]);
+  }, [token, cookies.accesstoken]);
 
   const addCart = async (product) => {
     if (!isLoggedIn) return alert("Please login to continue buying");

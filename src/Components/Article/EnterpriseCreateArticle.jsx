@@ -38,7 +38,7 @@ const HeaderBar = styled(motion.header)`
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1rem 2rem;
   display: flex;
-  justify-content: between;
+  justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;

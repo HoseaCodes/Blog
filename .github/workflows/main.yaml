@@ -16,15 +16,16 @@ jobs:
       - name: Run Snyk to check for vulnerabilities
         continue-on-error: true
         run: |
+          npm install -g snyk-to-html
           snyk code test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Archive snyk results
         uses: actions/upload-artifact@v4
         with:
-          name: snyk-report
-          path: output/scan/snyk.html
+          name: snyk-static-report
+          path: snyk.html
           retention-days: 5
   dependency-scan:
     runs-on: ubuntu-latest
@@ -36,15 +37,16 @@ jobs:
       - name: Run Snyk to check for vulnerabilities
         continue-on-error: true
         run: |
+          npm install -g snyk-to-html
           snyk test
-          snyk-to-html -i $JSON_OUTPUT -o snyk.html 
+          snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       - name: Archive snyk results
         uses: actions/upload-artifact@v4
         with:
-          name: snyk-report
-          path: output/scan/snyk.html
+          name: snyk-dependency-report
+          path: snyk.html
           retention-days: 5
   lint:
     needs: [static-scan, dependency-scan]
@@ -70,9 +72,7 @@ jobs:
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
       - name: Build project
-        run: |
-          export SKIP_PREFLIGHT_CHECK=true
-          npm run build
+        run: npm run build
       - name: Archive build output
         id: archive_build
         run: |

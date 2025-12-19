@@ -15,7 +15,7 @@ const Footer = (props) => {
         console.log(currentPath, 'footer')
     }, [])
 
-    if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
+    if (currentPath.includes("/blog/") || currentPath.includes("/gamecorner")) {
       return null;
     }
 

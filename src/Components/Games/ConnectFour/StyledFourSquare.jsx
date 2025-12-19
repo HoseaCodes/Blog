@@ -1,6 +1,8 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import StyledFourSquare from './StyledFourSquare';
+const StyledFourSquare = styled.div`
+`;
 
 const FourSquare = ({props, onSelect}) => {
 

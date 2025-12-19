@@ -72,6 +72,7 @@ jobs:
       - name: Clean install dependencies
         run: |
           rm -f package-lock.json
+          SKIP_PREFLIGHT_CHECK=true
           npm install --legacy-peer-deps
       - name: Build project
         run: npm run build

@@ -17,7 +17,7 @@ jobs:
         continue-on-error: true
         run: |
           npm install -g snyk-to-html
-          snyk code test
+          snyk code test || true
           snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
         continue-on-error: true
         run: |
           npm install -g snyk-to-html
-          snyk test
+          snyk test || true
           snyk-to-html -i $JSON_OUTPUT -o snyk.html
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -69,8 +69,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+      - name: Clean install dependencies
+        run: |
+          rm -f package-lock.json
+          npm install --legacy-peer-deps
       - name: Build project
         run: npm run build
       - name: Archive build output

@@ -2,10 +2,11 @@ import React, { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import "./auth.css";
-import Logo from "../../Assets/Images/newLogo.png";
 import { useCookies } from "react-cookie";
 
 const Login = () => {
+  const Logo =
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const state = useContext(GlobalState);
   const history = useHistory();
   const [user, setUser] = state.userAPI.user;
@@ -24,12 +25,12 @@ const Login = () => {
     password: ""
   });
 
-  const onChangeInput = e => {
+  const onChangeInput = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const loginSubmit = async e => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);

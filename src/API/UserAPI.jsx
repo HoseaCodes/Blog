@@ -33,8 +33,7 @@ function UserAPI(token) {
 
   useEffect(() => {
     const initAuth = async () => {
-      if (cookies.accesstoken) setIsLoggedIn(true);
-      if (token || isLoggedIn || cookies.accesstoken) {
+      if (token || cookies.accesstoken) {
         try {
           const userData = await authService.getMe();
           console.log(userData, "user info");
@@ -55,12 +54,12 @@ function UserAPI(token) {
       setLoading(false);
     };
     initAuth();
-  }, [token, cookies]);
+  }, [token, cookies.accesstoken]);
 
-  const addCart = async product => {
+  const addCart = async (product) => {
     if (!isLoggedIn) return alert("Please login to continue buying");
 
-    const check = cart.every(item => {
+    const check = cart.every((item) => {
       return item._id !== product._id;
     });
 
@@ -71,7 +70,7 @@ function UserAPI(token) {
         "/api/user/addcart",
         { cart: [...cart, { ...product, quantity: 1 }] },
         {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         }
       );
     } else {

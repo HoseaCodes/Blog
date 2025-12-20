@@ -1,0 +1,145 @@
+.achievements-section {
+  background-color: #1a1e23;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.achievements-title {
+  font-size: 2.5rem;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 3rem;
+  letter-spacing: 0.3rem;
+  text-shadow: 2px 2px 2px #206a5d;
+}
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.achievement-card {
+  background: linear-gradient(145deg, #232832, #1a1e23);
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(32, 106, 93, 0.3);
+}
+
+.achievement-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(32, 106, 93, 0.3);
+  border-color: #206a5d;
+}
+
+.achievement-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.achievement-metric {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #206a5d;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.achievement-title {
+  font-size: 1.4rem;
+  color: white;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.achievement-description {
+  font-size: 1rem;
+  color: #ccc;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Mobile Responsiveness */
+@media only screen and (max-width: 768px) {
+  .achievements-section {
+    padding: 3rem 1rem;
+  }
+  
+  .achievements-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    letter-spacing: 0.2rem;
+  }
+  
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .achievement-card {
+    padding: 1.5rem;
+  }
+  
+  .achievement-metric {
+    font-size: 1.5rem;
+  }
+  
+  .achievement-title {
+    font-size: 1.2rem;
+  }
+  
+  .achievement-description {
+    font-size: 0.9rem;
+  }
+  
+  .achievement-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .achievements-section {
+    padding: 2rem 1rem;
+  }
+  
+  .achievements-title {
+    font-size: 1.8rem;
+    letter-spacing: 0.1rem;
+  }
+  
+  .achievement-card {
+    padding: 1rem;
+  }
+  
+  .achievement-metric {
+    font-size: 1.3rem;
+  }
+  
+  .achievement-title {
+    font-size: 1.1rem;
+  }
+  
+  .achievement-icon {
+    font-size: 2rem;
+  }
+}
+
+/* Animation delays for staggered effect */
+.achievement-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.achievement-card:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.achievement-card:nth-child(3) {
+  animation-delay: 0.5s;
+}

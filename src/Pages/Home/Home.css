@@ -10,14 +10,21 @@
   align-items: center;
 }
 
-.testomonies,
-.socialmedia {
-  display: flex;
-  align-items: center;
+.achievements-section-wrapper,
+.articles-section-wrapper {
+  width: 100%;
   background-color: #1a1e23;
+  padding: 2rem 0;
 }
 
-.testimonies-group,
+.achievements-section-wrapper {
+  border-top: 1px solid rgba(32, 106, 93, 0.2);
+}
+
+.articles-section-wrapper {
+  border-bottom: 1px solid rgba(32, 106, 93, 0.2);
+}
+
 .contact-group {
   background-color: rgb(35, 41, 47);
   background-color: whitesmoke;
@@ -26,17 +33,11 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../Assets/Images/cpu-min.jpeg");
+    url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/cpu-min.jpeg");
   background-size: cover;
   background-position: bottom;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-
-.testimonies-group h2 {
-  display: flex;
-  justify-content: center;
-  margin: auto;
 }
 
 .contact-group {
@@ -45,7 +46,7 @@
       rgba(119, 119, 119, 0.6),
       rgba(119, 119, 119, 0.6)
     ),
-    url("../../Assets/Images/cpu-min.jpeg");
+    url("https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/cpu-min.jpeg");
   background-position: center;
   display: flex;
   flex-direction: column;
@@ -55,24 +56,24 @@
 }
 
 .subTitle {
-  font-size: 8rem;
+  font-size: 2rem;
   margin: 0 auto;
   color: white;
   opacity: 0.8;
   text-transform: uppercase;
   text-shadow: 2px 2px 2px #206a5d;
-  letter-spacing: 1rem;
+  letter-spacing: 0.3rem;
   display: flex;
   align-items: center;
-  padding: 10rem;
+  padding: 3rem;
 }
 
 .email {
-  font-size: 8rem !important;
+  font-size: 3rem !important;
 }
 
 .email:hover {
-  font-size: 9rem !important;
+  font-size: 3.2rem !important;
   cursor: pointer;
   filter: drop-shadow(0 0 1.5rem white);
 }
@@ -84,7 +85,7 @@
   cursor: pointer;
   display: flex;
   justify-content: center;
-  font-size: 1.8em;
+  font-size: 1.2em;
   margin-bottom: 10px;
   padding: 10px 10px;
   background-color: transparent;
@@ -141,7 +142,6 @@
 .technologies h1,
 .color h1,
 .articles h1,
-.socialmedia h1,
 .open-section h1 {
   color: white;
   display: block;
@@ -149,8 +149,8 @@
   font-weight: bolder;
   text-align: center;
   text-transform: uppercase;
-  font-size: 4rem;
-  letter-spacing: 1rem;
+  font-size: 2.5rem;
+  letter-spacing: 0.5rem;
   line-height: 40px;
   margin: 0;
 }
@@ -163,6 +163,16 @@
   background-color: #1a1e23;
   padding-top: 2.5rem;
   margin-top: 2rem;
+}
+
+.contact-heading {
+  font-size: 2rem;
+  text-align: center;
+  color: white;
+  opacity: 0.8;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 2px #206a5d;
+  letter-spacing: 0.3rem;
 }
 
 .btn-input {
@@ -197,28 +207,43 @@
   border-radius: 8%;
 }
 
+/* Mobile responsiveness */
+@media only screen and (max-width: 768px) {
+  .achievements-section-wrapper,
+  .articles-section-wrapper {
+    padding: 1.5rem 0;
+  }
+}
+
 @media only screen and (min-device-width: 375px) and (max-device-width: 1180px) {
   .homepage-combo {
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
-  .socialmedia {
-    width: 80%;
-  }
-  .testomonies {
-    width: 85%;
-  }
   .subTitle {
-    font-size: 3.5rem;
+    font-size: 1.5rem;
+    padding: 2rem;
+    letter-spacing: 0.2rem;
   }
 
   .header-button {
     margin: auto !important;
     width: 40% !important;
+    font-size: 1rem;
   }
 
-  .contact-group h2 {
-    font-size: 3.5rem !important;
+  .contact-heading {
+    font-size: 1.5rem !important;
+    letter-spacing: 0.2rem !important;
+  }
+  
+  .projects h1,
+  .technologies h1,
+  .color h1,
+  .articles h1,
+  .open-section h1 {
+    font-size: 2rem;
+    letter-spacing: 0.3rem;
   }
 }

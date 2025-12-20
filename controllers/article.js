@@ -65,12 +65,18 @@ async function createArticle(req, res) {
       subtitle,
       markdown,
       description,
+      draft,
+      scheduled,
+      scheduledDateTime,
       images,
       categories,
       dev,
       medium,
       postedBy,
       series,
+      linkedin,
+      linkedinContent,
+      linkedinAccessToken,
     } = req.body;
 
     switch (req.body) {
@@ -110,21 +116,44 @@ async function createArticle(req, res) {
       return res.status(400).json({ msg: "This article already exists." });
     }
 
+    if (scheduled & scheduledDateTime) {
+      if (new Date(scheduledDateTime) < new Date()) {
+        logger.error("Scheduled date is in the past.");
+        return res.status(400).json({ msg: "Scheduled date is in the past." });
+      }
+    }
+
     const newArticle = new Articles({
       article_id,
       title,
       subtitle,
       markdown,
+      draft,
+      scheduled,
+      scheduledDateTime,
       description,
       images,
       postedBy,
       tags: ["api", "hoseacodes"],
       categories,
       slug: title.toLowerCase().replace(/ /g, "-"),
+      dev,
+      medium,
+      linkedin,
+      linkedinContent,
     });
 
     try {
-      if (dev) {
+    } catch (error) {
+      logger.error(error);
+      return res.status(error.response.status).json({
+        code: error.response.statusText,
+        msg: error.response.data,
+      });
+    }
+
+    if (dev) {
+      try {
         if (!title || !markdown || !series) {
           logger.error("No title, markdown or series provided.");
           return res
@@ -151,9 +180,17 @@ async function createArticle(req, res) {
           }
         );
         logger.info("Published to Dev To");
+      } catch (error) {
+        logger.error(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
       }
+    }
 
-      if (medium) {
+    if (medium) {
+      try {
         if (!series) {
           logger.error("No series provided.");
           return res.status(400).json({ msg: "No series upload" });
@@ -180,21 +217,91 @@ async function createArticle(req, res) {
           }
         );
         logger.info("Published to Medium");
+      } catch (error) {
+        logger.error(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
       }
-    } catch (error) {
-      logger.error(error);
-      return res.status(error.response.status).json({
-        code: error.response.statusText,
-        msg: error.response.data,
-      });
+    }
+
+    if (linkedin) {
+      try {
+        const redirectUri = "http://localhost:3000/admin/blog/new";
+        const clientId = process.env.LINKEDIN_CLIENT_ID || "86s5czbllv0b9s";
+        const clientSecret =
+          process.env.LINKEDIN_CLIENT_SECRET || "VvcAdF8uDmIddv2J";
+        const getAccessToken = async () => {
+          const response = await axios.post(
+            "https://www.linkedin.com/oauth/v2/accessToken",
+            null,
+            {
+              params: {
+                grant_type: "authorization_code",
+                code: linkedinAccessToken,
+                redirect_uri: redirectUri,
+                client_id: clientId,
+                client_secret: clientSecret,
+              },
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            }
+          );
+          return response.data.access_token;
+        };
+        const accessToken = await getAccessToken();
+        const response = await axios.post(
+          "https://api.linkedin.com/v2/ugcPosts",
+          {
+            author: `urn:li:person:ZGV337BIbm`,
+            lifecycleState: "PUBLISHED",
+            specificContent: {
+              "com.linkedin.ugc.ShareContent": {
+                shareCommentary: {
+                  text: linkedinContent,
+                },
+                shareMediaCategory: "NONE",
+              },
+            },
+            visibility: {
+              "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "X-Restli-Protocol-Version": "2.0.0",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        logger.info("Published to LinkedIn", { res: response.data });
+      } catch (error) {
+        logger.error(error);
+        console.log(error);
+        return res.status(error.response.status).json({
+          code: error.response.statusText,
+          msg: error.response.data,
+        });
+      }
     }
 
     res.clearCookie("artilces-cache");
-    await newArticle.save();
+    const savedArticle = await newArticle.save();
 
     logger.info(`New article ${title} has been created`);
 
-    res.json({ msg: "Created a new article" });
+    res.json({ 
+      success: true,
+      msg: "Created a new article",
+      article: {
+        article_id: savedArticle.article_id || savedArticle._id,
+        title: savedArticle.title,
+        slug: savedArticle.slug
+      }
+    });
   } catch (err) {
     logger.error(err);
     return res.status(500).json({ msg: err.message });
@@ -267,42 +374,23 @@ async function updateArticleComment(req, res) {
 
 async function updateArticle(req, res) {
   try {
-    const {
-      title,
-      subtitle,
-      description,
-      content,
-      images,
-      category,
-      comments,
-      draft,
-      archive,
-    } = req.body;
+    const originalBody = req.body;
+    const { title, comments, draft, archive, ...rest } = originalBody;
 
     const originalArticle = await Articles.findOne({ _id: req.params.id });
 
     res.clearCookie("articles-cache");
 
-    const originalBody = req.body;
-
     if (comments) {
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
-          // title: title.toLowerCase(),
-          // subtitle,
-          // description,
-          // content,
-          // images,
-          // category,
           comments: [originalArticle.comments, ...comments],
         }
       );
     }
 
     if (draft) {
-      console.log(`draft`);
-      console.log(draft);
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -312,8 +400,6 @@ async function updateArticle(req, res) {
     }
 
     if (archive) {
-      console.log(`archive`);
-      console.log(archive);
       await Articles.findOneAndUpdate(
         { _id: req.params.id },
         {
@@ -321,6 +407,8 @@ async function updateArticle(req, res) {
         }
       );
     }
+
+    await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 

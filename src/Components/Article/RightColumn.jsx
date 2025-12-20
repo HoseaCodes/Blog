@@ -1,44 +1,603 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  PageLinks,
-  StyledRightContainer,
-  AlignContent,
-  SideUserContainer,
-  PostContainer,
-} from "../../Layout/Container/styledArticle";
-import { SquareImage, CircleImage } from "../../Layout/Image/styledImage";
-import { UserInfo, PostText, Subtitle } from "../../Layout/Text/styledText";
-import { ArticleLink, ArticleLinkColor } from "../../Layout/ATag/styledATag";
+import styled from 'styled-components';
+import { Link, useHistory, useParams } from "react-router-dom";
+import { GlobalState } from "../../GlobalState";
 import { MdBookmarkBorder, MdClose } from "react-icons/md";
 import { FaRegThumbsUp } from "react-icons/fa";
 import { BiCheckShield, BiDotsHorizontalRounded } from "react-icons/bi";
-import { MarginTop } from "../../Layout/Margin/styledMargin";
-import { ArticleInput } from "../../Layout/Input/styledInput";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import { GlobalState } from "../../GlobalState";
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import { Button } from "../Button/Button";
 
-const RightColumn = (props) => {
+// =============================================
+// MEDIUM DESIGN TOKENS
+// =============================================
+const mediumTheme = {
+  colors: {
+    text: {
+      primary: '#242424',
+      secondary: '#6b6b6b',
+      light: '#8b8b8b'
+    },
+    background: {
+      white: '#ffffff',
+      light: '#fafafa',
+      border: '#e6e6e6',
+      hover: '#f2f2f2'
+    },
+    accent: {
+      green: '#1a8917',
+      lightGreen: '#f0fff0'
+    }
+  },
+  typography: {
+    fontFamily: {
+      serif: 'charter, Georgia, Cambria, "Times New Roman", Times, serif',
+      sansSerif: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+    },
+    fontSize: {
+      xs: '12px',
+      sm: '14px',
+      base: '16px',
+      lg: '18px',
+      xl: '21px',
+      '2xl': '28px'
+    },
+    fontWeight: {
+      normal: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    },
+    lineHeight: {
+      tight: 1.2,
+      normal: 1.4,
+      relaxed: 1.6
+    }
+  },
+  spacing: {
+    xs: '4px',
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '32px',
+    '2xl': '48px'
+  },
+  breakpoints: {
+    tablet: '1024px'
+  }
+};
+
+// =============================================
+// STYLED COMPONENTS
+// =============================================
+const StyledRightContainer = styled.aside`
+  width: 300px;
+  padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg} 0;
+  border-left: 1px solid ${mediumTheme.colors.background.border};
+  background: ${mediumTheme.colors.background.white};
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  z-index: 10;
+
+  @media (max-width: ${mediumTheme.breakpoints.tablet}) {
+    display: none;
+  }
+
+  /* Custom scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: ${mediumTheme.colors.background.light};
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${mediumTheme.colors.background.border};
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: ${mediumTheme.colors.text.light};
+  }
+`;
+
+const AlignContent = styled.div`
+  display: flex;
+  flex-direction: ${props => props.column ? 'column' : 'row'};
+  align-items: ${props => props.center ? 'center' : 'flex-start'};
+  justify-content: ${props => props.center ? 'center' : 'flex-start'};
+  gap: ${mediumTheme.spacing.md};
+  margin-bottom: ${props => props.noMargin ? '0' : mediumTheme.spacing.xl};
+  text-align: ${props => props.center ? 'center' : 'left'};
+`;
+
+const WelcomeSection = styled.div`
+  text-align: center;
+  margin-bottom: ${mediumTheme.spacing.xl};
+  
+  h2 {
+    font-size: ${mediumTheme.typography.fontSize.xl};
+    font-weight: ${mediumTheme.typography.fontWeight.medium};
+    color: ${mediumTheme.colors.text.primary};
+    margin-bottom: ${mediumTheme.spacing.md};
+  }
+`;
+
+const ActionButton = styled.button`
+  background-color: ${props => props.primary ? mediumTheme.colors.accent.green : 'transparent'};
+  color: ${props => props.primary ? 'white' : mediumTheme.colors.accent.green};
+  border: 1px solid ${mediumTheme.colors.accent.green};
+  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.xl};
+  border-radius: 20px;
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  font-weight: ${mediumTheme.typography.fontWeight.medium};
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+
+  &:hover {
+    background-color: ${props => props.primary ? '#0f6b14' : mediumTheme.colors.accent.lightGreen};
+    transform: translateY(-1px);
+  }
+
+  &:focus {
+    outline: 2px solid ${mediumTheme.colors.accent.green};
+    outline-offset: 2px;
+  }
+`;
+
+const SignInLink = styled(Link)`
+  color: ${mediumTheme.colors.accent.green};
+  text-decoration: none;
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  font-weight: ${mediumTheme.typography.fontWeight.medium};
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const SearchContainer = styled.div`
+  margin-bottom: ${mediumTheme.spacing.xl};
+`;
+
+const SearchInput = styled.input`
+  width: 100%;
+  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.md};
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 20px;
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  background-color: ${mediumTheme.colors.background.light};
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: ${mediumTheme.colors.accent.green};
+    background-color: ${mediumTheme.colors.background.white};
+    box-shadow: 0 0 0 3px ${mediumTheme.colors.accent.lightGreen};
+  }
+
+  &::placeholder {
+    color: ${mediumTheme.colors.text.light};
+  }
+`;
+
+const UserCard = styled.div`
+  background: ${mediumTheme.colors.background.white};
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 8px;
+  padding: ${mediumTheme.spacing.lg};
+  margin-bottom: ${mediumTheme.spacing.lg};
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const UserAvatar = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: ${mediumTheme.spacing.sm};
+`;
+
+const UserName = styled.div`
+  font-size: ${mediumTheme.typography.fontSize.base};
+  font-weight: ${mediumTheme.typography.fontWeight.medium};
+  color: ${mediumTheme.colors.text.primary};
+  margin-bottom: ${mediumTheme.spacing.xs};
+`;
+
+const UserStats = styled.div`
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  color: ${mediumTheme.colors.text.secondary};
+  margin-bottom: ${mediumTheme.spacing.sm};
+`;
+
+const UserBio = styled.div`
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  color: ${mediumTheme.colors.text.secondary};
+  line-height: ${mediumTheme.typography.lineHeight.relaxed};
+  margin-bottom: ${mediumTheme.spacing.md};
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  gap: ${mediumTheme.spacing.sm};
+  align-items: center;
+`;
+
+const BookmarkButton = styled.button`
+  background: none;
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: ${mediumTheme.colors.text.secondary};
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: ${mediumTheme.colors.background.hover};
+    border-color: ${mediumTheme.colors.accent.green};
+    color: ${mediumTheme.colors.accent.green};
+  }
+
+  svg {
+    font-size: 18px;
+  }
+`;
+
+const RelatedSection = styled.div`
+  margin-bottom: ${mediumTheme.spacing.xl};
+`;
+
+const SectionTitle = styled.h3`
+  font-size: ${mediumTheme.typography.fontSize.lg};
+  font-weight: ${mediumTheme.typography.fontWeight.semibold};
+  color: ${mediumTheme.colors.text.primary};
+  margin-bottom: ${mediumTheme.spacing.lg};
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+`;
+
+const RelatedArticle = styled.div`
+  display: flex;
+  gap: ${mediumTheme.spacing.md};
+  margin-bottom: ${mediumTheme.spacing.lg};
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+`;
+
+const ArticleImage = styled.img`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+`;
+
+const ArticleInfo = styled.div`
+  flex: 1;
+  
+  h5 {
+    font-size: ${mediumTheme.typography.fontSize.base};
+    font-weight: ${mediumTheme.typography.fontWeight.medium};
+    line-height: ${mediumTheme.typography.lineHeight.normal};
+    margin-bottom: ${mediumTheme.spacing.xs};
+    color: ${mediumTheme.colors.text.primary};
+    font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  }
+`;
+
+const ArticleSubtitle = styled.p`
+  font-size: ${mediumTheme.typography.fontSize.sm};
+  color: ${mediumTheme.colors.text.secondary};
+  line-height: ${mediumTheme.typography.lineHeight.relaxed};
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const FooterLinks = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${mediumTheme.spacing.md};
+  margin-top: ${mediumTheme.spacing.xl};
+  padding-top: ${mediumTheme.spacing.lg};
+  border-top: 1px solid ${mediumTheme.colors.background.border};
+  
+  a {
+    font-size: ${mediumTheme.typography.fontSize.sm};
+    color: ${mediumTheme.colors.text.light};
+    text-decoration: none;
+    transition: color 0.2s ease;
+    
+    &:hover {
+      color: ${mediumTheme.colors.text.secondary};
+    }
+  }
+`;
+
+// Comments Section Styles
+const CommentsSection = styled.div`
+  background: ${mediumTheme.colors.background.white};
+  border-radius: 8px;
+  padding: ${mediumTheme.spacing.lg};
+  margin-bottom: ${mediumTheme.spacing.lg};
+`;
+
+const CommentsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: ${mediumTheme.spacing.lg};
+  
+  h4 {
+    margin: 0;
+    font-size: ${mediumTheme.typography.fontSize.lg};
+    font-weight: ${mediumTheme.typography.fontWeight.semibold};
+    color: ${mediumTheme.colors.text.primary};
+  }
+  
+  .actions {
+    display: flex;
+    gap: ${mediumTheme.spacing.sm};
+    align-items: center;
+    
+    svg {
+      font-size: 20px;
+      cursor: pointer;
+      color: ${mediumTheme.colors.text.secondary};
+      transition: color 0.2s ease;
+      
+      &:hover {
+        color: ${mediumTheme.colors.text.primary};
+      }
+    }
+  }
+`;
+
+const CommentForm = styled.div`
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 8px;
+  padding: ${mediumTheme.spacing.lg};
+  margin-bottom: ${mediumTheme.spacing.lg};
+  background: ${mediumTheme.colors.background.light};
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: ${mediumTheme.spacing.sm};
+    margin-bottom: ${mediumTheme.spacing.md};
+    
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    h3 {
+      font-size: ${mediumTheme.typography.fontSize.base};
+      font-weight: ${mediumTheme.typography.fontWeight.medium};
+      margin: 0;
+      color: ${mediumTheme.colors.text.primary};
+    }
+  }
+  
+  textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+    font-size: ${mediumTheme.typography.fontSize.base};
+    line-height: ${mediumTheme.typography.lineHeight.relaxed};
+    resize: vertical;
+    min-height: 100px;
+    color: ${mediumTheme.colors.text.primary};
+    
+    &:focus {
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: ${mediumTheme.colors.text.light};
+    }
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: ${mediumTheme.spacing.sm};
+    padding-top: ${mediumTheme.spacing.md};
+    
+    button {
+      padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.lg};
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-size: ${mediumTheme.typography.fontSize.sm};
+      font-weight: ${mediumTheme.typography.fontWeight.medium};
+      transition: all 0.2s ease;
+      
+      &.cancel {
+        background: none;
+        color: ${mediumTheme.colors.text.secondary};
+        
+        &:hover {
+          background: ${mediumTheme.colors.background.hover};
+        }
+      }
+      
+      &.submit {
+        background-color: ${mediumTheme.colors.accent.green};
+        color: white;
+        
+        &:hover {
+          background-color: #0f6b14;
+        }
+      }
+    }
+  }
+`;
+
+const CommentSortSelector = styled.select`
+  border: none;
+  background: none;
+  font-size: ${mediumTheme.typography.fontSize.base};
+  font-weight: ${mediumTheme.typography.fontWeight.semibold};
+  color: ${mediumTheme.colors.text.primary};
+  margin-bottom: ${mediumTheme.spacing.md};
+  cursor: pointer;
+  
+  &:focus {
+    outline: none;
+  }
+`;
+
+const CommentItem = styled.div`
+  padding: ${mediumTheme.spacing.lg} 0;
+  border-bottom: 1px solid ${mediumTheme.colors.background.border};
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
+  .comment-header {
+    display: flex;
+    align-items: center;
+    gap: ${mediumTheme.spacing.sm};
+    margin-bottom: ${mediumTheme.spacing.sm};
+    
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    
+    .info {
+      flex: 1;
+      
+      h3 {
+        font-size: ${mediumTheme.typography.fontSize.base};
+        font-weight: ${mediumTheme.typography.fontWeight.medium};
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: ${mediumTheme.spacing.sm};
+        color: ${mediumTheme.colors.text.primary};
+        
+        .author-badge {
+          background-color: ${mediumTheme.colors.accent.green};
+          color: white;
+          font-size: ${mediumTheme.typography.fontSize.xs};
+          padding: 2px 6px;
+          border-radius: 3px;
+          font-weight: ${mediumTheme.typography.fontWeight.medium};
+        }
+      }
+      
+      p {
+        margin: 0;
+        font-size: ${mediumTheme.typography.fontSize.sm};
+        color: ${mediumTheme.colors.text.secondary};
+      }
+    }
+    
+    svg {
+      font-size: 20px;
+      cursor: pointer;
+      color: ${mediumTheme.colors.text.secondary};
+      
+      &:hover {
+        color: ${mediumTheme.colors.text.primary};
+      }
+    }
+  }
+  
+  .comment-content {
+    margin-bottom: ${mediumTheme.spacing.md};
+    line-height: ${mediumTheme.typography.lineHeight.relaxed};
+    color: ${mediumTheme.colors.text.primary};
+  }
+  
+  .comment-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    svg {
+      cursor: pointer;
+      color: ${mediumTheme.colors.text.secondary};
+      
+      &:hover {
+        color: ${mediumTheme.colors.accent.green};
+      }
+    }
+    
+    button {
+      background: none;
+      border: none;
+      color: ${mediumTheme.colors.text.secondary};
+      font-size: ${mediumTheme.typography.fontSize.sm};
+      cursor: pointer;
+      
+      &:hover {
+        color: ${mediumTheme.colors.text.primary};
+      }
+    }
+  }
+`;
+
+const NoCommentsMessage = styled.p`
+  text-align: center;
+  color: ${mediumTheme.colors.text.secondary};
+  font-style: italic;
+  padding: ${mediumTheme.spacing.xl} 0;
+`;
+
+// =============================================
+// MAIN COMPONENT
+// =============================================
+const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
   const history = useHistory();
-  // const uri = window.location.pathname;
   const state = useContext(GlobalState);
   const [token] = state.token;
-  const [user] = state.userAPI.user;
+  const [currentUser, setCurrentUser] = useState(user);
   const [isLoggedIn] = state.userAPI.isLoggedIn;
-  const [currentUser, setCurrentUser] = useState(props.user);
   const [search, setSearch] = useState("");
   const [comments, setComments] = useState({ comments: [] });
   const [comment, setComment] = useState("");
-
+  
   const param = useParams();
 
   const shuffleArray = (arr) => arr.sort(() => 0.5 - Math.random());
-  const recentPosts = shuffleArray(props.articles)
+  
+  const recentPosts = shuffleArray([...articles])
     .filter((article) => {
-      // article._id !== uri.split('/')[2]
+      if (article._id === param.id) return false;
       return article.title.toLowerCase().indexOf(search.toLowerCase()) !== -1;
     })
     .slice(0, 5);
@@ -47,361 +606,227 @@ const RightColumn = (props) => {
     const { value } = event.target;
     setSearch(value.substr(0, 20));
   };
-  const handleClick = async (e) => {
-    history.push(`/${e}`);
+
+  const handleClick = (path) => {
+    history.push(`/${path}`);
   };
 
+  // Comments functionality
   useEffect(() => {
-    const id = param.id;
-
-    if (id) {
+    if (param.id) {
       const getComments = async () => {
-        const res = await axios.get(`/api/articles/${id}/comments`);
-        let filteredComments = res.data.comments.filter((comment) => {
-          return comment.blog === id;
-        });
-        setComments({ comments: filteredComments });
-        
-        await axios.put(
-          `/api/articles/${id}`,
-          {
+        try {
+          const res = await axios.get(`/api/articles/${param.id}/comments`);
+          const filteredComments = res.data.comments.filter((comment) => 
+            comment.blog === param.id
+          );
+          setComments({ comments: filteredComments });
+          
+          await axios.put(`/api/articles/${param.id}`, {
             comments: filteredComments,
-          },
-          {
+          }, {
             headers: { Authorization: token },
-          }
-        );
+          });
+        } catch (err) {
+          console.error('Error fetching comments:', err);
+        }
       };
       getComments();
     }
   }, [param.id, comment, token]);
 
   const postComment = async () => {
+    if (!comment.trim()) return;
+    
     try {
       await axios.post(`/api/articles/${param.id}/comments`, {
         postId: param.id,
         comment,
         user,
       });
+      
       const res = await axios.get(`/api/articles/${param.id}/comments`);
-      let filteredComments = res.data.comments.filter((comment) => {
-        return comment.blog === param.id;
-      });
+      const filteredComments = res.data.comments.filter((comment) => 
+        comment.blog === param.id
+      );
       setComments({ comments: filteredComments });
 
-      await axios.put(
-        `/api/articles/${param.id}`,
-        {
-          comments: filteredComments,
-        },
-        {
-          headers: { Authorization: token },
-        }
-      );
+      await axios.put(`/api/articles/${param.id}`, {
+        comments: filteredComments,
+      }, {
+        headers: { Authorization: token },
+      });
+      
+      setComment("");
     } catch (error) {
-      console.log(error);
+      console.error('Error posting comment:', error);
     }
   };
 
   const handleChangeInput = (e) => {
-    const { name, value } = e.target;
-    console.log(name, value);
-    setComment(value);
+    setComment(e.target.value);
   };
 
-  console.log(user);
-
   return (
-    <>
-      {props.viewComment ? (
-        <StyledRightContainer className="d-none d-lg-block">
-          <AlignContent>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-                alignItems: "center",
-              }}
-            >
-              <div>
-                <h4>
-                  <strong>Responses ({comments.comments.length})</strong>
-                </h4>
+    <StyledRightContainer>
+      {viewComment ? (
+        <>
+          <CommentsSection>
+            <CommentsHeader>
+              <h4>Responses ({comments.comments.length})</h4>
+              <div className="actions">
+                <BiCheckShield />
+                <BiDotsHorizontalRounded />
+                <MdClose onClick={() => setViewComment(false)} />
               </div>
-              <div>
-                <span>
-                  <BiCheckShield style={{ fontSize: "2.5rem" }} />
-                </span>
-                <span>
-                  <BiDotsHorizontalRounded style={{ fontSize: "2.5rem" }} />
-                </span>
-                <span>
-                  <MdClose
-                    onClick={() => props.setViewComment(false)}
-                    style={{ fontSize: "2.5rem" }}
-                  />
-                </span>
-              </div>
-            </div>
-          </AlignContent>
-          {currentUser === "" ? (
-            <div>
-              <img src="" alt="" srcset="" />
-              <h3>{currentUser.name}</h3>
-              <textarea
-                onChange={(e) => handleChangeInput(e)}
-                placeholder="What are your thoughts?"
-                name=""
-                id=""
-                cols="30"
-                rows="10"
-              ></textarea>
-              <button>Cancel</button>
-              <button onClick={() => postComment()}>Respond</button>
-            </div>
-          ) : (
-            <div
-              style={{
-                marginTop: "2rem",
-                WebkitBoxShadow: "0px 0px 10px 1px rgba(220,220,220,0.9)",
-                boxShadow: "0px 0px 10px 1px rgba(220,220,220,0.9)",
-                padding: "5px 15px",
-                width: "100%",
-                height: "auto",
-                borderRadius: "12px",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center" }}>
+            </CommentsHeader>
+
+            <CommentForm>
+              <div className="user-info">
                 <img
-                  src={
-                    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
-                  }
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
                   alt="Anonymous User"
-                  style={{ width: "4rem", height: "4rem", marginRight: "5px" }}
                 />
-                <h3 style={{ marginLeft: "5px", fontSize: "1.5rem" }}>
-                  Anonymous
-                </h3>
+                <h3>Anonymous</h3>
               </div>
               <textarea
-                onChange={(e) => handleChangeInput(e)}
-                style={{ border: "none", paddingTop: "10px" }}
+                value={comment}
+                onChange={handleChangeInput}
                 placeholder="What are your thoughts?"
-                name=""
-                id=""
-                cols="30"
-                rows="10"
-              ></textarea>
-              <div
-                style={{
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "space-around",
-                  alignItems: "flex-end",
-                }}
-              >
-                <button>Cancel</button>
-                <button onClick={() => postComment()}>Respond</button>
+                rows="4"
+              />
+              <div className="actions">
+                <button className="cancel" onClick={() => setComment("")}>
+                  Cancel
+                </button>
+                <button className="submit" onClick={postComment}>
+                  Respond
+                </button>
               </div>
-            </div>
-          )}
-          <select
-            style={{
-              border: "none",
-              fontSize: "1.5rem",
-              fontWeight: "700",
-              paddingRight: "2px",
-              marginTop: "2rem",
-            }}
-            name=""
-            id=""
-          >
-            <option style={{ background: "blue" }} value="Relevant">
-              Most Relevant
-            </option>
-            <option value="Recent">Most Recent</option>
-          </select>
-          <hr />
-          {comments !== undefined && comments.comments.length !== 0 ? (
-            <>
-              {comments.comments.map((comment) => {
+            </CommentForm>
+
+            <CommentSortSelector>
+              <option value="Relevant">Most Relevant</option>
+              <option value="Recent">Most Recent</option>
+            </CommentSortSelector>
+
+            {comments.comments.length > 0 ? (
+              comments.comments.map((comment) => {
                 const date1 = new Date();
                 const date2 = new Date(comment.createdAt);
-                const Difference_In_Time = date2.getTime() - date1.getTime();
-                let Difference_In_Days = `${Math.round(
-                  (Difference_In_Time / (1000 * 3600 * 24)) * -1
-                )} days`;
-                if (Difference_In_Days === "0 days")
-                  Difference_In_Days = `${Math.round(
-                    (Difference_In_Time / (1000 * 3600 * 24)) * -100
-                  )} hours`;
-                if (Difference_In_Days === "1 days")
-                  Difference_In_Days = `${Math.round(
-                    (Difference_In_Time / (1000 * 3600 * 24)) * -1
-                  )} day`;
+                const timeDiff = Math.round((date1.getTime() - date2.getTime()) / (1000 * 3600 * 24));
+                const timeAgo = timeDiff === 0 ? 'Today' : 
+                               timeDiff === 1 ? '1 day ago' : 
+                               `${timeDiff} days ago`;
+
                 return (
-                  <div key={comment._id}>
-                    <div style={{ display: "flex", alignItems: "center" }}>
+                  <CommentItem key={comment._id}>
+                    <div className="comment-header">
                       <img
-                        style={{
-                          width: "4rem",
-                          height: "4rem",
-                          marginRight: "5px",
-                        }}
-                        src={
-                          comment.avatar ||
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
-                        }
+                        src={comment.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
                         alt={`${comment.name}-avatar`}
                       />
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "100%",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>
-                          <h3 style={{ fontSize: "1.6rem" }}>
-                            {comment.name} &nbsp;
-                            <span
-                              style={{
-                                backgroundColor: "green",
-                                padding: "2px 5px",
-                                fontSize: "1rem",
-                                color: "white",
-                              }}
-                            >
-                              AUTHOR
-                            </span>
-                          </h3>
-                          <p>{Difference_In_Days} ago</p>
-                        </div>
-                        <div>
-                          <BiDotsHorizontalRounded
-                            style={{ fontSize: "2rem" }}
-                          />
-                        </div>
+                      <div className="info">
+                        <h3>
+                          {comment.name}
+                          <span className="author-badge">AUTHOR</span>
+                        </h3>
+                        <p>{timeAgo}</p>
                       </div>
+                      <BiDotsHorizontalRounded />
                     </div>
-                    <div>{comment.comment}</div>
-                    <div
-                      style={{
-                        paddingTop: "2rem",
-                        display: "flex",
-                        width: "100%",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <div className="comment-content">{comment.comment}</div>
+                    <div className="comment-actions">
                       <FaRegThumbsUp />
                       <button>Reply</button>
                     </div>
-                  </div>
+                  </CommentItem>
                 );
-              })}
-            </>
-          ) : (
-            <>No Comments</>
-          )}
-        </StyledRightContainer>
+              })
+            ) : (
+              <NoCommentsMessage>No Comments</NoCommentsMessage>
+            )}
+          </CommentsSection>
+        </>
       ) : (
-        <StyledRightContainer className="d-none d-lg-block">
-          <AlignContent Center>
+        <>
+          <AlignContent center>
             {!isLoggedIn ? (
               <>
-                <Button
-                  size="large"
-                  onClick={() => handleClick("register")}
-                  backgroundColor="black"
-                  label="Get Started"
-                />
-                <ArticleLinkColor Green href="/login">
-                  Sign In
-                </ArticleLinkColor>
+                <ActionButton primary onClick={() => handleClick("register")}>
+                  Get Started
+                </ActionButton>
+                <SignInLink to="/login">Sign In</SignInLink>
               </>
             ) : (
-              <h2>Welcome, {user.name.split(" ")[0]}</h2>
+              <WelcomeSection>
+                <h2>Welcome, {user.name?.split(" ")[0]}</h2>
+              </WelcomeSection>
             )}
           </AlignContent>
-          <MarginTop RightCloumnSearch>
-            <ArticleInput
-              Search
+
+          <SearchContainer>
+            <SearchInput
               placeholder="Search"
               type="text"
               value={search}
               onChange={updateSearch}
             />
-          </MarginTop>
-          {
-            isLoggedIn && (
-              <>
-                <SideUserContainer Primary>
-                  <CircleImage
-                    Secondary
-                    src={
-                      currentUser.avatar ||
-                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"
-                    }
-                    alt="author"
-                  />
-                  <UserInfo Padding4>{currentUser.name || "Will Smith"}</UserInfo>
-                  <UserInfo GrayWPadding>119 Followers</UserInfo>
-                  <UserInfo GrayWPadding>
-                    Software Engineer | Python Programmer | Java Programmer | Tech
-                    Enthusiast | JavaScript Programmer | React Lover | Mobile
-                    Developer
-                  </UserInfo>
-                </SideUserContainer>
-                <SideUserContainer ButtonGroup>
-                  <Button size="small" backgroundColor="green" label="Follow" />
-                  <Button
-                    icon={<MdBookmarkBorder style={{ fontSize: "2rem", position: 'absolute', left: '66%',  top: '59%' }} />}
-                    size="small"
-                    backgroundColor="green"
-                    shape={"round"}
-                    label=""
-                  />
-                </SideUserContainer>
-              </>
-            )
-          }
-          <SideUserContainer Primary>
-            <PostText>Related</PostText>
-            {recentPosts.map((article) => {
-              return (
-                <div key={article._id}>
-                  <PostContainer>
-                    <SquareImage src={article.images.url} alt="post" />
-                    <SideUserContainer>
-                      <Link
-                        to={`/blog/${article._id}`}
-                        rel="noopener noreferrer"
-                      >
-                        <h5>{article.title}</h5>
-                      </Link>
-                      <Subtitle Primary> {article.subtitle}</Subtitle>
-                    </SideUserContainer>
-                  </PostContainer>
-                  <br />
-                </div>
-              );
-            })}
-          </SideUserContainer>
-          <PageLinks>
-            <ArticleLink href="#">Help</ArticleLink>
-            {/* <ArticleLink href="#">Status</ArticleLink> */}
-            {/* <ArticleLink href="#">Writers</ArticleLink> */}
-            <ArticleLink href="/blog">Blog</ArticleLink>
-            {/* <ArticleLink href="#">Careers</ArticleLink> */}
-            <ArticleLink href="#">Privacy</ArticleLink>
-            <ArticleLink href="#">Terms</ArticleLink>
-            {/* <ArticleLink href="#">About</ArticleLink> */}
-          </PageLinks>
-        </StyledRightContainer>
+          </SearchContainer>
+
+          {isLoggedIn && (
+            <>
+              <UserCard>
+                <UserAvatar
+                  src={currentUser.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU"}
+                  alt="author"
+                />
+                <UserName>{currentUser.name || "Will Smith"}</UserName>
+                <UserStats>119 Followers</UserStats>
+                <UserBio>
+                  Software Engineer | Python Programmer | Java Programmer | Tech
+                  Enthusiast | JavaScript Programmer | React Lover | Mobile
+                  Developer
+                </UserBio>
+                <ButtonGroup>
+                  <ActionButton primary>Follow</ActionButton>
+                  <BookmarkButton>
+                    <MdBookmarkBorder />
+                  </BookmarkButton>
+                </ButtonGroup>
+              </UserCard>
+            </>
+          )}
+
+          <RelatedSection>
+            <SectionTitle>Related</SectionTitle>
+            {recentPosts.map((article) => (
+              <RelatedArticle key={article._id}>
+                <ArticleImage src={article.images?.url} alt="post" />
+                <ArticleInfo>
+                  <Link
+                    to={`/blog/${article._id}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <h5>{article.title}</h5>
+                  </Link>
+                  <ArticleSubtitle>
+                    {article.subtitle || article.description}
+                  </ArticleSubtitle>
+                </ArticleInfo>
+              </RelatedArticle>
+            ))}
+          </RelatedSection>
+
+          <FooterLinks>
+            <a href="#">Help</a>
+            <a href="/blog">Blog</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+          </FooterLinks>
+        </>
       )}
-    </>
+    </StyledRightContainer>
   );
 };
 

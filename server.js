@@ -94,8 +94,10 @@ app.get("/*", function (req, res) {
 
 // Configure to use port 3001 instead of 3000 during
 // development to avoid collision with React's dev server
-const port = process.env.PORT || 3001;
-const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+// const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3003;
+// const host = process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
+const host ='0.0.0.0';
 
 const startServer = async () => {
   app.listen(port, host, function () {

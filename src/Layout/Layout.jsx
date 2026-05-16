@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import NavBar from "../Components/NavBar/NavBar";
 import Footer from "../Components/Footer/Footer";
-import TerminalModal from "../Components/Terminal/TerminalModal";
+import TerminalModal from "../Components/ShortcutModals/TerminalModal";
 
 const Layout = ({ children }) => {
   const [defaultFooter, setDefault] = useState(true);

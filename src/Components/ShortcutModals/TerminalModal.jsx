@@ -283,6 +283,18 @@ const TerminalModal = () => {
         return '';
       }
     },
+    sudo: {
+      description: 'Run a privileged command — try `sudo ubuntu`',
+      usage: 'sudo <command>',
+      fn: (...args) => {
+        if (args[0] === 'ubuntu') {
+          window.dispatchEvent(new CustomEvent('hoseacodes:ubuntu-open'));
+          setIsOpen(false);
+          return 'Booting Ubuntu...';
+        }
+        return `sudo: ${args[0] || ''}: command not found`;
+      }
+    },
     help: {
       description: 'List all available commands',
       usage: 'help',

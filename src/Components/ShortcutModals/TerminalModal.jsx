@@ -284,13 +284,18 @@ const TerminalModal = () => {
       }
     },
     sudo: {
-      description: 'Run a privileged command — try `sudo ubuntu`',
+      description: 'Run a privileged command — try `sudo ubuntu` or `sudo mac`',
       usage: 'sudo <command>',
       fn: (...args) => {
         if (args[0] === 'ubuntu') {
           window.dispatchEvent(new CustomEvent('hoseacodes:ubuntu-open'));
           setIsOpen(false);
           return 'Booting Ubuntu...';
+        }
+        if (args[0] === 'mac' || args[0] === 'macos') {
+          window.dispatchEvent(new CustomEvent('hoseacodes:mac-open'));
+          setIsOpen(false);
+          return 'Booting macOS Big Sur...';
         }
         return `sudo: ${args[0] || ''}: command not found`;
       }

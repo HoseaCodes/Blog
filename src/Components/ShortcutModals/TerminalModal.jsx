@@ -284,7 +284,7 @@ const TerminalModal = () => {
       }
     },
     sudo: {
-      description: 'Run a privileged command — try `sudo ubuntu` or `sudo mac`',
+      description: 'Run a privileged command — try `sudo ubuntu`, `sudo mac`, or `sudo planets`',
       usage: 'sudo <command>',
       fn: (...args) => {
         if (args[0] === 'ubuntu') {
@@ -296,6 +296,11 @@ const TerminalModal = () => {
           window.dispatchEvent(new CustomEvent('hoseacodes:mac-open'));
           setIsOpen(false);
           return 'Booting macOS Big Sur...';
+        }
+        if (args[0] === 'planets') {
+          window.dispatchEvent(new CustomEvent('hoseacodes:planets-open'));
+          setIsOpen(false);
+          return 'Launching The Planets...';
         }
         return `sudo: ${args[0] || ''}: command not found`;
       }

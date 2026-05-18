@@ -4,6 +4,7 @@ import Footer from "../Components/Footer/Footer";
 import TerminalModal from "../Components/ShortcutModals/TerminalModal";
 import UbuntuEasterEggMount from "../Components/UbuntuEasterEgg";
 import MacEasterEggMount from "../Components/MacEasterEgg";
+import PlanetsEasterEggMount from "../Components/PlanetsEasterEgg";
 
 const Layout = ({ children }) => {
   const [defaultFooter, setDefault] = useState(true);
@@ -15,6 +16,7 @@ const Layout = ({ children }) => {
       <TerminalModal />
       <UbuntuEasterEggMount />
       <MacEasterEggMount />
+      <PlanetsEasterEggMount />
     </>
   );
 };

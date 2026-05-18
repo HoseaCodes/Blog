@@ -4,6 +4,7 @@ import { displayCalc } from '../UbuntuEasterEgg/apps/Calc';
 import { displayTerminal } from '../UbuntuEasterEgg/apps/Terminal';
 import { displayProfile } from '../UbuntuEasterEgg/apps/Profile';
 import { displaySettings } from '../UbuntuEasterEgg/apps/Settings';
+import { displayPathFinder } from '../UbuntuEasterEgg/apps/PathFinder';
 import { displaySafari } from './apps/Safari';
 import { displayFinder } from './apps/Finder';
 import { displayMail } from './apps/Mail';
@@ -57,6 +58,13 @@ const apps = [
     icon: 'stocks-logo.png',
     disabled: false,
     screen: () => displayCalc(),
+  },
+  {
+    id: 'pathfinder',
+    title: 'PathFinder',
+    icon: 'maps-logo.png',
+    disabled: false,
+    screen: () => displayPathFinder(),
   },
   {
     id: 'settings',

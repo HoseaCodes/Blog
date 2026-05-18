@@ -5,6 +5,7 @@ import { displayChrome } from './apps/Chrome';
 import { displayCalc } from './apps/Calc';
 import { displayTerminal } from './apps/Terminal';
 import { displayProfile } from './apps/Profile';
+import { displayPathFinder } from './apps/PathFinder';
 
 const apps = [
   {
@@ -51,6 +52,15 @@ const apps = [
     favourite: true,
     desktop_shortcut: false,
     screen: () => displayCalc(),
+  },
+  {
+    id: 'pathfinder',
+    title: 'PathFinder',
+    icon: 'themes/Yaru/apps/todoist.png',
+    disabled: false,
+    favourite: true,
+    desktop_shortcut: true,
+    screen: () => displayPathFinder(),
   },
   {
     id: 'settings',

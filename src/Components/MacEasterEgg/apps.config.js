@@ -5,6 +5,7 @@ import { displayTerminal } from '../UbuntuEasterEgg/apps/Terminal';
 import { displayProfile } from '../UbuntuEasterEgg/apps/Profile';
 import { displaySettings } from '../UbuntuEasterEgg/apps/Settings';
 import { displayPathFinder } from '../UbuntuEasterEgg/apps/PathFinder';
+import { displayPostman } from '../UbuntuEasterEgg/apps/Postman';
 import { displaySafari } from './apps/Safari';
 import { displayFinder } from './apps/Finder';
 import { displayMail } from './apps/Mail';
@@ -65,6 +66,13 @@ const apps = [
     icon: 'maps-logo.png',
     disabled: false,
     screen: () => displayPathFinder(),
+  },
+  {
+    id: 'postman',
+    title: 'Postman',
+    icon: 'news-logo.png',
+    disabled: false,
+    screen: () => displayPostman(),
   },
   {
     id: 'settings',

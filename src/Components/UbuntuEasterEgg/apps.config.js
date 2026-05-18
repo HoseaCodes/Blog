@@ -6,6 +6,7 @@ import { displayCalc } from './apps/Calc';
 import { displayTerminal } from './apps/Terminal';
 import { displayProfile } from './apps/Profile';
 import { displayPathFinder } from './apps/PathFinder';
+import { displayPostman } from './apps/Postman';
 
 const apps = [
   {
@@ -61,6 +62,15 @@ const apps = [
     favourite: true,
     desktop_shortcut: true,
     screen: () => displayPathFinder(),
+  },
+  {
+    id: 'postman',
+    title: 'Postman',
+    icon: 'themes/Yaru/apps/gedit.png',
+    disabled: false,
+    favourite: true,
+    desktop_shortcut: false,
+    screen: () => displayPostman(),
   },
   {
     id: 'settings',

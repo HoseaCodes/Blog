@@ -7,6 +7,7 @@ import { displayTerminal } from './apps/Terminal';
 import { displayProfile } from './apps/Profile';
 import { displayPathFinder } from './apps/PathFinder';
 import { displayPostman } from './apps/Postman';
+import { displayAiQuiz } from './apps/AiQuiz';
 
 const apps = [
   {
@@ -71,6 +72,15 @@ const apps = [
     favourite: true,
     desktop_shortcut: false,
     screen: () => displayPostman(),
+  },
+  {
+    id: 'ai-quiz',
+    title: 'AI Quiz',
+    icon: 'themes/Yaru/apps/ai-quiz.svg',
+    disabled: false,
+    favourite: true,
+    desktop_shortcut: false,
+    screen: () => displayAiQuiz(),
   },
   {
     id: 'settings',

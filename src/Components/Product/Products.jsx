@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 
 import axios from 'axios'
+import { Link } from 'react-router-dom';
+import { AiOutlineShop, AiOutlinePlus } from 'react-icons/ai';
 import LoadMore from './LoadMore'
 import Masonry from 'react-masonry-css'
 import Loading from '../Loading/ProLoader';
@@ -14,6 +16,8 @@ const Products = () => {
     const [isAdmin] = state.userAPI.isAdmin
     const [token] = state.token
     const [callback, setCallback] = state.productsAPI.callback
+    const [apiLoading] = state.productsAPI.loading
+    const [apiError] = state.productsAPI.error
     const [loading, setLoading] = useState(false)
     const [isCheck, setIsCheck] = useState(false)
 
@@ -55,40 +59,100 @@ const Products = () => {
             if (product.checked) deleteProduct(product._id, product.images.id)
         })
     }
-    /* for responsive masonry layout */
+
     const breakpointColumnsObj = {
         default: 3,
-        1400: 2,
-        900: 1
-      };
+        1400: 3,
+        1100: 2,
+        700: 1
+    };
 
-    if (loading) return <div><ProLoader /></div>
-    console.log(products)
+    if (loading) return <div><Loading /></div>
+
+    const hasProducts = products.length > 0;
+
     return (
-        <>
-          {/* <NavBar/> */}
-            {
-                isAdmin &&
-                <div className="delete-all">
-                    <span>Select All</span>
-                    <input type="checkbox" checked={isCheck} onChange={checkAll} />
-                    <button onClick={deleteAll}>Delete All</button>
+        <section className="shop-products">
+            <header className="shop-header-bar">
+                <div>
+                    <h1 className="shop-title">Shop</h1>
+                    <p className="shop-subtitle">
+                        {apiLoading
+                            ? 'Loading products…'
+                            : hasProducts
+                                ? `${products.length} ${products.length === 1 ? 'product' : 'products'} available`
+                                : 'Browse the catalog'}
+                    </p>
                 </div>
-            }
-            <div className="products">
-                <Masonry breakpointCols={breakpointColumnsObj} className="my-masonry-grid" columnClassName="my-masonry-grid_column" >
-                    {
-                        products.map(product => {
-                            return <ProductItem key={product._id} product={product}
-                                isAdmin={isAdmin} deleteProduct={deleteProduct} handleCheck={handleCheck} />
-                        })
-                    }
-                </Masonry>
-            </div>
-            <LoadMore />
-            {products.length === 0 && <Loading />}
-            {/* <Footer/> */}
-        </>
+                {isAdmin && (
+                    <Link to="/admin/shop/create_product" className="shop-cta">
+                        <AiOutlinePlus aria-hidden /> New Product
+                    </Link>
+                )}
+            </header>
+
+            {isAdmin && hasProducts && (
+                <div className="shop-admin-bar">
+                    <label className="shop-select-all">
+                        <input type="checkbox" checked={isCheck} onChange={checkAll} />
+                        <span>Select all</span>
+                    </label>
+                    <button type="button" className="shop-delete-all" onClick={deleteAll}>
+                        Delete selected
+                    </button>
+                </div>
+            )}
+
+            {hasProducts && (
+                <div className="products">
+                    <Masonry
+                        breakpointCols={breakpointColumnsObj}
+                        className="my-masonry-grid"
+                        columnClassName="my-masonry-grid_column"
+                    >
+                        {products.map(product => (
+                            <ProductItem
+                                key={product._id}
+                                product={product}
+                                isAdmin={isAdmin}
+                                deleteProduct={deleteProduct}
+                                handleCheck={handleCheck}
+                            />
+                        ))}
+                    </Masonry>
+                </div>
+            )}
+
+            {hasProducts && <LoadMore />}
+
+            {apiLoading && !hasProducts && (
+                <div className="shop-state"><Loading /></div>
+            )}
+
+            {!apiLoading && apiError && (
+                <div className="shop-state shop-state-error">
+                    <h3>Couldn't load products</h3>
+                    <p>{apiError}</p>
+                </div>
+            )}
+
+            {!apiLoading && !apiError && !hasProducts && (
+                <div className="shop-state shop-empty">
+                    <AiOutlineShop className="shop-empty-icon" aria-hidden />
+                    <h3>No products yet</h3>
+                    <p>
+                        {isAdmin
+                            ? "Get started by adding your first product to the catalog."
+                            : "Check back soon — new items are on the way."}
+                    </p>
+                    {isAdmin && (
+                        <Link to="/admin/shop/create_product" className="shop-cta">
+                            <AiOutlinePlus aria-hidden /> Create your first product
+                        </Link>
+                    )}
+                </div>
+            )}
+        </section>
     )
 }
 

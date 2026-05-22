@@ -6,6 +6,7 @@ import { displayProfile } from '../UbuntuEasterEgg/apps/Profile';
 import { displaySettings } from '../UbuntuEasterEgg/apps/Settings';
 import { displayPathFinder } from '../UbuntuEasterEgg/apps/PathFinder';
 import { displayPostman } from '../UbuntuEasterEgg/apps/Postman';
+import { displayAiQuiz } from '../UbuntuEasterEgg/apps/AiQuiz';
 import { displaySafari } from './apps/Safari';
 import { displayFinder } from './apps/Finder';
 import { displayMail } from './apps/Mail';
@@ -73,6 +74,13 @@ const apps = [
     icon: 'news-logo.png',
     disabled: false,
     screen: () => displayPostman(),
+  },
+  {
+    id: 'ai-quiz',
+    title: 'AI Quiz',
+    icon: 'ai-quiz-logo.svg',
+    disabled: false,
+    screen: () => displayAiQuiz(),
   },
   {
     id: 'settings',

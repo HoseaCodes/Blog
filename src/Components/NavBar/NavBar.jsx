@@ -143,7 +143,7 @@ const NavBar = () => {
               <Link to="/settings" className="nav-link">View Settings</Link>
           </div>
         </li> */}
-        <Link className="nav-link" onClick={logoutUser}>Logout</Link>
+        <button type="button" className="nav-link" onClick={logoutUser}>Logout</button>
       </>
     )};
 

@@ -3,29 +3,47 @@ import React from 'react';
 import BtnRender from './BtnRender';
 import './ProductItem.css';
 
-const ProductItem = ({ product, deleteProduct, isAdmin, handleCheck}) => {
+const ProductItem = ({ product, deleteProduct, isAdmin, handleCheck }) => {
+    const imageUrl = product?.images?.url;
+    const priceLabel =
+        typeof product?.price === 'number'
+            ? `$${product.price.toFixed(2)}`
+            : product?.price
+                ? `$${product.price}`
+                : '';
 
     return (
-        <>
-            <div className='product_card' style={{height:'auto', backgroundSize:'cover', backgroundRepeat:'no-repeat',backgroundImage:`url(${product.images.url})`}}>
-                <div className="product_box">
-                    {
-                        isAdmin && <input type="checkbox" checked={product.checked}
-                            onChange={() => handleCheck(product._id)} />
-                    }
-                    <h2 title={product.title}>
-                        {product.title}
-                    </h2>
-                    <span>${product.price}</span>
-                    <p>{product.description}</p>
-                    <BtnRender product={product} deleteProduct={deleteProduct} />
-                </div>
-                {/* this image is needed in order for the div's height to scale to the image */}
-                <img src={product.images.url} alt="product" style={{visibility: "hidden", maxWidth:"100%", maxHeight:'100%'}}/>
+        <article className="product_card">
+            <div className="product_media">
+                {isAdmin && (
+                    <label className="product_select">
+                        <input
+                            type="checkbox"
+                            checked={!!product.checked}
+                            onChange={() => handleCheck(product._id)}
+                            aria-label={`Select ${product.title}`}
+                        />
+                    </label>
+                )}
+                {imageUrl ? (
+                    <img src={imageUrl} alt={product.title} loading="lazy" />
+                ) : (
+                    <div className="product_media_placeholder" aria-hidden />
+                )}
             </div>
 
-        </>
-    )
-}
+            <div className="product_body">
+                <h2 className="product_title" title={product.title}>
+                    {product.title}
+                </h2>
+                {priceLabel && <span className="product_price">{priceLabel}</span>}
+                {product.description && (
+                    <p className="product_desc">{product.description}</p>
+                )}
+                <BtnRender product={product} deleteProduct={deleteProduct} />
+            </div>
+        </article>
+    );
+};
 
 export default ProductItem;

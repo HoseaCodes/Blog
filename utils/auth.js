@@ -32,29 +32,4 @@ const auth = (req, res, next) => {
 	}
 };
 
-export function basicAuth(req, res, next) {
-  const authheader = req.headers.authorization;
-  console.log({ authheader });
-  if (!authheader) {
-    res.setHeader("WWW-Authenticate", "Basic");
-    return res.status(401).json({ msg: "Unauthentication - Auth401 Missing Header" });
-  }
-
-  const auth = new Buffer.from(authheader.split(" ")[1], "base64")
-    .toString()
-    .split(":");
-
-  const user = auth[0];
-  const pass = auth[1];
-
-  if (user == "admin" && pass == "password") {
-    // If Authorized user
-
-    next();
-  } else {
-    res.setHeader("WWW-Authenticate", "Basic");
-    return res.status(401).json({ msg: "Unauthentication - Auth401" });
-  }
-}
-
 export default auth;

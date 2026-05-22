@@ -15,7 +15,7 @@ import {
   deleteComment
 } from '../controllers/comment.js';
 import { nodecache } from '../utils/cache.js';
-import auth, { basicAuth } from '../utils/auth.js';
+import auth from '../utils/auth.js';
 
 const router = express.Router();
 const commentRouter = express.Router({mergeParams: true});
@@ -23,8 +23,8 @@ router.use('/articles/:id/comments', commentRouter);
 
 router
   .route("/articles")
-  .get(basicAuth, nodecache, getArticle)
-  .post(basicAuth, createArticle);
+  .get(nodecache, getArticle)
+  .post(auth, createArticle);
 
 router
   .route("/articles/:id")

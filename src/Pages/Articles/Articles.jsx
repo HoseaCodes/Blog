@@ -5,7 +5,7 @@ import { GlobalState } from "../../GlobalState";
 import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
 import "react-loading-skeleton/dist/skeleton.css";
 import axios from "axios";
-import { truncate, getBasicAuth } from "../../Utils/helperFunctions";
+import { truncate } from "../../Utils/helperFunctions";
 import { projectData } from '../Projects/ProjectsData';
 import faqs from "../../Constants/faq.js";
 import ThemeSwitcher from "./ThemeSwitcher";
@@ -1597,15 +1597,7 @@ function EnterpriseTechGuide() {
     const fetchMostLikedArticle = async () => {
       try {
         setLoading(true);
-        const username = "admin";
-        const password = "password";
-        const auth = getBasicAuth(username, password);
-        
-        const response = await axios.get('/api/articles', {
-          headers: {
-            Authorization: auth,
-          }
-        });
+        const response = await axios.get('/api/articles');
         
         if (response.data.articles && response.data.articles.length > 0) {
           const allArticles = response.data.articles;

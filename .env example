@@ -9,3 +9,12 @@ CLOUD_API_KEY=
 CLOUD_API_SECRET=
 CLOUND_NAME=
 OPENAI_API_KEY=
+
+# AI art (Phase 1)
+STABILITY_API_KEY=
+AI_ART_PNG_PRICE_USD=5
+
+# PayPal (set to "live" only for production; defaults to sandbox)
+PAYPAL_CLIENT_ID=
+PAYPAL_CLIENT_SECRET=
+PAYPAL_ENV=sandbox

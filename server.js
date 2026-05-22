@@ -19,6 +19,7 @@ import collaborationRouter from './routes/collaboration.js';
 import analyticsRouter from './routes/analytics.js';
 import seoRouter from './routes/seo.js';
 import aiRouter from './routes/ai.js';
+import aiArtRouter from './routes/aiArt.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
@@ -85,6 +86,7 @@ app.use('/api', collaborationRouter);
 app.use('/api', analyticsRouter);
 app.use('/api', seoRouter);
 app.use('/api', aiRouter);
+app.use('/api', aiArtRouter);
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

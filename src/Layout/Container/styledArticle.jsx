@@ -23,12 +23,6 @@ export const StyledRightContainer = styled.section`
   right: 0;
 `;
 
-export const GrayDiv = styled.section`
-  color: dimgray;
-
-`;
-
-
 export const JustifyContent = styled.div`
   display: flex;
   justify-content: center;
@@ -117,32 +111,6 @@ export const PageLinks = styled.div`
   color: dimgray;
   padding-bottom: 8%;
   margin-top: 20%;
-`;
-
-export const BlogCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  margin: auto;
-  ${props => props.RelatedPost && css`
-    padding: 6%;
-    margin: 0;
-  `}
-`;
-
-export const BlogPost = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 1%;
-`;
-
-export const BlogNewsletter = styled.form`
-  background-color: whitesmoke;
-  padding: 4%;
-  margin-top: 8%;
-  border-top: solid;
-  border-color: green;
 `;
 
 export const SideUserContainer = styled.div`

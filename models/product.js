@@ -42,7 +42,21 @@ const productSchema = new mongoose.Schema({
     },
     quantity: {
       type: Number
-    }
+    },
+    type: {
+        type: String,
+        enum: ['physical', 'ai-art'],
+        default: 'physical',
+    },
+    tier: {
+        type: String,
+        enum: ['png', 'png_nft'],
+        default: 'png',
+    },
+    aiPrompt: String,
+    aiModel: String,
+    aiSeed: String,
+    creatorUserId: String,
 }, {
     timestamps: true
 })

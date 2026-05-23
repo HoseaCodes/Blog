@@ -84,6 +84,7 @@ const Tech = () => {
 
   // Position each technology based on orbit
   useEffect(() => {
+    let timeoutId;
     const container = containerRef.current;
     if (!container) return;
 
@@ -121,9 +122,16 @@ const Tech = () => {
     });
     
     // Set loaded state after positioning
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
       setIsLoaded(true);
     }, 100);
+
+    // Cleanup function to prevent memory leak
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [technologies]);
 
   return (

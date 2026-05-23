@@ -87,4 +87,11 @@ const truncate = (str) => {
   return str.length > 10 ? str.substring(0, 150) + "..." : str;
 };
 
-export { copyTextToClipboard, responsive, sleep, truncate };
+function countWords(text) {
+  text = text.trim();
+  const words = text.split(/\s+/);
+  const wordCount = words.filter((word) => word.length > 0).length;
+  return wordCount;
+}
+
+export { copyTextToClipboard, responsive, sleep, truncate, countWords };

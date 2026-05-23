@@ -5,6 +5,7 @@ import {
   getAllUploads
 } from '../controllers/upload.js';
 import {nodecache} from '../utils/cache.js';
+import auth from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -12,9 +13,9 @@ const router = express.Router();
 router.post("/allImages", nodecache, getAllUploads);
 
 //image upload
-router.post("/upload", uploadImage);
+router.post("/upload", auth, uploadImage);
 
 //image delete
-router.post("/destory", destoryImage);
+router.post("/destory", auth, destoryImage);
 
 export default router;

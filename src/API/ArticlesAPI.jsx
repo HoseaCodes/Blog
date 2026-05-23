@@ -7,10 +7,9 @@ function ArticlesAPI() {
     const [callback, setCallback] = useState(false)
     const [category, setCategory] = useState('')
 
-
     useEffect(() => {
         const getArticles = async () => {
-            const res = await axios.get(`/api/articles`)
+            const res = await axios.get(`/api/articles`);
             setArticles(res.data.articles)
             setResult(res.data.result)
         }
@@ -22,9 +21,7 @@ function ArticlesAPI() {
         result: [result, setResult],
         callback: [callback, setCallback],
         category: [category, setCategory],
-
     }
-
 
 }
 

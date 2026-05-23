@@ -54,30 +54,79 @@ async function getAllUploads(req, res) {
 
 async function uploadImage(req, res) {
   try {
-      if (!req.files || Object.keys(req.files).length === 0) return res.status(400).send({ msg: "No files were uploaded." })
+      logger.info('Upload request received:', { 
+        hasFiles: !!req.files, 
+        filesKeys: req.files ? Object.keys(req.files) : [],
+        body: req.body,
+        headers: req.headers['content-type']
+      });
 
-      const file = req.files.file;
-      if (file.size > 1024 * 1024) {
-          removeTmp(file.tempFilePath)
-          return res.status(400).json({ msg: "File size too large" })
+      if (!req.files || Object.keys(req.files).length === 0) {
+        logger.error('No files in request');
+        return res.status(400).json({ msg: "No files were uploaded." });
       }
 
-      if (file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/png') {
+      const file = req.files.file;
+      
+      if (!file) {
+        logger.error('File field not found in req.files');
+        return res.status(400).json({ msg: "File field 'file' not found" });
+      }
+
+      logger.info('File details:', { 
+        name: file.name, 
+        size: file.size, 
+        mimetype: file.mimetype 
+      });
+
+      // Increase file size limit to 10MB
+      if (file.size > 10 * 1024 * 1024) {
           removeTmp(file.tempFilePath)
-          return res.status(400).json({ msg: "File format is incorrect" })
+          return res.status(400).json({ msg: "File size too large (max 10MB)" })
+      }
+
+      // Support more image formats
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml'];
+      if (!allowedTypes.includes(file.mimetype)) {
+          removeTmp(file.tempFilePath)
+          return res.status(400).json({ msg: "File format not supported. Please upload JPEG, PNG, GIF, WebP, or SVG" })
       }
 
       res.clearCookie('cloudinary-cache');
 
-      cloudinary.v2.uploader.upload(file.tempFilePath, { folder: "HoseaCodes" }, async (err, result) => {
-          if (err) throw err;
+      // Use folder from request body or default to 'HoseaCodes'
+      const folder = req.body.folder || 'HoseaCodes';
+      logger.info('Uploading to Cloudinary:', { folder, fileName: file.name });
+
+      cloudinary.v2.uploader.upload(file.tempFilePath, { folder }, async (err, result) => {
+          if (err) {
+            logger.error('Cloudinary upload error:', err);
+            removeTmp(file.tempFilePath);
+            throw err;
+          }
+
+          logger.info('Upload successful:', { 
+            public_id: result.public_id, 
+            url: result.secure_url 
+          });
 
           removeTmp(file.tempFilePath)
 
-          res.json({ result })
+          res.json({ 
+            result,
+            media: {
+              _id: result.public_id,
+              url: result.secure_url,
+              originalName: file.name,
+              cloudinaryId: result.public_id,
+              format: result.format,
+              size: result.bytes
+            }
+          })
       })
 
   } catch (err) {
+      logger.error('Upload error:', { error: err.message, stack: err.stack });
       return res.status(500).json({ msg: err.message })
   }
 }

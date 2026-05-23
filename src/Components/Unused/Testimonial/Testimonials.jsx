@@ -30,9 +30,13 @@ import { useTransition, animated } from "react-spring";
 // import TwitterIcon from '@material-ui/icons/Twitter';
 import { FaTwitter } from 'react-icons/fa'
 import './Testimonials.css'
-import Aaron from '../../icons/aaron.png'
-import Chengu from '../../icons/Chengu.png'
-import Nathan from '../../icons/Nathan.png'
+
+const Aaron =
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/aaron-min.png";
+const Chengu =
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Chengu-min.png";
+const Nathan =
+  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/Nathan-min.png";
 
 
 const steps = [

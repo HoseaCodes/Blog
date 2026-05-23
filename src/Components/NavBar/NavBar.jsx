@@ -1,15 +1,18 @@
-import React, {useReducer, useContext } from "react";
+import React, { useReducer, useContext, useEffect } from "react";
 import "./NavBar.css";
-import burger from '../../Assets/Images/burger-min.png';
-import Logo from '../../Assets/Images/logo-min.png';
 import { Link } from "react-router-dom";
 import { GlobalState } from '../../GlobalState';
+import { StyledHeaderNav } from '../../Layout/Container/styledContainer'
 import {StyledHr} from '../../Layout/Hr/styledHr';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { useCookies } from "react-cookie";
 import { useLocation } from "react-router-dom";
 
 const NavBar = () => {
+  const Logo =
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/logo-min.png";
+  const burger =
+    '  const logo = "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/burger-min.png';
   const [cookies, setCookie, removeCookie] = useCookies(["cookie-name"]);
   const location = useLocation();
   const currentPath = location.pathname;
@@ -20,6 +23,16 @@ const NavBar = () => {
   const [cart] = state.userAPI.cart;
   const logout = state.userAPI.logout;
   
+  if (currentPath.includes("/blog/") || currentPath.includes("gamecorner")) {
+    return null;
+  }
+
+  useEffect(() => {
+    
+      console.log(currentPath);
+    
+  }, []);
+
   const [isActive, toggle] = useReducer(
       (isActive) => !isActive,
       true
@@ -47,15 +60,15 @@ const NavBar = () => {
 			<>
       	{/* <Link className="nav-link" to="/create_product">Create Product</Link>
         <Link to="/products" className="nav-link">Products</Link> */}
-        <Link to="/users" className="nav-link">Users</Link>
-        <Link to="/uploads" className="nav-link">Uploads</Link>
+        <Link to="/admin/users" className="nav-link">Users</Link>
+        <Link to="/admin/uploads" className="nav-link">Uploads</Link>
         <li className="dropdown">
           <a className="nav-link dropdown-toggle" href="/"
               id="navdrop" role="button" data-toggle="dropdown"
               data-hover="dropdown">Products</a>
           <div className="dropdown-menu" aria-labelledby="navdrop">
               <Link to={"/create_product"} className="dropdown-item nav-link">Create Product</Link>
-              <Link to={"/products"} rel="noopener noreferrer"
+              <Link to={"/shop"} rel="noopener noreferrer"
                 className="dropdown-item nav-link">View Products</Link>
           </div>
         </li>
@@ -130,7 +143,7 @@ const NavBar = () => {
               <Link to="/settings" className="nav-link">View Settings</Link>
           </div>
         </li> */}
-        <Link className="nav-link" onClick={logoutUser}>Logout</Link>
+        <button type="button" className="nav-link" onClick={logoutUser}>Logout</button>
       </>
     )};
 
@@ -175,7 +188,7 @@ const NavBar = () => {
                     )} */}
                 </ul>
             </nav>
-            <StyledHr Primary/>
+            {/* <StyledHr Primary/> */}
         </header>
 
     )

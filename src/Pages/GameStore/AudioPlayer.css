@@ -1,0 +1,39 @@
+#autoplay-audio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* height: 100vh;  */
+  /* Adjust as needed to center vertically */
+}
+
+/* Style the appearance of the audio controls */
+audio {
+  width: 100px; /* Adjust the size of the audio player */
+  height: 100px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #333;
+  outline: none;
+}
+
+/* Style the appearance of the play button */
+audio::-webkit-media-controls-play-button {
+  /* display: none;  */
+  /* Hide the default play button */
+}
+
+audio::before {
+  content: '\25B6'; /* Unicode character for play symbol */
+  font-size: 48px;
+  line-height: 1;
+  color: #333; /* Color of the play button */
+  text-align: center;
+}
+
+/* Center the play button */
+audio::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

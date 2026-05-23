@@ -3,6 +3,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import authService from "../services/authService";
 
+const isAdminRole = (role) => role === 1 || role === "admin";
+
 const initialState = {
   role: 0,
   name: "",
@@ -33,16 +35,16 @@ function UserAPI(token) {
 
   useEffect(() => {
     const initAuth = async () => {
-      if (cookies.accesstoken) setIsLoggedIn(true);
-      if (token || isLoggedIn || cookies.accesstoken) {
+      if (token || cookies.accesstoken) {
         try {
           const userData = await authService.getMe();
           console.log(userData, "user info");
           setIsLoggedIn(true);
           isAuthenticated(true);
           setUser(userData.user);
-          const isAdminUser = userData.user.role === "admin";
+          const isAdminUser = isAdminRole(userData.user?.role);
           setIsAdmin(isAdminUser);
+          localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("isAdmin", isAdminUser);
         } catch (err) {
           console.error("Auth error:", err);
@@ -55,12 +57,12 @@ function UserAPI(token) {
       setLoading(false);
     };
     initAuth();
-  }, [token, cookies]);
+  }, [token, cookies.accesstoken]);
 
-  const addCart = async product => {
+  const addCart = async (product) => {
     if (!isLoggedIn) return alert("Please login to continue buying");
 
-    const check = cart.every(item => {
+    const check = cart.every((item) => {
       return item._id !== product._id;
     });
 
@@ -71,7 +73,7 @@ function UserAPI(token) {
         "/api/user/addcart",
         { cart: [...cart, { ...product, quantity: 1 }] },
         {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         }
       );
     } else {
@@ -92,10 +94,12 @@ function UserAPI(token) {
       if (data.accesstoken) {
         // Auto-login after successful registration
         const userData = await authService.getMe();
-        setUser(userData.users);
+        setUser(userData.user);
         setIsLoggedIn(true);
         isAuthenticated(true);
-        userData.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
+        const isAdminUser = isAdminRole(userData.user?.role);
+        setIsAdmin(isAdminUser);
+        localStorage.setItem("isAdmin", isAdminUser);
         return { success: true, requiresApproval: false };
       }
     } catch (err) {
@@ -121,7 +125,7 @@ function UserAPI(token) {
       setUser(userData.user);
       setIsLoggedIn(true);
       isAuthenticated(true);
-      const isAdminUser = userData.user.role === "admin";
+      const isAdminUser = isAdminRole(userData.user?.role);
       setIsAdmin(isAdminUser);
       localStorage.setItem("isAdmin", isAdminUser);
       return { success: true };

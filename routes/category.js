@@ -6,16 +6,19 @@ import {
   updateCategory,
   getCategoryByID,
 } from '../controllers/category.js';
+import auth from "../utils/auth.js";
+import isAdmin from "../utils/authAdmin.js";
 
 const router = express.Router();
 
 router.route('/category')
   .get(getCategory)
-  .post(createCategory)
+  .post(auth, isAdmin, createCategory)
 
-router.route('/category/:id')
+router
+  .route("/category/:id")
   .get(getCategoryByID)
-  .delete(deleteCategory)
-  .put(updateCategory)
+  .delete(auth, isAdmin, deleteCategory)
+  .put(auth, isAdmin, updateCategory);
 
 export default router;

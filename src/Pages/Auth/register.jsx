@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import "./auth.css";
-import Logo from "../../Assets/Images/newLogo.png";
 
 const Register = () => {
   const state = useContext(GlobalState);
@@ -113,7 +112,7 @@ const Register = () => {
       <div className="row login-row main-content bg-success text-center">
         <div className="col-md-4 text-center company__info">
           <Link to="/">
-            <img className="brand" src={Logo} alt="brand-name" onClick={updateRole} />
+            <img className="brand" src="https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png" alt="brand-name" onClick={updateRole} />
           </Link>
         </div>
         <div className="col-md-8 col-xs-12 col-sm-12 login_form ">

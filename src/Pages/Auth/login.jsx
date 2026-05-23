@@ -1,11 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import "./auth.css";
-import Logo from "../../Assets/Images/newLogo.png";
 import { useCookies } from "react-cookie";
 
 const Login = () => {
+  const Logo =
+    "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/newLogo.png";
   const state = useContext(GlobalState);
   const history = useHistory();
   const [user, setUser] = state.userAPI.user;
@@ -19,17 +20,20 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [cookies, setCookie] = useCookies(["cookie-name"]);
 
+  const isMountedRef = useRef(true);
+  useEffect(() => () => { isMountedRef.current = false; }, []);
+
   const [formData, setFormData] = useState({
     email: "",
     password: ""
   });
 
-  const onChangeInput = e => {
+  const onChangeInput = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const loginSubmit = async e => {
+  const loginSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -54,9 +58,11 @@ const Login = () => {
       }
     } catch (err) {
       console.error("Login error:", err);
-      setError(err.response?.data?.msg || "Login failed. Please check your credentials.");
+      if (isMountedRef.current) {
+        setError(err.response?.data?.msg || "Login failed. Please check your credentials.");
+      }
     } finally {
-      setLoading(false);
+      if (isMountedRef.current) setLoading(false);
     }
   };
 

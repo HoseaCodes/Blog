@@ -20,13 +20,61 @@ Welcome, to my personal blog and portfolio. Sharing information is vital and esp
 
 The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
 
+
+## Game Zone
+
+What should I display here? The concept I was going for was like a main game center for my technical command center. Something like mini-games but with my own spin. I wanted users to have the ability to sign up and based off playing the high score, unlocks things on the website and allows you to buy things. The scores/points earned are more like crypto tokens. Also, during extended loading times, they have the ability to play the games to collect points.
+
+### Core Mini-Games for Your Technical Command Center
+
+1. Code Runner - Typing Speed Challenge
+
+```jsx
+// A coding-themed typing game where users type code snippets
+// Points based on WPM + accuracy
+// Unlocks: Advanced code templates, faster deployment tools
+```
+1. Load Balancer - Resource Management
+
+```jsx
+// Distribute incoming requests across servers
+// Players drag/drop requests to prevent server overload
+// Points for efficiency and uptime
+// Unlocks: Infrastructure monitoring tools, deployment credits
+``` 
+1. Memory Leak Hunter - Pattern Matching
+
+```jsx
+// Find and fix memory issues in visual code blocks
+// Similar to matching games but with technical concepts
+// Points for speed and accuracy
+// Unlocks: Debugging tools, performance insights
+```
+
+1. API Tetris - System Architecture
+
+```jsx
+// Stack API components to build microservices
+// Different shapes = different services (auth, database, cache)
+// Points for clean architecture and completed systems
+// Unlocks: Architecture templates, service blueprints
+``` 
+
+1. Crypto Miner - Simple Clicker Game
+
+```jsx
+// Perfect for loading screens - just click to mine tokens
+// Minimal interaction required
+// Steady point accumulation
+// Unlocks: Token multipliers, auto-mining tools
+```
 ## Terminal Features
 
 The website includes an interactive terminal that you can use to navigate and learn more about me. Here's how to use it:
 
 ### Opening the Terminal
 
-- Press Ctrl +  (backtick) or Cmd +  (Mac) to toggle the terminal open/closed
+- Press Cmd + h to toggle the terminal open/closed
 - You can also close it by clicking the × button in the top right corner or pressing Escape
 
 ### Available Commands
@@ -50,24 +98,72 @@ The website includes an interactive terminal that you can use to navigate and le
 
 Try typing help first to see all available commands!
 
+## Architecture
+
+This application uses a dual-backend microservices architecture:
+
+```
+Frontend (React on :3000)
+    ↓ (JWT token)
+Blog Backend (Express on localhost:3001 / Fly.io)
+    ↓ MongoDB Atlas
+    ↓ (validates token, handles blog/media/AI features)
+    ↓
+Auth Backend (Express on localhost:8080 / AWS Lambda)
+    ↓ MongoDB Atlas
+    ↓ (issues tokens, handles authentication)
+```
+
+**Authentication Flow:**
+1. User logs in via Auth Backend (:8080 / AWS)
+2. Auth Backend issues JWT token signed with `ACCESS_TOKEN_SECRET`
+3. Frontend stores token in cookies
+4. All blog operations use same token with Blog Backend (:3001 / Fly.io)
+5. Both backends share the same `ACCESS_TOKEN_SECRET` for token validation
+
+**Why Dual Backend?**
+- **Separation of Concerns**: Auth logic isolated from business logic
+- **Scalability**: Each backend can scale independently
+- **Security**: Auth backend can have stricter security policies
+- **Deployment Flexibility**: Auth on AWS Lambda, Blog on Fly.io
+
 ## Technologies Used
 
-This application was developed with a full MERN stack. and written in JavaScript. Styling done with Bootstrap, Material UI, SASS or SCSS and CSS.
+This application was developed with a full MERN stack and written in JavaScript. Styling done with Bootstrap, Material UI, SASS/SCSS and CSS.
 
-M - MongoDB, NoSQL database  
-E - Express, a back-end framework  
-R - React, a client side framework  
-N - NodeJS - to run back end service
+**M** - MongoDB, NoSQL database (MongoDB Atlas)  
+**E** - Express, a back-end framework (dual backends)  
+**R** - React, a client side framework  
+**N** - NodeJS - to run back end services
 
-Dependencies used:
+### Backend Services
+
+**Blog Backend (localhost:3001 / Fly.io)**
+- Article CRUD operations
+- Enterprise blog features (drafts, scheduling, versioning)
+- Media management (Cloudinary integration)
+- AI content assistance (OpenAI integration)
+- SEO analysis
+- Analytics tracking
+
+**Auth Backend (localhost:8080 / AWS Lambda)**
+- User authentication & authorization
+- JWT token generation
+- User management
+- Role-based access control
+
+### Key Dependencies
 
 - Morgan - HTTP request logger middleware for node.js
-- Fetch - Promise based HTTP client for the browser and node.js
+- Axios - Promise based HTTP client for the browser and node.js
 - Bcrypt - A library to hash passwords
+- JWT - JSON Web Token for authentication
 - Mongoose - for MongoDB validation
 - React-Bootstrap - a React library for building pre-styled components
 - Material UI - a library for building pre-styled components
 - SASS - a preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets
+- Cloudinary - Media upload and management
+- OpenAI - AI-powered content generation
 
 ## Features
 
@@ -109,13 +205,229 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Data) for details.
 
 ## Backend
 
+### Dual Backend Architecture
+
+This project uses two Express backends for separation of concerns:
+
+#### 1. Blog Backend (Port 3001 / Fly.io)
+**Responsibilities:**
+- Article management (drafts, published, scheduled)
+- Enterprise blog features (auto-save, versioning, collaboration)
+- Media library (Cloudinary uploads)
+- AI content generation (OpenAI integration)
+- SEO analysis and optimization
+- Analytics tracking
+- Comment management
+
+**Endpoints:**
+```
+/api/blog/*         - Article CRUD operations
+/api/media/*        - Media upload and management
+/api/ai/*           - AI content assistance
+/api/seo/*          - SEO analysis and suggestions
+/api/analytics/*    - Performance metrics
+/api/collaboration/* - Reviews and team collaboration
+```
+
+## API Reference Quick Links
+
+- **BlogAPI**: Draft management, publishing, scheduling
+- **MediaAPI**: File uploads, media library
+- **AIAPI**: Content generation, improvement, translation
+- **SEOAPI**: SEO analysis, keyword research
+- **AnalyticsAPI**: Performance tracking, metrics
+- **CollaborationAPI**: Reviews, sharing, co-authoring
+
+
+#### 2. Auth Backend (Port 8080 / AWS Lambda)
+**Responsibilities:**
+- User authentication (login/register)
+- JWT token generation and refresh
+- User profile management
+- Role-based access control (admin, author, basic)
+- User status management (pending, approved)
+
+**Endpoints:**
+```
+/api/user/login      - User login
+/api/user/register   - User registration
+/api/user/refresh_token - Refresh JWT token
+/api/user/logout     - User logout
+/me                  - Get current user info
+```
+
+## 🎯 Key Features Implemented
+
+### 1. Draft Management
+- Auto-save functionality
+- Draft listing and management
+- Quick publish/schedule workflows
+- Batch operations
+
+### 2. Publishing Workflow
+- One-click publishing
+- Scheduled publishing with date/time
+- Unpublish and archive options
+- Version history (structure in place)
+
+### 3. AI-Powered Content Assistance
+- Content generation from prompts
+- Content improvement (grammar, clarity, engagement)
+- Title suggestions (5+ options)
+- Outline generation
+- Content expansion/summarization
+- Translation support
+- Social media post generation
+- Grammar checking
+- Meta tag generation
+- Key point extraction
+
+### 4. Media Management
+- File upload with progress tracking
+- Media library integration
+- Cloudinary integration maintained
+- Image optimization
+- Folder organization
+- Search functionality
+
+### 5. SEO Optimization
+- Real-time SEO scoring
+- Readability analysis (Flesch Reading Ease)
+- Keyword density analysis
+- Meta description generation
+- Title optimization suggestions
+- Link structure analysis
+- Structured data generation (Schema.org)
+
+### 6. Analytics & Tracking
+- View tracking
+- Engagement metrics
+- Performance dashboard data
+- Top articles reporting
+- Real-time statistics
+- Export functionality
+
+### 7. Collaboration Features (Structure)
+- Review request system
+- Collaborator management
+- Inline commenting (placeholder)
+- Activity feed (placeholder)
+- Share tracking
+
+---
+
+## 📊 API Methods Available
+
+### BlogAPI (10 methods)
+- saveDraft(articleData)
+- publishArticle(id, data)
+- scheduleArticle(id, data)
+- getVersionHistory(id)
+- restoreVersion(articleId, versionId)
+- duplicateArticle(id)
+- archiveArticle(id)
+- batchPublish(ids)
+- batchDelete(ids)
+
+### MediaAPI (8 methods)
+- uploadFile(file, folder)
+- uploadMultipleFiles(files, folder)
+- deleteMedia(publicId)
+- updateMediaMetadata(publicId, metadata)
+- searchMedia(query)
+- createFolder(name)
+- getMediaStats()
+
+### AIAPI (13 methods)
+- generateContent(prompt, options)
+- improveContent(content, type)
+- generateTitles(content, count)
+- generateOutline(topic, depth)
+- expandContent(content, length)
+- summarizeContent(content, length)
+- translateContent(content, language)
+- generateSocialPosts(content, platforms)
+- checkGrammar(content)
+- getStyleSuggestions(content, style)
+- generateMetaTags(content)
+- extractKeyPoints(content, count)
+- generateCTA(context, goal)
+
+### SEOAPI (12 methods)
+- analyzeSEO(articleData)
+- getKeywordSuggestions(topic, lang)
+- analyzeKeywordDensity(content, keywords)
+- checkReadability(content)
+- generateMetaDescription(content, length)
+- generateTitleSuggestions(content, keywords)
+- checkDuplicateContent(content)
+- analyzeCompetitors(keyword, competitors)
+- generateStructuredData(articleData)
+- analyzeLinkStructure(content)
+- getTrendingTopics(category)
+- optimizeImageSEO(url, alt, context)
+
+### AnalyticsAPI (10 methods)
+- trackView(articleId, metadata)
+- trackEngagement(articleId, eventType, data)
+- getArticleStats(articleId)
+- getTopArticles(limit)
+- getReaderDemographics(articleId)
+- getTrafficSources(articleId)
+- getEngagementMetrics(articleId)
+- getConversionMetrics()
+- getRealTimeStats()
+- exportAnalytics(format)
+
+### CollaborationAPI (10 methods)
+- requestReview(articleId, reviewerIds, message)
+- submitReview(reviewId, feedback, approved)
+- addCollaborator(articleId, userId, role)
+- removeCollaborator(articleId, userId)
+- getCollaborators(articleId)
+- shareArticle(articleId, shareData)
+- getShareAnalytics(articleId)
+- addInlineComment(articleId, commentData)
+- resolveInlineComment(commentId)
+- getActivityFeed(articleId)
+
+---
+
+
 ### Security
 
-#### Basic Auth & JWT
+#### Shared Secret Architecture
+
+Both backends use the **same `ACCESS_TOKEN_SECRET`** to enable single-token authentication:
+
+```javascript
+// Auth Backend (AWS) - Issues token
+const token = jwt.sign(
+  { id: user._id, role: user.role },
+  process.env.ACCESS_TOKEN_SECRET,
+  { expiresIn: '1d' }
+);
+
+// Blog Backend (Fly.io) - Validates same token
+jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  if (err) return res.status(401).json({ msg: 'Invalid token' });
+  req.user = user;
+  next();
+});
+```
+
+#### JWT Authentication Flow
 
 ![Security](https://i.imgur.com/ZD1gtVH.png)
 
 ![JWT](https://i.imgur.com/lFIJa0b.png)
+
+1. User submits credentials to Auth Backend (:8080)
+2. Auth Backend validates and returns JWT token
+3. Frontend stores token in httpOnly cookie
+4. All subsequent requests include token in `Authorization` header
+5. Both backends validate token with shared secret
+6. Token expires after 24 hours, refresh token extends session
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
@@ -164,39 +476,119 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 
 ## How To Run App
 
-Build image locally
+### Prerequisites
 
-```docker
+```bash
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your:
+# - MONGODB_URL
+# - ACCESS_TOKEN_SECRET (must match Auth Backend!)
+# - CLOUDINARY credentials
+# - OPENAI_API_KEY
+```
+
+### Development (Local)
+
+**Terminal 1 - Blog Backend:**
+```bash
+# Runs on localhost:3001
+nodemon ./server.js
+```
+
+**Terminal 2 - Frontend:**
+```bash
+# Runs on localhost:3000
+npm start
+```
+
+**Terminal 3 - Auth Backend (if running locally):**
+```bash
+# Runs on localhost:8080
+cd /path/to/auth-backend
+nodemon server.js
+```
+
+**Note:** Auth backend can also run on AWS Lambda. Set `REACT_APP_API_BASE_URL` in `.env` to point to AWS endpoint in production.
+
+### Docker
+
+Build image locally:
+
+```bash
 docker build -t hoseacodes-blog .  
 ```
-Run local image in container
 
-```docker
-docker run --name hoseacodes-blog-c -p 3001:3001 -d hoseacodes-blog
+Run local image in container:
+
+```bash
+docker run --name hoseacodes-blog-c -p 3001:3001 \
+  -e MONGODB_URL="your_mongodb_url" \
+  -e ACCESS_TOKEN_SECRET="your_secret" \
+  -d hoseacodes-blog
 ```
 
-Tag Image for push
+Tag Image for push:
 
-```docker
-docker tag ${imageID} hoseacodes/hoseacodes/hoseacodes-blog:latest
+```bash
+docker tag ${imageID} hoseacodes/hoseacodes-blog:latest
 ```
 
-Push Docker Image 
+Push Docker Image:
 
-```docker
+```bash
 docker push hoseacodes/hoseacodes-blog:latest    
 ```
 
 ## How To Deploy App
 
+### Deploy Blog Backend to Fly.io
+
 ```bash
-git push heroku-staging HEAD:main  
+# First time setup
+fly launch
+
+# Set secrets (IMPORTANT: Use same ACCESS_TOKEN_SECRET as Auth Backend!)
+fly secrets set ACCESS_TOKEN_SECRET=your_secret
+fly secrets set MONGODB_URL=your_mongodb_url
+fly secrets set CLOUDINARY_CLOUD_NAME=your_cloudinary_name
+fly secrets set CLOUDINARY_API_KEY=your_cloudinary_key
+fly secrets set CLOUDINARY_API_SECRET=your_cloudinary_secret
+fly secrets set OPENAI_API_KEY=your_openai_key
+
+# Deploy
+fly deploy
+
+# Check status
+fly status
+
+# View logs
+fly logs
+```
+
+### Deploy Auth Backend to AWS Lambda
+
+Auth backend is deployed separately to AWS Lambda via API Gateway. Ensure Lambda environment variables match:
+
+```bash
+ACCESS_TOKEN_SECRET=<same_as_flyio_backend>
+MONGODB_URL=<your_mongodb_atlas_url>
 ```
 
 ## How To Restart App
 
+**Fly.io:**
 ```bash
-heroku restart -a app_name
+fly restart -a hoseacodes-blog
+```
+
+**Check health:**
+```bash
+fly checks list
+fly logs
 ```
 
 ## Unsolved Problems

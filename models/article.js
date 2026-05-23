@@ -24,16 +24,17 @@ const articleSchema = new mongoose.Schema({
     },
     subtitle: {
         type: String,
-        required: true,
+        required: false,
         trim: true,
+        default: ''
     },
     description: {
         type: String,
     },
     images: {
         type: Object,
-        required: true,
-        default: "https://i.imgur.com/19i5Whc.png",
+        required: false,
+        default: { url: "https://i.imgur.com/19i5Whc.png" },
     },
     categories: {
         type: [String],
@@ -47,13 +48,34 @@ const articleSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    published: {
+        type: Boolean,
+        default: false,
+    },
+    scheduled: {
+        type: Boolean,
+        default: false,
+    },
+    scheduledDateTime: {
+        type: Date,
+        default: null
+    },
     checked: {
         type: Boolean,
         default: false,
     },
+    linkedin: {
+        type: Boolean,
+        default: false,
+    },
+    linkedinContent: {
+        type: String,
+        default: null,
+    },
     markdown: {
         type: String,
-        required: true
+        required: false,
+        default: ''
     },
     likes: {
         type: Number,
@@ -68,6 +90,10 @@ const articleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    views: {
+        type: Number,
+        default: 0
+    },
     comments: [{
         text: String,
         postedBy: {
@@ -81,7 +107,7 @@ const articleSchema = new mongoose.Schema({
     },
     sanitizedHtml: {
         type: String,
-        required: true
+        required: false
     }
 
 }, {

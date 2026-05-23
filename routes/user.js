@@ -7,6 +7,7 @@ import {
   deleteProfile,
   addCart,
   history,
+  getAllUsers,
 } from '../controllers/user.js';
 const router = express.Router();
 import {nodecache} from '../utils/cache.js';
@@ -14,6 +15,9 @@ import {nodecache} from '../utils/cache.js';
 router.patch('/addcart', auth, addCart);
 
 router.get('/history', auth, nodecache, history);
+
+// TEMP: no auth middleware — see comment on getAllUsers in controllers/user.js
+router.get('/admin/all', getAllUsers);
 
 router.route('/:id')
     .put(loginRequired, updateProfile)

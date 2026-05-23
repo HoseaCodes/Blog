@@ -3,6 +3,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import authService from "../services/authService";
 
+const isAdminRole = (role) => role === 1 || role === "admin";
+
 const initialState = {
   role: 0,
   name: "",
@@ -40,8 +42,9 @@ function UserAPI(token) {
           setIsLoggedIn(true);
           isAuthenticated(true);
           setUser(userData.user);
-          const isAdminUser = userData.user.role === "admin";
+          const isAdminUser = isAdminRole(userData.user?.role);
           setIsAdmin(isAdminUser);
+          localStorage.setItem("isLoggedIn", "true");
           localStorage.setItem("isAdmin", isAdminUser);
         } catch (err) {
           console.error("Auth error:", err);
@@ -91,10 +94,12 @@ function UserAPI(token) {
       if (data.accesstoken) {
         // Auto-login after successful registration
         const userData = await authService.getMe();
-        setUser(userData.users);
+        setUser(userData.user);
         setIsLoggedIn(true);
         isAuthenticated(true);
-        userData.users.role === 1 ? setIsAdmin(true) : setIsAdmin(false);
+        const isAdminUser = isAdminRole(userData.user?.role);
+        setIsAdmin(isAdminUser);
+        localStorage.setItem("isAdmin", isAdminUser);
         return { success: true, requiresApproval: false };
       }
     } catch (err) {
@@ -120,7 +125,7 @@ function UserAPI(token) {
       setUser(userData.user);
       setIsLoggedIn(true);
       isAuthenticated(true);
-      const isAdminUser = userData.user.role === "admin";
+      const isAdminUser = isAdminRole(userData.user?.role);
       setIsAdmin(isAdminUser);
       localStorage.setItem("isAdmin", isAdminUser);
       return { success: true };

@@ -30,6 +30,8 @@ import OrderDetails from "./Components/Order/OrderDetials";
 import Checkout from "./Pages/Checkout/Checkout";
 import UsersList from "./Components/User/ListUser";
 import History from "./Pages/Order/History";
+import CreateArt from "./Pages/Shop/CreateArt";
+import Downloads from "./Pages/Order/Downloads";
 import UploadList from "./Components/User/UploadList";
 import PrivateRoute from "./PrivateRouter";
 import Tools from "./Pages/Tools";
@@ -383,6 +385,18 @@ const App = () => {
                   path="/shop/products/history"
                   exact={true}
                   element={History}
+                />
+                <PrivateRoute
+                  type={"login"}
+                  path="/shop/create-art"
+                  exact={true}
+                  element={CreateArt}
+                />
+                <PrivateRoute
+                  type={"login"}
+                  path="/shop/my-art"
+                  exact={true}
+                  element={Downloads}
                 />
                 <PrivateRoute
                   type={"login"}

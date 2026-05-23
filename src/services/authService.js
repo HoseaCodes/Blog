@@ -7,45 +7,43 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ||
     : 'http://localhost:8081');
 
 // Create axios instance
-const api = axios.create({
+export const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor to add auth token
-api.interceptors.request.use(
-  (config) => {
-    // Debug: log all cookies
-    console.log('All cookies:', document.cookie);
-    
-    // Get token from cookies
-    let token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('accesstoken='))
-      ?.split('=')[1];
-    
-    // If token has JWT prefix, remove it
-    if (token && token.startsWith('JWT ')) {
-      token = token.substring(4);
-    }
-    
-    console.log('Token from cookie (cleaned):', token);
-    console.log('Request URL:', config.url);
-    console.log('Full request URL:', config.baseURL + config.url);
-    
-    if (token) {
-      // For all API endpoints, use plain token format (backend expects just the token)
-      config.headers.Authorization = token;
-      console.log('Using token format:', token.substring(0, 20) + '...');
-    } else {
-      console.warn('⚠️ No token found in cookies!');
-    }
-    return config;
+// Separate instance for endpoints served by THIS repo's Express (e.g. /api/user/admin/all
+// reading from portfolio.users). Shares the JWT via the cookie-token interceptor below.
+const LOCAL_API_BASE_URL =
+  process.env.REACT_APP_LOCAL_API_BASE_URL || 'http://localhost:3003';
+
+export const apiLocal = axios.create({
+  baseURL: LOCAL_API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
   },
-  (error) => Promise.reject(error)
-);
+});
+
+const attachCookieToken = (config) => {
+  let token = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('accesstoken='))
+    ?.split('=')[1];
+
+  if (token && token.startsWith('JWT ')) {
+    token = token.substring(4);
+  }
+
+  if (token) {
+    config.headers.Authorization = token;
+  }
+  return config;
+};
+
+api.interceptors.request.use(attachCookieToken, (error) => Promise.reject(error));
+apiLocal.interceptors.request.use(attachCookieToken, (error) => Promise.reject(error));
 
 // Response interceptor for error handling
 api.interceptors.response.use(

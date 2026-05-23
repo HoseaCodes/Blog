@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Parser } from 'expr-eval';
+import { Parser } from 'expr-eval-fork';
 import { ubuntuTheme } from '../styled/tokens';
 
 const parser = new Parser({

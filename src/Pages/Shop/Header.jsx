@@ -5,6 +5,8 @@ import {
 	AiOutlinePlus,
 	AiOutlineAppstore,
 	AiOutlineHistory,
+	AiOutlineBulb,
+	AiOutlineDownload,
 } from "react-icons/ai";
 import { GlobalState } from "../../GlobalState";
 import "./Header.css";
@@ -44,6 +46,24 @@ const Header = () => {
 					)}
 				</ul>
 			</div>
+
+			{isLoggedIn && (
+				<div className="shop-sidebar-section">
+					<h6 className="shop-sidebar-label">AI Art</h6>
+					<ul className="shop-sidebar-list">
+						<li>
+							<Link to="/shop/create-art">
+								<AiOutlineBulb aria-hidden /> <span>Create AI Art</span>
+							</Link>
+						</li>
+						<li>
+							<Link to="/shop/my-art">
+								<AiOutlineDownload aria-hidden /> <span>My Downloads</span>
+							</Link>
+						</li>
+					</ul>
+				</div>
+			)}
 
 			{isAdmin && (
 				<div className="shop-sidebar-section">

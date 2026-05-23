@@ -167,6 +167,21 @@ async function updateProfile(req, res) {
   }
 }
 
+// TEMP: no server-side auth. The /admin/users page gates access client-side
+// using the role returned from Storm-Gate's /me. Anyone who can reach this
+// endpoint (including unauthenticated) can dump every user. Lock down before
+// deploying publicly — re-add auth middleware + a real admin check.
+async function getAllUsers(req, res) {
+  try {
+    const users = await Users.find({}, "-password -resetPasswordToken -resetPasswordExpire")
+      .sort({ createdAt: -1 });
+    return res.json({ users, count: users.length });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
 async function deleteProfile(req, res) {
   try {
     logger.info(`Deleted user ${req.params.id} has been deleted`);
@@ -188,5 +203,6 @@ export {
   updateProfile,
   deleteProfile,
   addCart,
-  history
+  history,
+  getAllUsers
 };

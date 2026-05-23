@@ -1,3 +1,87 @@
+# 1.3.0 (2026-05-23)
+
+Major release covering AI-generated art sales (Phase 1), the easter-egg
+portfolio experience, the games hub, hardened authentication, and a large
+dependency/CI refresh. 175 commits since v1.1.0.
+
+### Features
+
+* **ai-art:** server-side foundation for AI-generated art sales — DALL-E /
+  Stability provider adapters, ArtPurchase model, PayPal client, generation
+  + purchase + download flow ([91f5f57](https://github.com/HoseaCodes/Blog-Portfolio/commit/91f5f57))
+* **ai-art:** frontend for AI-generated art sales — CreateArt page,
+  Downloads page, AI Art API wrapper, NavBar integration ([c892e72](https://github.com/HoseaCodes/Blog-Portfolio/commit/c892e72))
+* **easter-eggs:** Ubuntu, macOS (Finder / Mail / Safari), Postman app, and
+  Planets pages added to the portfolio ([462e91f](https://github.com/HoseaCodes/Blog-Portfolio/commit/462e91f), [0573576](https://github.com/HoseaCodes/Blog-Portfolio/commit/0573576), [0607b4f](https://github.com/HoseaCodes/Blog-Portfolio/commit/0607b4f), [f7d7f71](https://github.com/HoseaCodes/Blog-Portfolio/commit/f7d7f71))
+* **games:** Games page and game console with new entries (Sudoku Master,
+  Snail Race, additional games) ([c6a1016](https://github.com/HoseaCodes/Blog-Portfolio/commit/c6a1016), [dbdfc3e](https://github.com/HoseaCodes/Blog-Portfolio/commit/dbdfc3e))
+* **terminal:** interactive terminal modal with command functionality and
+  external API integrations ([1b95ad1](https://github.com/HoseaCodes/Blog-Portfolio/commit/1b95ad1), [bfddd50](https://github.com/HoseaCodes/Blog-Portfolio/commit/bfddd50))
+* **resume-cta:** new ResumeCTA component with AI integration and styled
+  elements ([c786218](https://github.com/HoseaCodes/Blog-Portfolio/commit/c786218))
+* **theme:** theme switcher with AOS integration and space-themed technology
+  section ([2bf45ac](https://github.com/HoseaCodes/Blog-Portfolio/commit/2bf45ac), [74e43a9](https://github.com/HoseaCodes/Blog-Portfolio/commit/74e43a9))
+* **portfolio:** Portfolio Template components — Header, NavBar, SideBar,
+  pages ([5b9b93e](https://github.com/HoseaCodes/Blog-Portfolio/commit/5b9b93e))
+* **article:** LinkedIn cross-posting, Google Analytics tracking, scheduled
+  post publishing (daily at noon), client-side scheduling ([0600b75](https://github.com/HoseaCodes/Blog-Portfolio/commit/0600b75), [2473598](https://github.com/HoseaCodes/Blog-Portfolio/commit/2473598), [ba6b072](https://github.com/HoseaCodes/Blog-Portfolio/commit/ba6b072), [9506050](https://github.com/HoseaCodes/Blog-Portfolio/commit/9506050))
+* **data:** automated DB backup to AWS S3 ([925368a](https://github.com/HoseaCodes/Blog-Portfolio/commit/925368a))
+* **infra:** Dockerfile, `.dockerignore`, design tokens, animation utilities ([a4fd351](https://github.com/HoseaCodes/Blog-Portfolio/commit/a4fd351), [d33d471](https://github.com/HoseaCodes/Blog-Portfolio/commit/d33d471))
+* **analytics:** Google Analytics 4 tag integration ([1808566](https://github.com/HoseaCodes/Blog-Portfolio/commit/1808566))
+* **ci:** Snyk static-scan workflow, dependency-scan workflow, and lint job
+  in GitHub Actions ([f8530f4](https://github.com/HoseaCodes/Blog-Portfolio/commit/f8530f4), [f832404](https://github.com/HoseaCodes/Blog-Portfolio/commit/f832404), [b6e1290](https://github.com/HoseaCodes/Blog-Portfolio/commit/b6e1290))
+
+### Security
+
+* Removed client-bundled OpenAI API key and admin/password basic-auth; moved
+  to server-side OpenAI usage and JWT-protected admin routes ([0c8a854](https://github.com/HoseaCodes/Blog-Portfolio/commit/0c8a854))
+* Hardened user authentication: registration, login, password reset, status
+  check ([7f8917c](https://github.com/HoseaCodes/Blog-Portfolio/commit/7f8917c))
+* `axios` upgraded to 1.13.2 — fixes CSRF (CVE-2023-45857), ReDoS, data-URL
+  resource-exhaustion (CVE-2025-58754), and SSRF (CVE-2025-27152) issues
+  flagged by Snyk
+
+### Bug Fixes
+
+* **shop:** layout and responsiveness pass — sidebar widened, text no longer
+  truncates, masonry grid no longer escapes the container, `/shop/products`
+  now uses the same layout wrapper as `/shop` ([e9eda0e](https://github.com/HoseaCodes/Blog-Portfolio/commit/e9eda0e), [75c243f](https://github.com/HoseaCodes/Blog-Portfolio/commit/75c243f))
+* **blog:** guard against undefined `user` and non-array `articles` when
+  rendering author posts ([b35b7bd](https://github.com/HoseaCodes/Blog-Portfolio/commit/b35b7bd))
+* **articles:** filter for React-tagged articles, improved image handling,
+  popular-posts logic refresh ([8cf21fd](https://github.com/HoseaCodes/Blog-Portfolio/commit/8cf21fd), [3a6c635](https://github.com/HoseaCodes/Blog-Portfolio/commit/3a6c635), [eb016a0](https://github.com/HoseaCodes/Blog-Portfolio/commit/eb016a0))
+* **comments:** like-button, comment frontend, and listen-button
+  functionality ([fc28318](https://github.com/HoseaCodes/Blog-Portfolio/commit/fc28318), [e52b967](https://github.com/HoseaCodes/Blog-Portfolio/commit/e52b967), [ddd92d7](https://github.com/HoseaCodes/Blog-Portfolio/commit/ddd92d7))
+* **workflows:** Snyk error handling, dependency install cleanup, switch to
+  `actions/upload-artifact@v4`, staging-branch deploy target ([c6ba4e0](https://github.com/HoseaCodes/Blog-Portfolio/commit/c6ba4e0), [9edfb99](https://github.com/HoseaCodes/Blog-Portfolio/commit/9edfb99), [945d51e](https://github.com/HoseaCodes/Blog-Portfolio/commit/945d51e))
+* **build:** lowercase `constants` path for case-sensitive filesystems,
+  `.js` extensions for Vercel build, `.vercel` in `.gitignore` ([90367ac](https://github.com/HoseaCodes/Blog-Portfolio/commit/90367ac), [e68b06a](https://github.com/HoseaCodes/Blog-Portfolio/commit/e68b06a), [dda29f0](https://github.com/HoseaCodes/Blog-Portfolio/commit/dda29f0))
+* **react-hooks:** memoize `fetchKeywordSuggestions` with `useCallback`,
+  explicit dependency arrays for `cookies.accesstoken`, scope fix in
+  `RightColumn.postComment` ([6da2083](https://github.com/HoseaCodes/Blog-Portfolio/commit/6da2083), [f42a9e5](https://github.com/HoseaCodes/Blog-Portfolio/commit/f42a9e5), [c5c50cc](https://github.com/HoseaCodes/Blog-Portfolio/commit/c5c50cc))
+
+### Dependencies
+
+* `axios` → 1.13.2
+* `openai` → 4.x (drops axios transitive dep, native fetch)
+* `react-scripts` → 5.0.0
+* `dompurify` → 3.3.1
+* `morgan` → 1.10.1
+* `react-cookie` → 6.1.3 (downgraded from broken 8.x ESM build)
+* `express`, `mongoose` → latest
+* `react-icons` → 4.12.0
+* Bootstrap & jQuery refreshed
+
+### Documentation
+
+* Git branching strategy and visual workflow ([b7a637e](https://github.com/HoseaCodes/Blog-Portfolio/commit/b7a637e))
+* Pull request template with branch-flow checklist ([37acf14](https://github.com/HoseaCodes/Blog-Portfolio/commit/37acf14))
+* README — terminal features, deployment instructions ([d57210d](https://github.com/HoseaCodes/Blog-Portfolio/commit/d57210d), [cf44768](https://github.com/HoseaCodes/Blog-Portfolio/commit/cf44768))
+* Auth, enterprise-blog-integration, scoring quick-start, and Frogger
+  improvement docs under `docs/`
+
+
+
 # 1.1.0 (2024-05-27)
 
 

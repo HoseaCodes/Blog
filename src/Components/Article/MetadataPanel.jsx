@@ -30,7 +30,7 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const FormGroup = styled.div`
@@ -60,7 +60,7 @@ const Input = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -76,12 +76,12 @@ const Select = styled.select`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
   
   option {
-    background: #1a1a2e;
+    background: #14191e;
     color: white;
   }
 `;
@@ -103,7 +103,7 @@ const Textarea = styled.textarea`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -117,8 +117,8 @@ const TagContainer = styled.div`
 
 const Tag = styled(motion.span)`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
-  color: #667eea;
+  border: 1px solid #5bb39e;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 16px;
   font-size: 0.75rem;
@@ -145,7 +145,7 @@ const TagInput = styled.input`
 
 const AddButton = styled(motion.button)`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   border-radius: 6px;
   color: white;
   padding: 0.5rem;
@@ -170,7 +170,7 @@ const RadioGroup = styled.div`
 
 const RadioOption = styled(motion.label)`
   background: ${props => props.checked ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'};
-  border: 1px solid ${props => props.checked ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
+  border: 1px solid ${props => props.checked ? '#5bb39e' : 'rgba(255, 255, 255, 0.2)'};
   border-radius: 8px;
   padding: 0.75rem;
   cursor: pointer;
@@ -182,7 +182,7 @@ const RadioOption = styled(motion.label)`
   justify-content: center;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.2);
   }
 `;
@@ -204,7 +204,7 @@ const MetricGrid = styled.div`
 const MetricValue = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const MetricLabel = styled.div`
@@ -638,7 +638,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
                     ? 'rgba(102, 126, 234, 0.4)' 
                     : 'rgba(255, 255, 255, 0.1)',
                   borderColor: (article?.metadata?.personaTarget || []).includes(persona) 
-                    ? '#667eea' 
+                    ? '#5bb39e' 
                     : 'rgba(255, 255, 255, 0.2)'
                 }}
                 whileHover={{ scale: 1.05 }}
@@ -663,7 +663,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
                     ? 'rgba(102, 126, 234, 0.4)' 
                     : 'rgba(255, 255, 255, 0.1)',
                   borderColor: (article?.metadata?.industryTarget || []).includes(industry) 
-                    ? '#667eea' 
+                    ? '#5bb39e' 
                     : 'rgba(255, 255, 255, 0.2)'
                 }}
                 whileHover={{ scale: 1.05 }}

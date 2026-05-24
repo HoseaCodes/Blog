@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import styled from 'styled-components';
 import { GlobalState } from '../../../GlobalState';
 import moment from 'moment-timezone';
@@ -8,13 +9,30 @@ import SideBar from '../../../Components/NavBar/SideBar';
 import MainContainer from '../../../Components/Article/MainContainer';
 import RightColumn from '../../../Components/Article/RightColumn';
 
+const SITE_URL = 'https://hoseacodes.com';
+const DEFAULT_OG_IMAGE = 'https://hoseacodes.com/logo.png';
+
+const stripMarkdown = (md = '') =>
+  md
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[`*_>#~-]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const buildDescription = (article) => {
+  if (article.description) return article.description.slice(0, 160);
+  if (article.subtitle) return article.subtitle.slice(0, 160);
+  return stripMarkdown(article.markdown).slice(0, 160);
+};
+
 // =============================================
 // MEDIUM DESIGN TOKENS
 // =============================================
 const mediumTheme = {
   colors: {
     background: {
-      white: '#ffffff'
+      white: '#0f1216'
     }
   },
   breakpoints: {
@@ -92,22 +110,29 @@ const ArticleItem = () => {
 
   // Load article data
   useEffect(() => {
-    if (params.id) {
-      const foundArticle = articles.find(article => article._id === params.id);
-      if (foundArticle) {
-        setDetailArticle(foundArticle);
-      } else {
-        const fetchArticle = async () => {
-          try {
-            const response = await axios.get(`/api/articles/${params.id}`);
-            setDetailArticle(response.data.article);
-          } catch (err) {
-            console.error('Error fetching article:', err);
-          }
-        };
-        fetchArticle();
-      }
+    if (!params.id) return;
+
+    let cancelled = false;
+
+    const foundArticle = articles.find(article => article._id === params.id);
+    if (foundArticle) {
+      setDetailArticle(foundArticle);
+      return;
     }
+
+    const fetchArticle = async () => {
+      try {
+        const response = await axios.get(`/api/articles/${params.id}`);
+        if (!cancelled) setDetailArticle(response.data.article);
+      } catch (err) {
+        if (!cancelled) console.error('Error fetching article:', err);
+      }
+    };
+    fetchArticle();
+
+    return () => {
+      cancelled = true;
+    };
   }, [params.id, articles]);
 
   if (!detailArticle._id) return null;
@@ -118,8 +143,62 @@ const ArticleItem = () => {
   const wordCount = (markdown?.length || 0) + 700;
   const readTime = Math.round(wordCount / avgWordsMinRead);
 
+  const canonicalSlug = detailArticle.slug || detailArticle._id;
+  const canonicalUrl = `${SITE_URL}/blog/${canonicalSlug}`;
+  const pageTitle = `${detailArticle.title} | Hosea Codes`;
+  const pageDescription = buildDescription(detailArticle);
+  const ogImage = detailArticle.images?.secure_url || detailArticle.images?.url || DEFAULT_OG_IMAGE;
+  const tags = Array.isArray(detailArticle.tags) ? detailArticle.tags : [];
+  const categories = Array.isArray(detailArticle.categories) ? detailArticle.categories : [];
+  const keywords = [...tags, ...categories].join(', ');
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+    headline: detailArticle.title,
+    description: pageDescription,
+    image: ogImage,
+    datePublished: detailArticle.createdAt,
+    dateModified: detailArticle.updatedAt || detailArticle.createdAt,
+    author: { '@type': 'Person', name: 'Dominique Hosea', url: SITE_URL },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Hosea Codes',
+      logo: { '@type': 'ImageObject', url: DEFAULT_OG_IMAGE },
+    },
+    keywords: keywords || undefined,
+  };
+
   return (
     <ArticlePageContainer>
+      <Helmet>
+        <title>{pageTitle}</title>
+        <meta name="description" content={pageDescription} />
+        {keywords && <meta name="keywords" content={keywords} />}
+        <link rel="canonical" href={canonicalUrl} />
+
+        <meta property="og:type" content="article" />
+        <meta property="og:title" content={detailArticle.title} />
+        <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:image" content={ogImage} />
+        <meta property="og:site_name" content="Hosea Codes" />
+        <meta property="article:published_time" content={detailArticle.createdAt} />
+        {detailArticle.updatedAt && (
+          <meta property="article:modified_time" content={detailArticle.updatedAt} />
+        )}
+        {tags.map((tag) => (
+          <meta key={`tag-${tag}`} property="article:tag" content={tag} />
+        ))}
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={detailArticle.title} />
+        <meta name="twitter:description" content={pageDescription} />
+        <meta name="twitter:image" content={ogImage} />
+
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
       <BlogContent>
         {/* Left Sidebar - Only show if user is logged in */}
         {user.name && (

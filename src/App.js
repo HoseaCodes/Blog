@@ -32,7 +32,12 @@ import UsersList from "./Components/User/ListUser";
 import History from "./Pages/Order/History";
 import CreateArt from "./Pages/Shop/CreateArt";
 import Downloads from "./Pages/Order/Downloads";
+import RedeemStore from "./Pages/Shop/RedeemStore";
 import UploadList from "./Components/User/UploadList";
+import AdminOverview from "./Pages/Admin/AdminOverview";
+import AdminBlogs from "./Pages/Admin/AdminBlogs";
+import AdminProducts from "./Pages/Admin/AdminProducts";
+import AdminArt from "./Pages/Admin/AdminArt";
 import PrivateRoute from "./PrivateRouter";
 import Tools from "./Pages/Tools";
 import Games from "./Pages/Games";
@@ -281,8 +286,8 @@ const App = () => {
     <BrowserRouter history={history}>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
         <Switch>
-          <GameScoreProvider>
-            <DataProvider>
+          <DataProvider>
+            <GameScoreProvider>
               <Layout>
                 <Route exact={true} path="/" render={() => <Home />} />
                 <Suspense fallback={<ProLoader />}>
@@ -338,6 +343,18 @@ const App = () => {
                 {/* AdminManagement */}
                 <PrivateRoute
                   type={"admin"}
+                  path="/admin"
+                  exact={true}
+                  element={AdminOverview}
+                />
+                <PrivateRoute
+                  type={"admin"}
+                  path="/admin/blogs"
+                  exact={true}
+                  element={AdminBlogs}
+                />
+                <PrivateRoute
+                  type={"admin"}
                   path="/admin/users"
                   exact={true}
                   element={UsersList}
@@ -347,6 +364,18 @@ const App = () => {
                   path="/admin/uploads"
                   exact={true}
                   element={UploadList}
+                />
+                <PrivateRoute
+                  type={"admin"}
+                  path="/admin/products"
+                  exact={true}
+                  element={AdminProducts}
+                />
+                <PrivateRoute
+                  type={"admin"}
+                  path="/admin/art"
+                  exact={true}
+                  element={AdminArt}
                 />
                 {/* AdminManagement */}
                 {/* Shop */}
@@ -409,6 +438,11 @@ const App = () => {
                   path="/shop/cart"
                   exact={true}
                   element={Checkout}
+                />
+                <Route
+                  path="/shop/redeem"
+                  exact={true}
+                  render={() => <RedeemStore />}
                 />
                 {/* Shop */}
                 {/* GameStore */}
@@ -490,8 +524,8 @@ const App = () => {
                 {/* <Route component={Error} /> */}
                 {/* 404 */}
               </Layout>
-            </DataProvider>
             </GameScoreProvider>
+          </DataProvider>
         </Switch>
       </CookiesProvider>
     </BrowserRouter>

@@ -1,6 +1,7 @@
 import { Button, Grid } from "../common";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
+import useGameBridge from "../../../Hooks/useGameBridge";
 
 
 const Confetti =
@@ -89,7 +90,7 @@ let matchTimer = null;
 let fillTimer = null;
 let shakeTimer = null;
 
-const SweetCrush = () => {
+const SweetCrush = ({ onScoreUpdate, gameStarted = true } = {}) => {
   const width = 8;
   const [candyArray, setCandyArray] = useState([]);
   const [start, setStart] = useState(false);
@@ -110,16 +111,20 @@ const SweetCrush = () => {
     clearTimeout(fillTimer);
     clearTimeout(shakeTimer);
   };
-  const restartGame = () => {
+  const restartGame = useCallback(() => {
     setScore(0);
     clearTimer();
     setShake([]);
     setActiveIndex(null);
     fillArrayWithCandies();
-  };
-  useEffect(() => {
-    restartGame();
   }, []);
+
+  useGameBridge({
+    score,
+    gameStarted,
+    onScoreUpdate,
+    onReset: restartGame,
+  });
 
   const isValidCombo = (array, index) => {
     let combo = [

@@ -16,26 +16,26 @@ import marked from 'marked';
 const mediumTheme = {
   colors: {
     text: {
-      primary: '#242424',
-      secondary: '#6b6b6b',
-      light: '#8b8b8b'
+      primary: '#f4f6f8',
+      secondary: '#a3acb2',
+      light: '#6b7479'
     },
     background: {
-      white: '#ffffff',
-      light: '#fafafa',
-      border: '#e6e6e6',
-      hover: '#f2f2f2'
+      white: '#0f1216',
+      light: 'rgba(255, 255, 255, 0.025)',
+      border: 'rgba(255, 255, 255, 0.06)',
+      hover: 'rgba(255, 255, 255, 0.04)'
     },
     accent: {
-      green: '#1a8917',
-      lightGreen: '#f0fff0',
-      red: '#e74c3c'
+      green: '#5bb39e',
+      lightGreen: 'rgba(91, 179, 158, 0.1)',
+      red: '#f87171'
     }
   },
   typography: {
     fontFamily: {
       serif: 'charter, Georgia, Cambria, "Times New Roman", Times, serif',
-      sansSerif: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+      sansSerif: '"Lato", sans-serif'
     },
     fontSize: {
       xs: '12px',
@@ -401,16 +401,21 @@ const NewsletterForm = styled.div`
 
 const NewsletterInput = styled.input`
   flex: 1;
-  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.md};
-  border: 1px solid ${mediumTheme.colors.background.border};
-  border-radius: 4px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(15, 18, 22, 0.65);
+  color: ${mediumTheme.colors.text.primary};
   font-size: ${mediumTheme.typography.fontSize.base};
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 
   &:focus {
-    outline: none;
-    border-color: ${mediumTheme.colors.accent.green};
-    box-shadow: 0 0 0 3px ${mediumTheme.colors.accent.lightGreen};
+    border-color: rgba(91, 179, 158, 0.45);
+    box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
+    background: rgba(15, 18, 22, 0.85);
   }
 
   &::placeholder {
@@ -419,22 +424,30 @@ const NewsletterInput = styled.input`
 `;
 
 const NewsletterButton = styled.button`
-  background-color: ${mediumTheme.colors.accent.green};
-  color: white;
-  border: none;
-  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.lg};
-  border-radius: 4px;
+  background-color: #206a5d;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  border-radius: 10px;
   font-size: ${mediumTheme.typography.fontSize.base};
-  font-weight: ${mediumTheme.typography.fontWeight.medium};
+  font-weight: ${mediumTheme.typography.fontWeight.semibold};
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
+  transition: background-color 0.18s ease, transform 0.12s ease,
+    box-shadow 0.18s ease;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: ${mediumTheme.spacing.xs};
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(32, 106, 93, 0.28);
 
   &:hover {
-    background-color: #0f6b14;
+    background-color: #267a6b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(32, 106, 93, 0.4);
   }
 
   svg {
@@ -460,16 +473,17 @@ const RelatedPostsSection = styled.div`
 `;
 
 const RelatedPostCard = styled.div`
-  background: white;
-  border-radius: 8px;
+  background: ${mediumTheme.colors.background.light};
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 12px;
   padding: ${mediumTheme.spacing.lg};
   margin-bottom: ${mediumTheme.spacing.lg};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: ${mediumTheme.colors.background.hover};
+    border-color: rgba(91, 179, 158, 0.25);
   }
 
   &:last-child {
@@ -685,7 +699,7 @@ const AdminControls = styled.div`
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #c0392b;
+      background-color: #dc4444;
     }
   }
 `;
@@ -707,7 +721,6 @@ const MainContainer = ({
   handleCheck
 }) => {
   const { _id, likes, title, subtitle, description, images, markdown, comments } = detailArticle;
-  
   // Audio states
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPaused, setAudioPaused] = useState(false);
@@ -869,10 +882,13 @@ const MainContainer = ({
 
           <BlogCard>
             <BlogPost>
-              <BlogContent isFirst>
-                {description}
-              </BlogContent>
-              
+              {
+                description && (
+                  <BlogContent isFirst>
+                  {description}
+                </BlogContent>
+                )
+              }
               <BlogContent 
                 dangerouslySetInnerHTML={{ __html: marked(markdown || '') }}
               />
@@ -964,21 +980,41 @@ const MainContainer = ({
 
         {/* Related Posts */}
         <RelatedPostsSection>
-          {recentPosts.map((article) => (
+          {recentPosts.map((article) => {
+            const articleDate = article.createdAt
+              ? new Date(article.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "";
+            const articleWordCount = (article.markdown?.length || 0) + 700;
+            const articleReadTime = Math.max(
+              1,
+              Math.round(articleWordCount / 238)
+            );
+            const articleAvatar =
+              article.postedBy?.avatar?.url ||
+              article.postedBy?.avatar ||
+              avatar;
+            const articleCategory =
+              (Array.isArray(article.categories) && article.categories[0]) ||
+              "Software";
+            return (
             <RelatedPostCard key={article._id}>
               <RelatedPostHeader>
                 <CircleImage
-                  src={avatar}
+                  src={articleAvatar}
                   alt="author"
                 />
                 <div>
-                  <NamePlate>{user.name || "Will Smith"}</NamePlate>
+                  <NamePlate>{article.postedBy?.name || "D. Hosea"}</NamePlate>
                   <span style={{color: mediumTheme.colors.text.secondary, fontSize: mediumTheme.typography.fontSize.sm}}>
-                    {timeFormater}
+                    {articleDate}
                   </span>
                 </div>
               </RelatedPostHeader>
-              
+
               <RelatedPostContent>
                 <RelatedPostText>
                   <Link to={`/blog/${article._id}`}>
@@ -991,18 +1027,19 @@ const MainContainer = ({
                   alt="post"
                 />
               </RelatedPostContent>
-              
+
               <RelatedPostMeta>
                 <div>
-                  <Tag>Software</Tag>
+                  <Tag>{articleCategory}</Tag>
                   <span style={{color: mediumTheme.colors.text.secondary, fontSize: mediumTheme.typography.fontSize.sm}}>
-                    {readTime} min read
+                    {articleReadTime} min read
                   </span>
                 </div>
                 <MdBookmarkBorder style={{ fontSize: "24px", color: mediumTheme.colors.text.secondary }} />
               </RelatedPostMeta>
             </RelatedPostCard>
-          ))}
+            );
+          })}
           
           <ReadMoreButton
             onClick={handleReadMore}

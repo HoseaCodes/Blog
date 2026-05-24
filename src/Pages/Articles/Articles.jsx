@@ -1,2834 +1,1957 @@
 import React, { useState, useContext, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import styled from "styled-components";
-import { GlobalState } from "../../GlobalState";
-import SkeletonBlog from '../../Components/Skeleton/skeletonBlog';
-import "react-loading-skeleton/dist/skeleton.css";
+import { motion } from "framer-motion";
+import styled, { css, keyframes } from "styled-components";
 import axios from "axios";
-import { truncate } from "../../Utils/helperFunctions";
-import { projectData } from '../Projects/ProjectsData';
-import faqs from "../../Constants/faq.js";
-import ThemeSwitcher from "./ThemeSwitcher";
-import { 
-  FiTrendingUp, FiUsers, FiTarget, FiGlobe, FiCpu, FiShield,
-  FiBarChart2, FiCode, FiBookOpen, FiZap, FiLayers, FiStar,
-  FiBriefcase, FiBox, FiSettings, FiDatabase, FiCloud,
-  FiSearch, FiFilter, FiArrowRight, FiPlay, FiAward, FiMail,
-  FiCalendar, FiClock, FiEye, FiHeart, FiShare2
+import { GlobalState } from "../../GlobalState";
+import {
+  FiUsers,
+  FiGlobe,
+  FiCpu,
+  FiCode,
+  FiBookOpen,
+  FiBox,
+  FiBriefcase,
+  FiArrowRight,
+  FiArrowUpRight,
+  FiCalendar,
+  FiClock,
+  FiMail,
+  FiAward,
+  FiTarget,
+  FiBarChart2,
 } from "react-icons/fi";
 import MinimalResumeCTA from "../../Components/CTA/CareerCompose/MinimalResumeCTA.jsx";
-import ResumeCTA from "../../Components/CTA/CareerCompose/ResumeCTA.jsx";
-import ResumeBannerCTA from "../../Components/CTA/CareerCompose/ResumeBannerCTA.jsx";
 import StateFarm from "../../Components/Banner/StateFarm.jsx";
 import CaseStudyBanner from "../../Components/Banner/CaseStudyBanner.jsx";
 
-// Enterprise Container - matching EnterpriseCreateArticle aesthetic
-const EnterpriseContainer = styled.div`
+/* ------------------------------------------------------------------
+   Constants
+------------------------------------------------------------------ */
+
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop";
+
+const ENTERPRISE_CATEGORIES = {
+  all: {
+    label: "All Insights",
+    icon: FiGlobe,
+    subFilters: ["all", "featured", "trending", "recent"],
+  },
+  engineering: {
+    label: "Engineering",
+    icon: FiCode,
+    subFilters: [
+      "all",
+      "architecture",
+      "distributed-systems",
+      "performance",
+      "security",
+      "devops",
+    ],
+  },
+  leadership: {
+    label: "Leadership",
+    icon: FiUsers,
+    subFilters: [
+      "all",
+      "management",
+      "team-building",
+      "strategy",
+      "mentoring",
+      "growth",
+    ],
+  },
+  enterprise: {
+    label: "Enterprise",
+    icon: FiBox,
+    subFilters: [
+      "all",
+      "scalability",
+      "cloud",
+      "microservices",
+      "automation",
+      "integration",
+    ],
+  },
+  innovation: {
+    label: "AI & Innovation",
+    icon: FiCpu,
+    subFilters: [
+      "all",
+      "machine-learning",
+      "artificial-intelligence",
+      "emerging-tech",
+      "research",
+    ],
+  },
+  career: {
+    label: "Career",
+    icon: FiBriefcase,
+    subFilters: [
+      "all",
+      "skills",
+      "interviews",
+      "networking",
+      "personal-brand",
+      "transitions",
+    ],
+  },
+};
+
+const SUB_FILTER_LABELS = {
+  all: "All",
+  featured: "Featured",
+  trending: "Trending",
+  recent: "Recent",
+  architecture: "Architecture",
+  "distributed-systems": "Distributed Systems",
+  performance: "Performance",
+  security: "Security",
+  devops: "DevOps",
+  management: "Management",
+  "team-building": "Team Building",
+  strategy: "Strategy",
+  mentoring: "Mentoring",
+  growth: "Growth",
+  scalability: "Scalability",
+  cloud: "Cloud",
+  microservices: "Microservices",
+  automation: "Automation",
+  integration: "Integration",
+  "machine-learning": "ML",
+  "artificial-intelligence": "AI",
+  "emerging-tech": "Emerging Tech",
+  research: "Research",
+  skills: "Skills",
+  interviews: "Interviews",
+  networking: "Networking",
+  "personal-brand": "Personal Brand",
+  transitions: "Transitions",
+};
+
+const CATEGORY_DB_TO_UI = {
+  "distributed-systems": "engineering",
+  "identity-auth": "engineering",
+  leadership: "leadership",
+  "enterprise-architecture": "enterprise",
+  devops: "enterprise",
+  "ai-ml": "innovation",
+  "career-growth": "career",
+};
+
+const PROFESSIONAL_TOPICS = [
+  "Distributed Systems Architecture",
+  "Engineering Leadership Excellence",
+  "Enterprise AI Implementation",
+  "Cloud Migration Strategies",
+  "Team Scaling Best Practices",
+];
+
+const FALLBACK_EXPERTISE = [
+  { number: "01", name: "Distributed Systems & Scalability" },
+  { number: "02", name: "Identity & Authentication Platforms" },
+  { number: "03", name: "Engineering Leadership & Team Building" },
+  { number: "04", name: "Enterprise Architecture & Design Patterns" },
+  { number: "05", name: "DevOps & Site Reliability Engineering" },
+  { number: "06", name: "AI/ML Engineering & Production Systems" },
+];
+
+/* ------------------------------------------------------------------
+   Styled components
+------------------------------------------------------------------ */
+
+const Page = styled.div`
+  background: #0f1216;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-  color: #ffffff;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  transition: all 0.3s ease;
+  color: #f4f6f8;
+  font-family: "Lato", sans-serif;
 `;
 
-// Professional Header with backdrop blur
-const ProfessionalHeader = styled(motion.header)`
-  background: rgba(15, 15, 35, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-`;
-
-const HeaderContent = styled.div`
-  max-width: 1400px;
+const Container = styled.div`
+  max-width: 1200px;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+`;
+
+const Section = styled.section`
+  position: relative;
+  padding: 120px 24px;
+  overflow: hidden;
+  isolation: isolate;
+
+  @media (max-width: 720px) {
+    padding: 80px 18px;
+  }
+`;
+
+const TightSection = styled(Section)`
+  padding: 64px 24px;
+
+  @media (max-width: 720px) {
+    padding: 48px 18px;
+  }
+`;
+
+const InsightsBand = styled(TightSection)`
+  background: #14191e;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 88px 24px;
+
+  @media (max-width: 720px) {
+    padding: 64px 18px;
+  }
+`;
+
+const Kicker = styled.div`
+  display: inline-flex;
   align-items: center;
-`;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #5bb39e;
+  margin-bottom: 16px;
 
-const Logo = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
+  &::before,
+  &::after {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: #5bb39e;
+    opacity: 0.6;
   }
 `;
 
-const NavLinks = styled.div`
-  display: flex;
-  gap: 2rem;
-  align-items: center;
-  
-  @media (max-width: 768px) {
-    display: none;
+const Heading = styled.h2`
+  font-weight: 800;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.022em;
+  color: #f4f6f8;
+  margin: 0 0 14px;
+
+  em {
+    font-style: normal;
+    color: #5bb39e;
   }
 `;
 
-const NavLink = styled(motion.a)`
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  font-weight: 500;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  
-  &:hover {
-    color: #667eea;
-    background: rgba(102, 126, 234, 0.1);
-    transform: translateY(-2px);
-  }
+const Tagline = styled.p`
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.6;
+  color: #a3acb2;
+  max-width: 580px;
+  margin: 0 auto;
 `;
 
-// Hero Section with sophisticated layout
-const HeroSection = styled.section`
-  padding: 6rem 2rem;
-  max-width: 1400px;
+/* ---- Hero ---- */
+
+const HeroBg = styled.div`
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      55% 50% at 50% 0%,
+      rgba(32, 106, 93, 0.16),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #0f1216 0%, #0f1216 100%);
+  pointer-events: none;
+  z-index: 0;
+`;
+
+const HeroGrid = styled.div`
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 30%,
+    #000 30%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 30%,
+    #000 30%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+`;
+
+const HeroShell = styled.div`
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
   align-items: center;
-  min-height: 80vh;
-  
-  @media (max-width: 992px) {
+
+  @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 40px;
     text-align: center;
-    padding: 4rem 2rem;
   }
 `;
 
 const HeroContent = styled.div`
-  z-index: 2;
-`;
-
-const HeroTitle = styled(motion.h1)`
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 1.1;
-  margin-bottom: 1.5rem;
-  color: #ffffff;
-  
-  .highlight {
-    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  @media (max-width: 768px) {
-    font-size: 2.5rem;
-  }
-`;
-
-const HeroSubtitle = styled(motion.p)`
-  font-size: 1.25rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 500px;
-`;
-
-const CTASection = styled(motion.div)`
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    justify-content: center;
-    flex-direction: column;
+  flex-direction: column;
+  gap: 22px;
+  align-items: flex-start;
+
+  @media (max-width: 900px) {
     align-items: center;
   }
 `;
 
-const PrimaryButton = styled(motion.button)`
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-  }
+const HeroTitle = styled(motion.h1)`
+  font-weight: 800;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  color: #f4f6f8;
+  margin: 0;
 
-  &:active {
-    transform: translateY(0);
+  em {
+    font-style: normal;
+    color: #5bb39e;
   }
 `;
 
-const SecondaryButton = styled(motion.button)`
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  display: flex;
+const HeroExcerpt = styled(motion.p)`
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: #a3acb2;
+  margin: 0;
+  max-width: 540px;
+`;
+
+const HeroBadge = styled.div`
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(91, 179, 158, 0.1);
+  border: 1px solid rgba(91, 179, 158, 0.28);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #5bb39e;
+
+  &::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5bb39e;
+    box-shadow: 0 0 10px rgba(91, 179, 158, 0.7);
+  }
+`;
+
+const HeroActions = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+`;
+
+const PrimaryBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: #206a5d;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(32, 106, 93, 0.28);
+  transition: background 0.18s ease, transform 0.12s ease,
+    box-shadow 0.18s ease;
+
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #667eea;
-    transform: translateY(-2px);
+    background: #267a6b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(32, 106, 93, 0.4);
+  }
+`;
+
+const GhostBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  color: #d2d8da;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease,
+    border-color 0.18s ease, color 0.18s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.22);
   }
 `;
 
 const HeroVisual = styled(motion.div)`
   position: relative;
-  height: 500px;
-  background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-`;
-
-const HeroImage = styled.img`
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 20px;
+  aspect-ratio: 4 / 3;
+  max-width: 540px;
+  margin-left: auto;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      transparent 50%,
+      rgba(15, 18, 22, 0.55) 100%
+    );
+    pointer-events: none;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    margin-left: 0;
+  }
 `;
 
-// Enterprise Stats Section
-const StatsSection = styled.section`
-  padding: 4rem 2rem;
-  background: rgba(0, 0, 0, 0.2);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-`;
+/* ---- Featured editorial block ---- */
 
-const StatsContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
+const FeaturedShell = styled(Container)`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 28px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 `;
 
-const StatCard = styled(motion.div)`
-  text-align: center;
-  padding: 2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
+const cardBase = css`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.025) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  cursor: pointer;
+  transition: border-color 0.22s ease, transform 0.22s ease,
+    background 0.22s ease;
+
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    border-color: rgba(102, 126, 234, 0.3);
+    border-color: rgba(91, 179, 158, 0.25);
+    transform: translateY(-3px);
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.035) 0%,
+      rgba(255, 255, 255, 0.012) 100%
+    );
   }
 `;
 
-const StatNumber = styled.div`
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 0.5rem;
+const MainCard = styled(motion.article)`
+  ${cardBase}
+
+  @media (max-width: 1024px) {
+    grid-column: 1 / -1;
+  }
 `;
 
-const StatLabel = styled.div`
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+const MiddleCard = styled(motion.article)`
+  ${cardBase}
+`;
+
+const MiddleColumn = styled.div`
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 720px) {
+    grid-template-rows: auto;
+  }
+`;
+
+const FeaturedImage = styled.div`
+  width: 100%;
+  aspect-ratio: ${({ ratio }) => ratio || "16 / 10"};
+  border-radius: 10px;
+  overflow: hidden;
+  background: #14191e;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  ${MainCard}:hover img,
+  ${MiddleCard}:hover img {
+    transform: scale(1.03);
+  }
+`;
+
+const CardCategory = styled.span`
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #5bb39e;
 `;
 
-// Content Sections
-const ContentSection = styled.section`
-  padding: 4rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-`;
-
-const SectionHeader = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-`;
-
-const SectionTitle = styled(motion.h2)`
-  font-size: 2.5rem;
+const CardTitle = styled.h3`
   font-weight: 700;
-  margin-bottom: 1rem;
-  color: #ffffff;
-  
-  .accent {
-    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: #f4f6f8;
+  margin: 0;
+  font-size: ${({ size }) => size || "20px"};
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const CardExcerpt = styled.p`
+  font-size: 14px;
+  line-height: 1.6;
+  color: #a3acb2;
+  margin: 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const CardAuthor = styled.span`
+  font-size: 12px;
+  color: #6b7479;
+  letter-spacing: 0.01em;
+  margin-top: auto;
+`;
+
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const LatestHeader = styled.h3`
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6b7479;
+  margin: 0 0 4px;
+`;
+
+const LatestItem = styled(motion.article)`
+  padding: 16px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+
+  &:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+  }
+
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #f4f6f8;
+    margin: 0 0 6px;
+    transition: color 0.15s ease;
+  }
+  .author {
+    font-size: 12px;
+    color: #6b7479;
+  }
+
+  &:hover .title {
+    color: #5bb39e;
   }
 `;
 
-const SectionSubtitle = styled(motion.p)`
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
+const NewsletterCard = styled(motion.div)`
+  margin-top: 8px;
+  padding: 20px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(91, 179, 158, 0.08) 0%,
+    rgba(91, 179, 158, 0.02) 100%
+  );
+  border: 1px solid rgba(91, 179, 158, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  p {
+    font-size: 13px;
+    line-height: 1.55;
+    color: #c5cbcf;
+    margin: 0;
+    strong {
+      color: #f4f6f8;
+    }
+  }
 `;
 
-// Enterprise Filtering System
-const FilterSection = styled.div`
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 2rem;
-  margin-bottom: 3rem;
-  backdrop-filter: blur(10px);
+const InlineMiniBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #206a5d;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease;
+
+  &:hover {
+    background: #267a6b;
+    transform: translateY(-1px);
+  }
+`;
+
+/* ---- Expertise block ---- */
+
+const ExpertiseShell = styled(Container)`
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 56px;
+  align-items: start;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+`;
+
+const ExpertiseLeft = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+`;
+
+const ExpertiseLogo = styled.h2`
+  font-weight: 800;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.04;
+  letter-spacing: -0.022em;
+  color: #f4f6f8;
+  margin: 0;
+`;
+
+const ExpertiseSub = styled.div`
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #5bb39e;
+`;
+
+const ExpertiseDesc = styled.p`
+  font-size: 15px;
+  line-height: 1.6;
+  color: #a3acb2;
+  margin: 0;
+  max-width: 480px;
+`;
+
+const ExpertiseRight = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const ExpertiseRightHeader = styled.div`
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #6b7479;
+  margin-bottom: 10px;
+`;
+
+const ExpertiseRow = styled.a`
+  display: grid;
+  grid-template-columns: 36px 1fr 18px;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 14px;
+  color: #d2d8da;
+  text-decoration: none;
+  transition: color 0.18s ease;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+  .num {
+    font-size: 12px;
+    color: #6b7479;
+    letter-spacing: 0.08em;
+  }
+  .arrow {
+    color: #4d5559;
+    transition: color 0.18s ease, transform 0.18s ease;
+  }
+  &:hover {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  &:hover .arrow {
+    color: #5bb39e;
+    transform: translate(2px, -2px);
+  }
+`;
+
+/* ---- Filter + grid ---- */
+
+const FilterShell = styled.div`
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 `;
 
 const FilterTabs = styled.div`
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
   flex-wrap: wrap;
-  justify-content: center;
-
-  @media (max-width: 768px) {
-    gap: 0.5rem;
-  }
+  gap: 8px;
 `;
 
-const FilterTab = styled(motion.button)`
-  background: ${props => props.active 
-    ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)'
-    : 'transparent'
-  };
-  border: 1px solid ${props => props.active 
-    ? 'transparent' 
-    : 'rgba(255, 255, 255, 0.2)'
-  };
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
-  display: flex;
+const FilterTab = styled.button`
+  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  
-  &:hover {
-    background: ${props => props.active 
-      ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)'
-      : 'rgba(255, 255, 255, 0.1)'
-    };
-    border-color: #667eea;
-    transform: translateY(-2px);
-  }
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.02);
+  color: #a3acb2;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.18s ease;
 
-  @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
+  svg {
+    color: inherit;
   }
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #f4f6f8;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  ${({ active }) =>
+    active &&
+    css`
+      background: rgba(91, 179, 158, 0.12);
+      color: #f4f6f8;
+      border-color: rgba(91, 179, 158, 0.4);
+      svg {
+        color: #5bb39e;
+      }
+    `}
 `;
 
 const SubFilters = styled.div`
   display: flex;
-  gap: 0.75rem;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 6px;
 `;
 
-const SubFilterChip = styled(motion.button)`
-  background: ${props => props.active 
-    ? 'rgba(102, 126, 234, 0.3)'
-    : 'transparent'
-  };
-  border: 1px solid ${props => props.active 
-    ? '#667eea' 
-    : 'rgba(255, 255, 255, 0.2)'
-  };
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  cursor: pointer;
-  font-size: 0.8rem;
+const SubFilterChip = styled.button`
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: transparent;
+  color: #6b7479;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 12px;
   font-weight: 500;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  
+  cursor: pointer;
+  transition: all 0.15s ease;
+
   &:hover {
-    border-color: #667eea;
-    transform: scale(1.05);
-    background: rgba(102, 126, 234, 0.2);
+    color: #d2d8da;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  ${({ active }) =>
+    active &&
+    css`
+      color: #5bb39e;
+      background: rgba(91, 179, 158, 0.08);
+      border-color: rgba(91, 179, 158, 0.3);
+    `}
+`;
+
+const ContentShell = styled(Container)`
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 36px;
   }
 `;
 
-// Pagination Styles
-const PaginationContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.75rem;
-  margin-top: 3rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  grid-column: 1 / -1;
+const Articles = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
 `;
 
-const PageButton = styled(motion.button)`
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  background: ${props => props.active ? '#667eea' : 'rgba(255, 255, 255, 0.08)'};
-  color: ${props => props.active ? '#ffffff' : 'rgba(255, 255, 255, 0.8)'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
-  font-weight: ${props => props.active ? '600' : '500'};
-  font-size: 0.9rem;
+const ArticleCard = styled(motion.article)`
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 22px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.015);
   cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: border-color 0.22s ease, transform 0.22s ease,
+    background 0.22s ease;
 
-  &:hover:not(:disabled) {
-    background: ${props => props.active ? '#764ba2' : 'rgba(102, 126, 234, 0.2)'};
-    border-color: #667eea;
+  &:hover {
+    border-color: rgba(91, 179, 158, 0.25);
+    background: rgba(255, 255, 255, 0.03);
     transform: translateY(-2px);
   }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  &:hover .arrow {
+    color: #5bb39e;
+    transform: translateX(3px);
   }
-`;
 
-const PaginationInfo = styled.div`
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-  margin: 0 1rem;
-`;
-
-// Article Grid Layout
-const ArticleGrid = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  margin-bottom: 4rem;
-  
-  @media (max-width: 992px) {
+  @media (max-width: 720px) {
     grid-template-columns: 1fr;
-  }
-`;
-
-const MainArticles = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
-
-const FeaturedArticle = styled(motion.article)`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-    border-color: rgba(102, 126, 234, 0.3);
+    gap: 14px;
   }
 `;
 
 const ArticleImage = styled.div`
-  height: 250px;
-  background: ${props => props.bgImage 
-    ? `linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(${props.bgImage})`
-    : 'linear-gradient(45deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2))'
-  };
-  background-size: cover;
-  background-position: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #14191e url(${({ bg }) => bg}) center / cover no-repeat;
+`;
+
+const ArticleBody = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+`;
+
+const ArticleCategoryRow = styled.div`
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-  position: relative;
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover::before {
-    opacity: 1;
-  }
-`;
-
-const ArticleContent = styled.div`
-  padding: 1.5rem;
-`;
-
-const ArticleCategory = styled.div`
-  color: #667eea;
-  font-size: 0.8rem;
+  gap: 8px;
+  font-size: 11px;
   font-weight: 600;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  color: #5bb39e;
+
+  svg {
+    color: inherit;
+  }
 `;
 
 const ArticleTitle = styled.h3`
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 0.75rem;
-  color: #ffffff;
-  transition: color 0.3s ease;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: #f4f6f8;
+  margin: 0;
 
-  &:hover {
-    color: #667eea;
-  }
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 const ArticleExcerpt = styled.p`
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
   line-height: 1.6;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  color: #a3acb2;
+  margin: 0;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+const ArticleTagRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+`;
+
+const ArticleTag = styled.span`
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: #c5cbcf;
 `;
 
 const ArticleMeta = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.85rem;
-  margin-bottom: 1rem;
-`;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 6px;
+  font-size: 12px;
+  color: #6b7479;
 
-const ArticleTags = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-`;
-
-const ArticleTag = styled.span`
-  background: rgba(102, 126, 234, 0.2);
-  color: #667eea;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid rgba(102, 126, 234, 0.3);
-`;
-
-const ReadMoreButton = styled(motion.button)`
-  background: transparent;
-  border: 1px solid #667eea;
-  color: #667eea;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.8rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background: #667eea;
-    color: white;
-    transform: translateX(4px);
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .arrow {
+    margin-left: auto;
+    color: #4d5559;
+    font-weight: 600;
+    transition: color 0.18s ease, transform 0.18s ease;
   }
 `;
 
-const Sidebar = styled.div`
+/* ---- Pagination ---- */
+
+const Pagination = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 28px;
+`;
+
+const PageBtn = styled.button`
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  background: ${({ active }) =>
+    active ? "rgba(91, 179, 158, 0.12)" : "rgba(255, 255, 255, 0.02)"};
+  color: ${({ active }) => (active ? "#5bb39e" : "#a3acb2")};
+  border: 1px solid
+    ${({ active }) =>
+      active ? "rgba(91, 179, 158, 0.4)" : "rgba(255, 255, 255, 0.08)"};
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover:not(:disabled) {
+    color: #f4f6f8;
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+`;
+
+const PaginationInfo = styled.div`
+  margin-left: 12px;
+  font-size: 12px;
+  color: #6b7479;
+`;
+
+/* ---- Sidebar ---- */
+
+const Sidebar = styled.aside`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 16px;
 `;
 
 const SidebarCard = styled(motion.div)`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 1.5rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-    border-color: rgba(102, 126, 234, 0.3);
-  }
+  padding: 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 `;
 
 const SidebarTitle = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  color: #ffffff;
-  position: relative;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #6b7479;
+  margin: 0;
+`;
 
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -8px;
-    width: 30px;
-    height: 2px;
-    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  }
+const SidebarBody = styled.p`
+  font-size: 13px;
+  line-height: 1.55;
+  color: #c5cbcf;
+  margin: 0;
 `;
 
 const NewsletterForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 8px;
 `;
 
 const NewsletterInput = styled.input`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 11px 14px;
   border-radius: 8px;
-  padding: 0.75rem;
-  color: white;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  
+  background: rgba(15, 18, 22, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f4f6f8;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+
   &::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: #6b7479;
   }
-  
   &:focus {
-    outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    border-color: rgba(91, 179, 158, 0.4);
+    box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
   }
 `;
 
-const SubscribeButton = styled(motion.button)`
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  padding: 0.75rem 1.5rem;
+const SubscribeBtn = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
   border-radius: 8px;
-  color: white;
+  background: #206a5d;
+  color: #ffffff;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
   font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  transition: all 0.3s ease;
-  
+  transition: background 0.18s ease;
+
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    background: #267a6b;
   }
 `;
 
 const TopicList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 6px;
 `;
 
-const TopicItem = styled(motion.div)`
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+const TopicChip = styled.button`
+  text-align: left;
+  padding: 9px 12px;
   border-radius: 8px;
+  background: transparent;
+  color: #d2d8da;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: #ffffff;
-  font-size: 0.9rem;
-  
+  transition: all 0.18s ease;
+
   &:hover {
-    background: rgba(102, 126, 234, 0.1);
-    border-color: #667eea;
-    transform: translateX(4px);
+    background: rgba(91, 179, 158, 0.06);
+    border-color: rgba(91, 179, 158, 0.25);
+    color: #ffffff;
   }
 `;
 
 const AchievementList = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
 `;
 
 const AchievementItem = styled.div`
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  align-items: flex-start;
+  gap: 12px;
 
-  &:hover {
-    border-color: #667eea;
-    transform: translateY(-2px);
+  svg {
+    color: #5bb39e;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 `;
 
 const AchievementInfo = styled.div`
-  flex: 1;
-`;
-
-const AchievementTitle = styled.div`
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #ffffff;
-  margin-bottom: 0.25rem;
-`;
-
-const AchievementDesc = styled.div`
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.6);
-`;
-
-// HBR-Style Featured Section
-const HBRSection = styled.section`
-  padding: 3rem 2rem;
-  background: rgba(0, 0, 0, 0.05);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const HBRContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1.5fr 1fr;
-  gap: 3rem;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-`;
-
-// Left Column - Main Featured Article
-const MainFeature = styled(motion.article)`
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-  }
-`;
-
-const MainFeatureImage = styled.div`
-  width: 100%;
-  height: 300px;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 1.5rem;
-  background: #e8b4b8;
-  position: relative;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const MainFeatureCategory = styled.div`
-  color: #1e90ff;
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
-`;
-
-const MainFeatureTitle = styled.h2`
-  font-size: 2.2rem;
-  font-weight: 400;
-  line-height: 1.2;
-  color: #6b7280;
-  margin-bottom: 1rem;
-  font-family: Georgia, serif;
-  
-  @media (max-width: 768px) {
-    font-size: 1.8rem;
-  }
-`;
-
-const MainFeatureExcerpt = styled.p`
-  color: #6b7280;
-  line-height: 1.5;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-`;
-
-const MainFeatureAuthor = styled.div`
-  color: #9ca3af;
-  font-size: 0.9rem;
-`;
-
-// Middle Column
-const MiddleColumn = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
-`;
+  gap: 2px;
 
-const MiddleArticle = styled(motion.article)`
-  display: flex;
-  gap: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    opacity: 0.8;
-  }
-`;
-
-const MiddleArticleImage = styled.div`
-  width: 120px;
-  height: 100px;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
-  
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-`;
-
-const MiddleArticleContent = styled.div`
-  flex: 1;
-`;
-
-const MiddleArticleCategory = styled.div`
-  color: #1e90ff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-`;
-
-const MiddleArticleTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 400;
-  line-height: 1.3;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-  font-family: Georgia, serif;
-`;
-
-const MiddleArticleExcerpt = styled.p`
-  color: #9ca3af;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  margin-bottom: 0.5rem;
-`;
-
-const MiddleArticleAuthor = styled.div`
-  color: #9ca3af;
-  font-size: 0.8rem;
-`;
-
-// Right Column - The Latest
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-`;
-
-const LatestHeader = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #374151;
-  margin-bottom: 2rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-`;
-
-const LatestArticle = styled(motion.article)`
-  padding: 1.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    opacity: 0.8;
-  }
-  
-  &:last-of-type {
-    border-bottom: none;
-  }
-`;
-
-const LatestTitle = styled.h4`
-  font-size: 1.1rem;
-  font-weight: 400;
-  line-height: 1.3;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-  font-family: Georgia, serif;
-`;
-
-const LatestAuthor = styled.div`
-  color: #9ca3af;
-  font-size: 0.85rem;
-`;
-
-// Newsletter Card in Grid
-const NewsletterCard = styled(motion.div)`
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
-  border: 1px solid rgba(102, 126, 234, 0.3);
-  border-radius: 16px;
-  padding: 2rem 1.5rem;
-  backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  overflow: hidden;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: linear-gradient(45deg, transparent, rgba(102, 126, 234, 0.05));
-    z-index: 1;
-  }
-  
-  @media (max-width: 768px) {
-    grid-column: 1 / -1;
-  }
-`;
-
-const NewsletterText = styled.p`
-  color: #9db8e2ff;
-  font-size: 0.9rem;
-  line-height: 1.4;
-  margin-bottom: 1rem;
-  
-  strong {
-    font-weight: 700;
-  }
-`;
-
-
-const NewsletterButton = styled(motion.button)`
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-`;
-
-// const NewsletterIcon = styled.div`
-//   position: absolute;
-//   top: 1rem;
-//   right: 1rem;
-//   color: rgba(102, 126, 234, 0.6);
-//   z-index: 2;
-// `;
-
-
-// 3. FOOTER CONTENT GRID SECTION
-const FooterContentSection = styled.section`
-  background: #ffffff;
-  padding: 4rem 2rem;
-  border-top: 1px solid #e5e7eb;
-`;
-
-const FooterContentContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 3rem;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-  }
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-`;
-
-const FooterColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FooterColumnTitle = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
-`;
-
-const FooterSubheader = styled.h4`
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin: 1.5rem 0 0.5rem 0;
-  font-weight: 500;
-`;
-
-// Popular Articles List
-const PopularArticlesList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const PopularArticle = styled.div`
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  
-  &:last-child {
-    border-bottom: none;
-  }
-`;
-
-const PopularTitle = styled.h4`
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.4;
-  color: #4b5563;
-  margin: 0;
-  cursor: pointer;
-  font-family: Georgia, serif;
-  
-  &:hover {
-    color: #1f2937;
-  }
-`;
-
-// Newsletter Items
-const NewsletterList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-`;
-
-const NewsletterItem = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-`;
-
-const NewsletterIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  background: ${props => props.color || '#1f2937'};
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 600;
-  font-size: 0.8rem;
-  flex-shrink: 0;
-`;
-
-const NewsletterContent = styled.div`
-  flex: 1;
-`;
-
-const NewsletterTitle = styled.h4`
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin: 0 0 0.5rem 0;
-`;
-
-const NewsletterDescription = styled.p`
-  font-size: 0.9rem;
-  color: #6b7280;
-  line-height: 1.4;
-  margin: 0 0 0.75rem 0;
-`;
-
-const NewsletterSignup = styled(motion.button)`
-  background: transparent;
-  border: 1px solid #d1d5db;
-  padding: 0.4rem 1rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: #4b5563;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  
-  &:hover {
-    border-color: #6b7280;
-    background: #f9fafb;
-  }
-`;
-
-// Exclusive Content
-const ExclusiveList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const ExclusiveItem = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-`;
-
-const ExclusiveThumbnail = styled.div`
-  width: 60px;
-  height: 60px;
-  background: ${props => props.bgColor || '#e5e7eb'};
-  border-radius: 8px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-`;
-
-const ExclusiveContent = styled.div`
-  flex: 1;
-`;
-
-const ExclusiveCategory = styled.div`
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-`;
-
-const ExclusiveTitle = styled.h4`
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1f2937;
-  line-height: 1.3;
-  margin: 0;
-  cursor: pointer;
-  
-  &:hover {
-    color: #4b5563;
-  }
-`;
-
-// Podcast Items  
-const PodcastList = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const PodcastItem = styled.div`
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-`;
-
-const PodcastIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  background: ${props => props.color || '#667eea'};
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-`;
-
-const PodcastContent = styled.div`
-  flex: 1;
-`;
-
-const PodcastCategory = styled.div`
-  font-size: 0.8rem;
-  color: #6b7280;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
-`;
-
-const PodcastTitle = styled.h4`
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #1f2937;
-  line-height: 1.3;
-  margin: 0;
-  cursor: pointer;
-  
-  &:hover {
-    color: #4b5563;
-  }
-`;
-
-const MoreLink = styled.a`
-  font-size: 0.9rem;
-  color: #667eea;
-  text-decoration: none;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  cursor: pointer;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
-// 1. MIT NEWS-STYLE FOOTER SECTION
-const MITFooterSection = styled.footer`
-  background: #f8fafc;
-  padding: 4rem 2rem;
-  border-top: 1px solid #e2e8f0;
-`;
-
-const MITFooterContainer = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 4rem;
-  
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-`;
-
-const MITFooterLeft = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const MITLogo = styled.h1`
-  font-size: 3.5rem;
-  font-weight: 900;
-  color: #1e293b;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.02em;
-`;
-
-const MITTagline = styled.div`
-  font-size: 0.9rem;
-  color: #64748b;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 2rem;
-`;
-
-const MITDescription = styled.p`
-  color: #475569;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  
-  a {
-    color: #1e293b;
-    text-decoration: underline;
-  }
-`;
-
-const ExpertiseHeader = styled.h3`
-  color: #1e293b;
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-`;
-
-const ExpertiseList = styled.ol`
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-`;
-
-const ExpertiseItem = styled.li`
-  display: flex;
-  align-items: flex-start;
-  color: #475569;
-  line-height: 1.5;
-  
-  &::before {
-    content: "${props => props.number}.";
-    color: #ef4444;
+  .t {
+    font-size: 13px;
     font-weight: 600;
-    margin-right: 0.75rem;
-    min-width: 20px;
+    color: #f4f6f8;
+    line-height: 1.3;
   }
-  
-  a {
-    color: #1e293b;
-    text-decoration: underline;
-    
-    &:hover {
-      color: #0f172a;
-    }
+  .d {
+    font-size: 12px;
+    color: #a3acb2;
+    line-height: 1.4;
   }
 `;
 
-const MITFooterLinks = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
-  margin-top: 2rem;
-  
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-`;
-
-const FooterLinkGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-`;
-
-const FooterLink = styled.a`
-  color: #1e293b;
-  text-decoration: underline;
-  font-size: 0.9rem;
-  cursor: pointer;
-  
-  &:hover {
-    color: #0f172a;
-  }
-`;
-
-const MITFooterRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
-
-const Subscription2Button = styled(motion.button)`
-  background: transparent;
-  border: 2px solid #1e293b;
-  color: #1e293b;
-  padding: 1rem 1.5rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
+const EmptyState = styled.div`
+  padding: 40px 24px;
   text-align: center;
-  
-  &:hover {
-    background: #1e293b;
-    color: white;
-    transform: translateY(-1px);
-  }
+  font-size: 14px;
+  color: #6b7479;
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
 `;
 
-const FeaturedMultimediaSection = styled.section`
-  background: #ffffff;
-  padding: 4rem 2rem;
-  border-top: 1px solid #e5e7eb;
+/* ---- Skeleton (loading state) ---- */
+
+const shimmer = keyframes`
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+`;
+
+const SkeletonBox = styled.div`
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.06) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  background-size: 200% 100%;
+  animation: ${shimmer} 1.6s ease-in-out infinite;
+  border-radius: ${({ radius }) => radius || "8px"};
+  width: ${({ w }) => w || "100%"};
+  height: ${({ h }) => h || "16px"};
+  border: 1px solid rgba(255, 255, 255, 0.04);
+`;
+
+const SkeletonHero = styled.div`
   position: relative;
+  padding: 120px 24px 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 64px;
+  align-items: center;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+    padding: 80px 18px 40px;
+  }
 `;
 
-const MultimediaSection = styled.section`
-  display: flex;
-  min-height: 100vh;
-  background: white;
-`;
-
-const VerticalSidebar = styled.div`
-  width: 80px;
+const SkeletonHeroLeft = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 0;
-  border-right: 1px solid #e5e5e5;
+  gap: 18px;
 `;
 
-const SidebarContent = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-`;
+const SkeletonGrid = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 64px 24px 120px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
 
-const VerticalText = styled.span`
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  letter-spacing: 0.05em;
-  color: #1f2937;
-  font-size: 40px;
-  font-weight: 400;
-  line-height: 1;
-  font-family: 'Inter', Arial, sans-serif;
-`;
-
-const MainContent = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 48px 48px 0 48px;
-`;
-
-const CardsRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-`;
-
-const VideoCard = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 3px solid black;
-  background: white;
-  width: 430px;
-  min-width: 430px;
-  height: 520px;
-`;
-
-const VideoImageContainer = styled.div`
-  position: relative;
-`;
-
-const VideoImage = styled.img`
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-`;
-
-const PlayButtonOverlay = styled.div`
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const PlayButton = styled.div`
-  width: 70px;
-  height: 70px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: white;
-    transform: scale(1.05);
-  }
-
-  &::after {
-    content: '';
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 12px 0 12px 20px;
-    border-color: transparent transparent transparent black;
-    margin-left: 4px;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const VideoTextContent = styled.div`
-  flex: 1;
-  padding: 24px;
-`;
+const SkeletonRow = styled.div`
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 22px;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.015);
+  margin-bottom: 18px;
 
-const VideoDescription = styled.p`
-  color: black;
-  font-size: 20px;
-  line-height: 1.4;
-  font-weight: 400;
-  margin: 0;
-  font-family: 'Inter', Arial, sans-serif;
-`;
-
-const BottomRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 48px;
-  margin-bottom: 0;
-`;
-
-const YouTubeLink = styled.a`
-  font-size: 20px;
-  font-weight: 500;
-  text-decoration: underline;
-  color: black;
-  font-family: 'Inter', Arial, sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    color: #dc2626;
-  }
-
-  &::after {
-    content: ' →';
-    margin-left: 4px;
+  @media (max-width: 720px) {
+    grid-template-columns: 1fr;
   }
 `;
 
-const NavigationButtons = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  margin-right: 32px;
-`;
+const BlogSkeleton = () => (
+  <>
+    <SkeletonHero>
+      <SkeletonHeroLeft>
+        <SkeletonBox w="140px" h="22px" radius="999px" />
+        <SkeletonBox w="90%" h="54px" />
+        <SkeletonBox w="80%" h="54px" />
+        <SkeletonBox w="70%" h="16px" />
+        <SkeletonBox w="60%" h="16px" />
+        <div style={{ display: "flex", gap: 10, marginTop: 8 }}>
+          <SkeletonBox w="140px" h="42px" radius="10px" />
+          <SkeletonBox w="120px" h="42px" radius="10px" />
+        </div>
+      </SkeletonHeroLeft>
+      <SkeletonBox w="100%" h="320px" radius="16px" />
+    </SkeletonHero>
+    <SkeletonGrid>
+      <div>
+        {[0, 1, 2, 3].map((i) => (
+          <SkeletonRow key={i}>
+            <SkeletonBox w="100%" h="180px" radius="10px" />
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <SkeletonBox w="100px" h="14px" radius="999px" />
+              <SkeletonBox w="90%" h="22px" />
+              <SkeletonBox w="80%" h="22px" />
+              <SkeletonBox w="100%" h="14px" />
+              <SkeletonBox w="90%" h="14px" />
+            </div>
+          </SkeletonRow>
+        ))}
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <SkeletonBox w="100%" h="180px" radius="14px" />
+        <SkeletonBox w="100%" h="180px" radius="14px" />
+        <SkeletonBox w="100%" h="180px" radius="14px" />
+      </div>
+    </SkeletonGrid>
+  </>
+);
 
-const NavButton = styled(motion.button)`
-  width: 56px;
-  height: 56px;
-  border: 2px solid #ef4444;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background: ${props => props.active ? '#ef4444' : 'white'};
-  color: ${props => props.active ? 'white' : '#ef4444'};
-
-  &:hover {
-    background: ${props => props.active ? '#dc2626' : '#fef2f2'};
-  }
-`;
-
-const ChevronIcon = styled.span`
-  font-size: 24px;
-  font-weight: bold;
-  ${props => props.direction === 'left' ? 'transform: scaleX(1);' : ''}
-`;
+/* ------------------------------------------------------------------
+   Component
+------------------------------------------------------------------ */
 
 function EnterpriseTechGuide() {
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [activeSubFilter, setActiveSubFilter] = useState('all');
-  const [isMobileView, setIsMobileView] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeSubFilter, setActiveSubFilter] = useState("all");
   const [email, setEmail] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
   const [mostLikedArticle, setMostLikedArticle] = useState(null);
   const [hbrArticles, setHbrArticles] = useState({
     main: null,
     middle1: null,
     middle2: null,
-    latest: []
+    latest: [],
   });
-
-  // State from Articles component
-  const state = useContext(GlobalState);
-  const [isLoggedIn] = state?.userAPI?.isLoggedIn || [false];
-  const [isAdmin] = state?.userAPI?.isAdmin || [false];
-  const [articles] = state?.articlesAPI?.articles || [[]];
-  const [callback, setCallback] = state?.articlesAPI?.callback || [false, () => {}];
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(2);
+  const postsPerPage = 4;
 
-  // Fetch most-liked article on component mount
+  const state = useContext(GlobalState);
+  const [articles] = state?.articlesAPI?.articles || [[]];
+
+  // Initial data load — most-liked + 3-column featured derivation
   useEffect(() => {
     const fetchMostLikedArticle = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/articles');
-        
+        const response = await axios.get("/api/articles");
         if (response.data.articles && response.data.articles.length > 0) {
           const allArticles = response.data.articles;
-          
-          // Set most liked article
-          const sorted = [...allArticles].sort((a, b) => (b.likes || 0) - (a.likes || 0));
+          const sorted = [...allArticles].sort(
+            (a, b) => (b.likes || 0) - (a.likes || 0)
+          );
           setMostLikedArticle(sorted[0]);
-          
-          // Get articles by category count
+
           const categoryCount = {};
           const categoryArticles = {};
-          
-          allArticles.forEach(article => {
-            const cat = article.categories?.[0] || 'general';
+          allArticles.forEach((article) => {
+            const cat = article.categories?.[0] || "general";
             categoryCount[cat] = (categoryCount[cat] || 0) + 1;
-            if (!categoryArticles[cat]) {
-              categoryArticles[cat] = [];
-            }
+            if (!categoryArticles[cat]) categoryArticles[cat] = [];
             categoryArticles[cat].push(article);
           });
-          
-          // Sort categories by count (descending)
+
           const sortedCategories = Object.entries(categoryCount)
             .sort((a, b) => b[1] - a[1])
             .map(([category]) => category);
-          
+
           const mostUsedCategory = sortedCategories[0];
           const secondMostUsedCategory = sortedCategories[1];
           const thirdMostUsedCategory = sortedCategories[2];
-          
-          // Get articles from most used category, sorted by likes (excluding mostLikedArticle)
+
           const mainCategoryArticles = (categoryArticles[mostUsedCategory] || [])
-            .filter(a => a._id !== sorted[0]?._id)
+            .filter((a) => a._id !== sorted[0]?._id)
             .sort((a, b) => (b.likes || 0) - (a.likes || 0));
           const main = mainCategoryArticles[0];
-          
-          // Get top article from 2nd most used category
-          const middle1 = (categoryArticles[secondMostUsedCategory] || [])
-            .sort((a, b) => (b.likes || 0) - (a.likes || 0))[0];
-          
-          // Get top article from 3rd most used category
-          const middle2 = (categoryArticles[thirdMostUsedCategory] || [])
-            .sort((a, b) => (b.likes || 0) - (a.likes || 0))[0];
-          
-          // Get latest articles excluding mostLikedArticle, main, middle1, middle2
-          const usedIds = new Set([sorted[0]?._id, main?._id, middle1?._id, middle2?._id].filter(Boolean));
+
+          const middle1 = (categoryArticles[secondMostUsedCategory] || []).sort(
+            (a, b) => (b.likes || 0) - (a.likes || 0)
+          )[0];
+
+          const middle2 = (categoryArticles[thirdMostUsedCategory] || []).sort(
+            (a, b) => (b.likes || 0) - (a.likes || 0)
+          )[0];
+
+          const usedIds = new Set(
+            [sorted[0]?._id, main?._id, middle1?._id, middle2?._id].filter(
+              Boolean
+            )
+          );
           const latestArticles = allArticles
-            .filter(a => !usedIds.has(a._id))
-            .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+            .filter((a) => !usedIds.has(a._id))
+            .sort(
+              (a, b) =>
+                new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
+            )
             .slice(0, 3);
-          
-          setHbrArticles({
-            main,
-            middle1,
-            middle2,
-            latest: latestArticles
-          });
-          setLoading(false);
+
+          setHbrArticles({ main, middle1, middle2, latest: latestArticles });
         }
       } catch (error) {
-        console.error('Error fetching articles:', error);
+        console.error("Error fetching articles:", error);
+      } finally {
         setLoading(false);
       }
     };
     fetchMostLikedArticle();
   }, []);
 
-  console.log('Most Liked Article:', {mostLikedArticle});
-  // Enterprise Categories with professional focus
-  const enterpriseCategories = {
-    'all': { 
-      label: 'All Insights', 
-      icon: FiGlobe,
-      subFilters: ['all', 'featured', 'trending', 'recent']
-    },
-    'engineering': { 
-      label: 'Software Engineering', 
-      icon: FiCode,
-      subFilters: ['all', 'architecture', 'distributed-systems', 'performance', 'security', 'devops']
-    },
-    'leadership': { 
-      label: 'Tech Leadership', 
-      icon: FiUsers,
-      subFilters: ['all', 'management', 'team-building', 'strategy', 'mentoring', 'growth']
-    },
-    'enterprise': { 
-      label: 'Enterprise Solutions', 
-      icon: FiBox,
-      subFilters: ['all', 'scalability', 'cloud', 'microservices', 'automation', 'integration']
-    },
-    'innovation': { 
-      label: 'Innovation & AI', 
-      icon: FiCpu,
-      subFilters: ['all', 'machine-learning', 'artificial-intelligence', 'emerging-tech', 'research']
-    },
-    'career': { 
-      label: 'Career Growth', 
-      icon: FiBriefcase,
-      subFilters: ['all', 'skills', 'interviews', 'networking', 'personal-brand', 'transitions']
-    }
-  };
-
-  const subFilterLabels = {
-    // General
-    'all': 'All',
-    'featured': 'Featured',
-    'trending': 'Trending',
-    'recent': 'Recent',
-    // Engineering
-    'architecture': 'Architecture',
-    'distributed-systems': 'Distributed Systems',
-    'performance': 'Performance',
-    'security': 'Security',
-    'devops': 'DevOps',
-    // Leadership
-    'management': 'Engineering Management',
-    'team-building': 'Team Building',
-    'strategy': 'Technical Strategy',
-    'mentoring': 'Mentoring',
-    'growth': 'Growth',
-    // Enterprise
-    'scalability': 'Scalability',
-    'cloud': 'Cloud Architecture',
-    'microservices': 'Microservices',
-    'automation': 'Automation',
-    'integration': 'System Integration',
-    // Innovation
-    'machine-learning': 'Machine Learning',
-    'artificial-intelligence': 'AI',
-    'emerging-tech': 'Emerging Tech',
-    'research': 'Research',
-    // Career
-    'skills': 'Technical Skills',
-    'interviews': 'Interview Prep',
-    'networking': 'Professional Network',
-    'personal-brand': 'Personal Branding',
-    'transitions': 'Career Transitions'
-  };
-
-  // Transform database articles to match UI structure
-  const transformedArticles = (articles || []).map(article => {
-    // Map database category to UI category
-    const categoryMap = {
-      'distributed-systems': 'engineering',
-      'identity-auth': 'engineering',
-      'leadership': 'leadership',
-      'enterprise-architecture': 'enterprise',
-      'devops': 'enterprise',
-      'ai-ml': 'innovation',
-      'career-growth': 'career'
-    };
-    
-    const dbCategory = article.categories?.[0] || 'general';
-    const uiCategory = categoryMap[dbCategory] || 'engineering';
-    
+  // Transform DB articles to UI shape
+  const transformedArticles = (articles || []).map((article) => {
+    const dbCategory = article.categories?.[0] || "general";
+    const uiCategory = CATEGORY_DB_TO_UI[dbCategory] || "engineering";
     return {
       id: article._id,
       _id: article._id,
-      title: article.title || 'Untitled Article',
-      excerpt: article.description || article.markdown?.substring(0, 150) || '',
+      title: article.title || "Untitled Article",
+      excerpt:
+        article.description || article.markdown?.substring(0, 150) || "",
       category: uiCategory,
       subCategory: dbCategory,
-      image: article.images?.url || "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
+      image: article.images?.url || FALLBACK_IMG,
       readTime: article.readTime || "5 min read",
-      publishDate: article.createdAt ? new Date(article.createdAt).toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-      }) : 'Unknown Date',
+      publishDate: article.createdAt
+        ? new Date(article.createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+          })
+        : "Unknown",
       tags: article.categories || [],
       likes: article.likes || 0,
       views: article.views || 0,
-      author: article.postedBy?.name || 'Dominique Hosea'
+      author: article.postedBy?.name || "Dominique Hosea",
     };
   });
 
-  // Filter articles based on active filters
-  const filteredArticles = transformedArticles.filter(article => {
-    if (activeFilter === 'all') return true;
+  const filteredArticles = transformedArticles.filter((article) => {
+    if (activeFilter === "all") return true;
     if (article.category !== activeFilter) return false;
-    if (activeSubFilter === 'all') return true;
+    if (activeSubFilter === "all") return true;
     return article.subCategory === activeSubFilter;
   });
-  
-  // Create set of featured article IDs to exclude from main grid
-  const featuredArticleIds = new Set([
-    mostLikedArticle?._id,
-    hbrArticles.main?._id,
-    hbrArticles.middle1?._id,
-    hbrArticles.middle2?._id,
-    ...(hbrArticles.latest?.map(a => a._id) || [])
-  ].filter(Boolean));
-  
-  // Remove featured articles from the grid
-  const deduplicatedArticles = filteredArticles.filter(
-    article => !featuredArticleIds.has(article._id)
+
+  const featuredArticleIds = new Set(
+    [
+      mostLikedArticle?._id,
+      hbrArticles.main?._id,
+      hbrArticles.middle1?._id,
+      hbrArticles.middle2?._id,
+      ...(hbrArticles.latest?.map((a) => a._id) || []),
+    ].filter(Boolean)
   );
-  
-  // Sort by likes (most popular first)
-  const sortedArticles = [...deduplicatedArticles].sort((a, b) => (b.likes || 0) - (a.likes || 0));
 
-  // Pagination logic
+  const deduplicatedArticles = filteredArticles.filter(
+    (a) => !featuredArticleIds.has(a._id)
+  );
+  const sortedArticles = [...deduplicatedArticles].sort(
+    (a, b) => (b.likes || 0) - (a.likes || 0)
+  );
+
   const totalPages = Math.ceil(sortedArticles.length / postsPerPage);
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentArticles = sortedArticles.slice(indexOfFirstPost, indexOfLastPost);
+  const indexOfLast = currentPage * postsPerPage;
+  const indexOfFirst = indexOfLast - postsPerPage;
+  const currentArticles = sortedArticles.slice(indexOfFirst, indexOfLast);
 
-  // Reset to page 1 when filter changes
   useEffect(() => {
     setCurrentPage(1);
   }, [activeFilter, activeSubFilter]);
 
-  // Handle page change
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-    // Scroll to articles section
-    const articlesSection = document.getElementById('articles-section');
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    const articlesSection = document.getElementById("articles-section");
     if (articlesSection) {
-      articlesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      articlesSection.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
-  // Generate page numbers array
   const getPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
     let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
-    
     if (endPage - startPage + 1 < maxPagesToShow) {
       startPage = Math.max(1, endPage - maxPagesToShow + 1);
     }
-    
     for (let i = startPage; i <= endPage; i++) {
       pages.push(i);
     }
     return pages;
   };
 
-  // Get expertise categories from articles (minimum 3 articles per category)
   const getExpertiseCategories = () => {
     try {
       const categoryCount = {};
       const categoryNames = {
-        'engineering': 'Software Engineering & Architecture',
-        'leadership': 'Engineering Leadership & Team Building',
-        'enterprise': 'Enterprise Solutions & Architecture',
-        'innovation': 'Innovation & AI/ML Engineering',
-        'career': 'Career Growth & Development'
+        engineering: "Software Engineering & Architecture",
+        leadership: "Engineering Leadership & Team Building",
+        enterprise: "Enterprise Solutions & Architecture",
+        innovation: "Innovation & AI/ML Engineering",
+        career: "Career Growth & Development",
       };
-      
-      // Count articles per category
-      articles.forEach(article => {
-        const cat = article.categories?.[0] || 'general';
+      articles.forEach((article) => {
+        const cat = article.categories?.[0] || "general";
         categoryCount[cat] = (categoryCount[cat] || 0) + 1;
       });
-      
-      // Get categories with at least 3 articles, sorted by count
-      const dynamicCategories = Object.entries(categoryCount)
-        .filter(([_, count]) => count >= 3)
+      const dynamic = Object.entries(categoryCount)
+        .filter(([, count]) => count >= 3)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 6)
-        .map(([category], index) => ({
-          number: String(index + 1).padStart(2, '0'),
-          name: categoryNames[category] || category.charAt(0).toUpperCase() + category.slice(1)
+        .map(([category], i) => ({
+          number: String(i + 1).padStart(2, "0"),
+          name:
+            categoryNames[category] ||
+            category.charAt(0).toUpperCase() + category.slice(1),
         }));
-      
-      // If we have 6 categories, use them. Otherwise, use hardcoded list
-      if (dynamicCategories.length === 6) {
-        return dynamicCategories;
-      }
-      
-      // Hardcoded fallback list
-      return [
-        { number: '01', name: 'Distributed Systems & Scalability' },
-        { number: '02', name: 'Identity & Authentication Platforms' },
-        { number: '03', name: 'Engineering Leadership & Team Building' },
-        { number: '04', name: 'Enterprise Architecture & Design Patterns' },
-        { number: '05', name: 'DevOps & Site Reliability Engineering' },
-        { number: '06', name: 'AI/ML Engineering & Production Systems' }
-      ];
-    } catch (error) {
-      // Return hardcoded list on error
-      return [
-        { number: '01', name: 'Distributed Systems & Scalability' },
-        { number: '02', name: 'Identity & Authentication Platforms' },
-        { number: '03', name: 'Engineering Leadership & Team Building' },
-        { number: '04', name: 'Enterprise Architecture & Design Patterns' },
-        { number: '05', name: 'DevOps & Site Reliability Engineering' },
-        { number: '06', name: 'AI/ML Engineering & Production Systems' }
-      ];
+      if (dynamic.length === 6) return dynamic;
+      return FALLBACK_EXPERTISE;
+    } catch {
+      return FALLBACK_EXPERTISE;
     }
   };
 
   const handleSubscribe = (e) => {
     e.preventDefault();
-    console.log(`Professional newsletter subscription: ${email}`);
     setEmail("");
-          // action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b"
-    window.open("https://www.linkedin.com/article/newsletter/new/", "_blank");  
-    // You could integrate with your actual newsletter service here
+    window.open("https://www.linkedin.com/article/newsletter/new/", "_blank");
   };
 
-  // Handle responsive design
-  useEffect(() => {
-    const onresize = () => {
-      setIsMobileView(window.innerWidth <= 768);
-    };
-    
-    window.addEventListener("resize", onresize);
-    onresize();
-
-    return () => window.removeEventListener("resize", onresize);
-  }, []);
-
-  const professionalTopics = [
-    'Distributed Systems Architecture',
-    'Engineering Leadership Excellence',
-    'Enterprise AI Implementation',
-    'Cloud Migration Strategies',
-    'Team Scaling Best Practices'
-  ];
-
-  // Video carousel data
-  const featuredVideos = [
-    {
-      id: 1,
-      title: 'State Farm Engineering Center',
-      image: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=430&h=240&fit=crop',
-      alt: 'State Farm Engineering Center',
-      description: 'The State Farm Engineering Center is the new hub for enterprise software development. Fully operational since 2023, the center provides a centralized facility for distributed systems development, with top-quality collaboration spaces, advanced monitoring labs, and cutting-edge infrastructure for scalable engineering.'
-    },
-    {
-      id: 2,
-      title: 'Engineering Excellence Collaborative',
-      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=430&h=240&fit=crop',
-      alt: 'Engineering Excellence Collaborative',
-      description: 'The Engineering Excellence Collaborative (EEC) is a cross-team initiative with a mission of elevating engineering practices and connecting senior engineers across distributed systems, authentication platforms, and DevOps with colleagues throughout State Farm\'s technology organization.'
-    },
-    {
-      id: 3,
-      title: 'Senior Engineer Research',
-      image: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=430&h=240&fit=crop',
-      alt: 'Senior Engineer Research',
-      description: 'Senior Engineer Dominique Hosea leads groundbreaking research in enterprise identity systems, driving innovation in authentication technologies. His work focuses on scaling authentication to handle millions of daily requests, developing next-generation security protocols, and advancing distributed system architectures for Fortune 500 enterprise environments.'
-    }
-  ];
-
-  // Carousel navigation handlers
-  const handlePrevVideo = () => {
-    setActiveIndex((prevIndex) => (prevIndex - 1 + featuredVideos.length) % featuredVideos.length);
-  };
-
-  const handleNextVideo = () => {
-    setActiveIndex((prevIndex) => (prevIndex + 1) % featuredVideos.length);
-  };
-
-  // Get visible videos (3 at a time, wrapping around)
-  const getVisibleVideos = () => {
-    const videos = [];
-    for (let i = 0; i < 3; i++) {
-      videos.push(featuredVideos[(activeIndex + i) % featuredVideos.length]);
-    }
-    return videos;
-  };
-
-  // Show skeleton loading state while data is loading
   if (loading) {
     return (
-      <EnterpriseContainer>
-        <SkeletonBlog type="enterprise-blog" theme={{ isDark: true }} />
-      </EnterpriseContainer>
+      <Page>
+        <BlogSkeleton />
+      </Page>
     );
   }
 
   return (
-    <EnterpriseContainer>
-      <ThemeSwitcher />
-      
-      {/* Professional Header */}
-      {/* <ProfessionalHeader
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      >
-        <HeaderContent>
-          <Logo>HoseaCodes</Logo>
-          <NavLinks>
-            <NavLink 
-              href="#insights"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Insights
-            </NavLink>
-            <NavLink 
-              href="#case-studies"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Case Studies
-            </NavLink>
-            <NavLink 
-              href="#engineering"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Engineering
-            </NavLink>
-            <NavLink 
-              href="#leadership"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Leadership
-            </NavLink>
-            <NavLink 
-              href="#contact"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Contact
-            </NavLink>
-          </NavLinks>
-        </HeaderContent>
-      </ProfessionalHeader> */}
+    <Page>
+      {/* 1. Hero — most-liked article */}
+      <Section>
+        <HeroBg />
+        <HeroGrid />
+        <HeroShell>
+          <HeroContent>
+            {mostLikedArticle ? (
+              <>
+                <HeroBadge>Most Popular</HeroBadge>
+                <HeroTitle
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {mostLikedArticle.title}
+                </HeroTitle>
+                <HeroExcerpt
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  {mostLikedArticle.description || mostLikedArticle.excerpt}
+                </HeroExcerpt>
+                <HeroActions
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <PrimaryBtn
+                    onClick={() =>
+                      (window.location.href = `/blog/${mostLikedArticle._id}`)
+                    }
+                  >
+                    <FiBookOpen size={16} />
+                    Read article
+                  </PrimaryBtn>
+                  <GhostBtn onClick={() => (window.location.href = "/project")}>
+                    Case studies
+                  </GhostBtn>
+                </HeroActions>
+              </>
+            ) : (
+              <>
+                <HeroBadge>Insights</HeroBadge>
+                <HeroTitle
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  Engineering, leadership,
+                  <br />
+                  and <em>systems thinking</em>.
+                </HeroTitle>
+                <HeroExcerpt
+                  initial={{ opacity: 0, y: 24 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.1 }}
+                >
+                  Deep technical insights and engineering perspective from
+                  building scalable systems in production.
+                </HeroExcerpt>
+              </>
+            )}
+          </HeroContent>
 
-      {/* Hero Section */}
-      <HeroSection>
-        <HeroContent>
-          {mostLikedArticle ? (
-            <>
-              <HeroTitle
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                <span className="highlight">🔥 Most Popular</span><br />
-                Enterprise <span className="highlight">Technology</span><br />
-                <br />
-                {mostLikedArticle.title}
-              </HeroTitle>
-              
-              <HeroSubtitle
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                {mostLikedArticle.description || mostLikedArticle.excerpt}
-              </HeroSubtitle>
-               <CTASection
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <PrimaryButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => window.location.href = `/blog/${mostLikedArticle._id}`}
-                >
-                  <FiBookOpen size={18} />
-                  Read This Article
-                </PrimaryButton>
-                
-                <SecondaryButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => window.location.href = '/project'}
-                >
-                  <FiPlay size={18} />
-                  Watch Case Studies
-                </SecondaryButton>
-              </CTASection>
-            </>
-          ) : (
-            <>
-              <HeroTitle
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                Enterprise <span className="highlight">Technology</span><br />
-                Insights & Leadership
-              </HeroTitle>
-              
-              <HeroSubtitle
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Deep technical insights, engineering leadership strategies, and enterprise solutions 
-                from a senior software engineer building scalable systems at Fortune 500 scale.
-              </HeroSubtitle>
-              <CTASection
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <PrimaryButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiBookOpen size={18} />
-                  Read Latest Insights
-                </PrimaryButton>
-                
-                <SecondaryButton
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiPlay size={18} />
-                  Watch Case Studies
-                </SecondaryButton>
-              </CTASection>
-            </>
-          )}
-        </HeroContent>
+          <HeroVisual
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+          >
+            <img
+              src={
+                mostLikedArticle?.images?.url ||
+                mostLikedArticle?.image ||
+                "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop"
+              }
+              alt={mostLikedArticle?.title || "Tech insights"}
+            />
+          </HeroVisual>
+        </HeroShell>
+      </Section>
 
-        <HeroVisual
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.6 }}
-        >
-          <HeroImage 
-            src={mostLikedArticle?.images?.url || mostLikedArticle?.image || "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=500&fit=crop"}
-            alt={mostLikedArticle?.title || "Enterprise Technology Leadership"}
-          />
-        </HeroVisual>
-      </HeroSection>
-
+      {/* 2. Case-study banner */}
       <CaseStudyBanner
-        // logo="https://placehold.co/200x50/FFFFFF/000000?text=DatabricksLogo"
         logo="/HC.png"
-        title="Engineering excellence in action "
+        title="Engineering excellence in action"
         highlightText="HoseaCodes"
-        // image="https://placehold.co/300x200/FFFFFF/000000?text=VirginAtlanticPlane"
         image="/plane.png"
         buttonText="Follow the journey"
-        onButtonClick={() => window.open('https://www.linkedin.com/in/dominique-hosea/', '_blank')}
+        onButtonClick={() =>
+          window.open("https://www.linkedin.com/in/dominique-hosea/", "_blank")
+        }
       />
 
-      {/* HBR-Style Featured Section */}
-      <HBRSection>
-        <HBRContainer>
-          {/* Left Column - Main Featured Article */}
-          <MainFeature
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            onClick={() => hbrArticles.main?._id && (window.location.href = `/blog/${hbrArticles.main._id}`)}
-            style={{ cursor: 'pointer' }}
+      {/* 3. Editorial featured block — main + middles + latest + newsletter */}
+      <TightSection>
+        <FeaturedShell>
+          <MainCard
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            onClick={() =>
+              hbrArticles.main?._id &&
+              (window.location.href = `/blog/${hbrArticles.main._id}`)
+            }
           >
-            <MainFeatureImage>
-              <img 
-                src={hbrArticles.main?.images?.url || "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=500&fit=crop"}
-                alt={hbrArticles.main?.title || "Enterprise Systems Architecture"}
+            <FeaturedImage ratio="16 / 10">
+              <img
+                src={
+                  hbrArticles.main?.images?.url ||
+                  "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=500&fit=crop"
+                }
+                alt={hbrArticles.main?.title || "Featured"}
               />
-            </MainFeatureImage>
-            <MainFeatureCategory>{hbrArticles.main?.categories?.[0] || "Distributed Systems"}</MainFeatureCategory>
-            <MainFeatureTitle>
-              {hbrArticles.main?.title || "Case Study: How We Scaled Authentication to Handle 36M Daily Requests"}
-            </MainFeatureTitle>
-            <MainFeatureExcerpt>
-              {hbrArticles.main?.description || hbrArticles.main?.markdown?.substring(0, 150) || "A deep dive into the architectural decisions and engineering challenges of building enterprise-grade identity systems."}
-            </MainFeatureExcerpt>
-            <MainFeatureAuthor>{hbrArticles.main?.postedBy?.name || "Dominique Hosea"}</MainFeatureAuthor>
-          </MainFeature>
+            </FeaturedImage>
+            <CardCategory>
+              {hbrArticles.main?.categories?.[0] || "Distributed Systems"}
+            </CardCategory>
+            <CardTitle size="28px">
+              {hbrArticles.main?.title ||
+                "How We Scaled Authentication to 36M Daily Requests"}
+            </CardTitle>
+            <CardExcerpt>
+              {hbrArticles.main?.description ||
+                hbrArticles.main?.markdown?.substring(0, 160) ||
+                "A deep dive into the architectural decisions and engineering challenges behind enterprise-grade identity systems."}
+            </CardExcerpt>
+            <CardAuthor>
+              {hbrArticles.main?.postedBy?.name || "Dominique Hosea"}
+            </CardAuthor>
+          </MainCard>
 
-          {/* Middle Column - Articles with Images */}
           <MiddleColumn>
-            {hbrArticles.middle1 && (
-              <MiddleArticle
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                onClick={() => hbrArticles.middle1?._id && (window.location.href = `/blog/${hbrArticles.middle1._id}`)}
-              >
-                <MiddleArticleImage>
-                  <img 
-                    src={hbrArticles.middle1?.images?.url || "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=200&fit=crop"}
-                    alt={hbrArticles.middle1?.title || "Article"}
-                  />
-                </MiddleArticleImage>
-                <MiddleArticleContent>
-                  <MiddleArticleCategory>{hbrArticles.middle1?.categories?.[0] || "Engineering"}</MiddleArticleCategory>
-                  <MiddleArticleTitle>
-                    {hbrArticles.middle1?.title || "Article Title"}
-                  </MiddleArticleTitle>
-                  <MiddleArticleExcerpt>
-                    {(hbrArticles.middle1?.description || hbrArticles.middle1?.markdown?.substring(0, 100) || "Article excerpt").substring(0, 80)}...
-                  </MiddleArticleExcerpt>
-                  <MiddleArticleAuthor>{hbrArticles.middle1?.postedBy?.name || "Author"}</MiddleArticleAuthor>
-                </MiddleArticleContent>
-              </MiddleArticle>
-            )}
-
-            {hbrArticles.middle2 && (
-              <MiddleArticle
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                onClick={() => hbrArticles.middle2?._id && (window.location.href = `/blog/${hbrArticles.middle2._id}`)}
-              >
-                <MiddleArticleImage>
-                  <img 
-                    src={hbrArticles.middle2?.images?.url || "https://images.unsplash.com/photo-1555255707-c07966088b7b?w=300&h=200&fit=crop"}
-                    alt={hbrArticles.middle2?.title || "Article"}
-                  />
-                </MiddleArticleImage>
-                <MiddleArticleContent>
-                  <MiddleArticleCategory>{hbrArticles.middle2?.categories?.[0] || "Innovation"}</MiddleArticleCategory>
-                  <MiddleArticleTitle>
-                    {hbrArticles.middle2?.title || "Article Title"}
-                  </MiddleArticleTitle>
-                  <MiddleArticleExcerpt>
-                    {hbrArticles.middle2?.description || hbrArticles.middle2?.markdown?.substring(0, 100) || "Article excerpt"}
-                  </MiddleArticleExcerpt>
-                  <MiddleArticleAuthor>{hbrArticles.middle2?.postedBy?.name || "Author"}</MiddleArticleAuthor>
-                </MiddleArticleContent>
-              </MiddleArticle>
-            )}
+            {[hbrArticles.middle1, hbrArticles.middle2]
+              .filter(Boolean)
+              .map((article, idx) => (
+                <MiddleCard
+                  key={article._id || idx}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.05 + idx * 0.05 }}
+                  onClick={() =>
+                    article._id &&
+                    (window.location.href = `/blog/${article._id}`)
+                  }
+                >
+                  <FeaturedImage ratio="16 / 9">
+                    <img
+                      src={
+                        article.images?.url ||
+                        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=240&fit=crop"
+                      }
+                      alt={article.title || "Article"}
+                    />
+                  </FeaturedImage>
+                  <CardCategory>
+                    {article.categories?.[0] || "Engineering"}
+                  </CardCategory>
+                  <CardTitle size="18px">
+                    {article.title || "Article"}
+                  </CardTitle>
+                  <CardAuthor>
+                    {article.postedBy?.name || "Dominique Hosea"}
+                  </CardAuthor>
+                </MiddleCard>
+              ))}
           </MiddleColumn>
 
-          {/* Right Column - The Latest */}
           <RightColumn>
             <LatestHeader>The Latest</LatestHeader>
-            
-            {hbrArticles.latest.map((article, index) => (
-              <LatestArticle
+            {hbrArticles.latest.map((article, idx) => (
+              <LatestItem
                 key={article._id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 + (index * 0.1) }}
-                onClick={() => article._id && (window.location.href = `/blog/${article._id}`)}
+                transition={{ duration: 0.4, delay: 0.1 + idx * 0.05 }}
+                onClick={() =>
+                  article._id &&
+                  (window.location.href = `/blog/${article._id}`)
+                }
               >
-                <LatestTitle>
-                  {article.title}
-                </LatestTitle>
-                <LatestAuthor>{article.postedBy?.name || "Dominique Hosea"}</LatestAuthor>
-              </LatestArticle>
+                <h4 className="title">{article.title}</h4>
+                <span className="author">
+                  {article.postedBy?.name || "Dominique Hosea"}
+                </span>
+              </LatestItem>
             ))}
 
-            {/* Newsletter Signup */}
             <NewsletterCard
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.7 }}
+              transition={{ duration: 0.4, delay: 0.3 }}
             >
-              <NewsletterText>
-                Sign up for <strong>HoseaCodes Executive</strong> - for insights you need 
-                to steer your engineering career now. Only available to HoseaCodes Executive 
-                subscribers.
-              </NewsletterText>
-              <NewsletterButton
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleSubscribe}
-              >
-                Sign Up <FiArrowRight size={14} />
-              </NewsletterButton>
-              <NewsletterIcon>
-                📧
-              </NewsletterIcon>
+              <p>
+                Subscribe to <strong>HoseaCodes Executive</strong> for engineering
+                insights delivered to your inbox.
+              </p>
+              <InlineMiniBtn onClick={handleSubscribe}>
+                Sign up
+                <FiArrowRight size={14} />
+              </InlineMiniBtn>
             </NewsletterCard>
           </RightColumn>
-        </HBRContainer>
-      </HBRSection>
+        </FeaturedShell>
+      </TightSection>
 
-      {/* MIT News-Style Footer */}
-      <MITFooterSection>
-        <MITFooterContainer>
-          <MITFooterLeft>
-            <MITLogo>HoseaCodes Insights</MITLogo>
-            <MITTagline>ON ENTERPRISE SYSTEMS AND ENGINEERING EXCELLENCE</MITTagline>
-            
-            <MITDescription>
-              This platform is managed by Dominique Hosea, Senior Software Engineer at State Farm, 
-              part of the Enterprise Engineering Excellence Initiative.
-            </MITDescription>
-            
-            <ExpertiseHeader>Engineering Insights by Domain:</ExpertiseHeader>
-            <ExpertiseList>
-              {getExpertiseCategories().map((category) => (
-                <ExpertiseItem key={category.number} number={category.number}>
-                  <a href="#">{category.name}</a>
-                </ExpertiseItem>
-              ))}
-            </ExpertiseList>
-            
-            {/* <MITFooterLinks>
-              <FooterLinkGroup>
-                <FooterLink href="#">About Engineering Insights</FooterLink>
-                <FooterLink href="#">Press Inquiries</FooterLink>
-              </FooterLinkGroup>
-              <FooterLinkGroup>
-                <FooterLink href="#">Engineering Case Studies</FooterLink>
-                <FooterLink href="#">Technical Guidelines</FooterLink>
-              </FooterLinkGroup>
-              <FooterLinkGroup>
-                <FooterLink href="#">Terms of Use</FooterLink>
-                <FooterLink href="#">RSS Feeds</FooterLink>
-              </FooterLinkGroup>
-            </MITFooterLinks> */}
-          </MITFooterLeft>
-          
-          <MITFooterRight>
-            <Subscription2Button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => window.open('https://www.linkedin.com/article/newsletter/new/', '_blank')}
-            >
-              Subscribe to Engineering Daily/Weekly
-            </Subscription2Button>
-            
-            {/* <Subscription2Button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Subscribe to technical insights
-            </Subscription2Button>
-            
-            <Subscription2Button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Submit engineering case study
-            </Subscription2Button>
-            
-            <Subscription2Button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Guidelines for technical contributors
-            </Subscription2Button>
-            
-            <Subscription2Button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Guidelines on engineering AI
-            </Subscription2Button> */}
-          </MITFooterRight>
-        </MITFooterContainer>
-      </MITFooterSection>
+      {/* 4. Expertise / engineering insights by domain */}
+      <InsightsBand>
+        <ExpertiseShell>
+          <ExpertiseLeft>
+            <ExpertiseSub>HoseaCodes Insights</ExpertiseSub>
+            <ExpertiseLogo>
+              On enterprise systems &amp; engineering excellence.
+            </ExpertiseLogo>
+            <ExpertiseDesc>
+              Managed by Dominique Hosea — Senior Software Engineer at State
+              Farm. Part of the Enterprise Engineering Excellence Initiative.
+            </ExpertiseDesc>
+          </ExpertiseLeft>
+          <ExpertiseRight>
+            <ExpertiseRightHeader>Engineering domains</ExpertiseRightHeader>
+            {getExpertiseCategories().map((cat) => (
+              <ExpertiseRow key={cat.number} href="#">
+                <span className="num">{cat.number}</span>
+                <span>{cat.name}</span>
+                <FiArrowUpRight className="arrow" size={16} />
+              </ExpertiseRow>
+            ))}
+          </ExpertiseRight>
+        </ExpertiseShell>
+      </InsightsBand>
 
-      {/* Content Section */}
-      <ContentSection>
-        <SectionHeader>
-          <SectionTitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Latest <span className="accent">Insights</span>
-          </SectionTitle>
-          
-          <SectionSubtitle
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            In-depth technical articles, leadership perspectives, and enterprise solutions 
-            from the front lines of software engineering at scale.
-          </SectionSubtitle>
-        </SectionHeader>
+      {/* 5–7. Filters + grid + sidebar */}
+      <Section>
+        <Container style={{ textAlign: "center", marginBottom: 48 }}>
+          <Kicker>Latest</Kicker>
+          <Heading>
+            All <em>insights</em>.
+          </Heading>
+          <Tagline>
+            In-depth technical articles, leadership perspectives, and enterprise
+            solutions from the front lines of engineering.
+          </Tagline>
+        </Container>
 
-        {/* Enterprise Filter System */}
-        <FilterSection>
+        <FilterShell>
           <FilterTabs>
-            {Object.entries(enterpriseCategories).map(([key, category]) => {
-              const IconComponent = category.icon;
+            {Object.entries(ENTERPRISE_CATEGORIES).map(([key, category]) => {
+              const Icon = category.icon;
               return (
                 <FilterTab
                   key={key}
                   active={activeFilter === key}
                   onClick={() => {
                     setActiveFilter(key);
-                    setActiveSubFilter('all');
+                    setActiveSubFilter("all");
                   }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  <IconComponent size={16} />
+                  <Icon size={14} />
                   {category.label}
                 </FilterTab>
               );
             })}
           </FilterTabs>
-          
-          {activeFilter !== 'all' && (
+
+          {activeFilter !== "all" && (
             <SubFilters>
-              {enterpriseCategories[activeFilter].subFilters.map(filter => (
+              {ENTERPRISE_CATEGORIES[activeFilter].subFilters.map((filter) => (
                 <SubFilterChip
                   key={filter}
                   active={activeSubFilter === filter}
                   onClick={() => setActiveSubFilter(filter)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  {subFilterLabels[filter]}
+                  {SUB_FILTER_LABELS[filter]}
                 </SubFilterChip>
               ))}
             </SubFilters>
           )}
-        </FilterSection>
+        </FilterShell>
 
-        {/* Article Grid */}
-        <ArticleGrid id="articles-section">
-          <MainArticles>
-            {currentArticles.map((article, index) => (
-              <FeaturedArticle
-                key={article.id || article._id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02 }}
-                onClick={() => article._id && (window.location.href = `/blog/${article._id}`)}
-                style={{ cursor: 'pointer' }}
-              >
-                <ArticleImage bgImage={article.image} />
-                
-                <ArticleContent>
-                  <ArticleCategory>
-                    {React.createElement(enterpriseCategories[article.category].icon, { size: 14 })}
-                    {enterpriseCategories[article.category].label}
-                  </ArticleCategory>
-                  
-                  <ArticleTitle>{article.title}</ArticleTitle>
-                  <ArticleExcerpt>
-                    {article.excerpt && article.excerpt.length > 150 
-                      ? article.excerpt.substring(0, 150) + '...' 
-                      : article.excerpt}
-                  </ArticleExcerpt>
-                  
-                  <ArticleTags>
-                    {Array.isArray(article.tags) && article.tags.slice(0, 3).map(tag => (
-                      <ArticleTag key={tag}>{typeof tag === 'string' ? tag : tag}</ArticleTag>
-                    ))}
-                  </ArticleTags>
-                  
-                  <ArticleMeta>
-                    <span><FiClock size={12} /> {article.readTime}</span>
-                    <span>•</span>
-                    <span><FiCalendar size={12} /> {article.publishDate}</span>
-                  </ArticleMeta>
-                  
-                  <ReadMoreButton
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Read Article <FiArrowRight size={14} />
-                  </ReadMoreButton>
-                </ArticleContent>
-              </FeaturedArticle>
-            ))}
-            {/* Pagination Controls */}
+        <ContentShell id="articles-section">
+          <div>
+            <Articles>
+              {currentArticles.length === 0 ? (
+                <EmptyState>
+                  No articles match this filter yet. Try a different category.
+                </EmptyState>
+              ) : (
+                currentArticles.map((article, index) => {
+                  const Icon =
+                    ENTERPRISE_CATEGORIES[article.category]?.icon || FiCode;
+                  return (
+                    <ArticleCard
+                      key={article.id || article._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: index * 0.05 }}
+                      onClick={() =>
+                        article._id &&
+                        (window.location.href = `/blog/${article._id}`)
+                      }
+                    >
+                      <ArticleImage bg={article.image} />
+                      <ArticleBody>
+                        <ArticleCategoryRow>
+                          <Icon size={12} />
+                          {ENTERPRISE_CATEGORIES[article.category]?.label ||
+                            "Engineering"}
+                        </ArticleCategoryRow>
+                        <ArticleTitle>{article.title}</ArticleTitle>
+                        <ArticleExcerpt>
+                          {article.excerpt && article.excerpt.length > 160
+                            ? article.excerpt.substring(0, 160) + "…"
+                            : article.excerpt}
+                        </ArticleExcerpt>
+                        <ArticleTagRow>
+                          {Array.isArray(article.tags) &&
+                            article.tags
+                              .slice(0, 3)
+                              .map((tag) => (
+                                <ArticleTag key={tag}>
+                                  {typeof tag === "string" ? tag : tag}
+                                </ArticleTag>
+                              ))}
+                        </ArticleTagRow>
+                        <ArticleMeta>
+                          <span>
+                            <FiClock size={11} /> {article.readTime}
+                          </span>
+                          <span>
+                            <FiCalendar size={11} /> {article.publishDate}
+                          </span>
+                          <span className="arrow">→</span>
+                        </ArticleMeta>
+                      </ArticleBody>
+                    </ArticleCard>
+                  );
+                })
+              )}
+            </Articles>
+
             {totalPages > 1 && (
-              <PaginationContainer>
-                <PageButton
+              <Pagination>
+                <PageBtn
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  whileHover={currentPage !== 1 ? { scale: 1.05 } : {}}
-                  whileTap={currentPage !== 1 ? { scale: 0.95 } : {}}
                 >
                   ←
-                </PageButton>
-
-                {getPageNumbers().map(pageNum => (
-                  <PageButton
+                </PageBtn>
+                {getPageNumbers().map((pageNum) => (
+                  <PageBtn
                     key={pageNum}
                     active={currentPage === pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
                   >
                     {pageNum}
-                  </PageButton>
+                  </PageBtn>
                 ))}
-
-                <PageButton
+                <PageBtn
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  whileHover={currentPage !== totalPages ? { scale: 1.05 } : {}}
-                  whileTap={currentPage !== totalPages ? { scale: 0.95 } : {}}
                 >
                   →
-                </PageButton>
-
+                </PageBtn>
                 <PaginationInfo>
                   Page {currentPage} of {totalPages}
                 </PaginationInfo>
-              </PaginationContainer>
+              </Pagination>
             )}
-          </MainArticles>
-
+          </div>
 
           <Sidebar>
             <SidebarCard
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.5 }}
             >
-              <SidebarTitle>Professional Newsletter</SidebarTitle>
-              <p style={{ 
-                color: 'rgba(255, 255, 255, 0.8)',
-                marginBottom: '1.5rem',
-                lineHeight: '1.6'
-              }}>
-                Get weekly insights on enterprise software engineering, leadership strategies, and technology trends.
-              </p>
-              
-              <NewsletterForm
-                // action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b"
-                // method="POST"
-                onSubmit={handleSubscribe}>
+              <SidebarTitle>Newsletter</SidebarTitle>
+              <SidebarBody>
+                Weekly notes on engineering, leadership, and the systems behind
+                production software.
+              </SidebarBody>
+              <NewsletterForm onSubmit={handleSubscribe}>
                 <NewsletterInput
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="you@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <SubscribeButton
-                  type="submit"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <FiMail size={16} />
+                <SubscribeBtn type="submit">
+                  <FiMail size={14} />
                   Subscribe
-                </SubscribeButton>
+                </SubscribeBtn>
               </NewsletterForm>
             </SidebarCard>
 
             <SidebarCard
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
             >
               <SidebarTitle>Featured Topics</SidebarTitle>
               <TopicList>
-                {professionalTopics.map((topic, index) => (
-                  <TopicItem
-                    key={index}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    {topic}
-                  </TopicItem>
+                {PROFESSIONAL_TOPICS.map((topic, index) => (
+                  <TopicChip key={index}>{topic}</TopicChip>
                 ))}
               </TopicList>
             </SidebarCard>
 
             <SidebarCard
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <SidebarTitle>Engineering Achievements</SidebarTitle>
+              <SidebarTitle>Achievements</SidebarTitle>
               <AchievementList>
                 <AchievementItem>
-                  <FiAward 
-                    size={20} 
-                    color="#667eea" 
-                  />
+                  <FiAward size={18} />
                   <AchievementInfo>
-                    <AchievementTitle>State Farm Innovation Award</AchievementTitle>
-                    <AchievementDesc>Distributed Systems Excellence</AchievementDesc>
+                    <span className="t">State Farm Innovation Award</span>
+                    <span className="d">Distributed Systems Excellence</span>
                   </AchievementInfo>
                 </AchievementItem>
-                
                 <AchievementItem>
-                  <FiTarget 
-                    size={20} 
-                    color="#667eea" 
-                  />
+                  <FiTarget size={18} />
                   <AchievementInfo>
-                    <AchievementTitle>Senior Engineer Track</AchievementTitle>
-                    <AchievementDesc>Identity & Authentication Platform</AchievementDesc>
+                    <span className="t">Senior Engineer Track</span>
+                    <span className="d">Identity & Authentication Platform</span>
                   </AchievementInfo>
                 </AchievementItem>
-
                 <AchievementItem>
-                  <FiBarChart2 
-                    size={20} 
-                    color="#667eea" 
-                  />
+                  <FiBarChart2 size={18} />
                   <AchievementInfo>
-                    <AchievementTitle>Performance Optimization</AchievementTitle>
-                    <AchievementDesc>36M+ Daily Requests Processed</AchievementDesc>
+                    <span className="t">Performance Optimization</span>
+                    <span className="d">36M+ Daily Requests</span>
                   </AchievementInfo>
                 </AchievementItem>
               </AchievementList>
             </SidebarCard>
           </Sidebar>
-        </ArticleGrid>
-      </ContentSection>
+        </ContentShell>
+      </Section>
 
+      {/* 8. Resume CTA + StateFarm banner */}
       <MinimalResumeCTA />
-      {/* <ResumeCTA /> */}
-      {/* <ResumeBannerCTA /> */}
-
-      {/* Section 2: Featured Multimedia */}
-      {/* <FeaturedMultimediaSection>
-        <MultimediaSection>
-          <VerticalSidebar>
-            <SidebarContent>
-              <VerticalText>Featured Multimedia</VerticalText>
-            </SidebarContent>
-          </VerticalSidebar>
-          
-          <MainContent>
-            <CardsRow>
-              {getVisibleVideos().map((video, index) => (
-                <VideoCard
-                  key={video.id}
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <VideoImageContainer>
-                    <VideoImage 
-                      src={video.image}
-                      alt={video.alt}
-                    />
-                    <PlayButtonOverlay>
-                      <PlayButton />
-                    </PlayButtonOverlay>
-                  </VideoImageContainer>
-                  <VideoTextContent>
-                    <VideoDescription>
-                      {video.description}
-                    </VideoDescription>
-                  </VideoTextContent>
-                </VideoCard>
-              ))}
-            </CardsRow>
-
-            <BottomRow>
-              <YouTubeLink href="https://www.youtube.com/watch?v=uc3mRVjZM_I&t=5s" target="_blank" rel="noopener noreferrer">
-                View more videos on HoseaCodes' YouTube channel
-              </YouTubeLink>
-              
-              <NavigationButtons>
-                <NavButton
-                  onClick={handlePrevVideo}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <ChevronIcon description="left">‹</ChevronIcon>
-                </NavButton>
-                <NavButton 
-                  onClick={handleNextVideo}
-                  active={true}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <ChevronIcon>›</ChevronIcon>
-                </NavButton>
-              </NavigationButtons>
-            </BottomRow>
-          </MainContent>
-        </MultimediaSection>
-
-      </FeaturedMultimediaSection> */}
-
-      {/* Section 3: Footer Content Grid */}
-      {/* <FooterContentSection>
-        <FooterContentContainer> */}
-          {/* Popular Column */}
-          {/* <FooterColumn>
-            <FooterColumnTitle>Popular</FooterColumnTitle>
-            <PopularArticlesList>
-              <PopularArticle>
-                <PopularTitle>
-                  Your New Role Requires Strategic Thinking...But You're Stuck in the Weeds
-                </PopularTitle>
-              </PopularArticle>
-              <PopularArticle>
-                <PopularTitle>
-                  Research: Why Some Engineering Teams Weather Technical Debt Better Than Others
-                </PopularTitle>
-              </PopularArticle>
-              <PopularArticle>
-                <PopularTitle>
-                  Now Is the Time for Engineering Courage
-                </PopularTitle>
-              </PopularArticle>
-              <PopularArticle>
-                <PopularTitle>
-                  When You Have to Execute a Strategy You Disagree With
-                </PopularTitle>
-              </PopularArticle>
-            </PopularArticlesList>
-          </FooterColumn> */}
-
-          {/* Newsletters Column */}
-          {/* <FooterColumn>
-            <FooterColumnTitle>Newsletters</FooterColumnTitle>
-            <MoreLink href="#">More Newsletters →</MoreLink>
-            
-            <NewsletterList>
-              <NewsletterItem>
-                <NewsletterIcon color="#1f2937">📋</NewsletterIcon>
-                <NewsletterContent>
-                  <NewsletterTitle>HoseaCodes Executive Agenda</NewsletterTitle>
-                  <NewsletterDescription>
-                    Sign up for the Engineering Executive Agenda for insights you need to steer your team now.
-                  </NewsletterDescription>
-                  <NewsletterSignup
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Sign Up <FiArrowRight size={12} />
-                  </NewsletterSignup>
-                </NewsletterContent>
-              </NewsletterItem>
-
-              <NewsletterItem>
-                <NewsletterIcon color="#ef4444">🔥</NewsletterIcon>
-                <NewsletterContent>
-                  <NewsletterTitle>Weekly Engineering Hotlist</NewsletterTitle>
-                  <NewsletterDescription>
-                    A roundup of Engineering Excellence's most popular ideas and advice.
-                  </NewsletterDescription>
-                  <NewsletterSignup
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Sign Up <FiArrowRight size={12} />
-                  </NewsletterSignup>
-                </NewsletterContent>
-              </NewsletterItem>
-
-              <NewsletterItem>
-                <NewsletterIcon color="#f59e0b">💡</NewsletterIcon>
-                <NewsletterContent>
-                  <NewsletterTitle>Engineering Tip of the Day</NewsletterTitle>
-                  <NewsletterDescription>
-                    Quick, practical engineering advice to help you do your job better.
-                  </NewsletterDescription>
-                  <NewsletterSignup
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    Sign Up <FiArrowRight size={12} />
-                  </NewsletterSignup>
-                </NewsletterContent>
-              </NewsletterItem>
-            </NewsletterList>
-          </FooterColumn> */}
-
-          {/* Exclusive Content Column */}
-          {/* <FooterColumn>
-            <FooterColumnTitle>HoseaCodes Subscriber Exclusives</FooterColumnTitle>
-            <FooterSubheader>Access for subscribers only.</FooterSubheader>
-            
-            <ExclusiveList>
-              <ExclusiveItem>
-                <ExclusiveThumbnail bgColor="#0ea5e9">🎯</ExclusiveThumbnail>
-                <ExclusiveContent>
-                  <ExclusiveCategory>Case Selections</ExclusiveCategory>
-                  <ExclusiveTitle>
-                    Distributed Systems and Enterprise Architecture
-                  </ExclusiveTitle>
-                </ExclusiveContent>
-              </ExclusiveItem>
-
-              <ExclusiveItem>
-                <ExclusiveThumbnail bgColor="#10b981">📊</ExclusiveThumbnail>
-                <ExclusiveContent>
-                  <ExclusiveCategory>Data & Visuals</ExclusiveCategory>
-                  <ExclusiveTitle>
-                    Are You a Senior Engineering Leader?
-                  </ExclusiveTitle>
-                </ExclusiveContent>
-              </ExclusiveItem>
-
-              <ExclusiveItem>
-                <ExclusiveThumbnail bgColor="#8b5cf6">📝</ExclusiveThumbnail>
-                <ExclusiveContent>
-                  <ExclusiveCategory>Engineering Essential Articles</ExclusiveCategory>
-                  <ExclusiveTitle>
-                    Building Your Engineering Team's Vision
-                  </ExclusiveTitle>
-                </ExclusiveContent>
-              </ExclusiveItem>
-            </ExclusiveList>
-          </FooterColumn> */}
-
-          {/* Podcasts Column */}
-          {/* <FooterColumn>
-            <FooterColumnTitle>Podcasts</FooterColumnTitle>
-            <MoreLink href="#">More Podcasts →</MoreLink>
-            
-            <PodcastList>
-              <PodcastItem>
-                <PodcastIcon color="#667eea">🎧</PodcastIcon>
-                <PodcastContent>
-                  <PodcastCategory>Engineering Communication</PodcastCategory>
-                  <PodcastTitle>
-                    What Senior Engineers Say About Your Company Culture
-                  </PodcastTitle>
-                </PodcastContent>
-              </PodcastItem>
-
-              <PodcastItem>
-                <PodcastIcon color="#f59e0b">⭐</PodcastIcon>
-                <PodcastContent>
-                  <PodcastCategory>Leadership</PodcastCategory>
-                  <PodcastTitle>
-                    Why Great Leaders Focus on the Engineering Details
-                  </PodcastTitle>
-                </PodcastContent>
-              </PodcastItem>
-
-              <PodcastItem>
-                <PodcastIcon color="#ef4444">🚀</PodcastIcon>
-                <PodcastContent>
-                  <PodcastCategory>Sustainable Engineering Practices</PodcastCategory>
-                  <PodcastTitle>
-                    Future of Engineering: How Teams Can Scale Technical Excellence
-                  </PodcastTitle>
-                </PodcastContent>
-              </PodcastItem>
-            </PodcastList>
-          </FooterColumn> */}
-        {/* </FooterContentContainer>
-      </FooterContentSection> */}
       <StateFarm />
-
-    </EnterpriseContainer>
+    </Page>
   );
 }
 

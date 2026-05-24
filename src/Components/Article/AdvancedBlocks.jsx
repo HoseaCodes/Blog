@@ -26,7 +26,7 @@ const BlockButton = styled(motion.button)`
   
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 

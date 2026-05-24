@@ -4,9 +4,25 @@ import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import reportWebVitals from './reportWebVitals';
+
+// Strip LocatorJS / dev-tool overlay iframe that hijacks all clicks (z-index max int).
+// Some IDE/extension keeps re-injecting it; CSS override isn't enough, so we remove it.
+if (typeof window !== 'undefined') {
+  const killOverlay = () => {
+    document
+      .querySelectorAll('body > iframe[style*="2147483647"], body > div#locatorjs-wrapper')
+      .forEach((el) => el.remove());
+  };
+  killOverlay();
+  new MutationObserver(killOverlay).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+  });
+}
 
 const history = createBrowserHistory();
 
@@ -25,7 +41,9 @@ process.env.NODE_ENV === "production" && Sentry.init({
 
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <HelmetProvider>
+      <App/>
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

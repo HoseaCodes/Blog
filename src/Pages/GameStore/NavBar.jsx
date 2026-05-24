@@ -6,6 +6,7 @@ import { ReactComponent as Cart } from "./image/cart.svg";
 import { ReactComponent as GitHub } from "./image/github.svg";
 import { ReactComponent as Search } from "./image/search.svg";
 import { motion } from "framer-motion";
+import PointsHUD from "./PointsHUD";
 
 const NavBar = props => { 
     const {
@@ -109,8 +110,9 @@ const NavBar = props => {
         </div>
 
         <div className={styles.navbar_right}>
-            <div 
-              className={styles.githubdiv} 
+            <PointsHUD />
+            <div
+              className={styles.githubdiv}
               id="2"
               onMouseEnter={handleHover}
               onMouseLeave={handleHover}

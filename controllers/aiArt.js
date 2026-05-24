@@ -2,9 +2,18 @@ import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
 import Products from '../models/product.js';
 import ArtPurchases from '../models/artPurchase.js';
+import PointsAccounts from '../models/pointsAccount.js';
+import PointsTransactions from '../models/pointsTransaction.js';
 import Logger from '../utils/logger.js';
 import { generateImage, VALID_PROVIDERS, DALLE } from '../utils/imageProviders.js';
 import { createOrder as paypalCreateOrder, captureOrder as paypalCaptureOrder, getPublicClientId } from '../utils/paypalClient.js';
+
+// Points/USD rate: $1 = 100 points (matches pack pricing).
+const POINTS_PER_USD = Number(process.env.POINTS_PER_USD || 100);
+
+export function priceInPoints(usdPrice) {
+  return Math.ceil(Number(usdPrice) * POINTS_PER_USD);
+}
 
 dotenv.config();
 
@@ -265,6 +274,99 @@ export async function captureOrderForArt(req, res) {
   } catch (err) {
     logger.error('PayPal capture failed', { message: err.message, response: err.response?.data });
     return res.status(500).json({ msg: err.response?.data?.message || err.message });
+  }
+}
+
+// Atomic "pay with points" path: debits points + creates a completed
+// ArtPurchase in one operation. Points spend is the source of truth — if
+// the spend succeeds the purchase is guaranteed. If the purchase write
+// fails after the spend, the points are refunded.
+export async function purchaseWithPoints(req, res) {
+  try {
+    const { productId } = req.body || {};
+    if (!productId) return res.status(400).json({ msg: 'productId required' });
+
+    const product = await Products.findById(productId);
+    if (!product || product.type !== 'ai-art') {
+      return res.status(404).json({ msg: 'AI-art product not found' });
+    }
+
+    const existing = await ArtPurchases.findOne({
+      userId: req.user.id,
+      productId: product._id,
+      paymentStatus: 'completed',
+    });
+    if (existing) {
+      return res.status(409).json({ msg: 'You already own this artwork', purchaseId: existing._id });
+    }
+
+    const cost = priceInPoints(product.price);
+
+    // Atomic spend: only succeeds if balance >= cost.
+    const account = await PointsAccounts.findOne({ userId: req.user.id });
+    if (!account || account.balance < cost) {
+      return res.status(402).json({
+        msg: 'Insufficient points',
+        balance: account?.balance || 0,
+        required: cost,
+      });
+    }
+    const debited = await PointsAccounts.findOneAndUpdate(
+      { userId: req.user.id, balance: { $gte: cost } },
+      { $inc: { balance: -cost, lifetimeSpent: cost } },
+      { new: true }
+    );
+    if (!debited) {
+      return res.status(402).json({ msg: 'Insufficient points', required: cost });
+    }
+
+    try {
+      const purchase = await ArtPurchases.findOneAndUpdate(
+        { userId: req.user.id, productId: product._id },
+        {
+          userId: req.user.id,
+          productId: product._id,
+          amountPaid: 0,
+          currency: 'USD',
+          paymentProvider: 'points',
+          paymentId: `points:${req.user.id}:${product._id}:${Date.now()}`,
+          paymentStatus: 'completed',
+          downloadExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+        { upsert: true, new: true }
+      );
+
+      await PointsTransactions.create({
+        userId: req.user.id,
+        type: 'spend',
+        amount: cost,
+        balanceAfter: debited.balance,
+        meta: {
+          reason: 'ai-art-purchase',
+          productId: String(product._id),
+          purchaseId: String(purchase._id),
+        },
+      });
+
+      return res.json({
+        status: 'success',
+        purchaseId: purchase._id,
+        productId: product._id,
+        balance: debited.balance,
+        downloadsRemaining: purchase.downloadsRemaining,
+      });
+    } catch (purchaseErr) {
+      // Roll back the spend so the user isn't charged for nothing.
+      await PointsAccounts.findOneAndUpdate(
+        { userId: req.user.id },
+        { $inc: { balance: cost, lifetimeSpent: -cost } }
+      );
+      logger.error('Points purchase rollback', { message: purchaseErr.message });
+      return res.status(500).json({ msg: 'Purchase failed — points refunded' });
+    }
+  } catch (err) {
+    logger.error('purchaseWithPoints failed', { message: err.message });
+    return res.status(500).json({ msg: err.message });
   }
 }
 

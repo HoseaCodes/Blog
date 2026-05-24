@@ -13,17 +13,17 @@ import axios from "axios";
 const mediumTheme = {
   colors: {
     text: {
-      primary: '#242424',
-      secondary: '#6b6b6b',
-      light: '#8b8b8b'
+      primary: '#f4f6f8',
+      secondary: '#a3acb2',
+      light: '#6b7479'
     },
     background: {
-      white: '#ffffff',
-      border: '#e6e6e6',
-      hover: '#f2f2f2'
+      white: '#0f1216',
+      border: 'rgba(255, 255, 255, 0.06)',
+      hover: 'rgba(255, 255, 255, 0.04)'
     },
     accent: {
-      green: '#1a8917'
+      green: '#5bb39e'
     }
   },
   spacing: {

@@ -14,7 +14,7 @@ const initialState = {
 
 const Page = styled.div`
   min-height: 80vh;
-  background: #f5f7fb;
+  background: #0f1216;
   padding: 32px 24px;
 `;
 
@@ -40,13 +40,13 @@ const TitleBlock = styled.div`
   h1 {
     font-size: 24px;
     font-weight: 600;
-    color: #0f172a;
+    color: #f4f6f8;
     margin: 0;
     line-height: 1.2;
   }
   p {
     font-size: 14px;
-    color: #64748b;
+    color: #a3acb2;
     margin: 4px 0 0;
   }
 `;
@@ -59,28 +59,28 @@ const Toolbar = styled.div`
 
 const SearchInput = styled.input`
   appearance: none;
-  border: 1px solid #e2e8f0;
-  background: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
   border-radius: 8px;
   padding: 9px 12px;
   font-size: 14px;
-  color: #0f172a;
+  color: #f4f6f8;
   width: 240px;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 
   &:focus {
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    border-color: rgba(91, 179, 158, 0.45);
+    box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
   }
 
   &::placeholder {
-    color: #94a3b8;
+    color: #6b7479;
   }
 `;
 
 const PrimaryButton = styled.button`
-  background: #4f46e5;
+  background: #206a5d;
   color: #fff;
   border: 0;
   border-radius: 8px;
@@ -90,26 +90,26 @@ const PrimaryButton = styled.button`
   cursor: pointer;
   transition: background 0.15s, transform 0.05s;
 
-  &:hover { background: #4338ca; }
+  &:hover { background: #267a6b; }
   &:active { transform: translateY(1px); }
 `;
 
 const GhostButton = styled.button`
   background: transparent;
-  color: #475569;
-  border: 1px solid #e2e8f0;
+  color: #a3acb2;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 9px 14px;
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
 
-  &:hover { background: #f1f5f9; }
+  &:hover { background: rgba(255, 255, 255, 0.04); }
 `;
 
 const DangerLink = styled.button`
   background: transparent;
-  color: #dc2626;
+  color: #f87171;
   border: 0;
   font-size: 13px;
   font-weight: 500;
@@ -120,10 +120,10 @@ const DangerLink = styled.button`
 `;
 
 const Card = styled.div`
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   overflow: hidden;
 `;
 
@@ -139,25 +139,25 @@ const Table = styled.table`
   thead th {
     text-align: left;
     font-weight: 500;
-    color: #64748b;
+    color: #a3acb2;
     font-size: 12px;
     text-transform: uppercase;
     letter-spacing: 0.04em;
     padding: 14px 18px;
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
+    background: rgba(255, 255, 255, 0.025);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     white-space: nowrap;
   }
 
   tbody td {
     padding: 14px 18px;
-    border-bottom: 1px solid #f1f5f9;
-    color: #0f172a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f4f6f8;
     vertical-align: middle;
   }
 
   tbody tr:hover {
-    background: #fafbff;
+    background: rgba(91, 179, 158, 0.04);
   }
 
   tbody tr:last-child td {
@@ -181,7 +181,7 @@ const UserName = styled.span`
   font-weight: 500;
   font-size: 14px;
   line-height: 1.3;
-  color: #0f172a;
+  color: #f4f6f8;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -190,7 +190,7 @@ const UserName = styled.span`
 const UserEmail = styled.span`
   font-size: 13px;
   line-height: 1.3;
-  color: #64748b;
+  color: #a3acb2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -200,8 +200,8 @@ const Avatar = styled.div`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: ${({ bg }) => bg || "#e0e7ff"};
-  color: #4338ca;
+  background: ${({ bg }) => bg || "rgba(91, 179, 158, 0.12)"};
+  color: #5bb39e;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -221,23 +221,23 @@ const Badge = styled.span`
   font-size: 12px;
   font-weight: 500;
   background: ${({ tone }) =>
-    tone === "admin" ? "#ede9fe" : "#ecfdf5"};
-  color: ${({ tone }) => (tone === "admin" ? "#5b21b6" : "#047857")};
+    tone === "admin" ? "rgba(91, 179, 158, 0.12)" : "rgba(255, 255, 255, 0.03)"};
+  color: ${({ tone }) => (tone === "admin" ? "#5bb39e" : "#a3acb2")};
 `;
 
 const EmptyState = styled.div`
   padding: 56px 24px;
   text-align: center;
-  color: #64748b;
+  color: #a3acb2;
   font-size: 14px;
 `;
 
 const ErrorBox = styled.div`
   margin: 0 0 16px;
   padding: 12px 14px;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #991b1b;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  color: #f8b4b4;
   border-radius: 8px;
   font-size: 13px;
 `;
@@ -245,7 +245,7 @@ const ErrorBox = styled.div`
 const Modal = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,24 +254,24 @@ const Modal = styled.div`
 `;
 
 const ModalCard = styled.div`
-  background: #fff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
   border-radius: 12px;
   width: 100%;
   max-width: 460px;
   padding: 24px;
-  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 
   h3 {
     margin: 0 0 16px;
     font-size: 18px;
     font-weight: 600;
-    color: #0f172a;
+    color: #f4f6f8;
   }
 
   label {
     display: block;
     font-size: 13px;
-    color: #475569;
+    color: #a3acb2;
     margin-bottom: 4px;
   }
 
@@ -279,19 +279,19 @@ const ModalCard = styled.div`
   textarea,
   select {
     width: 100%;
-    border: 1px solid #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 8px;
     padding: 9px 12px;
     font-size: 14px;
     margin-bottom: 14px;
-    background: #fff;
-    color: #0f172a;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+    color: #f4f6f8;
     outline: none;
     transition: border-color 0.15s, box-shadow 0.15s;
 
     &:focus {
-      border-color: #6366f1;
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      border-color: rgba(91, 179, 158, 0.45);
+      box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
     }
   }
 
@@ -465,7 +465,7 @@ const UsersList = () => {
                         {isAdminRole(u.role) ? "Admin" : "Basic"}
                       </Badge>
                     </td>
-                    <td style={{ color: "#475569" }}>{formatJoined(u.createdAt)}</td>
+                    <td style={{ color: "#a3acb2" }}>{formatJoined(u.createdAt)}</td>
                     <td>
                       <DangerLink onClick={() => deleteUser(u._id)}>Delete</DangerLink>
                     </td>

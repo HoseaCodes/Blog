@@ -25,7 +25,7 @@ const artPurchaseSchema = new mongoose.Schema({
     },
     paymentProvider: {
         type: String,
-        enum: ['paypal', 'stripe'],
+        enum: ['paypal', 'stripe', 'points'],
         default: 'paypal',
     },
     paymentId: {

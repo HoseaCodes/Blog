@@ -166,6 +166,7 @@ export const projectData = [
     source: ["120 hours", "Freelance project"],
     websites: ["https://www.social-ring.com/"],
     app: "https://apps.apple.com/us/app/social-ring/id1551446005",
+    appLogo: "https://pngimg.com/uploads/apple_logo/apple_logo_PNG19675.png",
     design: `As the Full-Stack Developer, I was responsible of building the entire UI for the IOS app and website, and redefining the User Experience. One of the most exciting experience was integrating the entire implementing the application with Swift with zero direction given. Allowing the freedom to explore different design patterns.`,
     designImg: "https://i.imgur.com/MrONCmd.png",
     designColor: {

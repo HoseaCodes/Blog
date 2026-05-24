@@ -1,0 +1,281 @@
+.redeem-page-wrap {
+  background: #0f1216;
+  min-height: 100vh;
+}
+
+.redeem-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 96px 24px 80px;
+  color: #f4f6f8;
+  font-family: "Lato", sans-serif;
+}
+
+.redeem-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.redeem-header-left {
+  flex: 1;
+  min-width: 260px;
+}
+
+.redeem-kicker {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #5bb39e;
+  margin-bottom: 12px;
+}
+
+.redeem-header h1 {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
+  margin: 0 0 8px;
+  color: #f4f6f8 !important;
+}
+
+.redeem-header p {
+  margin: 0;
+  color: #a3acb2 !important;
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 620px;
+}
+
+.redeem-header p a {
+  color: #5bb39e;
+  font-weight: 600;
+  text-decoration: none;
+}
+.redeem-header p a:hover {
+  color: #9bd4c4;
+}
+
+.redeem-balance-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(91, 179, 158, 0.12), rgba(32, 106, 93, 0.06));
+  border: 1px solid rgba(91, 179, 158, 0.3);
+  min-width: 180px;
+}
+
+.redeem-balance-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #a3acb2;
+}
+
+.redeem-balance-value {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f4f6f8;
+  margin-bottom: 6px;
+}
+
+.redeem-buy-btn {
+  background: #206a5d;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.redeem-buy-btn:hover {
+  background: #267a6b;
+}
+
+.redeem-error {
+  background: rgba(248, 113, 113, 0.1);
+  color: #f8b4b4;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(248, 113, 113, 0.25);
+}
+
+.redeem-empty {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  color: #a3acb2;
+}
+.redeem-empty p { margin: 4px 0; }
+.redeem-empty a {
+  color: #5bb39e;
+  font-weight: 600;
+}
+
+.redeem-muted {
+  color: #a3acb2;
+  font-size: 14px;
+}
+
+.redeem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.redeem-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.008));
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.18s, transform 0.12s;
+}
+.redeem-card:hover {
+  border-color: rgba(91, 179, 158, 0.3);
+  transform: translateY(-2px);
+}
+
+.redeem-card-cover {
+  width: 100%;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.025);
+  overflow: hidden;
+}
+.redeem-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.redeem-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.redeem-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+  color: #f4f6f8;
+}
+
+.redeem-card-desc {
+  font-size: 13px;
+  color: #a3acb2;
+  line-height: 1.5;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.redeem-card-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.redeem-card-price {
+  color: #5bb39e;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.redeem-card-cat {
+  font-size: 11px;
+  color: #6b7479;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.redeem-card-actions,
+.redeem-card-owned {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.redeem-card-owned {
+  color: #9bd4c4;
+  font-size: 13px;
+  font-weight: 600;
+  justify-content: space-between;
+}
+
+.redeem-card-btn {
+  background: #206a5d;
+  color: #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 9px 16px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.1s;
+  text-decoration: none;
+  text-align: center;
+}
+.redeem-card-btn:hover:not(:disabled) {
+  background: #267a6b;
+  transform: translateY(-1px);
+  text-decoration: none;
+  color: #fff !important;
+}
+.redeem-card-btn:disabled {
+  background: rgba(255, 255, 255, 0.08);
+  cursor: not-allowed;
+}
+
+.redeem-card-btn-link {
+  display: inline-block;
+}
+
+.redeem-buy-more {
+  background: transparent;
+  border: 0;
+  color: #5bb39e;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.redeem-buy-more:hover {
+  color: #9bd4c4;
+  text-decoration: underline;
+}
+
+.redeem-card-error {
+  color: #f8b4b4;
+  font-size: 12px;
+  margin: 4px 0 0;
+}

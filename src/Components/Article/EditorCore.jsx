@@ -35,8 +35,8 @@ const ToolGroup = styled.div`
 
 const ToolButton = styled(motion.button)`
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'transparent'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
-  color: ${props => props.active ? '#667eea' : '#ffffff'};
+  border: 1px solid ${props => props.active ? '#5bb39e' : 'rgba(255, 255, 255, 0.2)'};
+  color: ${props => props.active ? '#5bb39e' : '#ffffff'};
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
@@ -49,8 +49,8 @@ const ToolButton = styled(motion.button)`
 
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
-    color: #667eea;
+    border-color: #5bb39e;
+    color: #5bb39e;
   }
 `;
 
@@ -153,7 +153,7 @@ const PreviewContent = styled.div`
   color: #ffffff;
 
   h1, h2, h3, h4, h5, h6 {
-    color: #667eea;
+    color: #5bb39e;
     margin: 1.5rem 0 1rem 0;
     font-weight: 700;
   }
@@ -179,14 +179,14 @@ const PreviewContent = styled.div`
 
   code {
     background: rgba(102, 126, 234, 0.2);
-    color: #667eea;
+    color: #5bb39e;
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: 'Monaco', monospace;
   }
 
   blockquote {
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #5bb39e;
     margin: 1rem 0;
     padding: 1rem;
     background: rgba(102, 126, 234, 0.1);
@@ -211,7 +211,7 @@ const PreviewContent = styled.div`
   }
 
   a {
-    color: #667eea;
+    color: #5bb39e;
     text-decoration: none;
     
     &:hover {
@@ -252,7 +252,7 @@ const CommentOverlay = styled(motion.div)`
   right: 10px;
   top: ${props => props.y}px;
   background: rgba(102, 126, 234, 0.9);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   border-radius: 8px;
   padding: 0.5rem;
   max-width: 250px;
@@ -287,22 +287,22 @@ const SelectionIndicator = styled(motion.div)`
   top: 0.5rem;
   right: 0.5rem;
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   border-radius: 6px;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
-  color: #667eea;
+  color: #5bb39e;
   pointer-events: none;
   z-index: 10;
 `;
 
 const ToolbarSelectionBadge = styled.div`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   border-radius: 6px;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
-  color: #667eea;
+  color: #5bb39e;
   display: flex;
   align-items: center;
   gap: 0.25rem;

@@ -28,7 +28,7 @@ const VersionItem = styled(motion.div)`
   position: relative;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -48,7 +48,7 @@ const VersionInfo = styled.div`
 
 const VersionNumber = styled.div`
   background: rgba(102, 126, 234, 0.3);
-  color: #667eea;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -88,7 +88,7 @@ const ActionButton = styled(motion.button)`
   
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -108,7 +108,7 @@ const ChangesSummary = styled.div`
 const ChangesTitle = styled.div`
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const ChangesList = styled.ul`
@@ -122,7 +122,7 @@ const ChangesList = styled.ul`
     
     &:before {
       content: "•";
-      color: #667eea;
+      color: #5bb39e;
       position: absolute;
       left: -0.75rem;
     }
@@ -133,7 +133,7 @@ const CurrentBadge = styled.div`
   position: absolute;
   top: -8px;
   right: 1rem;
-  background: linear-gradient(45deg, #10b981, #059669);
+  background: linear-gradient(45deg, #5bb39e, #059669);
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
@@ -319,7 +319,7 @@ function VersionHistory({ article, updateArticle, blogAPI }) {
   return (
     <VersionContainer>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-        <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#667eea' }}>
+        <h3 style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#5bb39e' }}>
           <FiClock />
           Version History ({versions.length})
         </h3>

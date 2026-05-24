@@ -46,17 +46,53 @@ api.interceptors.request.use(attachCookieToken, (error) => Promise.reject(error)
 apiLocal.interceptors.request.use(attachCookieToken, (error) => Promise.reject(error));
 
 // Response interceptor for error handling
+const AUTH_REQUIRED_PREFIXES = ['/admin', '/profile', '/checkout', '/order'];
+
+// Pages where we EXPLICITLY refuse to bounce the user to /login even on 401.
+// Articles, project case studies, blog list, etc. are public reading material.
+const PUBLIC_READ_PREFIXES = [
+  '/blog',
+  '/project',
+  '/about',
+  '/contact',
+  '/login',
+  '/register',
+  '/forgot-password',
+  '/reset-password',
+  '/check-status',
+];
+
+const isOnAuthRequiredPage = () => {
+  const path = window.location.pathname;
+  if (PUBLIC_READ_PREFIXES.some((p) => path === p || path.startsWith(p + '/'))) {
+    return false;
+  }
+  if (path === '/') return false;
+  return AUTH_REQUIRED_PREFIXES.some((p) => path.startsWith(p));
+};
+
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid
+    const status = error.response?.status;
+    const reqUrl = error.config?.url;
+    console.log('[authService] response error', { status, reqUrl, pathname: window.location.pathname });
+
+    if (status === 401) {
+      const onAuthRoute = isOnAuthRequiredPage();
+      console.log('[authService] 401 — clearing creds, redirect?', onAuthRoute);
+
       localStorage.removeItem('firstLogin');
       localStorage.removeItem('isLoggedIn');
-      // Clear cookies
-      document.cookie = 'accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = 'refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      window.location.href = '/login';
+      localStorage.removeItem('isAdmin');
+      document.cookie =
+        'accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      document.cookie =
+        'refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+      if (onAuthRoute) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
@@ -162,6 +198,7 @@ const authService = {
    * Logout user
    */
   logout: async () => {
+    console.log('[authService] logout() called from', new Error().stack?.split('\n').slice(2, 5).join(' <- '));
     try {
       await api.post('/logout');
     } catch (error) {
@@ -169,6 +206,7 @@ const authService = {
     }
     localStorage.removeItem('firstLogin');
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('isAdmin');
     document.cookie = 'accesstoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     document.cookie = 'refreshtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     window.location.href = '/login';

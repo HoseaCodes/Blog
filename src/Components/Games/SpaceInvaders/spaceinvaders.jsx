@@ -1,6 +1,14 @@
-import { Button, Grid, Result } from "../common";
-import React, { useEffect, useState } from "react";
+import { Grid, Result } from "../common";
+import React, { useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+import useGameBridge from "../../../Hooks/useGameBridge";
+
+// prettier-ignore
+const INITIAL_ALIEN_LAYOUT = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20,
+  21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 40,
+  41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+];
 
 const ExplosionGif =
   "https://d2nrcsymqn25pk.cloudfront.net/Assets/Gif/explosion.gif";
@@ -41,7 +49,11 @@ const Cell = styled.div`
 `;
 let timer = null;
 let laserTimer = null;
-const SpaceInvaders = () => {
+const SpaceInvaders = ({
+  onScoreUpdate,
+  onGameComplete,
+  gameStarted = true,
+} = {}) => {
   const width = 20;
   const totalAlien = 33;
   const [shooterIndex, setShooterIndex] = useState(385);
@@ -51,15 +63,34 @@ const SpaceInvaders = () => {
   const [gameOver, setGameOver] = useState(false);
   const [laserIndex, setLaserIndex] = useState("");
   const [start, setStart] = useState(false);
-  useEffect(() => {
-    // prettier-ignore
-    let alienLayout = [
-      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20,
-      21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 40,
-      41, 42, 43, 44, 45, 46, 47, 48, 49, 50,];
+
+  const score = totalAlien - alienGroup.length;
+
+  const resetGame = useCallback(() => {
+    setAlienGroup(INITIAL_ALIEN_LAYOUT);
+    setShooterIndex(385);
     setDirection(1);
-    setAlienGroup(alienLayout);
-  }, [start]);
+    setGameOver(false);
+    setLaserIndex("");
+    setExplodeIndex("");
+    setStart(true);
+  }, []);
+
+  useEffect(() => {
+    if (!gameStarted) {
+      setStart(false);
+      clearTimeout(timer);
+    }
+  }, [gameStarted]);
+
+  useGameBridge({
+    score,
+    gameStarted,
+    onScoreUpdate,
+    onReset: resetGame,
+    isGameOver: !!gameOver,
+    onGameComplete,
+  });
   const moveShooter = (e) => {
     if (!start) return;
     switch (e.key) {
@@ -137,9 +168,6 @@ const SpaceInvaders = () => {
     window.addEventListener("keydown", moveShooter);
     return () => window.removeEventListener("keydown", moveShooter);
   }, [shooterIndex, alienGroup, direction]);
-  const toggleGame = () => {
-    setStart((prev) => !prev);
-  };
   return (
     <div
       style={{
@@ -161,9 +189,8 @@ const SpaceInvaders = () => {
           ></Cell>
         ))}
       </Grid>
-      <Button onClick={toggleGame}>{start ? "STOP" : "Start"}</Button>
       {gameOver ? <Result>{gameOver}</Result> : ""}
-      <div>your score : {totalAlien - alienGroup.length}</div>
+      <div>your score : {score}</div>
     </div>
   );
 };

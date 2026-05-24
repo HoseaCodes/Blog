@@ -20,6 +20,9 @@ import analyticsRouter from './routes/analytics.js';
 import seoRouter from './routes/seo.js';
 import aiRouter from './routes/ai.js';
 import aiArtRouter from './routes/aiArt.js';
+import pointsRouter from './routes/points.js';
+import storeRouter from './routes/store.js';
+import sitemapRouter from './routes/sitemap.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
@@ -87,6 +90,11 @@ app.use('/api', analyticsRouter);
 app.use('/api', seoRouter);
 app.use('/api', aiRouter);
 app.use('/api', aiArtRouter);
+app.use('/api', pointsRouter);
+app.use('/api', storeRouter);
+
+// Crawler-facing routes (must be at site root, not /api, and before SPA catch-all)
+app.use('/', sitemapRouter);
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

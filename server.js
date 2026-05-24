@@ -81,6 +81,10 @@ app.use('/api', uploadRouter);
 app.use('/api', paymentRouter);
 app.use('/api', productRouter);
 app.use('/api/user', userRouter);
+// Mount store BEFORE the routers below — they use a no-path
+// `router.use(auth)` catch-all that would otherwise intercept the
+// public /api/store/items handler (used by /shop/redeem).
+app.use('/api', storeRouter);
 // Enterprise blog routes
 // Mount media router with specific prefix to avoid conflicts with auth middleware
 app.use('/api', mediaRouter);
@@ -91,7 +95,6 @@ app.use('/api', seoRouter);
 app.use('/api', aiRouter);
 app.use('/api', aiArtRouter);
 app.use('/api', pointsRouter);
-app.use('/api', storeRouter);
 
 // Crawler-facing routes (must be at site root, not /api, and before SPA catch-all)
 app.use('/', sitemapRouter);

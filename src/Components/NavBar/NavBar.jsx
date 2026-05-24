@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 import { GlobalState } from "../../GlobalState";
 
 const LOGO =
-  "https://d2nrcsymqn25pk.cloudfront.net/Assets/Images/logo-min.png";
+  "/header.png";
 
 /* ------------------------------------------------------------------
    Styled components

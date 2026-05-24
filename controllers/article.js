@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Articles from "../models/article.js";
 import Comments from "../models/comment.js";
 import Logger from "../utils/logger.js";
@@ -39,12 +40,19 @@ async function getArticle(req, res) {
 
 async function getArticleByID(req, res) {
   try {
-    const article = await Articles.findOne({ _id: req.params.id });
+    const { id } = req.params;
+    const isObjectId = mongoose.Types.ObjectId.isValid(id) && /^[a-f0-9]{24}$/i.test(id);
 
-    logger.info("Returning the list of articles");
+    let article = null;
+    if (isObjectId) {
+      article = await Articles.findOne({ _id: id });
+    }
+    if (!article) {
+      article = await Articles.findOne({ slug: id });
+    }
 
     if (!article)
-      return res.status(400).send({ msg: "Article does not exisit" });
+      return res.status(404).send({ msg: "Article does not exist" });
 
     res.json({
       status: "success",

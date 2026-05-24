@@ -50,7 +50,7 @@ const SearchInput = styled.input`
 
 const ToolButton = styled(motion.button)`
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'transparent'};
+  border: 1px solid ${props => props.active ? '#5bb39e' : 'transparent'};
   color: white;
   padding: 0.5rem;
   border-radius: 6px;
@@ -77,7 +77,7 @@ const DropOverlay = styled(motion.div)`
   right: 0;
   bottom: 0;
   background: rgba(102, 126, 234, 0.1);
-  border: 3px dashed #667eea;
+  border: 3px dashed #5bb39e;
   border-radius: 12px;
   margin: 1rem;
   z-index: 1000;
@@ -100,7 +100,7 @@ const DropZone = styled.div`
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -124,7 +124,7 @@ const MediaItem = styled(motion.div)`
   height: fit-content;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -132,7 +132,7 @@ const MediaItem = styled(motion.div)`
 const MediaPreview = styled.div`
   width: 100%;
   height: ${props => props.viewMode === 'grid' ? '150px' : '80px'};
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #5bb39e, #206a5d);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,7 +232,7 @@ const FilterTabs = styled.div`
 
 const FilterTab = styled(motion.button)`
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'transparent'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
+  border: 1px solid ${props => props.active ? '#5bb39e' : 'rgba(255, 255, 255, 0.2)'};
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -240,7 +240,7 @@ const FilterTab = styled(motion.button)`
   font-size: 0.75rem;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -548,8 +548,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
-              <FiUpload size={64} style={{ color: '#667eea', marginBottom: '1rem' }} />
-              <h2 style={{ margin: 0, marginBottom: '0.5rem', color: '#667eea' }}>
+              <FiUpload size={64} style={{ color: '#5bb39e', marginBottom: '1rem' }} />
+              <h2 style={{ margin: 0, marginBottom: '0.5rem', color: '#5bb39e' }}>
                 Drop files here to upload
               </h2>
               <p style={{ margin: 0, opacity: 0.7 }}>
@@ -567,7 +567,7 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 300 }}
             >
-              <h4 style={{ margin: '0 0 1rem 0', color: '#667eea' }}>Uploading files...</h4>
+              <h4 style={{ margin: '0 0 1rem 0', color: '#5bb39e' }}>Uploading files...</h4>
               {uploadProgress.map((item, index) => (
                 <div key={index} style={{ marginBottom: '0.5rem' }}>
                   <div style={{ 
@@ -579,8 +579,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                     <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>{item.name}</span>
                     <span style={{ 
                       fontSize: '0.625rem',
-                      color: item.status === 'complete' ? '#10b981' : 
-                             item.status === 'failed' ? '#ef4444' : '#667eea'
+                      color: item.status === 'complete' ? '#5bb39e' : 
+                             item.status === 'failed' ? '#ef4444' : '#5bb39e'
                     }}>
                       {item.status === 'complete' ? 'Complete' : 
                        item.status === 'failed' ? 'Failed' : 'Uploading...'}
@@ -597,8 +597,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                       width: item.status === 'complete' ? '100%' : 
                              item.status === 'failed' ? '0%' : '60%',
                       height: '100%',
-                      background: item.status === 'complete' ? '#10b981' : 
-                                 item.status === 'failed' ? '#ef4444' : '#667eea',
+                      background: item.status === 'complete' ? '#5bb39e' : 
+                                 item.status === 'failed' ? '#ef4444' : '#5bb39e',
                       transition: 'width 0.3s ease'
                     }} />
                   </div>
@@ -688,7 +688,7 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                           style={{
                             fontSize: '0.625rem',
                             background: 'rgba(102, 126, 234, 0.2)',
-                            color: '#667eea',
+                            color: '#5bb39e',
                             padding: '0.125rem 0.5rem',
                             borderRadius: '12px',
                             marginRight: '0.25rem'

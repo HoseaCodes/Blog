@@ -21,7 +21,7 @@ const InsightTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const InsightValue = styled.div`

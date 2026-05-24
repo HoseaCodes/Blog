@@ -12,8 +12,8 @@ const AIContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: #0f1216;
+  color: #f4f6f8;
 `;
 
 const AIHeader = styled.div`
@@ -185,7 +185,7 @@ const ScoreCard = styled.div`
 const ScoreValue = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.score >= 80 ? '#10b981' : props.score >= 60 ? '#f59e0b' : '#ef4444'};
+  color: ${props => props.score >= 80 ? '#5bb39e' : props.score >= 60 ? '#f59e0b' : '#ef4444'};
 `;
 
 const ScoreLabel = styled.div`

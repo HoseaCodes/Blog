@@ -27,7 +27,7 @@ import CollaborationPanel from "./CollaborationPanel";
 
 const EnterpriseContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, #0f1216 0%, #14191e 50%, #0f1216 100%);
   color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
@@ -49,7 +49,7 @@ const HeaderBar = styled(motion.header)`
 const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(45deg, #5bb39e 0%, #206a5d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -62,7 +62,7 @@ const ActionBar = styled.div`
 `;
 
 const QuickAction = styled(motion.button)`
-  background: ${props => props.primary ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)' : 'rgba(255, 255, 255, 0.1)'};
+  background: ${props => props.primary ? 'linear-gradient(45deg, #5bb39e 0%, #206a5d 100%)' : 'rgba(255, 255, 255, 0.1)'};
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -114,7 +114,7 @@ const Tab = styled(motion.button)`
   padding: 1rem;
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'transparent'};
   border: none;
-  color: ${props => props.active ? '#667eea' : '#888'};
+  color: ${props => props.active ? '#5bb39e' : '#6b7479'};
   font-weight: ${props => props.active ? '600' : '400'};
   cursor: pointer;
   display: flex;
@@ -125,7 +125,7 @@ const Tab = styled(motion.button)`
 
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    color: #667eea;
+    color: #5bb39e;
   }
 `;
 
@@ -145,11 +145,11 @@ const StatusDot = styled.div`
   border-radius: 50%;
   background: ${props => {
     switch (props.status) {
-      case 'draft': return '#fbbf24';
-      case 'review': return '#3b82f6';
-      case 'approved': return '#10b981';
-      case 'scheduled': return '#8b5cf6';
-      default: return '#6b7280';
+      case 'draft': return '#fcd34d';
+      case 'review': return '#5bb39e';
+      case 'approved': return '#5bb39e';
+      case 'scheduled': return '#5bb39e';
+      default: return '#a3acb2';
     }
   }};
 `;
@@ -858,7 +858,7 @@ function EnterpriseCreateArticle() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               style={{
-                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                background: 'linear-gradient(135deg, #14191e 0%, #0f1216 100%)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '20px',
                 width: '90%',

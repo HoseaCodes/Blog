@@ -1,25 +1,53 @@
+.create-art-page-wrap {
+  background: #0f1216;
+  min-height: 100vh;
+}
+
 .create-art-page {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 32px 20px 80px;
-  color: #222;
+  padding: 96px 24px 80px;
+  color: #f4f6f8;
+  font-family: "Lato", sans-serif;
+  background: transparent;
+}
+
+.create-art-header {
+  margin-bottom: 28px;
 }
 
 .create-art-header h1 {
-  font-size: 32px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.022em;
+  line-height: 1.1;
   margin: 0 0 8px;
+  color: #f4f6f8 !important;
+  font-family: "Lato", sans-serif;
 }
 
 .create-art-header p {
   margin: 0 0 24px;
-  color: #555;
+  color: #a3acb2 !important;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.create-art-header p a {
+  color: #5bb39e;
+  font-weight: 600;
+  text-decoration: none;
+}
+.create-art-header p a:hover {
+  color: #9bd4c4;
+  text-decoration: none;
 }
 
 .create-art-form {
   display: grid;
   gap: 12px;
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 28px;
@@ -31,13 +59,13 @@
   padding: 12px;
   font-size: 15px;
   font-family: inherit;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   outline: none;
 }
 
 .create-art-form textarea:focus {
-  border-color: #6d28d9;
+  border-color: #5bb39e;
 }
 
 .create-art-controls {
@@ -50,27 +78,27 @@
 
 .provider-toggle {
   display: inline-flex;
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 999px;
   overflow: hidden;
 }
 
 .provider-toggle button {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.025);
   border: 0;
   padding: 8px 14px;
   font-size: 14px;
   cursor: pointer;
-  color: #333;
+  color: #f4f6f8;
 }
 
 .provider-toggle button.active {
-  background: #6d28d9;
+  background: #5bb39e;
   color: #fff;
 }
 
 .generate-btn {
-  background: #111;
+  background: #206a5d;
   color: #fff;
   border: 0;
   border-radius: 8px;
@@ -81,13 +109,13 @@
 }
 
 .generate-btn:disabled {
-  background: #888;
+  background: rgba(255, 255, 255, 0.08);
   cursor: not-allowed;
 }
 
 .create-art-error {
-  background: #fdecea;
-  color: #b71c1c;
+  background: rgba(248, 113, 113, 0.08);
+  color: #f8b4b4;
   padding: 10px 14px;
   border-radius: 8px;
   margin-bottom: 16px;
@@ -100,8 +128,8 @@
 }
 
 .preview-card {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -112,7 +140,7 @@
   width: 100%;
   height: 280px;
   object-fit: cover;
-  background: #f4f4f4;
+  background: rgba(255, 255, 255, 0.025);
 }
 
 .preview-card-body {
@@ -126,20 +154,20 @@
 .preview-card-title {
   font-size: 14px;
   line-height: 1.4;
-  color: #222;
+  color: #f4f6f8;
   margin: 0;
 }
 
 .preview-card-meta {
   font-size: 12px;
-  color: #666;
+  color: #a3acb2;
 }
 
 .preview-card-purchased {
   margin-top: 8px;
   padding: 10px 12px;
-  background: #ecfdf5;
-  color: #065f46;
+  background: rgba(91, 179, 158, 0.08);
+  color: #5bb39e;
   border-radius: 8px;
   font-size: 13px;
   display: flex;
@@ -148,8 +176,52 @@
 }
 
 .preview-card-purchased a {
-  color: #065f46;
+  color: #5bb39e;
   font-weight: 600;
+}
+
+.pay-with-points-btn {
+  background: linear-gradient(180deg, rgba(91, 179, 158, 0.18), rgba(32, 106, 93, 0.18));
+  border: 1px solid rgba(91, 179, 158, 0.4);
+  color: #f4f6f8;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  margin-bottom: 8px;
+}
+.pay-with-points-btn:hover:not(:disabled) {
+  background: linear-gradient(180deg, rgba(91, 179, 158, 0.28), rgba(32, 106, 93, 0.28));
+  transform: translateY(-1px);
+}
+.pay-with-points-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pay-with-points-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.buy-more-pts-link {
+  background: transparent;
+  border: 0;
+  color: #5bb39e;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 0;
+  text-decoration: none;
+}
+.buy-more-pts-link:hover {
+  color: #9bd4c4;
+  text-decoration: underline;
 }
 
 .create-art-cta-row {
@@ -160,20 +232,20 @@
 }
 
 .create-art-cta-row a {
-  color: #6d28d9;
+  color: #5bb39e;
   font-weight: 600;
   text-decoration: none;
 }
 
 .create-art-login-gate {
-  background: #fff;
-  border: 1px solid #e5e5e5;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   padding: 28px;
   border-radius: 12px;
   text-align: center;
 }
 
 .create-art-login-gate a {
-  color: #6d28d9;
+  color: #5bb39e;
   font-weight: 600;
 }

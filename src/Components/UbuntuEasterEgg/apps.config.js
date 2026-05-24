@@ -8,6 +8,7 @@ import { displayProfile } from './apps/Profile';
 import { displayPathFinder } from './apps/PathFinder';
 import { displayPostman } from './apps/Postman';
 import { displayAiQuiz } from './apps/AiQuiz';
+import { displayGameCorner } from './apps/GameCorner';
 
 const apps = [
   {
@@ -81,6 +82,15 @@ const apps = [
     favourite: true,
     desktop_shortcut: false,
     screen: () => displayAiQuiz(),
+  },
+  {
+    id: 'game-corner',
+    title: 'Game Corner',
+    icon: 'themes/Yaru/apps/game-corner.svg',
+    disabled: false,
+    favourite: true,
+    desktop_shortcut: true,
+    screen: () => displayGameCorner(),
   },
   {
     id: 'settings',

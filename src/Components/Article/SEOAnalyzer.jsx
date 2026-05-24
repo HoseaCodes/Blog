@@ -18,12 +18,17 @@ const SEOContainer = styled.div`
 `;
 
 const ScoreCard = styled(motion.div)`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(91, 179, 158, 0.08) 0%,
+    rgba(91, 179, 158, 0.02) 100%
+  );
+  border: 1px solid rgba(91, 179, 158, 0.22);
   border-radius: 16px;
   padding: 2rem;
   margin-bottom: 2rem;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
 `;
 
 const OverallScore = styled.div`
@@ -57,7 +62,7 @@ const MiniScore = styled.div`
 const MiniScoreValue = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${props => props.score >= 80 ? '#10b981' : props.score >= 60 ? '#f59e0b' : '#ef4444'};
+  color: ${props => props.score >= 80 ? '#5bb39e' : props.score >= 60 ? '#f59e0b' : '#ef4444'};
 `;
 
 const MiniScoreLabel = styled.div`
@@ -85,13 +90,13 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 `;
 
 const ActionButton = styled(motion.button)`
-  background: ${props => props.primary ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)' : 'rgba(102, 126, 234, 0.2)'};
-  border: 1px solid ${props => props.primary ? 'transparent' : '#667eea'};
+  background: ${props => props.primary ? 'linear-gradient(45deg, #5bb39e 0%, #206a5d 100%)' : 'rgba(102, 126, 234, 0.2)'};
+  border: 1px solid ${props => props.primary ? 'transparent' : '#5bb39e'};
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -140,7 +145,7 @@ const AutoAnalyzeToggle = styled.label`
   
   input {
     margin: 0;
-    accent-color: #667eea;
+    accent-color: #5bb39e;
   }
 `;
 
@@ -178,7 +183,7 @@ const KeywordsList = styled.div`
 
 const KeywordTag = styled(motion.span)`
   background: rgba(102, 126, 234, 0.3);
-  color: #667eea;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -226,7 +231,7 @@ const KeywordInput = styled.div`
     
     &:focus {
       outline: none;
-      border-color: #667eea;
+      border-color: #5bb39e;
       box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
     }
   }
@@ -250,10 +255,10 @@ const ChecklistItem = styled(motion.div)`
   margin-bottom: 0.75rem;
   border-left: 4px solid ${props => {
     switch (props.status) {
-      case 'pass': return '#10b981';
+      case 'pass': return '#5bb39e';
       case 'warning': return '#f59e0b';
       case 'fail': return '#ef4444';
-      default: return '#6b7280';
+      default: return '#a3acb2';
     }
   }};
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -264,10 +269,10 @@ const StatusIcon = styled.div`
   margin-top: 0.125rem;
   color: ${props => {
     switch (props.status) {
-      case 'pass': return '#10b981';
+      case 'pass': return '#5bb39e';
       case 'warning': return '#f59e0b';
       case 'fail': return '#ef4444';
-      default: return '#6b7280';
+      default: return '#a3acb2';
     }
   }};
   display: flex;
@@ -297,7 +302,7 @@ const SuggestionHeader = styled.div`
 const SuggestionType = styled.div`
   font-weight: 600;
   font-size: 0.875rem;
-  color: #667eea;
+  color: #5bb39e;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -319,7 +324,7 @@ const SuggestionPriority = styled.span`
   color: ${props => {
     switch (props.level) {
       case 'high': return '#fca5a5';
-      case 'medium': return '#fbbf24';
+      case 'medium': return '#fcd34d';
       default: return '#93c5fd';
     }
   }};

@@ -3,7 +3,10 @@ import { Link } from 'react-router-dom';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { GlobalState } from '../../GlobalState';
 import aiArtAPI from '../../API/AIArtAPI';
+import { useGameScore } from '../../Context/GameScoreContext';
 import './CreateArt.css';
+
+const POINTS_PER_USD = 100;
 
 const PROVIDERS = [
   { key: 'dalle', label: 'DALL-E 3' },
@@ -13,6 +16,7 @@ const PROVIDERS = [
 function CreateArt() {
   const state = useContext(GlobalState);
   const [isLoggedIn] = state?.userAPI?.isLoggedIn || [false];
+  const { pointsBalance, refreshBalance, openBuyPoints } = useGameScore();
 
   const [prompt, setPrompt] = useState('');
   const [provider, setProvider] = useState('dalle');
@@ -21,6 +25,7 @@ function CreateArt() {
   const [generating, setGenerating] = useState(false);
   const [error, setError] = useState('');
   const [paypalConfig, setPaypalConfig] = useState(null);
+  const [payingWithPoints, setPayingWithPoints] = useState(null);
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -68,21 +73,51 @@ function CreateArt() {
     }
   };
 
+  const handlePayWithPoints = async (product) => {
+    setError('');
+    setPayingWithPoints(product._id);
+    try {
+      await aiArtAPI.purchaseWithPoints(product._id);
+      const download = await aiArtAPI.getDownloadUrl(product._id);
+      setPurchased((prev) => ({
+        ...prev,
+        [product._id]: {
+          downloadUrl: download.downloadUrl,
+          downloadsRemaining: download.downloadsRemaining,
+        },
+      }));
+      refreshBalance();
+    } catch (err) {
+      const status = err.response?.status;
+      const msg = err.response?.data?.msg || err.message;
+      if (status === 402) {
+        setError(`Not enough points (need ${err.response?.data?.required}, have ${err.response?.data?.balance}).`);
+      } else {
+        setError(msg || 'Points purchase failed');
+      }
+    } finally {
+      setPayingWithPoints(null);
+    }
+  };
+
   if (!isLoggedIn) {
     return (
-      <div className="create-art-page">
-        <div className="create-art-login-gate">
-          <h2>Sign in to create AI art</h2>
-          <p>
-            You need an account to generate previews and purchase downloads.{' '}
-            <Link to="/login">Log in</Link> or <Link to="/register">register</Link>.
-          </p>
+      <div className="create-art-page-wrap">
+        <div className="create-art-page">
+          <div className="create-art-login-gate">
+            <h2>Sign in to create AI art</h2>
+            <p>
+              You need an account to generate previews and purchase downloads.{' '}
+              <Link to="/login">Log in</Link> or <Link to="/register">register</Link>.
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
+    <div className="create-art-page-wrap">
     <div className="create-art-page">
       <header className="create-art-header">
         <h1>Create Your Own AI Art</h1>
@@ -145,36 +180,73 @@ function CreateArt() {
                   <span className="preview-card-meta">
                     {p.model} · ${Number(p.price).toFixed(2)}
                   </span>
-                  {bought ? (
-                    <div className="preview-card-purchased">
-                      <span>✓ Purchased ({bought.downloadsRemaining} downloads left)</span>
-                      <a href={bought.downloadUrl} target="_blank" rel="noopener noreferrer">
-                        Download clean PNG
-                      </a>
-                    </div>
-                  ) : paypalProviderOptions ? (
-                    <PayPalScriptProvider options={paypalProviderOptions}>
-                      <PayPalButtons
-                        style={{ layout: 'horizontal', label: 'pay', height: 36 }}
-                        createOrder={async () => {
-                          return await aiArtAPI.createOrder(p._id);
-                        }}
-                        onApprove={(data) => handlePurchaseSuccess(p._id, data.orderID)}
-                        onError={(err) => {
-                          console.error('PayPal error', err);
-                          setError('PayPal error: ' + (err?.message || 'unknown'));
-                        }}
-                      />
-                    </PayPalScriptProvider>
-                  ) : (
-                    <p className="preview-card-meta">PayPal is not configured yet.</p>
-                  )}
+                  {(() => {
+                    const pointsPrice = Math.ceil(Number(p.price) * POINTS_PER_USD);
+                    const canAfford = isLoggedIn && pointsBalance >= pointsPrice;
+                    return bought ? (
+                      <div className="preview-card-purchased">
+                        <span>✓ Purchased ({bought.downloadsRemaining} downloads left)</span>
+                        <a href={bought.downloadUrl} target="_blank" rel="noopener noreferrer">
+                          Download clean PNG
+                        </a>
+                      </div>
+                    ) : (
+                      <>
+                        {isLoggedIn && (
+                          <div className="pay-with-points-row">
+                            <button
+                              type="button"
+                              className="pay-with-points-btn"
+                              onClick={() => handlePayWithPoints(p)}
+                              disabled={!canAfford || payingWithPoints === p._id}
+                              title={
+                                canAfford
+                                  ? `Pay ${pointsPrice.toLocaleString()} points`
+                                  : `Need ${pointsPrice.toLocaleString()} pts — you have ${pointsBalance.toLocaleString()}`
+                              }
+                            >
+                              {payingWithPoints === p._id
+                                ? 'Spending…'
+                                : `Pay ${pointsPrice.toLocaleString()} pts`}
+                            </button>
+                            {!canAfford && (
+                              <button
+                                type="button"
+                                className="buy-more-pts-link"
+                                onClick={openBuyPoints}
+                              >
+                                Buy more →
+                              </button>
+                            )}
+                          </div>
+                        )}
+                        {paypalProviderOptions ? (
+                          <PayPalScriptProvider options={paypalProviderOptions}>
+                            <PayPalButtons
+                              style={{ layout: 'horizontal', label: 'pay', height: 36 }}
+                              createOrder={async () => {
+                                return await aiArtAPI.createOrder(p._id);
+                              }}
+                              onApprove={(data) => handlePurchaseSuccess(p._id, data.orderID)}
+                              onError={(err) => {
+                                console.error('PayPal error', err);
+                                setError('PayPal error: ' + (err?.message || 'unknown'));
+                              }}
+                            />
+                          </PayPalScriptProvider>
+                        ) : (
+                          <p className="preview-card-meta">PayPal is not configured yet.</p>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </div>
             );
           })}
         </div>
       )}
+    </div>
     </div>
   );
 }

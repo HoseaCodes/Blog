@@ -25,6 +25,10 @@ const aiArtAPI = {
     const res = await apiLocal.get('/api/ai-art/paypal-config');
     return res.data;
   },
+  purchaseWithPoints: async (productId) => {
+    const res = await apiLocal.post('/api/ai-art/purchase-with-points', { productId });
+    return res.data;
+  },
 };
 
 export default aiArtAPI;

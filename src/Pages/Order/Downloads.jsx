@@ -59,17 +59,20 @@ function Downloads() {
 
   if (!isLoggedIn) {
     return (
-      <div className="downloads-page">
-        <div className="downloads-empty">
-          <p>
-            Please <Link to="/login">log in</Link> to view your downloads.
-          </p>
+      <div className="downloads-page-wrap">
+        <div className="downloads-page">
+          <div className="downloads-empty">
+            <p>
+              Please <Link to="/login">log in</Link> to view your downloads.
+            </p>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
+    <div className="downloads-page-wrap">
     <div className="downloads-page">
       <header className="downloads-header">
         <h1>Your AI Art</h1>
@@ -118,6 +121,7 @@ function Downloads() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }

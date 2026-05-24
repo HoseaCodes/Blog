@@ -19,12 +19,12 @@ const WorkflowContainer = styled.div`
 const StatusCard = styled.div`
   background: linear-gradient(135deg, ${props => {
     switch (props.status) {
-      case 'draft': return '#6b7280, #4b5563';
-      case 'review': return '#3b82f6, #2563eb';
-      case 'approved': return '#10b981, #059669';
-      case 'scheduled': return '#8b5cf6, #7c3aed';
+      case 'draft': return '#a3acb2, #4b5563';
+      case 'review': return '#5bb39e, #2563eb';
+      case 'approved': return '#5bb39e, #059669';
+      case 'scheduled': return '#5bb39e, #7c3aed';
       case 'published': return '#06b6d4, #0891b2';
-      default: return '#6b7280, #4b5563';
+      default: return '#a3acb2, #4b5563';
     }
   }});
   border-radius: 16px;
@@ -84,7 +84,7 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const PlatformGrid = styled.div`
@@ -101,7 +101,7 @@ const PlatformCard = styled.div`
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -139,10 +139,10 @@ const PlatformStatus = styled.div`
   font-size: 0.75rem;
   color: ${props => {
     switch (props.status) {
-      case 'connected': return '#10b981';
+      case 'connected': return '#5bb39e';
       case 'published': return '#06b6d4';
       case 'error': return '#ef4444';
-      default: return '#6b7280';
+      default: return '#a3acb2';
     }
   }};
   font-weight: 500;
@@ -167,7 +167,7 @@ const Toggle = styled.label`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.checked ? '#667eea' : '#374151'};
+    background-color: ${props => props.checked ? '#5bb39e' : '#374151'};
     transition: 0.4s;
     border-radius: 24px;
     
@@ -204,7 +204,7 @@ const DateInput = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -232,9 +232,9 @@ const StepIndicator = styled.div`
   border-radius: 50%;
   background: ${props => {
     switch (props.status) {
-      case 'completed': return '#10b981';
-      case 'current': return '#667eea';
-      case 'pending': return '#6b7280';
+      case 'completed': return '#5bb39e';
+      case 'current': return '#5bb39e';
+      case 'pending': return '#a3acb2';
       default: return '#374151';
     }
   }};
@@ -575,7 +575,7 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
                 >
                   <div style={{ 
                     fontSize: '0.75rem', 
-                    color: '#10b981',
+                    color: '#5bb39e',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.25rem'

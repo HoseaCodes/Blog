@@ -13,25 +13,25 @@ import axios from "axios";
 const mediumTheme = {
   colors: {
     text: {
-      primary: '#242424',
-      secondary: '#6b6b6b',
-      light: '#8b8b8b'
+      primary: '#f4f6f8',
+      secondary: '#a3acb2',
+      light: '#6b7479'
     },
     background: {
-      white: '#ffffff',
-      light: '#fafafa',
-      border: '#e6e6e6',
-      hover: '#f2f2f2'
+      white: '#0f1216',
+      light: 'rgba(255, 255, 255, 0.025)',
+      border: 'rgba(255, 255, 255, 0.06)',
+      hover: 'rgba(255, 255, 255, 0.04)'
     },
     accent: {
-      green: '#1a8917',
-      lightGreen: '#f0fff0'
+      green: '#5bb39e',
+      lightGreen: 'rgba(91, 179, 158, 0.1)'
     }
   },
   typography: {
     fontFamily: {
       serif: 'charter, Georgia, Cambria, "Times New Roman", Times, serif',
-      sansSerif: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+      sansSerif: '"Lato", sans-serif'
     },
     fontSize: {
       xs: '12px',
@@ -141,7 +141,7 @@ const ActionButton = styled.button`
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
 
   &:hover {
-    background-color: ${props => props.primary ? '#0f6b14' : mediumTheme.colors.accent.lightGreen};
+    background-color: ${props => props.primary ? '#267a6b' : mediumTheme.colors.accent.lightGreen};
     transform: translateY(-1px);
   }
 
@@ -456,7 +456,7 @@ const CommentForm = styled.div`
         color: white;
         
         &:hover {
-          background-color: #0f6b14;
+          background-color: #267a6b;
         }
       }
     }

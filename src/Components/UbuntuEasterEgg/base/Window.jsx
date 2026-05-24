@@ -98,26 +98,45 @@ const CloseButton = styled.button`
   img { width: 20px; height: 20px; }
 `;
 
-const ResizeBorderY = styled.div`
+const ResizeHandleRight = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: calc(100% - 10px);
-  width: calc(100% + 10px);
-  cursor: e-resize;
-  pointer-events: none;
+  top: 0;
+  right: 0;
+  width: 6px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 25;
+  user-select: none;
 `;
 
-const ResizeBorderX = styled.div`
+const ResizeHandleBottom = styled.div`
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  height: calc(100% + 10px);
-  width: calc(100% - 10px);
-  cursor: n-resize;
-  pointer-events: none;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+  cursor: ns-resize;
+  z-index: 25;
+  user-select: none;
+`;
+
+const ResizeHandleCorner = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 14px;
+  height: 14px;
+  cursor: nwse-resize;
+  z-index: 26;
+  user-select: none;
+`;
+
+const ResizeOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  cursor: ${(p) => p.$cursor};
+  background: transparent;
 `;
 
 const MainScreen = styled.div`
@@ -197,12 +216,46 @@ export class Window extends Component {
 
   changeCursorToDefault = () => this.setState({ cursorType: 'default' });
 
-  handleVerticalResize = () => {
-    this.setState({ height: this.state.height + 0.1 }, this.resizeBoundaries);
-  };
+  startResize = (axis) => (e) => {
+    if (this.state.maximized) return;
+    e.preventDefault();
+    e.stopPropagation();
+    this.focusWindow();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startW = this.state.width;
+    const startH = this.state.height;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const MIN_W = 25;
+    const MIN_H = 25;
+    const MAX_W = 99;
+    const MAX_H = 96;
 
-  handleHorizontalResize = () => {
-    this.setState({ width: this.state.width + 0.1 }, this.resizeBoundaries);
+    this.setState({ resizing: true });
+
+    const onMove = (ev) => {
+      let nextW = startW;
+      let nextH = startH;
+      if (axis === 'x' || axis === 'xy') {
+        const dw = ((ev.clientX - startX) / vw) * 100;
+        nextW = Math.max(MIN_W, Math.min(MAX_W, startW + dw));
+      }
+      if (axis === 'y' || axis === 'xy') {
+        const dh = ((ev.clientY - startY) / vh) * 100;
+        nextH = Math.max(MIN_H, Math.min(MAX_H, startH + dh));
+      }
+      this.setState({ width: nextW, height: nextH }, this.resizeBoundaries);
+    };
+
+    const onUp = () => {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      this.setState({ cursorType: 'default', resizing: false });
+    };
+
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
   };
 
   setWindowsPosition = () => {
@@ -300,16 +353,14 @@ export class Window extends Component {
           $closed={this.state.closed}
           $cursor={this.state.cursorType}
         >
-          <TransparentDragger>
-            {(onDragStart) => (
-              <ResizeBorderY $disabled={this.state.maximized} onDragStart={onDragStart} onDrag={this.handleHorizontalResize} />
-            )}
-          </TransparentDragger>
-          <TransparentDragger>
-            {(onDragStart) => (
-              <ResizeBorderX $disabled={this.state.maximized} onDragStart={onDragStart} onDrag={this.handleVerticalResize} />
-            )}
-          </TransparentDragger>
+          {!this.state.maximized && (
+            <>
+              <ResizeHandleRight onMouseDown={this.startResize('x')} />
+              <ResizeHandleBottom onMouseDown={this.startResize('y')} />
+              <ResizeHandleCorner onMouseDown={this.startResize('xy')} />
+            </>
+          )}
+          {this.state.resizing && <ResizeOverlay $cursor="nwse-resize" />}
           <TitleBar className="ubuntu-window-title-handle">
             <TitleText>{title}</TitleText>
             <EditButtons>

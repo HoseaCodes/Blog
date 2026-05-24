@@ -216,7 +216,6 @@ const BuyPointsModal = () => {
     return () => {
       cancelled = true;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [buyPointsModalOpen]);
 
   if (!buyPointsModalOpen) return null;

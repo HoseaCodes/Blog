@@ -1388,6 +1388,7 @@ function EnterpriseTechGuide() {
       subCategory: dbCategory,
       image: article.images?.url || FALLBACK_IMG,
       readTime: article.readTime || "5 min read",
+      createdAt: article.createdAt,
       publishDate: article.createdAt
         ? new Date(article.createdAt).toLocaleDateString("en-US", {
             year: "numeric",
@@ -1409,21 +1410,8 @@ function EnterpriseTechGuide() {
     return article.subCategory === activeSubFilter;
   });
 
-  const featuredArticleIds = new Set(
-    [
-      mostLikedArticle?._id,
-      hbrArticles.main?._id,
-      hbrArticles.middle1?._id,
-      hbrArticles.middle2?._id,
-      ...(hbrArticles.latest?.map((a) => a._id) || []),
-    ].filter(Boolean)
-  );
-
-  const deduplicatedArticles = filteredArticles.filter(
-    (a) => !featuredArticleIds.has(a._id)
-  );
-  const sortedArticles = [...deduplicatedArticles].sort(
-    (a, b) => (b.likes || 0) - (a.likes || 0)
+  const sortedArticles = [...filteredArticles].sort(
+    (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)
   );
 
   const totalPages = Math.ceil(sortedArticles.length / postsPerPage);

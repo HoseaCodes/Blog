@@ -132,16 +132,13 @@ export const dbAutoBackUp = async () => {
 
 // AutoBackUp every week (at 00:00 on Sunday)
 export const initBackUpDBJob = () => {
-  const backUpJobFunction = CronJob.schedule(
+  CronJob.schedule(
     "0 0 *  * 0",
     async () => {
       dbAutoBackUp();
     },
     {
-      scheduled: true,
       timezone: "America/Chicago",
     }
   );
-
-  backUpJobFunction.start();
 };

@@ -1,4 +1,94 @@
-# 1.3.0 (2026-05-23)
+# Changelog
+
+## 1.4.1 (2026-05-24)
+
+Build hotfix. Removed a dead `react-hooks/exhaustive-deps` disable directive
+in `BuyPointsModal.jsx` that blocked the production Docker build — the
+react-hooks plugin isn't loaded in the docker build's ESLint config, so the
+directive referenced an unknown rule and CRA (in `CI=true` mode) treated it
+as fatal. Also bumped `package.json` and `package-lock.json` to keep them
+in sync with the release tag.
+
+### Bug Fixes
+
+* **build:** remove unused `react-hooks/exhaustive-deps` disable directive
+  in `BuyPointsModal` that broke the production Docker build ([113213e](https://github.com/HoseaCodes/Blog/commit/113213e))
+
+
+## 1.4.0 (2026-05-24)
+
+Major feature drop covering the player-facing points economy (earn → claim
+→ buy → spend), the new redeem store, a full admin console, refactored auth
+pages, and a sitemap pipeline. 2 commits since v1.3.0.
+
+### Features
+
+* **points-economy:** end-to-end loop — earn from games via `useGameBridge`
+  + `GameScoreContext`, claim accumulated offline points on login via
+  `ClaimOfflinePointsBanner`, buy PayPal-backed point packs
+  (Starter / Pro / Elite) via `BuyPointsModal`, spend on AI art and
+  redeemable digital items. Server-authoritative balance with atomic
+  `$inc` precondition on every spend ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **redeem-store:** new `/shop/redeem` page — redeem points for digital
+  products. Catalog browsable without login; redeem requires auth. Reuses
+  `ArtPurchases` collection with `paymentProvider: 'points'` ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **points-backend:** new `pointsAccount` and `pointsTransaction` models,
+  `controllers/points.js` (balance, sync, spend, earn, packs, PayPal order
+  create/capture, transactions), `controllers/store.js` (list, redeem,
+  my-redemptions, signed download URLs) ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **admin:** 4 new admin pages — `AdminOverview` (dashboard), `AdminArt`
+  (AI art operations), `AdminBlogs` (article management), `AdminProducts`
+  (product CRUD including points-priced items) ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **auth-shell:** shared layout wrapping `login`, `register`,
+  `forgotPassword`, `resetPassword` — each auth page refactored to use the
+  shell, redirect logic centralized in `authService` ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **sitemap:** new `routes/sitemap.js` serves `/sitemap.xml` and
+  `/robots.txt`; `setupProxy.js` forwards crawler-facing paths through CRA
+  to Express ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **seo:** `HelmetProvider` added at root for centralized `<head>`
+  management (`react-helmet-async`) ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **create-art:** AI-art purchase flow now offers points as an alternative
+  to PayPal ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **easter-eggs:** Ubuntu Game Corner app; macOS `MacWindow` base component
+  for further apps ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+* **games:** `PointsHUD` in-game balance display on the GameStore ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+
+### Improvements
+
+* **articles-editor:** large component breakup and polish across
+  `EditorCore`, `MainContainer`, `AIAssistant`, `CollaborationPanel`,
+  `ContentIntelligence`, `MediaLibrary`, `MetadataPanel`,
+  `PerformanceInsights`, `PublishSuccess`, `PublishingWorkflow`,
+  `SEOAnalyzer`, `VersionHistory`
+* **public-pages:** Hero, NavBar, Footer, About, Contact, Tech,
+  PersonalBrand, Home, Projects, Project, RecentArticles,
+  TechnicalAchievements refreshed
+* **shop:** dark-theme consistency pass across `Shop`, `Header`,
+  `CreateArt`, `Downloads`, `OrderHistory`, `Cart`, `Product`
+* **auth-service:** cleaner cookie-token interceptor, centralized
+  redirect/state management
+* **router:** `PrivateRouter` simplified
+
+### Bug Fixes
+
+* **server:** mount `storeRouter` ahead of catch-all auth routers so
+  `/api/store/items` is reachable to logged-out visitors as intended
+  (previously returned 400) ([ad4edcf](https://github.com/HoseaCodes/Blog/commit/ad4edcf))
+* **games:** Pacman, Space Invaders, Sweet Crush small fixes alongside
+  points wiring ([a0ef83c](https://github.com/HoseaCodes/Blog/commit/a0ef83c))
+
+### Known Issues
+
+* `/api/points/packs` still 400s for logged-out users due to the same
+  upstream catch-all pattern. Not visible in UI because `BuyPointsModal`
+  gates on `isLoggedIn` and shows a login prompt first.
+* `RedeemStore` catalog ships empty — add items via `AdminProducts`
+  (`priceType: 'points'`, `pointsPrice > 0`).
+* Game → points bridge (`useGameBridge`) is wired but the in-game trigger
+  surface is not yet exposed; flow not browser-verified end-to-end.
+
+
+## 1.3.0 (2026-05-23)
 
 Major release covering AI-generated art sales (Phase 1), the easter-egg
 portfolio experience, the games hub, hardened authentication, and a large
@@ -82,7 +172,7 @@ dependency/CI refresh. 175 commits since v1.1.0.
 
 
 
-# 1.1.0 (2024-05-27)
+## 1.1.0 (2024-05-27)
 
 
 ### Bug Fixes

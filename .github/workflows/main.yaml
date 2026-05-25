@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - staging
-    tags:
-      - v*
 jobs:
   static-scan:
     runs-on: ubuntu-latest

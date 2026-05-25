@@ -406,11 +406,11 @@ const Footer = () => {
               </li>
               <li>
                 <ColumnExternal
-                  href="https://github.com/HoseaCodes"
+                  href="https://www.npmjs.com/settings/storm-gate/packages"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Source code
+                  Storm Gate SDK
                   <FiArrowUpRight />
                 </ColumnExternal>
               </li>

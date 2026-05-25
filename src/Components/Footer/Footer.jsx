@@ -414,6 +414,16 @@ const Footer = () => {
                   <FiArrowUpRight />
                 </ColumnExternal>
               </li>
+              <li>
+                <ColumnExternal
+                  href="https://www.npmjs.com/package/ai-quiz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  AI Quiz SDK
+                  <FiArrowUpRight />
+                </ColumnExternal>
+              </li>
             </ColumnList>
           </Column>
 

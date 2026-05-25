@@ -3,7 +3,7 @@ import styled from "styled-components";
 import moment from "moment-timezone";
 import { useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
-import { apiLocal } from "../../services/authService";
+import { apiLocal } from "../../lib/stormGate";
 
 const initialState = {
   name: "",

@@ -396,11 +396,11 @@ const Footer = () => {
               </li>
               <li>
                 <ColumnExternal
-                  href="https://www.dominiquehosea.com"
+                  href="https://pure.hoseacodes.com"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Backend portfolio
+                  Pure CSS Showcase
                   <FiArrowUpRight />
                 </ColumnExternal>
               </li>

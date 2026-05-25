@@ -1,4 +1,4 @@
-import { apiLocal } from '../services/authService';
+import { apiLocal } from '../lib/stormGate';
 
 const storeAPI = {
   // Public. Returns redeem-store catalog (priceType: 'points').

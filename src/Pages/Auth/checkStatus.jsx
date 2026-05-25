@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import authService from "../../services/authService";
+import { auth } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
   AuthKicker,
@@ -147,7 +147,7 @@ const CheckStatus = () => {
     setLoading(true);
 
     try {
-      const data = await authService.checkStatus(email);
+      const data = await auth.checkStatus({ email });
       setStatus(data.user);
     } catch (err) {
       setError(

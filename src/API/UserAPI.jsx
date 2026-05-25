@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import authService from "../services/authService";
+import { auth } from "../lib/stormGate";
 
 const isAdminRole = (role) => role === 1 || role === "admin";
 
@@ -37,7 +37,7 @@ function UserAPI(token) {
     const initAuth = async () => {
       if (token || cookies.accesstoken) {
         try {
-          const userData = await authService.getMe();
+          const userData = await auth.getMe();
           console.log(userData, "user info");
           setIsLoggedIn(true);
           isAuthenticated(true);
@@ -85,15 +85,15 @@ function UserAPI(token) {
   const register = async (userData) => {
     try {
       setError(null);
-      const data = await authService.register(userData);
-      
+      const data = await auth.register(userData);
+
       if (data.requiresApproval) {
         return { success: true, requiresApproval: true, message: data.msg };
       }
-      
+
       if (data.accesstoken) {
         // Auto-login after successful registration
-        const userData = await authService.getMe();
+        const userData = await auth.getMe();
         setUser(userData.user);
         setIsLoggedIn(true);
         isAuthenticated(true);
@@ -112,15 +112,15 @@ function UserAPI(token) {
   const login = async (credentials) => {
     try {
       setError(null);
-      const data = await authService.login(credentials);
-      
+      const data = await auth.login(credentials);
+
       if (data.limitedAccess) {
         setUser({ ...data, status: 'PENDING' });
         setIsLoggedIn(true);
         return { success: true, limitedAccess: true, message: data.msg };
       }
-      
-      const userData = await authService.getMe();
+
+      const userData = await auth.getMe();
       console.log({userData}, "logged in user data");
       setUser(userData.user);
       setIsLoggedIn(true);
@@ -137,7 +137,7 @@ function UserAPI(token) {
 
   // Logout method
   const logout = () => {
-    authService.logout();
+    auth.logout();
     setUser(initialState);
     setIsLoggedIn(false);
     isAuthenticated(false);

@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.4.2](https://github.com/HoseaCodes/Blog/compare/v1.4.1...v1.4.2) (2026-05-25)
+
+
+### Bug Fixes
+
+* **Articles:** add createdAt field to article data and sort articles by creation date ([830280b](https://github.com/HoseaCodes/Blog/commit/830280b38c7c2605f5d7cdbf5a6cf696a38f2fa6))
+* change files for various image assets ([0c6eed0](https://github.com/HoseaCodes/Blog/commit/0c6eed0bedba1e1484dc1c82181e692d26f3c8fc))
+* clean up release job and improve styling in Article components ([4e7a08c](https://github.com/HoseaCodes/Blog/commit/4e7a08cce45bee5597e4c9d2dbca53277e641034))
+* clean up release job and improve styling in Article components ([1c8ff9b](https://github.com/HoseaCodes/Blog/commit/1c8ff9b3d282a7675297e431da8f8970c65c324f))
+* **NavBar:** update logo path to use local header image ([398f769](https://github.com/HoseaCodes/Blog/commit/398f76924991f5f280ce51d564b80aa1d37e9777))
+
 ## [1.4.1](https://github.com/HoseaCodes/Blog/compare/v1.4.0...v1.4.1) (2026-05-25)
 
 

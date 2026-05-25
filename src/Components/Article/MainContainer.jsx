@@ -82,13 +82,16 @@ const StyledMainContainer = styled.div`
   max-width: 680px;
   margin: 0 auto;
   background: ${mediumTheme.colors.background.white};
+  padding: ${mediumTheme.spacing['3xl']} ${mediumTheme.spacing.lg};
+  width: 100%;
+  box-sizing: border-box;
 
   @media (max-width: ${mediumTheme.breakpoints.tablet}) {
-    padding: ${mediumTheme.spacing['2xl']} 0;
+    padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg};
   }
 
   @media (max-width: ${mediumTheme.breakpoints.mobile}) {
-    padding: ${mediumTheme.spacing.lg} 0;
+    padding: ${mediumTheme.spacing.xl} ${mediumTheme.spacing.md};
   }
 `;
 
@@ -164,6 +167,7 @@ const WrappedDate = styled.div`
 const AudioControls = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: ${mediumTheme.spacing.sm};
   margin-top: ${mediumTheme.spacing.sm};
 `;
@@ -256,9 +260,14 @@ const BlogContent = styled.div`
   margin-bottom: ${mediumTheme.spacing.xl};
   padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg};
 
+  @media (max-width: ${mediumTheme.breakpoints.mobile}) {
+    font-size: ${mediumTheme.typography.fontSize.lg};
+    padding: ${mediumTheme.spacing.xl} 0;
+  }
+
   p {
     margin-bottom: ${mediumTheme.spacing.xl};
-    
+
     ${props => props.isFirst && `
       &:first-of-type::first-letter {
         font-size: 4em;
@@ -267,6 +276,12 @@ const BlogContent = styled.div`
         margin: 0.1em 0.1em 0 0;
         font-weight: 400;
         color: ${mediumTheme.colors.text.primary};
+      }
+
+      @media (max-width: 768px) {
+        &:first-of-type::first-letter {
+          font-size: 2.6em;
+        }
       }
     `}
   }
@@ -309,12 +324,20 @@ const BlogContent = styled.div`
     padding: ${mediumTheme.spacing.lg};
     border-radius: 4px;
     overflow-x: auto;
+    max-width: 100%;
     margin: ${mediumTheme.spacing.xl} 0;
     border: 1px solid ${mediumTheme.colors.background.border};
+    -webkit-overflow-scrolling: touch;
 
     code {
       background: none;
       padding: 0;
+    }
+
+    @media (max-width: ${mediumTheme.breakpoints.mobile}) {
+      padding: ${mediumTheme.spacing.md};
+      font-size: 13px;
+      border-radius: 6px;
     }
   }
 
@@ -646,6 +669,7 @@ const EngagementButton = styled.button`
 const SocialShare = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: ${mediumTheme.spacing.sm};
 `;
 

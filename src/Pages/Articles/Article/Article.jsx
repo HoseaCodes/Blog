@@ -47,26 +47,17 @@ const ArticlePageContainer = styled.div`
   min-height: 100vh;
   background-color: ${mediumTheme.colors.background.white};
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow-x: hidden;
 `;
 
 const BlogContent = styled.main`
-  position: absolute;
-  max-height: 100%;
-  overflow: auto;
   display: flex;
   gap: 0;
   width: 100%;
   min-height: 100vh;
 
   @media (max-width: ${mediumTheme.breakpoints.tablet}) {
-    grid-template-columns: 1fr;
-    max-width: 740px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  @media (max-width: 768px) {
-    padding: 0 16px;
+    flex-direction: column;
   }
 `;
 

@@ -17,7 +17,6 @@ import AnalyticsAPI from "./API/AnalyticsAPI";
 import SEOAPI from "./API/SEOAPI";
 import AIAPI from "./API/AIAPI";
 import CommentsAPI from "./API/CommentsAPI";
-import axios from "axios";
 import { v4 } from "uuid";
 import ProductsAPI from "./API/ProductsAPI";
 import Notification from "./Components/Notification/Notification";
@@ -27,7 +26,7 @@ export const GlobalState = createContext();
 
 export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
-  const [cookies] = useCookies(["cookie-name"]);
+  const [cookies] = useCookies(["accesstoken"]);
 
   const [globalState, dispatch] = useReducer((globalState, action) => {
     switch (action.type) {
@@ -41,25 +40,8 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const firstLogin = localStorage.getItem("firstLogin");
-    const initialToken = cookies.accesstoken;
-    setToken(initialToken);
-    if (firstLogin && !initialToken) {
-      const refreshToken = async () => {
-        try {
-          const res = await axios.get("api/user/refresh_token");
-          console.log(res, "refresh");
-          setToken(res.data.accesstoken);
-          setTimeout(() => {
-            refreshToken();
-          }, 10 * 60 * 1000);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      refreshToken();
-    }
-  }, []);
+    setToken(cookies.accesstoken);
+  }, [cookies.accesstoken]);
 
   const state = {
     token: [token, setToken],

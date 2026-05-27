@@ -49,9 +49,13 @@ function UserAPI(token) {
         } catch (err) {
           console.error("Auth error:", err);
           setError(err.response?.data?.msg || "Authentication failed");
-          // Clear auth state on error
+          setIsLoggedIn(false);
+          isAuthenticated(false);
+          setIsAdmin(false);
+          setUser(initialState);
           localStorage.removeItem("firstLogin");
           localStorage.removeItem("isLoggedIn");
+          localStorage.removeItem("isAdmin");
         }
       }
       setLoading(false);

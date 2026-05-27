@@ -1,9 +1,24 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
+const hasAccessTokenCookie = () => {
+  if (typeof document === "undefined") return false;
+  return document.cookie
+    .split("; ")
+    .some(
+      (row) =>
+        row.startsWith("accesstoken=") && row.length > "accesstoken=".length
+    );
+};
+
 const PrivateRoute = ({ type, exact, path, element: Element, isGame, Game, children }) => {
-  const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
+  // localStorage flags persist past cookie expiry, so they aren't a security
+  // gate on their own — pair them with an accesstoken cookie check.
+  const tokenPresent = hasAccessTokenCookie();
+  const isLoggedIn =
+    localStorage.getItem("isLoggedIn") === "true" && tokenPresent;
+  const isAdmin =
+    localStorage.getItem("isAdmin") === "true" && tokenPresent;
 
   const renderProtected = () => {
     if (type === "login") {

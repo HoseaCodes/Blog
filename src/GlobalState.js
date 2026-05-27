@@ -3,7 +3,8 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useReducer
+  useReducer,
+  useCallback
 } from "react";
 import ArticlesAPI from './API/ArticlesAPI';
 import GithubAPI from './API/GithubAPI';
@@ -78,13 +79,16 @@ export const useNotification = () => {
   const notification = useContext(GlobalState);
   const { dispatch } = notification;
 
-  return props => {
-    dispatch({
-      type: "ADD_NOTIFICATION",
-      payload: {
-        id: v4(),
-        ...props
-      }
-    });
-  };
+  return useCallback(
+    (props) => {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          id: v4(),
+          ...props
+        }
+      });
+    },
+    [dispatch]
+  );
 };

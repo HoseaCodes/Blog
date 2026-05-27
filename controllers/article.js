@@ -78,6 +78,10 @@ async function createArticle(req, res) {
       scheduledDateTime,
       images,
       categories,
+      tags,
+      metaTitle,
+      metaDescription,
+      canonicalUrl,
       dev,
       medium,
       postedBy,
@@ -142,9 +146,12 @@ async function createArticle(req, res) {
       description,
       images,
       postedBy,
-      tags: ["api", "hoseacodes"],
+      tags: Array.isArray(tags) ? tags : [],
       categories,
       slug: title.toLowerCase().replace(/ /g, "-"),
+      metaTitle: metaTitle || "",
+      metaDescription: metaDescription || "",
+      canonicalUrl: canonicalUrl || "",
       dev,
       medium,
       linkedin,
@@ -385,6 +392,8 @@ async function updateArticle(req, res) {
     const originalBody = req.body;
     const { title, comments, draft, archive, ...rest } = originalBody;
 
+    logger.info("PUT /api/articles/" + req.params.id + " body tags=" + JSON.stringify(originalBody.tags) + " rest.tags=" + JSON.stringify(rest.tags));
+
     const originalArticle = await Articles.findOne({ _id: req.params.id });
 
     res.clearCookie("articles-cache");
@@ -417,6 +426,9 @@ async function updateArticle(req, res) {
     }
 
     await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
+
+    const afterUpdate = await Articles.findOne({ _id: req.params.id }, { tags: 1 });
+    logger.info("After update, tags in DB = " + JSON.stringify(afterUpdate?.tags));
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 

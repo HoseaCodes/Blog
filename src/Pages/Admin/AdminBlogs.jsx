@@ -586,6 +586,7 @@ const AdminBlogs = () => {
       await axios.delete(`/api/articles/${id}`, {
         headers: { Authorization: token },
       });
+      setCallback(!callback);
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to delete article");
     }
@@ -613,6 +614,7 @@ const AdminBlogs = () => {
         { draft: !draft },
         { headers: { Authorization: token } }
       );
+      setCallback(!callback);
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to update article");
     }

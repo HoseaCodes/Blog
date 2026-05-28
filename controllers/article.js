@@ -390,7 +390,7 @@ async function updateArticleComment(req, res) {
 async function updateArticle(req, res) {
   try {
     const originalBody = req.body;
-    const { title, comments, draft, archive, ...rest } = originalBody;
+    const { title, comments, ...rest } = originalBody;
 
     logger.info("PUT /api/articles/" + req.params.id + " body tags=" + JSON.stringify(originalBody.tags) + " rest.tags=" + JSON.stringify(rest.tags));
 
@@ -403,24 +403,6 @@ async function updateArticle(req, res) {
         { _id: req.params.id },
         {
           comments: [originalArticle.comments, ...comments],
-        }
-      );
-    }
-
-    if (draft) {
-      await Articles.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          draft: draft,
-        }
-      );
-    }
-
-    if (archive) {
-      await Articles.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          archived: archive,
         }
       );
     }

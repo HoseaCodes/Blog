@@ -1314,7 +1314,9 @@ function EnterpriseTechGuide() {
         setLoading(true);
         const response = await axios.get("/api/articles");
         if (response.data.articles && response.data.articles.length > 0) {
-          const allArticles = response.data.articles;
+          const allArticles = response.data.articles.filter(
+            (a) => !a.draft && !a.archived
+          );
           const sorted = [...allArticles].sort(
             (a, b) => (b.likes || 0) - (a.likes || 0)
           );
@@ -1374,8 +1376,10 @@ function EnterpriseTechGuide() {
     fetchMostLikedArticle();
   }, []);
 
-  // Transform DB articles to UI shape
-  const transformedArticles = (articles || []).map((article) => {
+  // Transform DB articles to UI shape — public listing excludes drafts/archived
+  const transformedArticles = (articles || [])
+    .filter((article) => !article.draft && !article.archived)
+    .map((article) => {
     const dbCategory = article.categories?.[0] || "general";
     const uiCategory = CATEGORY_DB_TO_UI[dbCategory] || "engineering";
     return {

@@ -573,6 +573,7 @@ const AdminBlogs = () => {
   const [token] = state.token;
   const [user] = state.userAPI.user;
   const [articles] = state.articlesAPI.articles;
+  const [callback, setCallback] = state.articlesAPI.callback;
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -590,14 +591,15 @@ const AdminBlogs = () => {
     }
   };
 
-  const handleArchive = async (e, id, archive) => {
+  const handleArchive = async (e, id, archived) => {
     e.preventDefault();
     try {
       await axios.put(
         `/api/articles/${id}`,
-        { archive: !archive },
+        { archived: !archived },
         { headers: { Authorization: token } }
       );
+      setCallback(!callback);
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to update article");
     }
@@ -630,7 +632,7 @@ const AdminBlogs = () => {
     let draft = 0;
     let archived = 0;
     allArticles.forEach((a) => {
-      if (a.archive) archived++;
+      if (a.archived) archived++;
       else if (a.draft) draft++;
       else published++;
     });
@@ -640,9 +642,9 @@ const AdminBlogs = () => {
   const filteredArticles = useMemo(() => {
     const q = search.trim().toLowerCase();
     return allArticles.filter((a) => {
-      if (filter === "published" && (a.draft || a.archive)) return false;
+      if (filter === "published" && (a.draft || a.archived)) return false;
       if (filter === "draft" && !a.draft) return false;
-      if (filter === "archived" && !a.archive) return false;
+      if (filter === "archived" && !a.archived) return false;
       if (q) {
         const hay = `${a.title || ""} ${a.description || ""}`.toLowerCase();
         if (!hay.includes(q)) return false;
@@ -772,7 +774,7 @@ const AdminBlogs = () => {
           </EmptyState>
         ) : (
           pagedArticles.map((article) => {
-            const status = article.archive
+            const status = article.archived
               ? "archived"
               : article.draft
               ? "draft"
@@ -833,13 +835,13 @@ const AdminBlogs = () => {
                     {article.draft ? "Unpublish" : "Draft"}
                   </IconBtn>
                   <IconBtn
-                    active={article.archive}
+                    active={article.archived}
                     onClick={(e) =>
-                      handleArchive(e, article._id, article.archive)
+                      handleArchive(e, article._id, article.archived)
                     }
                   >
                     <FiArchive size={12} />
-                    {article.archive ? "Unarchive" : "Archive"}
+                    {article.archived ? "Unarchive" : "Archive"}
                   </IconBtn>
                   <IconBtn
                     tone="danger"

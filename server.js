@@ -22,6 +22,7 @@ import aiRouter from './routes/ai.js';
 import aiArtRouter from './routes/aiArt.js';
 import pointsRouter from './routes/points.js';
 import storeRouter from './routes/store.js';
+import ttsRouter from './routes/tts.js';
 import sitemapRouter from './routes/sitemap.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
@@ -37,7 +38,22 @@ connectDB();
 const app = express();
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors());
+const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:3003')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow same-origin / non-browser callers (curl, server-to-server, health checks)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(
   bodyParser.urlencoded({
@@ -95,6 +111,7 @@ app.use('/api', seoRouter);
 app.use('/api', aiRouter);
 app.use('/api', aiArtRouter);
 app.use('/api', pointsRouter);
+app.use('/api', ttsRouter);
 
 // Crawler-facing routes (must be at site root, not /api, and before SPA catch-all)
 app.use('/', sitemapRouter);

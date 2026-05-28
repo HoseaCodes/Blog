@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import { auth } from "../lib/stormGate";
+import { auth, apiLocal } from "../lib/stormGate";
 
 const isAdminRole = (role) => role === 1 || role === "admin";
 
@@ -85,56 +85,71 @@ function UserAPI(token) {
     }
   };
 
-  // Register method
+  // Register — always force admin-approval gate via status:PENDING.
+  // The backend may still echo APPROVED for legacy reasons; trust whatever
+  // it returns and branch on data.status / data.accesstoken.
   const register = async (userData) => {
     try {
       setError(null);
-      const data = await auth.register(userData);
+      const data = await auth.register({ ...userData, status: "PENDING", application: "blog"  });
 
-      if (data.requiresApproval) {
-        return { success: true, requiresApproval: true, message: data.msg };
+      // Mirror the registration into the blog DB so this app has a Users row.
+      // Storm-Gate is the source of truth; if this fails, the auth middleware's
+      // just-in-time upsert will heal the record when the user is approved + logs in.
+      try {
+        await apiLocal.post("/api/user/register", {
+          name: userData.name,
+          email: userData.email,
+        });
+      } catch (mirrorErr) {
+        console.warn("Blog-side register mirror failed:", mirrorErr?.response?.data?.msg || mirrorErr.message);
       }
 
-      if (data.accesstoken) {
-        // Auto-login after successful registration
-        const userData = await auth.getMe();
-        setUser(userData.user);
+      // PENDING / DENIED responses do NOT carry an access token.
+      if (data?.status === "PENDING" || data?.status === "DENIED") {
+        return { status: data.status, message: data.msg, email: userData.email };
+      }
+
+      if (data?.accesstoken) {
+        const me = await auth.getMe();
+        setUser(me.user);
         setIsLoggedIn(true);
         isAuthenticated(true);
-        const isAdminUser = isAdminRole(userData.user?.role);
+        const isAdminUser = isAdminRole(me.user?.role);
         setIsAdmin(isAdminUser);
         localStorage.setItem("isAdmin", isAdminUser);
-        return { success: true, requiresApproval: false };
+        return { status: "APPROVED" };
       }
+
+      // Defensive: shouldn't happen, but treat as pending.
+      return { status: "PENDING", message: data?.msg, email: userData.email };
     } catch (err) {
-      setError(err.response?.data?.msg || 'Registration failed');
+      setError(err.response?.data?.msg || "Registration failed");
       throw err;
     }
   };
 
-  // Login method
+  // Login — Storm-Gate refuses PENDING/DENIED users by returning
+  // a 200 body with `status` instead of an `accesstoken`. Branch on it.
   const login = async (credentials) => {
     try {
       setError(null);
       const data = await auth.login(credentials);
 
-      if (data.limitedAccess) {
-        setUser({ ...data, status: 'PENDING' });
-        setIsLoggedIn(true);
-        return { success: true, limitedAccess: true, message: data.msg };
+      if (data?.status === "PENDING" || data?.status === "DENIED") {
+        return { status: data.status, message: data.msg, email: credentials.email };
       }
 
-      const userData = await auth.getMe();
-      console.log({userData}, "logged in user data");
-      setUser(userData.user);
+      const me = await auth.getMe();
+      setUser(me.user);
       setIsLoggedIn(true);
       isAuthenticated(true);
-      const isAdminUser = isAdminRole(userData.user?.role);
+      const isAdminUser = isAdminRole(me.user?.role);
       setIsAdmin(isAdminUser);
       localStorage.setItem("isAdmin", isAdminUser);
-      return { success: true };
+      return { status: "APPROVED", user: me.user };
     } catch (err) {
-      setError(err.response?.data?.msg || 'Login failed');
+      setError(err.response?.data?.msg || "Login failed");
       throw err;
     }
   };

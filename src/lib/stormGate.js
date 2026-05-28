@@ -1,4 +1,8 @@
-import { createStormGateClient } from '@storm-gate/client';
+import {
+  createStormGateClient,
+  StormGateAuthError,
+  StormGateNetworkError,
+} from '@storm-gate/client';
 
 const STORM_GATE_BASE_URL =
   process.env.REACT_APP_API_BASE_URL ||
@@ -21,6 +25,8 @@ const PUBLIC_READ_PREFIXES = [
   '/forgot-password',
   '/reset-password',
   '/check-status',
+  '/pending',
+  '/denied',
 ];
 
 const isAuthRequiredRoute = (pathname) => {
@@ -71,3 +77,19 @@ export const auth = {
 };
 
 export const apiLocal = sdk.createAuthedAxios({ baseURL: LOCAL_API_BASE_URL });
+
+// Authed axios pointed at Storm-Gate itself — used for admin endpoints
+// (`/api/auth/oidc/*`) that the SDK does not wrap directly.
+export const apiStormGate = sdk.createAuthedAxios({ baseURL: STORM_GATE_BASE_URL });
+
+export { StormGateAuthError, StormGateNetworkError };
+
+export const friendlyAuthError = (err, fallback = 'Something went wrong. Please try again.') => {
+  if (err instanceof StormGateNetworkError) {
+    return 'Network error — please check your connection and try again.';
+  }
+  if (err instanceof StormGateAuthError) {
+    return err.message || 'Authentication failed.';
+  }
+  return err?.response?.data?.msg || err?.message || fallback;
+};

@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
+import { friendlyAuthError } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
   AuthKicker,
@@ -82,20 +83,33 @@ const Register = () => {
         role: formData.role,
       });
 
-      if (result.requiresApproval) {
-        setSuccess(
-          result.message ||
-            "Registration successful! Your account is pending approval."
-        );
-        setTimeout(() => history.push("/login"), 3000);
-      } else {
+      if (result.status === "APPROVED") {
         setSuccess("Registration successful! Redirecting…");
         localStorage.setItem("firstLogin", true);
         localStorage.setItem("isLoggedIn", true);
-        setTimeout(() => history.push("/"), 1500);
+        setTimeout(() => history.push("/"), 1200);
+        return;
       }
+
+      if (result.status === "DENIED") {
+        history.push("/denied");
+        return;
+      }
+
+      // PENDING — admin approval required. No session is created.
+      setSuccess(
+        result.message ||
+          "Thanks! An admin will review your account shortly."
+      );
+      setTimeout(
+        () =>
+          history.push(
+            `/pending?email=${encodeURIComponent(formData.email)}`
+          ),
+        1200
+      );
     } catch (err) {
-      setError(err.response?.data?.msg || "Registration failed. Please try again.");
+      setError(friendlyAuthError(err, "Registration failed. Please try again."));
     } finally {
       setLoading(false);
     }

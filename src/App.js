@@ -17,6 +17,8 @@ import Register from "./Pages/Auth/register";
 import ForgotPassword from "./Pages/Auth/forgotPassword";
 import ResetPassword from "./Pages/Auth/resetPassword";
 import CheckStatus from "./Pages/Auth/checkStatus";
+import Pending from "./Pages/Auth/pending";
+import Denied from "./Pages/Auth/denied";
 import ProLoader from "./Components/Loading/ProLoader";
 import Editprofile from "./Pages/User/editProfile";
 import { createBrowserHistory } from "history";
@@ -318,6 +320,8 @@ const App = () => {
                 <Route path="/forgot-password" exact={true} component={ForgotPassword} />
                 <Route path="/reset-password" exact={true} component={ResetPassword} />
                 <Route path="/check-status" exact={true} component={CheckStatus} />
+                <Route path="/pending" exact={true} component={Pending} />
+                <Route path="/denied" exact={true} component={Denied} />
                 {/* Authentication */}
                 {/* Showcase */}
                 <Route path="/project" exact={true} component={Projects} />

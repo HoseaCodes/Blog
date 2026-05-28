@@ -1307,7 +1307,10 @@ function EnterpriseTechGuide() {
   const state = useContext(GlobalState);
   const [articles] = state?.articlesAPI?.articles || [[]];
 
-  // Initial data load — most-liked + 3-column featured derivation
+  // Hero + "The Latest" derivation. Picks aren't obvious — `main`/`middle1`/
+  // `middle2` come from the most-populated CATEGORIES (by article count, not
+  // likes), then the most-liked article within each. See docs/BLOG_HERO_LOGIC.md
+  // before changing the selection rules.
   useEffect(() => {
     const fetchMostLikedArticle = async () => {
       try {
@@ -1581,7 +1584,7 @@ function EnterpriseTechGuide() {
       {/* 2. Case-study banner */}
       <CaseStudyBanner
         logo="/HC.png"
-        title="Engineering excellence in action"
+        title="Engineering excellence in action "
         highlightText="HoseaCodes"
         image="/plane.png"
         buttonText="Follow the journey"

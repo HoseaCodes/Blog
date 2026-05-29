@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.0](https://github.com/HoseaCodes/Blog/compare/v1.4.2...v1.5.0) (2026-05-29)
+
+
+### Features
+
+* **auth:** integrate Storm Gate SDK for authentication and update dependencies ([ef6692d](https://github.com/HoseaCodes/Blog/commit/ef6692d74622555566a13f77c958372d04a9ac8c))
+* enhance article and comment management features ([26cbf1d](https://github.com/HoseaCodes/Blog/commit/26cbf1d5ca6d1a6b71a5dfc7dedbce7c4a365ecf))
+* implement Storm-Gate integration and refactor authentication handling ([526d31a](https://github.com/HoseaCodes/Blog/commit/526d31ad6a565835a7a4cd13efc27991ee25f8d5))
+* **tts:** implement text-to-speech functionality with usage tracking and admin costs ([b74d37f](https://github.com/HoseaCodes/Blog/commit/b74d37fc5849758cab1efae88785dbf973bce412))
+
+
+### Bug Fixes
+
+* **admin:** update article archiving logic ([012c43f](https://github.com/HoseaCodes/Blog/commit/012c43f7736b7c825b330fc009f8f6ab2f28ed13))
+* **article:** enhance article creation and update with SEO metadata and tags ([bf9ea58](https://github.com/HoseaCodes/Blog/commit/bf9ea5884141ca53ac44d84b38782be0dde41410))
+* **articles:** filter out drafts and archived articles from public listing ([6f01814](https://github.com/HoseaCodes/Blog/commit/6f018142a51e8beea092b0372816dd62bcce01c8))
+* **article:** simplify updateArticle logic and remove draft/archive handlingl;enhance audio playback with loading state and error handling; update callback state after article deletion and update ([ca028db](https://github.com/HoseaCodes/Blog/commit/ca028db40552c4440dc8cdb90445fa80f82fa569))
+* **auth:** enhance authentication flow and state management with cookie checks ([aede476](https://github.com/HoseaCodes/Blog/commit/aede47627952b0b92ac9e8085f44420fd4eebdc0))
+* **footer:** add AI Quiz SDK link to footer ([ded7b4a](https://github.com/HoseaCodes/Blog/commit/ded7b4a89f49161c39186e972764794f4e5c39d1))
+* **user:** implement user registration and status management with Storm-Gate integration ([5e0a3a0](https://github.com/HoseaCodes/Blog/commit/5e0a3a04253cdc4cdb91b06294fdda87ad3147d5))
+
 ## [1.4.2](https://github.com/HoseaCodes/Blog/compare/v1.4.1...v1.4.2) (2026-05-25)
 
 

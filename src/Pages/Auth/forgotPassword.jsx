@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import authService from "../../services/authService";
+import { auth } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
   AuthKicker,
@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const data = await authService.forgotPassword(email);
+      const data = await auth.forgotPassword({ email });
       setSuccess(
         data.msg || "Password reset link has been sent to your email."
       );

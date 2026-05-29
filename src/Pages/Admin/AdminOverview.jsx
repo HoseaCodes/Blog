@@ -1,6 +1,7 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 import { GlobalState } from "../../GlobalState";
 import {
   FiFileText,
@@ -230,15 +231,136 @@ const TileFooter = styled.div`
   }
 `;
 
+const CostsSection = styled.section`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8px 24px 0;
+
+  @media (max-width: 720px) {
+    padding: 0 18px;
+  }
+`;
+
+const CostsHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+`;
+
+const CostsTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #f4f6f8;
+  margin: 0;
+`;
+
+const CostsSubtitle = styled.span`
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6b7479;
+`;
+
+const CostsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+`;
+
+const CostCard = styled.div`
+  padding: 18px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.025) 0%,
+    rgba(255, 255, 255, 0.008) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+const CostLabel = styled.span`
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #6b7479;
+`;
+
+const CostValue = styled.span`
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #f4f6f8;
+  line-height: 1;
+`;
+
+const CostMeta = styled.span`
+  font-size: 11px;
+  color: #a3acb2;
+`;
+
+const CostsNote = styled.p`
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: #6b7479;
+`;
+
 /* ------------------------------------------------------------------
    Component
 ------------------------------------------------------------------ */
+
+const PERIOD_LABELS = {
+  today: "Today",
+  "7d": "Last 7 days",
+  "30d": "Last 30 days",
+  "90d": "Last 90 days",
+  "365d": "Last 365 days",
+};
+const PERIOD_ORDER = ["today", "7d", "30d", "90d", "365d"];
+
+const usd = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  maximumFractionDigits: 4,
+});
 
 const AdminOverview = () => {
   const state = useContext(GlobalState);
   const [user] = state.userAPI.user;
   const [articles] = state.articlesAPI.articles;
   const [products] = state.productsAPI.products;
+  const [token] = state.token;
+
+  const [ttsCosts, setTtsCosts] = useState(null);
+  const [ttsCostsError, setTtsCostsError] = useState("");
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!token) return undefined;
+    (async () => {
+      try {
+        const res = await axios.get("/api/tts/admin/costs", {
+          headers: { Authorization: token },
+        });
+        if (!cancelled) setTtsCosts(res.data);
+      } catch (err) {
+        if (cancelled) return;
+        // 403 = not an admin; silently hide. Other errors → surface.
+        if (err.response?.status === 403) setTtsCosts(null);
+        else setTtsCostsError(err.response?.data?.msg || "Could not load TTS costs.");
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   const articleCounts = useMemo(() => {
     const total = (articles || []).length;
@@ -335,6 +457,45 @@ const AdminOverview = () => {
           </Tagline>
         </Shell>
       </HeroSection>
+
+      {(ttsCosts || ttsCostsError) && (
+        <CostsSection>
+          <CostsHeader>
+            <CostsTitle>TTS costs</CostsTitle>
+            <CostsSubtitle>Rolling · USD</CostsSubtitle>
+          </CostsHeader>
+
+          {ttsCostsError ? (
+            <CostsNote>{ttsCostsError}</CostsNote>
+          ) : (
+            <>
+              <CostsGrid>
+                {PERIOD_ORDER.map((key) => {
+                  const p = ttsCosts.periods[key] || {
+                    cost: 0,
+                    chars: 0,
+                    requests: 0,
+                  };
+                  return (
+                    <CostCard key={key}>
+                      <CostLabel>{PERIOD_LABELS[key]}</CostLabel>
+                      <CostValue>{usd.format(p.cost || 0)}</CostValue>
+                      <CostMeta>
+                        {(p.chars || 0).toLocaleString()} chars ·{" "}
+                        {p.requests || 0} req
+                      </CostMeta>
+                    </CostCard>
+                  );
+                })}
+              </CostsGrid>
+              <CostsNote>
+                Pricing: tts-1 ${ttsCosts.pricePer1K["tts-1"]}/1K · tts-1-hd $
+                {ttsCosts.pricePer1K["tts-1-hd"]}/1K
+              </CostsNote>
+            </>
+          )}
+        </CostsSection>
+      )}
 
       <Grid>
         {tiles.map((tile) => (

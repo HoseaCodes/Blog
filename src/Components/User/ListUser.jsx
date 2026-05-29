@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import moment from "moment-timezone";
-import { useHistory } from "react-router-dom";
-import { GlobalState } from "../../GlobalState";
-import { apiLocal } from "../../services/authService";
+import { GlobalState, useNotification } from "../../GlobalState";
+import { apiLocal, apiStormGate, auth, friendlyAuthError } from "../../lib/stormGate";
 
 const initialState = {
   name: "",
@@ -117,6 +116,57 @@ const DangerLink = styled.button`
   padding: 4px 8px;
 
   &:hover { text-decoration: underline; }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 28px 0 12px;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f4f6f8;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  span {
+    font-size: 12px;
+    color: #a3acb2;
+  }
+`;
+
+const ApproveBtn = styled.button`
+  background: #206a5d;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: #267a6b; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+`;
+
+const DenyBtn = styled.button`
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.32);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: rgba(248, 113, 113, 0.08); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 `;
 
 const Card = styled.div`
@@ -330,9 +380,98 @@ const UsersList = () => {
   const [createdUser, setCreatedUser] = useState(initialState);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const [pending, setPending] = useState([]);
+  const [pendingLoading, setPendingLoading] = useState(true);
+  const [pendingError, setPendingError] = useState(null);
+  const [busyId, setBusyId] = useState(null);
+  const notify = useNotification();
 
   const userId = user?.id || user?._id;
+
+  const loadPending = useCallback(async () => {
+    setPendingLoading(true);
+    setPendingError(null);
+    try {
+      const res = await apiLocal.get("/api/user/admin/all");
+      const list = res.data?.users || res.data?.data || (Array.isArray(res.data) ? res.data : []);
+      setPending(list.filter((u) => u.status === "PENDING"));
+    } catch (err) {
+      setPendingError(friendlyAuthError(err, "Couldn't load pending users."));
+    } finally {
+      setPendingLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+    if (!isAdminRole(user?.role)) return;
+    loadPending();
+  }, [userId, user?.role, loadPending]);
+
+  // Local DB is the source of truth for the UI. Storm-Gate is a best-effort
+  // sync so its auth records stay aligned; a Storm-Gate failure does not roll
+  // back the local change, but is surfaced as a warning.
+  const syncStormGate = async (path, payload) => {
+    try {
+      await apiStormGate.post(path, payload, { _skipAuthNormalize: true });
+      return null;
+    } catch (err) {
+      return friendlyAuthError(err, "Storm-Gate sync failed.");
+    }
+  };
+
+  const approveUser = async (u) => {
+    setBusyId(u._id);
+    const prev = pending;
+    setPending((list) => list.filter((p) => p._id !== u._id));
+    try {
+      await apiLocal.patch(`/api/user/${u._id}/status`, { status: "APPROVED" });
+      const sgErr = await syncStormGate("/api/auth/oidc/manual-approve", { userId: u._id });
+      notify({
+        type: sgErr ? "warning" : "SUCCESS",
+        message: sgErr
+          ? `Approved ${u.name || u.email} locally — Storm-Gate sync: ${sgErr}`
+          : `Approved ${u.name || u.email}`,
+      });
+      setActive((a) => !a);
+    } catch (err) {
+      setPending(prev);
+      notify({
+        type: "error",
+        message: friendlyAuthError(err, "Failed to approve user."),
+      });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const denyUser = async (u) => {
+    if (!window.confirm(`Deny ${u.name || u.email}? They won't be able to log in.`)) {
+      return;
+    }
+    setBusyId(u._id);
+    const prev = pending;
+    setPending((list) => list.filter((p) => p._id !== u._id));
+    try {
+      await apiLocal.patch(`/api/user/${u._id}/status`, { status: "DENIED" });
+      const sgErr = await syncStormGate("/api/auth/oidc/manual-deny", { userId: u._id });
+      notify({
+        type: sgErr ? "warning" : "SUCCESS",
+        message: sgErr
+          ? `Denied ${u.name || u.email} locally — Storm-Gate sync: ${sgErr}`
+          : `Denied ${u.name || u.email}`,
+      });
+      setActive((a) => !a);
+    } catch (err) {
+      setPending(prev);
+      notify({
+        type: "error",
+        message: friendlyAuthError(err, "Failed to deny user."),
+      });
+    } finally {
+      setBusyId(null);
+    }
+  };
 
   useEffect(() => {
     if (!userId) return;
@@ -372,7 +511,7 @@ const UsersList = () => {
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user? This action cannot be undone.")) return;
     try {
-      await api.delete(`/api/user/${id}`);
+      await apiStormGate.delete(`/api/user/${id}`);
       setActive((a) => !a);
     } catch (err) {
       alert(err.response?.data?.msg || "Failed to delete user");
@@ -382,7 +521,7 @@ const UsersList = () => {
   const addUser = async (e) => {
     e?.preventDefault?.();
     try {
-      await api.post(`/register`, { ...createdUser });
+      await auth.register({ ...createdUser });
       setUserView(false);
       setCreatedUser(initialState);
       setActive((a) => !a);
@@ -425,6 +564,73 @@ const UsersList = () => {
         </Header>
 
         {error && <ErrorBox>{error}</ErrorBox>}
+
+        <SectionHeader>
+          <h2>Pending approval</h2>
+          <span>
+            {pendingLoading
+              ? "Loading…"
+              : `${pending.length} ${pending.length === 1 ? "user" : "users"} waiting`}
+          </span>
+        </SectionHeader>
+
+        {pendingError && <ErrorBox>{pendingError}</ErrorBox>}
+
+        <Card>
+          <TableWrap>
+            <Table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Requested</th>
+                  <th style={{ width: 1, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {!pendingLoading && pending.length === 0 && (
+                  <tr>
+                    <td colSpan={3}>
+                      <EmptyState>No accounts waiting for approval.</EmptyState>
+                    </td>
+                  </tr>
+                )}
+                {pending.map((u) => (
+                  <tr key={u._id}>
+                    <td>
+                      <UserCell>
+                        <Avatar>{initials(u.name)}</Avatar>
+                        <UserMeta>
+                          <UserName>{u.name || "Unnamed"}</UserName>
+                          <UserEmail>{u.email}</UserEmail>
+                        </UserMeta>
+                      </UserCell>
+                    </td>
+                    <td style={{ color: "#a3acb2" }}>{formatJoined(u.createdAt)}</td>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                      <ApproveBtn
+                        onClick={() => approveUser(u)}
+                        disabled={busyId === u._id}
+                      >
+                        {busyId === u._id ? "…" : "Approve"}
+                      </ApproveBtn>
+                      <DenyBtn
+                        onClick={() => denyUser(u)}
+                        disabled={busyId === u._id}
+                      >
+                        Deny
+                      </DenyBtn>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableWrap>
+        </Card>
+
+        <SectionHeader>
+          <h2>All users</h2>
+          <span>{loading ? "Loading…" : `${users.length} total`}</span>
+        </SectionHeader>
 
         <Card>
           <TableWrap>

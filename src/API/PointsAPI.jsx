@@ -1,4 +1,4 @@
-import { apiLocal } from '../services/authService';
+import { apiLocal } from '../lib/stormGate';
 
 const pointsAPI = {
   // Auth: required. Returns current server-side balance + lifetime totals.

@@ -2,6 +2,7 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { GlobalState } from "../../GlobalState";
 import { useCookies } from "react-cookie";
+import { friendlyAuthError } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
   AuthKicker,
@@ -56,26 +57,25 @@ const Login = () => {
         rememberMe,
       });
 
-      if (result.limitedAccess) {
-        setError(
-          result.message ||
-            "Your account is pending approval. Limited access granted."
-        );
-        localStorage.setItem("isLoggedIn", true);
-        setIsLoggedIn(true);
-        setTimeout(() => history.push("/profile"), 2000);
-      } else {
-        localStorage.setItem("firstLogin", true);
-        localStorage.setItem("isLoggedIn", true);
-        setIsLoggedIn(true);
-        history.push("/");
+      if (result.status === "PENDING") {
+        history.push(`/pending?email=${encodeURIComponent(formData.email)}`);
+        return;
       }
+      if (result.status === "DENIED") {
+        history.push("/denied");
+        return;
+      }
+
+      // APPROVED — session cookie is set; mirror flags for PrivateRouter.
+      localStorage.setItem("firstLogin", true);
+      localStorage.setItem("isLoggedIn", true);
+      setIsLoggedIn(true);
+      history.push("/");
     } catch (err) {
       console.error("Login error:", err);
       if (isMountedRef.current) {
         setError(
-          err.response?.data?.msg ||
-            "Login failed. Please check your credentials."
+          friendlyAuthError(err, "Login failed. Please check your credentials.")
         );
       }
     } finally {

@@ -396,21 +396,31 @@ const Footer = () => {
               </li>
               <li>
                 <ColumnExternal
-                  href="https://www.dominiquehosea.com"
+                  href="https://pure.hoseacodes.com"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Backend portfolio
+                  Pure CSS Showcase
                   <FiArrowUpRight />
                 </ColumnExternal>
               </li>
               <li>
                 <ColumnExternal
-                  href="https://github.com/HoseaCodes"
+                  href="https://www.npmjs.com/settings/storm-gate/packages"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Source code
+                  Storm Gate SDK
+                  <FiArrowUpRight />
+                </ColumnExternal>
+              </li>
+              <li>
+                <ColumnExternal
+                  href="https://www.npmjs.com/package/ai-quiz"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  AI Quiz SDK
                   <FiArrowUpRight />
                 </ColumnExternal>
               </li>

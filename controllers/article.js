@@ -9,7 +9,18 @@ const logger = new Logger("articles");
 
 async function getArticle(req, res) {
   try {
-    const articles = await Articles.find();
+    const articles = await Articles.find().lean();
+
+    // Live comment counts from the Comments collection. The denormalized
+    // `article.comments` field is unreliable (nested-array corruption from
+    // historical RightColumn writes), so derive counts fresh each fetch.
+    const counts = await Comments.aggregate([
+      { $group: { _id: "$blog", count: { $sum: 1 } } },
+    ]);
+    const countMap = new Map(counts.map((c) => [String(c._id), c.count]));
+    for (const a of articles) {
+      a.commentCount = countMap.get(String(a._id)) || 0;
+    }
 
     logger.info("Returning the list of articles");
 
@@ -78,6 +89,10 @@ async function createArticle(req, res) {
       scheduledDateTime,
       images,
       categories,
+      tags,
+      metaTitle,
+      metaDescription,
+      canonicalUrl,
       dev,
       medium,
       postedBy,
@@ -142,9 +157,12 @@ async function createArticle(req, res) {
       description,
       images,
       postedBy,
-      tags: ["api", "hoseacodes"],
+      tags: Array.isArray(tags) ? tags : [],
       categories,
       slug: title.toLowerCase().replace(/ /g, "-"),
+      metaTitle: metaTitle || "",
+      metaDescription: metaDescription || "",
+      canonicalUrl: canonicalUrl || "",
       dev,
       medium,
       linkedin,
@@ -383,7 +401,9 @@ async function updateArticleComment(req, res) {
 async function updateArticle(req, res) {
   try {
     const originalBody = req.body;
-    const { title, comments, draft, archive, ...rest } = originalBody;
+    const { title, comments, ...rest } = originalBody;
+
+    logger.info("PUT /api/articles/" + req.params.id + " body tags=" + JSON.stringify(originalBody.tags) + " rest.tags=" + JSON.stringify(rest.tags));
 
     const originalArticle = await Articles.findOne({ _id: req.params.id });
 
@@ -398,25 +418,10 @@ async function updateArticle(req, res) {
       );
     }
 
-    if (draft) {
-      await Articles.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          draft: draft,
-        }
-      );
-    }
-
-    if (archive) {
-      await Articles.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          archived: archive,
-        }
-      );
-    }
-
     await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
+
+    const afterUpdate = await Articles.findOne({ _id: req.params.id }, { tags: 1 });
+    logger.info("After update, tags in DB = " + JSON.stringify(afterUpdate?.tags));
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 

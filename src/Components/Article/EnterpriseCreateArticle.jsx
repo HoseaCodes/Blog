@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import axios from "axios";
@@ -21,7 +22,6 @@ import SEOAnalyzer from "./SEOAnalyzer";
 import VersionHistory from "./VersionHistory";
 import PerformanceInsights from "./PerformanceInsights";
 import AdvancedBlocks from "./AdvancedBlocks";
-import ContentIntelligence from "./ContentIntelligence";
 import PublishSuccess from "./PublishSuccess";
 import CollaborationPanel from "./CollaborationPanel";
 
@@ -154,14 +154,94 @@ const StatusDot = styled.div`
   }};
 `;
 
+const STATUS_FROM_BE = (be) => {
+  if (be.archived) return "draft";
+  if (be.published) return "published";
+  if (be.scheduled) return "scheduled";
+  return "draft";
+};
+
+const beArticleToEditorShape = (be) => {
+  const content = be.markdown || "";
+  const wordCount = content.split(/\s+/).filter((w) => w.length > 0).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 238));
+
+  return {
+  id: be.article_id || be._id,
+  title: be.title || "",
+  subtitle: be.subtitle || "",
+  slug: be.slug || "",
+  description: be.description || "",
+  content,
+  excerpt: "",
+  status: STATUS_FROM_BE(be),
+  author: be.postedBy || "",
+  createdAt: be.createdAt ? moment(be.createdAt) : moment(),
+  updatedAt: be.updatedAt ? moment(be.updatedAt) : moment(),
+  publishedAt: be.published ? moment(be.updatedAt || be.createdAt) : null,
+  scheduledAt: be.scheduledDateTime ? moment(be.scheduledDateTime) : null,
+  metadata: {
+    category: be.categories?.[0] || "",
+    subcategory: "",
+    tags: be.tags || [],
+    skillsTags: [],
+    personaTarget: [],
+    industryTarget: [],
+    geoTarget: "",
+    readingTime,
+    wordCount,
+    seoScore: 0,
+    difficulty: "intermediate"
+  },
+  media: {
+    featuredImage: be.images || null,
+    gallery: [],
+    attachments: []
+  },
+  publishing: {
+    platforms: {
+      linkedin: { enabled: !!be.linkedin, content: be.linkedinContent || "", published: false },
+      medium: { enabled: false, content: "", published: false },
+      devto: { enabled: false, content: "", published: false },
+      ghost: { enabled: false, content: "", published: false }
+    },
+    seo: {
+      metaTitle: be.metaTitle || "",
+      metaDescription: be.metaDescription || "",
+      canonicalUrl: be.canonicalUrl || "",
+      openGraph: {},
+      twitterCard: {}
+    }
+  },
+  collaboration: {
+    comments: be.comments || [],
+    reviewers: [],
+    approvers: [],
+    shares: []
+  },
+  analytics: {
+    views: be.views || 0,
+    engagement: 0,
+    shares: 0,
+    comments: 0,
+    predictions: {}
+  },
+  versions: []
+  };
+};
+
 function EnterpriseCreateArticle() {
   // Access GlobalState APIs
   const state = useContext(GlobalState);
   const notify = useNotification();
-  
+  const params = useParams();
+  const editId = params.id;
+
   // Destructure APIs from GlobalState
   const { aiAPI, mediaAPI, seoAPI, analyticsAPI, collaborationAPI, articlesAPI } = state;
   const [token] = state.token;
+  const [mongoId, setMongoId] = useState(null);
+  const [editLoading, setEditLoading] = useState(!!editId);
   
   // Core article state
   const [article, setArticle] = useState({
@@ -274,9 +354,12 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
         draft: true
       };
-      
+
       console.log('Auto-saving draft:', draftData);
       
       // Use your existing pattern for saving
@@ -298,6 +381,29 @@ function EnterpriseCreateArticle() {
 
     return () => clearTimeout(autoSaveRef.current);
   }, [article.title, article.content, article.description, handleAutoSave]);
+
+  useEffect(() => {
+    if (!editId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await axios.get(`/api/articles/${editId}`);
+        if (cancelled) return;
+        const be = res.data?.article;
+        if (!be) throw new Error("Article not found");
+        setArticle(beArticleToEditorShape(be));
+        setMongoId(be._id);
+      } catch (err) {
+        if (cancelled) return;
+        console.error("Failed to load article for editing:", err);
+      } finally {
+        if (!cancelled) setEditLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [editId]);
 
   const updateArticle = useCallback((updates) => {
     setArticle(prev => ({
@@ -326,14 +432,22 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
         draft: true
       };
 
-      const res = await axios.post('/api/articles', draftData, {
-        headers: { Authorization: token }
-      });
+      const res = mongoId
+        ? await axios.put(`/api/articles/${mongoId}`, draftData, {
+            headers: { Authorization: token }
+          })
+        : await axios.post('/api/articles', draftData, {
+            headers: { Authorization: token }
+          });
 
-      if (res.data.success) {
+      const ok = res.data?.success || res.data?.msg;
+      if (ok) {
         setLastSaved(moment());
         notify({ type: 'success', message: 'Draft saved successfully!' });
       }
@@ -343,7 +457,7 @@ function EnterpriseCreateArticle() {
     } finally {
       setIsAutoSaving(false);
     }
-  }, [article, token, notify]);
+  }, [article, token, notify, mongoId]);
 
   // Publish article
   const handlePublish = useCallback(async () => {
@@ -390,33 +504,33 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
         draft: false
       };
 
-      const res = await axios.post('/api/articles', publishData, {
-        headers: { Authorization: token }
-      });
+      const res = mongoId
+        ? await axios.put(`/api/articles/${mongoId}`, publishData, {
+            headers: { Authorization: token }
+          })
+        : await axios.post('/api/articles', publishData, {
+            headers: { Authorization: token }
+          });
 
       console.log('Publish response:', res.data);
-      
-      if (res.data.success) {
-        // Update article status to published
-        const updatedArticle = {
+
+      const ok = res.data?.success || res.data?.msg;
+      if (ok) {
+        updateArticle({
           status: 'published',
           publishedAt: moment(),
           article_id: res.data.article?.article_id || article.id
-        };
-        
-        updateArticle(updatedArticle);
-        
-        // Show success notification
+        });
         notify({ type: 'success', message: '🎉 Article published successfully!' });
-        
-        console.log('Setting showSuccessPage to true');
-        // Show success page
         setShowSuccessPage(true);
       } else {
-        console.error('Publish failed: success flag is false');
+        console.error('Publish failed: no success/msg in response');
         notify({ type: 'error', message: 'Publish failed: ' + (res.data.msg || 'Unknown error') });
       }
     } catch (error) {
@@ -425,7 +539,7 @@ function EnterpriseCreateArticle() {
     } finally {
       setIsAutoSaving(false);
     }
-  }, [article, token, notify, updateArticle]);
+  }, [article, token, notify, updateArticle, mongoId]);
   
   // Handle schedule
   const handleSchedule = useCallback(async (scheduledDate) => {
@@ -599,7 +713,6 @@ function EnterpriseCreateArticle() {
 
   const tabs = [
     { id: "editor", label: "Editor", icon: FiEdit3 },
-    { id: "ai", label: "AI Assistant", icon: FiCpu },
     { id: "media", label: "Media", icon: FiImage },
     { id: "metadata", label: "Metadata", icon: FiTag },
     { id: "seo", label: "SEO", icon: FiTrendingUp },
@@ -624,27 +737,18 @@ function EnterpriseCreateArticle() {
           mediaAPI={mediaAPI}
           onTextSelection={handleTextSelection}
         />;
-      case "ai":
-        return <AIAssistant 
-          article={article} 
-          updateArticle={updateArticle}
-          isOpen={aiAssistantOpen}
-          setIsOpen={setAiAssistantOpen}
-          aiAPI={aiAPI}
-          selectedText={selectedText}
-          setSelectedText={setSelectedText}
-        />;
       case "media":
-        return <MediaLibrary 
-          article={article} 
+        return <MediaLibrary
+          article={article}
           updateArticle={updateArticle}
           mediaAPI={mediaAPI}
         />;
       case "metadata":
-        return <MetadataPanel 
-          article={article} 
+        return <MetadataPanel
+          article={article}
           updateArticle={updateArticle}
           seoAPI={seoAPI}
+          mediaAPI={mediaAPI}
         />;
       case "seo":
         return <SEOAnalyzer 
@@ -654,10 +758,12 @@ function EnterpriseCreateArticle() {
           seoAPI={seoAPI}
         />;
       case "collaboration":
-        return <CollaborationPanel 
-          article={article} 
+        return <CollaborationPanel
+          article={article}
           updateArticle={updateArticle}
           collaborationAPI={collaborationAPI}
+          mongoId={mongoId}
+          token={token}
         />;
       case "workflow":
         return <PublishingWorkflow 
@@ -681,6 +787,14 @@ function EnterpriseCreateArticle() {
         return null;
     }
   };
+
+  if (editLoading) {
+    return (
+      <EnterpriseContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ opacity: 0.7 }}>Loading article…</div>
+      </EnterpriseContainer>
+    );
+  }
 
   // Show success page after publishing
   if (showSuccessPage) {
@@ -820,14 +934,6 @@ function EnterpriseCreateArticle() {
               </motion.div>
             )}
             
-            {activeTab === "ai" && (
-              <ContentIntelligence 
-                article={article} 
-                updateArticle={updateArticle}
-                aiAPI={aiAPI}
-                seoAPI={seoAPI}
-              />
-            )}
           </div>
         </SidePanel>
       </MainLayout>

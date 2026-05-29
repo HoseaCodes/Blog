@@ -435,7 +435,7 @@ const EditorCore = forwardRef(({
   const handleContentChange = (e) => {
     const content = e.target.value;
     const wordCount = content.split(/\s+/).filter(word => word.length > 0).length;
-    const readingTime = Math.ceil(wordCount / 200); // Average reading speed
+    const readingTime = Math.max(1, Math.round(wordCount / 238)); // 238 wpm = standard adult silent reading speed
     
     updateArticle({
       content,

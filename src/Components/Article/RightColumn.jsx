@@ -587,6 +587,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
   const [token] = state.token;
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [isAdmin] = state.userAPI.isAdmin;
   const [search, setSearch] = useState("");
   const [comments, setComments] = useState({ comments: [] });
   const [comment, setComment] = useState("");

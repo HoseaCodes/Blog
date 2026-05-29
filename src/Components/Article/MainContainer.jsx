@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
-import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail } from 'react-icons/ai';
+import axios from 'axios';
+import { GlobalState } from '../../GlobalState';
+import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail, AiOutlineLoading3Quarters } from 'react-icons/ai';
 import { FaRegThumbsUp, FaRegComment } from 'react-icons/fa';
 import { BsTwitter, BsFacebook, BsLinkedin, BsLink45Deg } from 'react-icons/bs';
 import { RiShareCircleFill } from 'react-icons/ri';
@@ -745,10 +747,17 @@ const MainContainer = ({
   handleCheck
 }) => {
   const { _id, likes, title, subtitle, description, images, markdown, comments } = detailArticle;
+  const globalState = useContext(GlobalState);
+  const [token] = globalState.token;
+
   // Audio states
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPaused, setAudioPaused] = useState(false);
-  const [utterance, setUtterance] = useState(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [audioError, setAudioError] = useState('');
+  const audioRef = useRef(null);          // <audio> element for OpenAI MP3 playback
+  const audioUrlRef = useRef(null);       // blob URL for cleanup
+  const fallbackUtteranceRef = useRef(null); // Web Speech utterance for anonymous users
   const [postLikes, setPostLikes] = useState(likes || 0);
   
   // Related posts states
@@ -758,40 +767,125 @@ const MainContainer = ({
 
   const avatar = user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU";
 
-  // Audio functions
+  // Clean up audio resources on unmount or article change
   useEffect(() => {
-    if (markdown) {
-      const synth = window.speechSynthesis;
-      const u = new SpeechSynthesisUtterance(markdown);
-      const voices = synth.getVoices();
-      if (voices[15]) u.voice = voices[15];
-      u.rate = 0.95;
-      setUtterance(u);
-    }
-  }, [markdown]);
-
-  const handlePlay = () => {
-    const synth = window.speechSynthesis;
-    if (utterance) {
-      if (audioPaused) {
-        synth.resume();
-      } else {
-        synth.speak(utterance);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
       }
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+  }, [_id]);
+
+  const playWebSpeechFallback = () => {
+    const synth = window.speechSynthesis;
+    if (!synth) {
+      setAudioError('Audio not supported in this browser.');
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(markdown || '');
+    u.rate = 0.95;
+    u.onend = () => {
+      setAudioPlaying(false);
+      setAudioPaused(false);
+    };
+    fallbackUtteranceRef.current = u;
+    synth.speak(u);
+    setAudioPlaying(true);
+    setAudioPaused(false);
+  };
+
+  const playOpenAIVoice = async () => {
+    setAudioLoading(true);
+    setAudioError('');
+    try {
+      const res = await axios.post(
+        '/api/tts/synthesize',
+        { text: markdown || '' },
+        { headers: { Authorization: token }, responseType: 'blob' }
+      );
+      const url = URL.createObjectURL(res.data);
+      audioUrlRef.current = url;
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => {
+        setAudioPlaying(false);
+        setAudioPaused(false);
+      };
+      await audio.play();
       setAudioPlaying(true);
       setAudioPaused(false);
+    } catch (err) {
+      // 429 = daily quota exceeded — surface the message, don't fall back silently
+      let msg = 'Could not play audio.';
+      if (err.response?.status === 429) {
+        msg = 'You\'ve used your daily listen. Try again tomorrow.';
+      } else if (err.response?.data) {
+        // axios blob errors need decoding
+        try {
+          const text = await err.response.data.text();
+          const parsed = JSON.parse(text);
+          msg = parsed.msg || msg;
+          console.error('Audio error response:', parsed);
+        } catch (parseErr) { 
+          // ignore parse errors and use generic message
+          console.error('Error parsing audio error response:', parseErr);
+         }
+      }
+      setAudioError(msg);
+    } finally {
+      setAudioLoading(false);
+    }
+  };
+
+  const handlePlay = () => {
+    if (audioLoading) return;
+    // Resume case
+    if (audioPaused && audioRef.current) {
+      audioRef.current.play();
+      setAudioPaused(false);
+      setAudioPlaying(true);
+      return;
+    }
+    if (audioPaused && window.speechSynthesis?.paused) {
+      window.speechSynthesis.resume();
+      setAudioPaused(false);
+      setAudioPlaying(true);
+      return;
+    }
+    // Fresh play
+    if (isLoggedIn) {
+      playOpenAIVoice();
+    } else {
+      playWebSpeechFallback();
     }
   };
 
   const handlePause = () => {
-    const synth = window.speechSynthesis;
-    synth.pause();
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    } else if (window.speechSynthesis?.speaking) {
+      window.speechSynthesis.pause();
+    }
     setAudioPaused(true);
   };
 
   const handleStop = () => {
-    const synth = window.speechSynthesis;
-    synth.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     setAudioPlaying(false);
     setAudioPaused(false);
   };
@@ -856,7 +950,7 @@ const MainContainer = ({
                 <span>·</span>
                 <span>
                   {readTime > 60
-                    ? `${Math.floor(readTime / 60)} Hours${
+                    ? `${Math.floor(readTime / 60)} ${Math.floor(readTime / 60) === 1 ? 'Hour' : 'Hours'}${
                         readTime % 60 ? ` ${readTime % 60} min` : ''
                       } read`
                     : `${readTime} min read`}
@@ -864,7 +958,12 @@ const MainContainer = ({
                 </span>
               </WrappedDate>
               <AudioControls>
-                {!audioPlaying ? (
+                {audioLoading ? (
+                  <AudioButton green disabled>
+                    <AiOutlineLoading3Quarters style={{ animation: 'spin 1s linear infinite' }} />
+                    Loading…
+                  </AudioButton>
+                ) : !audioPlaying ? (
                   <AudioButton green onClick={handlePlay}>
                     <AiFillPlayCircle />
                     Listen
@@ -885,6 +984,11 @@ const MainContainer = ({
                     <AiFillStop />
                     Stop
                   </AudioButton>
+                )}
+                {audioError && (
+                  <span style={{ color: '#e0625e', fontSize: '0.75rem', marginLeft: '0.5rem' }}>
+                    {audioError}
+                  </span>
                 )}
               </AudioControls>
             </AuthorInfo>

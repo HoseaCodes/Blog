@@ -4,6 +4,8 @@ import {cache} from '../utils/cache.js';
 
 const logger = new Logger('comments')
 
+const ADMIN_ROLE = 1;
+
 async function getComment(req, res) {
     try {
         const comments = await Comments.find()
@@ -74,18 +76,20 @@ async function createComment(req, res) {
 
 async function deleteComment(req, res) {
     try {
-        const post_id = req.params.id
+        if (req.user?.role !== ADMIN_ROLE) {
+            return res.status(403).json({ msg: 'Only admins can delete comments.' });
+        }
 
-        logger.info(`Deleted comment ${post_id} has been deleted`);
+        const commentId = req.params.id;
+        const deleted = await Comments.findByIdAndDelete(commentId);
+        if (!deleted) return res.status(404).json({ msg: 'Comment not found.' });
 
-        await Comments.findByIdAndDelete(post_id)
+        logger.info(`Comment ${commentId} deleted by admin ${req.user.id}`);
         res.clearCookie('comments-cache');
-        res.json({ msg: "Deleted a article" })
+        res.json({ msg: 'Comment deleted' });
     } catch (err) {
-
-    logger.error(err)
-
-    return res.status(500).json({ msg: err.message })
+        logger.error(err);
+        return res.status(500).json({ msg: err.message });
     }
 }
 

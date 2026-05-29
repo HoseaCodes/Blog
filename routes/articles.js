@@ -42,6 +42,6 @@ router.route('/articles/:id/comments')
   .put(updateArticleComment)
 
 commentRouter.route('/:id')
-  .delete(deleteComment)
+  .delete(auth, deleteComment)
 
 export default router;

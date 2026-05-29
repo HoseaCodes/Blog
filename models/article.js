@@ -90,6 +90,18 @@ const articleSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
+    metaTitle: {
+        type: String,
+        default: ''
+    },
+    metaDescription: {
+        type: String,
+        default: ''
+    },
+    canonicalUrl: {
+        type: String,
+        default: ''
+    },
     views: {
         type: Number,
         default: 0

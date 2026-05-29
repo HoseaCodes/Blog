@@ -65,6 +65,11 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  status: {
+    type: String,
+    enum: ['PENDING', 'APPROVED', 'DENIED'],
+    default: 'APPROVED'
+  },
   articles: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Articles'

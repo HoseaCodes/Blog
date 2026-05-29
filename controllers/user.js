@@ -182,6 +182,62 @@ async function getAllUsers(req, res) {
   }
 }
 
+// Mirrors a Storm-Gate registration into the blog DB so this app's collections
+// have a Users row to reference. Idempotent — calling twice with the same email
+// returns the existing record rather than erroring.
+async function register(req, res) {
+  try {
+    const { name, email } = req.body || {};
+    if (!email) return res.status(400).json({ msg: "Email is required" });
+
+    let user = await Users.findOne({ email });
+    if (user) {
+      return res.json({
+        msg: "User already exists",
+        user: { id: user._id, email: user.email, status: user.status },
+      });
+    }
+
+    user = await Users.create({
+      name: name || email,
+      email,
+      password: "storm-gate-managed",
+      status: "PENDING",
+    });
+
+    return res.status(201).json({
+      msg: "User created",
+      user: { id: user._id, email: user.email, status: user.status },
+    });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+async function setUserStatus(req, res) {
+  try {
+    const { id } = req.params;
+    const { status } = req.body || {};
+    if (!['APPROVED', 'DENIED'].includes(status)) {
+      return res.status(400).json({ msg: "status must be 'APPROVED' or 'DENIED'" });
+    }
+
+    const user = await Users.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true, runValidators: true }
+    ).select('_id email name status');
+
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+
+    return res.json({ msg: `User ${status.toLowerCase()}`, user });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
 async function deleteProfile(req, res) {
   try {
     logger.info(`Deleted user ${req.params.id} has been deleted`);
@@ -204,5 +260,7 @@ export {
   deleteProfile,
   addCart,
   history,
-  getAllUsers
+  getAllUsers,
+  register,
+  setUserStatus,
 };

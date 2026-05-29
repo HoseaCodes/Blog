@@ -131,8 +131,8 @@ const ArticleItem = () => {
   const { createdAt, markdown } = detailArticle;
   const timeFormater = moment.utc(createdAt).format('MMMM Do, YYYY');
   const avgWordsMinRead = 238;
-  const wordCount = (markdown?.length || 0) + 700;
-  const readTime = Math.round(wordCount / avgWordsMinRead);
+  const wordCount = (markdown || "").split(/\s+/).filter((w) => w.length > 0).length;
+  const readTime = Math.max(1, Math.round(wordCount / avgWordsMinRead));
 
   const canonicalSlug = detailArticle.slug || detailArticle._id;
   const canonicalUrl = `${SITE_URL}/blog/${canonicalSlug}`;

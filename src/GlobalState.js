@@ -3,7 +3,9 @@ import React, {
   useContext,
   useState,
   useEffect,
-  useReducer
+  useReducer,
+  useCallback,
+  useMemo
 } from "react";
 import ArticlesAPI from './API/ArticlesAPI';
 import GithubAPI from './API/GithubAPI';
@@ -17,7 +19,6 @@ import AnalyticsAPI from "./API/AnalyticsAPI";
 import SEOAPI from "./API/SEOAPI";
 import AIAPI from "./API/AIAPI";
 import CommentsAPI from "./API/CommentsAPI";
-import axios from "axios";
 import { v4 } from "uuid";
 import ProductsAPI from "./API/ProductsAPI";
 import Notification from "./Components/Notification/Notification";
@@ -27,7 +28,7 @@ export const GlobalState = createContext();
 
 export const DataProvider = ({ children }) => {
   const [token, setToken] = useState(false);
-  const [cookies] = useCookies(["cookie-name"]);
+  const [cookies] = useCookies(["accesstoken"]);
 
   const [globalState, dispatch] = useReducer((globalState, action) => {
     switch (action.type) {
@@ -41,25 +42,12 @@ export const DataProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    const firstLogin = localStorage.getItem("firstLogin");
-    const initialToken = cookies.accesstoken;
-    setToken(initialToken);
-    if (firstLogin && !initialToken) {
-      const refreshToken = async () => {
-        try {
-          const res = await axios.get("api/user/refresh_token");
-          console.log(res, "refresh");
-          setToken(res.data.accesstoken);
-          setTimeout(() => {
-            refreshToken();
-          }, 10 * 60 * 1000);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      refreshToken();
-    }
-  }, []);
+    setToken(cookies.accesstoken);
+  }, [cookies.accesstoken]);
+
+  // Memoized so its identity is stable across DataProvider renders. Unstable
+  // refs in dep arrays caused an infinite refetch loop in CollaborationPanel.
+  const collaborationAPI = useMemo(() => CollaborationAPI(token), [token]);
 
   const state = {
     token: [token, setToken],
@@ -73,7 +61,7 @@ export const DataProvider = ({ children }) => {
     // Enterprise Blog APIs
     blogAPI: BlogAPI(token),
     mediaAPI: MediaAPI(token),
-    collaborationAPI: CollaborationAPI(token),
+    collaborationAPI,
     analyticsAPI: AnalyticsAPI(token),
     seoAPI: SEOAPI(token),
     aiAPI: AIAPI(token),
@@ -96,13 +84,16 @@ export const useNotification = () => {
   const notification = useContext(GlobalState);
   const { dispatch } = notification;
 
-  return props => {
-    dispatch({
-      type: "ADD_NOTIFICATION",
-      payload: {
-        id: v4(),
-        ...props
-      }
-    });
-  };
+  return useCallback(
+    (props) => {
+      dispatch({
+        type: "ADD_NOTIFICATION",
+        payload: {
+          id: v4(),
+          ...props
+        }
+      });
+    },
+    [dispatch]
+  );
 };

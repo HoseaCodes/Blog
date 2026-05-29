@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation, Link } from "react-router-dom";
-import authService from "../../services/authService";
+import { auth } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
   AuthKicker,
@@ -42,7 +42,7 @@ const ResetPassword = () => {
         return;
       }
       try {
-        await authService.verifyResetToken(token);
+        await auth.verifyResetToken(token);
         setTokenValid(true);
       } catch (err) {
         setError(
@@ -77,7 +77,7 @@ const ResetPassword = () => {
 
     setLoading(true);
     try {
-      const data = await authService.resetPassword(token, formData.password);
+      const data = await auth.resetPassword({ token, password: formData.password });
       setSuccess(
         data.msg || "Password reset successful! Redirecting to sign in…"
       );

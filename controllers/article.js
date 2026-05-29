@@ -9,7 +9,18 @@ const logger = new Logger("articles");
 
 async function getArticle(req, res) {
   try {
-    const articles = await Articles.find();
+    const articles = await Articles.find().lean();
+
+    // Live comment counts from the Comments collection. The denormalized
+    // `article.comments` field is unreliable (nested-array corruption from
+    // historical RightColumn writes), so derive counts fresh each fetch.
+    const counts = await Comments.aggregate([
+      { $group: { _id: "$blog", count: { $sum: 1 } } },
+    ]);
+    const countMap = new Map(counts.map((c) => [String(c._id), c.count]));
+    for (const a of articles) {
+      a.commentCount = countMap.get(String(a._id)) || 0;
+    }
 
     logger.info("Returning the list of articles");
 

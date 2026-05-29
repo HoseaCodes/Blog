@@ -6,6 +6,7 @@ import {
   FiEye, FiCheckCircle, FiClock, FiAlertTriangle, FiX, FiSend
 } from "react-icons/fi";
 import moment from "moment";
+import AdminCommentManager from "./AdminCommentManager";
 
 const CollaborationContainer = styled.div`
   padding: 1.5rem;
@@ -266,7 +267,7 @@ const ActivityTime = styled.div`
   opacity: 0.7;
 `;
 
-function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
+function CollaborationPanel({ article, updateArticle, collaborationAPI, mongoId, token }) {
   const [newComment, setNewComment] = useState('');
   const [shareSettings, setShareSettings] = useState({
     allowComments: true,
@@ -278,7 +279,6 @@ function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch real collaboration data
   useEffect(() => {
     if (collaborationAPI && article?.id) {
       fetchCollaborationData();
@@ -626,6 +626,8 @@ function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
           )}
         </ActivityFeed>
       </Section>
+
+      {mongoId && <AdminCommentManager articleId={mongoId} token={token} />}
     </CollaborationContainer>
   );
 }

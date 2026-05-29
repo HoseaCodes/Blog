@@ -4,7 +4,8 @@ import React, {
   useState,
   useEffect,
   useReducer,
-  useCallback
+  useCallback,
+  useMemo
 } from "react";
 import ArticlesAPI from './API/ArticlesAPI';
 import GithubAPI from './API/GithubAPI';
@@ -44,6 +45,10 @@ export const DataProvider = ({ children }) => {
     setToken(cookies.accesstoken);
   }, [cookies.accesstoken]);
 
+  // Memoized so its identity is stable across DataProvider renders. Unstable
+  // refs in dep arrays caused an infinite refetch loop in CollaborationPanel.
+  const collaborationAPI = useMemo(() => CollaborationAPI(token), [token]);
+
   const state = {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
@@ -56,7 +61,7 @@ export const DataProvider = ({ children }) => {
     // Enterprise Blog APIs
     blogAPI: BlogAPI(token),
     mediaAPI: MediaAPI(token),
-    collaborationAPI: CollaborationAPI(token),
+    collaborationAPI,
     analyticsAPI: AnalyticsAPI(token),
     seoAPI: SEOAPI(token),
     aiAPI: AIAPI(token),

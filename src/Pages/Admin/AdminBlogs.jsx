@@ -818,9 +818,7 @@ const AdminBlogs = () => {
                     </span>
                     <span>
                       <FiMessageSquare size={11} />
-                      {Array.isArray(article.comments)
-                        ? article.comments.length
-                        : 0}
+                      {article.commentCount ?? 0}
                     </span>
                   </Meta>
                 </ArticleBody>

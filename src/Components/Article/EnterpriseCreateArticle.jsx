@@ -161,13 +161,18 @@ const STATUS_FROM_BE = (be) => {
   return "draft";
 };
 
-const beArticleToEditorShape = (be) => ({
+const beArticleToEditorShape = (be) => {
+  const content = be.markdown || "";
+  const wordCount = content.split(/\s+/).filter((w) => w.length > 0).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 238));
+
+  return {
   id: be.article_id || be._id,
   title: be.title || "",
   subtitle: be.subtitle || "",
   slug: be.slug || "",
   description: be.description || "",
-  content: be.markdown || "",
+  content,
   excerpt: "",
   status: STATUS_FROM_BE(be),
   author: be.postedBy || "",
@@ -183,8 +188,8 @@ const beArticleToEditorShape = (be) => ({
     personaTarget: [],
     industryTarget: [],
     geoTarget: "",
-    readingTime: 0,
-    wordCount: 0,
+    readingTime,
+    wordCount,
     seoScore: 0,
     difficulty: "intermediate"
   },
@@ -222,7 +227,8 @@ const beArticleToEditorShape = (be) => ({
     predictions: {}
   },
   versions: []
-});
+  };
+};
 
 function EnterpriseCreateArticle() {
   // Access GlobalState APIs
@@ -752,10 +758,12 @@ function EnterpriseCreateArticle() {
           seoAPI={seoAPI}
         />;
       case "collaboration":
-        return <CollaborationPanel 
-          article={article} 
+        return <CollaborationPanel
+          article={article}
           updateArticle={updateArticle}
           collaborationAPI={collaborationAPI}
+          mongoId={mongoId}
+          token={token}
         />;
       case "workflow":
         return <PublishingWorkflow 

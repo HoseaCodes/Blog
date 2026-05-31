@@ -24,6 +24,7 @@ import pointsRouter from './routes/points.js';
 import storeRouter from './routes/store.js';
 import ttsRouter from './routes/tts.js';
 import sitemapRouter from './routes/sitemap.js';
+import socialPreviewRouter from './routes/socialPreview.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
@@ -115,6 +116,7 @@ app.use('/api', ttsRouter);
 
 // Crawler-facing routes (must be at site root, not /api, and before SPA catch-all)
 app.use('/', sitemapRouter);
+app.use('/', socialPreviewRouter);
 
 // The following "catch all" route (note the *)is necessary
 // for a SPA's client-side routing to properly work

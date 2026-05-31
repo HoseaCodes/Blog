@@ -47,7 +47,7 @@ const ArticlePageContainer = styled.div`
   min-height: 100vh;
   background-color: ${mediumTheme.colors.background.white};
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  overflow-x: hidden;
+  overflow-x: clip;
 `;
 
 const BlogContent = styled.main`

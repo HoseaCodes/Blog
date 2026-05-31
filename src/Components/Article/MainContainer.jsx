@@ -81,10 +81,12 @@ const mediumTheme = {
 // STYLED COMPONENTS
 // =============================================
 const StyledMainContainer = styled.div`
-  max-width: 680px;
+  max-width: 1200px;
+  padding-top: 2rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
   margin: 0 auto;
   background: ${mediumTheme.colors.background.white};
-  padding: ${mediumTheme.spacing['3xl']} ${mediumTheme.spacing.lg};
   width: 100%;
   box-sizing: border-box;
 

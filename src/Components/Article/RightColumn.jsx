@@ -69,23 +69,27 @@ const mediumTheme = {
 // =============================================
 // STYLED COMPONENTS
 // =============================================
-const StyledRightContainer = styled.aside`
+const StyledRightSlot = styled.aside`
   width: 300px;
-  padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg} 0;
-  border-left: 1px solid ${mediumTheme.colors.background.border};
-  background: ${mediumTheme.colors.background.white};
-  height: 100vh;
-  overflow-y: auto;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  z-index: 10;
+  flex-shrink: 0;
 
   @media (max-width: ${mediumTheme.breakpoints.tablet}) {
     display: none;
   }
+`;
 
-  /* Custom scrollbar */
+const StyledRightContainer = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg} 0;
+  border-left: 1px solid ${mediumTheme.colors.background.border};
+  background: ${mediumTheme.colors.background.white};
+  z-index: 10;
+
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -669,6 +673,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
   };
 
   return (
+    <StyledRightSlot>
     <StyledRightContainer>
       {viewComment ? (
         <>
@@ -828,6 +833,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
         </>
       )}
     </StyledRightContainer>
+    </StyledRightSlot>
   );
 };
 

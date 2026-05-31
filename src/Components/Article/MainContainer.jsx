@@ -819,7 +819,7 @@ const MainContainer = ({
   deleteArticle,
   handleCheck
 }) => {
-  const { _id, likes, title, subtitle, description, images, markdown, comments } = detailArticle;
+  const { _id, likes, title, subtitle, description, images, markdown, comments, commentCount } = detailArticle;
   const globalState = useContext(GlobalState);
   const [token] = globalState.token;
 
@@ -1104,7 +1104,7 @@ const MainContainer = ({
                     </EngagementButton>
                     <EngagementButton onClick={() => setViewComment(true)}>
                       <FaRegComment />
-                      {comments?.length || 0}
+                      {commentCount ?? comments?.length ?? 0}
                     </EngagementButton>
                   </EngagementActions>
                   

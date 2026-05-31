@@ -921,9 +921,14 @@ const MainContainer = ({
       case 'facebook':
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
         break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+      case 'linkedin': {
+        const shareText = `${articleTitle}\n\nRead it here: ${url}`;
+        window.open(
+          `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(shareText)}`,
+          '_blank'
+        );
         break;
+      }
       case 'copy':
         await navigator.clipboard.writeText(url);
         break;

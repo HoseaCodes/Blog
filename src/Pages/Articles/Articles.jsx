@@ -1293,6 +1293,8 @@ function EnterpriseTechGuide() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [activeSubFilter, setActiveSubFilter] = useState("all");
   const [email, setEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState("idle"); // idle | submitting | success | error
+  const [newsletterMessage, setNewsletterMessage] = useState("");
   const [mostLikedArticle, setMostLikedArticle] = useState(null);
   const [hbrArticles, setHbrArticles] = useState({
     main: null,
@@ -1483,10 +1485,30 @@ function EnterpriseTechGuide() {
     }
   };
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    setEmail("");
-    window.open("https://www.linkedin.com/article/newsletter/new/", "_blank");
+    if (newsletterStatus === "submitting") return;
+    setNewsletterStatus("submitting");
+    setNewsletterMessage("");
+    try {
+      const res = await axios.post("/api/subscribers", {
+        email,
+        source: "articles-sidebar",
+      });
+      setNewsletterStatus("success");
+      setNewsletterMessage(res.data?.msg || "Check your inbox to confirm.");
+      setEmail("");
+    } catch (err) {
+      setNewsletterStatus("error");
+      setNewsletterMessage(err.response?.data?.msg || "Something went wrong. Try again?");
+    }
+  };
+
+  // Featured-block CTA scrolls to the sidebar signup form rather than
+  // duplicating the input field. Same `handleSubscribe` end state.
+  const scrollToSidebarSignup = () => {
+    const el = document.getElementById("newsletter-signup");
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   if (loading) {
@@ -1696,7 +1718,7 @@ function EnterpriseTechGuide() {
                 Subscribe to <strong>HoseaCodes Executive</strong> for engineering
                 insights delivered to your inbox.
               </p>
-              <InlineMiniBtn onClick={handleSubscribe}>
+              <InlineMiniBtn onClick={scrollToSidebarSignup}>
                 Sign up
                 <FiArrowRight size={14} />
               </InlineMiniBtn>
@@ -1876,24 +1898,37 @@ function EnterpriseTechGuide() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <SidebarTitle>Newsletter</SidebarTitle>
+              <SidebarTitle id="newsletter-signup">Newsletter</SidebarTitle>
               <SidebarBody>
-                Weekly notes on engineering, leadership, and the systems behind
-                production software.
+                One email when I publish something new — engineering, reliability,
+                AI/ML systems. No schedule, no digests, no spam.
               </SidebarBody>
-              <NewsletterForm onSubmit={handleSubscribe}>
-                <NewsletterInput
-                  type="email"
-                  placeholder="you@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-                <SubscribeBtn type="submit">
-                  <FiMail size={14} />
-                  Subscribe
-                </SubscribeBtn>
-              </NewsletterForm>
+              {newsletterStatus !== "success" && (
+                <NewsletterForm onSubmit={handleSubscribe}>
+                  <NewsletterInput
+                    type="email"
+                    placeholder="you@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={newsletterStatus === "submitting"}
+                    required
+                  />
+                  <SubscribeBtn type="submit" disabled={newsletterStatus === "submitting"}>
+                    <FiMail size={14} />
+                    {newsletterStatus === "submitting" ? "Subscribing…" : "Subscribe"}
+                  </SubscribeBtn>
+                </NewsletterForm>
+              )}
+              {newsletterMessage && (
+                <SidebarBody
+                  style={{
+                    marginTop: "0.75rem",
+                    color: newsletterStatus === "error" ? "#f87171" : "#5bb39e",
+                  }}
+                >
+                  {newsletterMessage}
+                </SidebarBody>
+              )}
             </SidebarCard>
 
             <SidebarCard

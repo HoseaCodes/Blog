@@ -18,3 +18,10 @@ AI_ART_PNG_PRICE_USD=5
 PAYPAL_CLIENT_ID=
 PAYPAL_CLIENT_SECRET=
 PAYPAL_ENV=sandbox
+
+# Newsletter (Resend). RESEND_FROM must be at a domain verified in your Resend
+# dashboard. Without RESEND_API_KEY, signup still creates rows but verify and
+# broadcast emails are no-ops (logged as warnings).
+RESEND_API_KEY=
+RESEND_FROM="Dominique Hosea <newsletter@hoseacodes.com>"
+SITE_URL=https://hoseacodes.com

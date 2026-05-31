@@ -504,6 +504,7 @@ function EnterpriseCreateArticle() {
       const linkedinEnabled = Boolean(platforms?.linkedin?.enabled);
       const linkedinIntroText =
         publishOpts.linkedinIntro ?? article.publishing?.linkedinIntro ?? null;
+      const notifySubscribers = Boolean(platforms?.newsletter?.enabled);
 
       const publishData = {
         article_id: article.id,
@@ -521,6 +522,7 @@ function EnterpriseCreateArticle() {
         draft: false,
         linkedin: linkedinEnabled,
         linkedinIntro: linkedinEnabled ? linkedinIntroText : null,
+        notifySubscribers,
       };
 
       const res = mongoId
@@ -549,6 +551,13 @@ function EnterpriseCreateArticle() {
           notify({ type: 'success', message: 'Cross-posted to LinkedIn.' });
         } else if (li?.error) {
           notify({ type: 'warning', message: `Article published, but LinkedIn cross-post failed: ${li.error}` });
+        }
+
+        // Newsletter send happens fire-and-forget on the server, so we don't
+        // get sent/failed counts in the response. Surface a toast so the user
+        // knows it was queued.
+        if (notifySubscribers) {
+          notify({ type: 'success', message: 'Sending newsletter to subscribers in the background.' });
         }
 
         setShowSuccessPage(true);

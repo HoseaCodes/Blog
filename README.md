@@ -474,6 +474,11 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
 
+### Service Dashboards
+
+- [LinkedIn App Settings](https://www.linkedin.com/developers/apps/217736152/settings) — manage OAuth credentials and permissions for LinkedIn cross-posting
+- [Resend Emails](https://resend.com/emails) — newsletter and transactional email delivery dashboard
+
 ## How To Run App
 
 ### Prerequisites

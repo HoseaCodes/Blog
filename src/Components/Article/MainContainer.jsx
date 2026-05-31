@@ -832,6 +832,11 @@ const MainContainer = ({
   const audioUrlRef = useRef(null);       // blob URL for cleanup
   const fallbackUtteranceRef = useRef(null); // Web Speech utterance for anonymous users
   const [postLikes, setPostLikes] = useState(likes || 0);
+
+  // Newsletter signup state. status: 'idle' | 'submitting' | 'success' | 'error'
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
   
   // Related posts states
   const [idx, setIdx] = useState(4);
@@ -981,6 +986,25 @@ const MainContainer = ({
     }
   };
 
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (newsletterStatus === 'submitting') return;
+    setNewsletterStatus('submitting');
+    setNewsletterMessage('');
+    try {
+      const res = await axios.post('/api/subscribers', {
+        email: newsletterEmail,
+        source: 'article-inline',
+      });
+      setNewsletterStatus('success');
+      setNewsletterMessage(res.data?.msg || 'Check your inbox to confirm.');
+      setNewsletterEmail('');
+    } catch (err) {
+      setNewsletterStatus('error');
+      setNewsletterMessage(err.response?.data?.msg || 'Something went wrong. Try again?');
+    }
+  };
+
   // Share functions
   const handleShare = async (platform) => {
     const url = window.location.href;
@@ -1125,40 +1149,46 @@ const MainContainer = ({
                 </StickyContent>
               </StickyFooter>
 
-              <BlogNewsletter
-                action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b"
-                method="POST"
-              >
+              <BlogNewsletter onSubmit={handleNewsletterSubmit}>
                 <div>
-                  <h3>Sign up for Software Engineering News</h3>
+                  <h3>Get new posts in your inbox</h3>
                   <NewsletterContent>
-                    <p className="author">By Dominique Hosea</p>
+                    <p className="author">By D. Hosea</p>
                     <p>
-                      Latest news from Software Engineering on our Hackathons and some of our
-                      best articles! <u>Take a look.</u>
+                      One email when I publish something new. No schedule, no digests,
+                      no spam — just the post.
                     </p>
                   </NewsletterContent>
-                  <NewsletterForm>
-                    <NewsletterInput
-                      name="email_address"
-                      placeholder="Your email"
-                      type="email"
-                    />
-                    <input
-                      style={{ display: "none" }}
-                      name="from"
-                      value="Newsletter"
-                      type="text"
-                    />
-                    <NewsletterButton type="submit">
-                      <AiOutlineMail />
-                      Get this newsletter
-                    </NewsletterButton>
-                  </NewsletterForm>
+                  {newsletterStatus !== 'success' && (
+                    <NewsletterForm>
+                      <NewsletterInput
+                        name="email"
+                        placeholder="Your email"
+                        type="email"
+                        required
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        disabled={newsletterStatus === 'submitting'}
+                      />
+                      <NewsletterButton type="submit" disabled={newsletterStatus === 'submitting'}>
+                        <AiOutlineMail />
+                        {newsletterStatus === 'submitting' ? 'Subscribing…' : 'Get this newsletter'}
+                      </NewsletterButton>
+                    </NewsletterForm>
+                  )}
+                  {newsletterMessage && (
+                    <NewsletterDisclaimer
+                      style={{
+                        color: newsletterStatus === 'error' ? '#e0625e' : mediumTheme.colors.accent.green,
+                        fontSize: mediumTheme.typography.fontSize.sm,
+                      }}
+                    >
+                      {newsletterMessage}
+                    </NewsletterDisclaimer>
+                  )}
                   <NewsletterDisclaimer>
-                    By signing up, you will create a Medium account if you don't already
-                    have one. Review our Privacy Policy for more information about our
-                    privacy practices.
+                    You'll get a confirmation email first. One-click unsubscribe in every
+                    email. I don't share your address.
                   </NewsletterDisclaimer>
                 </div>
               </BlogNewsletter>

@@ -68,6 +68,7 @@
     "react-sticky-state": "^2.1.9",
     "react-text-transition": "^1.3.0",
     "react-transition-group": "^4.4.2",
+    "resend": "^4.0.0",
     "roughjs": "^4.6.6",
     "serve-favicon": "^2.5.0",
     "slug": "^5.1.0",

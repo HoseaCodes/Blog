@@ -5,7 +5,7 @@ import axios from "axios";
 import {
   FiSend, FiClock, FiUsers, FiCheckCircle, FiX, FiCalendar,
   FiGlobe, FiLinkedin, FiGithub, FiEdit3, FiEye, FiSettings,
-  FiAlertCircle, FiArrowRight, FiPlay, FiPause, FiRefreshCw
+  FiAlertCircle, FiArrowRight, FiPlay, FiPause, FiRefreshCw, FiMail
 } from "react-icons/fi";
 import moment from "moment";
 import { GlobalState } from "../../GlobalState";
@@ -289,7 +289,8 @@ function PublishingWorkflow({
     linkedin: false,
     medium: false,
     devto: false,
-    ghost: false
+    ghost: false,
+    newsletter: false
   });
 
   const [linkedinStatus, setLinkedinStatus] = useState({ loading: true, connected: false });
@@ -465,6 +466,16 @@ function PublishingWorkflow({
       status: 'disconnected',
       description: 'Community for developers (not wired)'
     },
+    ...(isAdmin ? [{
+      id: 'newsletter',
+      name: 'Email Newsletter',
+      icon: FiMail,
+      color: '#206a5d',
+      status: article?.newsletterSentAt ? 'connected' : 'connected',
+      description: article?.newsletterSentAt
+        ? `Already sent ${moment(article.newsletterSentAt).fromNow()} — toggling on will re-send`
+        : 'Email this article to verified subscribers on publish'
+    }] : []),
     {
       id: 'ghost',
       name: 'Ghost',

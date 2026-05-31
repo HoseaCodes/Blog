@@ -4,6 +4,7 @@ import Comments from "../models/comment.js";
 import Logger from "../utils/logger.js";
 import { cache } from "../utils/cache.js";
 import { getValidLinkedInToken, getLocalUserId } from "./linkedin.js";
+import { broadcastArticle } from "./subscriber.js";
 import axios from "axios";
 
 const logger = new Logger("articles");
@@ -226,6 +227,7 @@ async function createArticle(req, res) {
       linkedin,
       linkedinContent,
       linkedinIntro,
+      notifySubscribers,
     } = req.body;
 
     switch (req.body) {
@@ -294,6 +296,7 @@ async function createArticle(req, res) {
       linkedin,
       linkedinContent,
       linkedinIntro: linkedinIntro || null,
+      notifySubscribers: !!notifySubscribers,
     });
 
     if (dev) {
@@ -383,6 +386,21 @@ async function createArticle(req, res) {
     if (linkedin && !savedArticle.draft && !savedArticle.archived) {
       const localId = await getLocalUserId(req);
       linkedinResult = await postArticleToLinkedIn(savedArticle, localId);
+    }
+
+    // Newsletter broadcast: fire-and-forget so the response isn't blocked by
+    // N sequential Resend sends. broadcastArticle stamps newsletterSentAt, so
+    // republishing the same article won't re-broadcast on its own (admin can
+    // force via POST /api/subscribers/broadcast/:id if needed).
+    if (
+      savedArticle.notifySubscribers &&
+      !savedArticle.draft &&
+      !savedArticle.archived &&
+      !savedArticle.newsletterSentAt
+    ) {
+      broadcastArticle(savedArticle).catch((err) =>
+        logger.error(`Newsletter broadcast failed for ${savedArticle._id}: ${err.message}`)
+      );
     }
 
     res.json({
@@ -501,6 +519,21 @@ async function updateArticle(req, res) {
     if (rest.linkedin && afterUpdate && !afterUpdate.draft && !afterUpdate.archived) {
       const localId = await getLocalUserId(req);
       linkedinResult = await postArticleToLinkedIn(afterUpdate, localId);
+    }
+
+    // Draft → publish transition: if notifySubscribers is on and we haven't
+    // sent before, fire the newsletter broadcast. Fire-and-forget for the
+    // same reason as createArticle.
+    if (
+      afterUpdate &&
+      afterUpdate.notifySubscribers &&
+      !afterUpdate.draft &&
+      !afterUpdate.archived &&
+      !afterUpdate.newsletterSentAt
+    ) {
+      broadcastArticle(afterUpdate).catch((err) =>
+        logger.error(`Newsletter broadcast failed for ${afterUpdate._id}: ${err.message}`)
+      );
     }
 
     res.json({ msg: "Updated a article", linkedin: linkedinResult });

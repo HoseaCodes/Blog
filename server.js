@@ -31,6 +31,7 @@ import ttsRouter from './routes/tts.js';
 import sitemapRouter from './routes/sitemap.js';
 import socialPreviewRouter from './routes/socialPreview.js';
 import linkedinRouter from './routes/linkedin.js';
+import subscriberRouter from './routes/subscriber.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
@@ -108,6 +109,11 @@ app.use('/api/user', userRouter);
 // can't carry our JWT). Must mount before ANY router with a `router.use(auth)`
 // catch-all — including storeRouter, which has it at routes/store.js:15.
 app.use('/api', linkedinRouter);
+// Same ordering rule as linkedinRouter above: the public signup/verify/
+// unsubscribe routes must be mounted before any /api router with a
+// `router.use(auth)` catch-all (store, media, blog, etc.), otherwise those
+// catch-alls 401 first and the request never reaches this router.
+app.use('/api/subscribers', subscriberRouter);
 // Mount store BEFORE the routers below — they use a no-path
 // `router.use(auth)` catch-all that would otherwise intercept the
 // public /api/store/items handler (used by /shop/redeem).

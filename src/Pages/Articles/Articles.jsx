@@ -1714,7 +1714,7 @@ function EnterpriseTechGuide() {
               On enterprise systems &amp; engineering excellence.
             </ExpertiseLogo>
             <ExpertiseDesc>
-              Managed by Dominique Hosea — Senior Software Engineer at State
+              Managed by D. Hosea — Senior Software Engineer at State
               Farm. Part of the Enterprise Engineering Excellence Initiative.
             </ExpertiseDesc>
           </ExpertiseLeft>

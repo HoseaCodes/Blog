@@ -11,6 +11,8 @@ import CreateArticle from "./Pages/Articles/CreateArticle";
 import { DataProvider } from "./GlobalState";
 import { GameScoreProvider } from "./Context/GameScoreContext";
 import ArticleItem from "./Pages/Articles/Article/Article";
+import NewsletterVerify from "./Pages/Newsletter/Verify";
+import NewsletterUnsubscribe from "./Pages/Newsletter/Unsubscribe";
 import ProjectItem from "./Pages/Projects/Project/Project";
 import Login from "./Pages/Auth/login";
 import Register from "./Pages/Auth/register";
@@ -301,6 +303,8 @@ const App = () => {
                 {/* Blog */}
                 <Route path="/blog" exact={true} component={Articles} />
                 <Route path="/blog/:id" exact={true} component={ArticleItem} />
+                <Route path="/newsletter/verify/:token" exact={true} component={NewsletterVerify} />
+                <Route path="/newsletter/unsubscribe/:token" exact={true} component={NewsletterUnsubscribe} />
                 <PrivateRoute
                   type={"admin"}
                   path="/admin/blog/new"

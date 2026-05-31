@@ -136,6 +136,14 @@ const articleSchema = new mongoose.Schema({
     sanitizedHtml: {
         type: String,
         required: false
+    },
+    notifySubscribers: {
+        type: Boolean,
+        default: false
+    },
+    newsletterSentAt: {
+        type: Date,
+        default: null
     }
 
 }, {

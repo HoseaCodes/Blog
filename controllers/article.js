@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import Articles from "../models/article.js";
 import Comments from "../models/comment.js";
+import Users from "../models/user.js";
 import Logger from "../utils/logger.js";
 import { cache } from "../utils/cache.js";
 import { getValidLinkedInToken, getLocalUserId } from "./linkedin.js";
@@ -142,6 +143,26 @@ async function getArticleByID(req, res) {
     // See getArticle: the denormalized article.comments array is unreliable,
     // so derive the count fresh from the Comments collection.
     article.commentCount = await Comments.countDocuments({ blog: article._id });
+
+    // If a token came along, populate the viewer's like/save state so the UI
+    // can render the buttons in the correct toggled position on first paint.
+    // No auth middleware on this route — we only attempt the lookup if a
+    // local user id resolves; failures stay silent (article still returns).
+    article.liked = false;
+    article.saved = false;
+    try {
+      const userId = await getLocalUserId(req);
+      if (userId) {
+        const user = await Users.findById(userId).select("likedArticles savedArticles");
+        if (user) {
+          const articleIdStr = String(article._id);
+          article.liked = user.likedArticles.map(String).includes(articleIdStr);
+          article.saved = user.savedArticles.map(String).includes(articleIdStr);
+        }
+      }
+    } catch (_) {
+      // anonymous viewer — defaults stay false
+    }
 
     res.json({
       status: "success",
@@ -433,21 +454,100 @@ async function deleteArticle(req, res) {
   }
 }
 
-async function updateLikes(req, res) {
+// Toggle a like on the article for the authenticated user. Per-user dedup
+// lives on the User document (likedArticles array of article ids). The
+// Articles.likes count is maintained as a denormalized total via $inc to
+// avoid scanning the User collection on every read. Idempotent in spirit —
+// clicking twice unlikes — but not atomic across the two writes; for a
+// solo blog with low contention that's an acceptable trade.
+async function toggleLike(req, res) {
   try {
-    const post_id = req.params.id;
-    let { likes } = req.body;
-    likes += 1;
+    const articleId = req.params.id;
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required to like." });
 
-    await Articles.findOneAndUpdate({ _id: post_id }, { likes });
+    const user = await Users.findById(userId).select("likedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
 
-    res.json({
-      msg: `${post_id} received a new like`,
-      totalLikes: likes,
-    });
+    const alreadyLiked = user.likedArticles.map(String).includes(String(articleId));
+
+    if (alreadyLiked) {
+      await Users.findByIdAndUpdate(userId, { $pull: { likedArticles: articleId } });
+      const updated = await Articles.findByIdAndUpdate(
+        articleId,
+        { $inc: { likes: -1 } },
+        { new: true }
+      ).select("likes");
+      return res.json({ liked: false, totalLikes: Math.max(0, updated?.likes || 0) });
+    }
+
+    await Users.findByIdAndUpdate(userId, { $addToSet: { likedArticles: articleId } });
+    const updated = await Articles.findByIdAndUpdate(
+      articleId,
+      { $inc: { likes: 1 } },
+      { new: true }
+    ).select("likes");
+    return res.json({ liked: true, totalLikes: updated?.likes || 0 });
   } catch (err) {
     logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
 
+// Toggle a bookmark/save on the article for the authenticated user.
+// Source of truth is User.savedArticles. No counterpart on Articles since
+// total-saves isn't a public surface.
+async function toggleSave(req, res) {
+  try {
+    const articleId = req.params.id;
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required to save." });
+
+    const user = await Users.findById(userId).select("savedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
+
+    const alreadySaved = user.savedArticles.map(String).includes(String(articleId));
+
+    if (alreadySaved) {
+      await Users.findByIdAndUpdate(userId, { $pull: { savedArticles: articleId } });
+      return res.json({ saved: false });
+    }
+
+    await Users.findByIdAndUpdate(userId, { $addToSet: { savedArticles: articleId } });
+    return res.json({ saved: true });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// GET /api/articles/saved — returns full article docs the authenticated user
+// has bookmarked, newest-saved first (preserves insertion order via the array).
+async function getSavedArticles(req, res) {
+  try {
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required." });
+
+    const user = await Users.findById(userId).select("savedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
+
+    const ids = (user.savedArticles || []).map((id) => {
+      try { return new mongoose.Types.ObjectId(String(id)); } catch { return null; }
+    }).filter(Boolean);
+
+    const articles = await Articles.find({
+      _id: { $in: ids },
+      ...PUBLIC_FILTER,
+    }).lean();
+
+    // Preserve user's save order (newest first) — Mongo $in returns whatever
+    // order it likes.
+    const order = new Map(ids.map((id, i) => [String(id), i]));
+    articles.sort((a, b) => (order.get(String(a._id)) ?? 0) - (order.get(String(b._id)) ?? 0));
+
+    return res.json({ status: "success", articles, count: articles.length });
+  } catch (err) {
+    logger.error(err);
     return res.status(500).json({ msg: err.message });
   }
 }
@@ -584,6 +684,8 @@ export {
   deleteArticle,
   updateArticle,
   updateArticleComment,
-  updateLikes,
+  toggleLike,
+  toggleSave,
+  getSavedArticles,
   postArticleToLinkedIn,
 };

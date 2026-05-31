@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 import { GlobalState } from '../../GlobalState';
 import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail, AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { FaRegThumbsUp, FaRegComment } from 'react-icons/fa';
+import { FaRegThumbsUp, FaThumbsUp, FaRegComment, FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { BsTwitter, BsFacebook, BsLinkedin, BsLink45Deg } from 'react-icons/bs';
 import { RiShareCircleFill } from 'react-icons/ri';
 import { TiSocialLinkedinCircular } from 'react-icons/ti';
@@ -718,6 +718,7 @@ const EngagementActions = styled.div`
 `;
 
 const EngagementButton = styled.button`
+  position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -738,6 +739,47 @@ const EngagementButton = styled.button`
 
   svg {
     font-size: 16px;
+  }
+`;
+
+// Tooltip shown above the engagement buttons. Default-hidden; appears on
+// hover of the parent button. Used to warn anonymous users that clicking
+// will redirect to login before they actually get redirected.
+const Tooltip = styled.span`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1e23;
+  color: #f4f6f8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* little arrow pointing down at the button */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1e23;
+  }
+
+  ${EngagementButton}:hover & {
+    opacity: 1;
+    visibility: visible;
   }
 `;
 
@@ -822,6 +864,7 @@ const MainContainer = ({
   const { _id, likes, title, subtitle, description, images, markdown, comments, commentCount } = detailArticle;
   const globalState = useContext(GlobalState);
   const [token] = globalState.token;
+  const history = useHistory();
 
   // Audio states
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -832,6 +875,18 @@ const MainContainer = ({
   const audioUrlRef = useRef(null);       // blob URL for cleanup
   const fallbackUtteranceRef = useRef(null); // Web Speech utterance for anonymous users
   const [postLikes, setPostLikes] = useState(likes || 0);
+  const [hasLiked, setHasLiked] = useState(!!detailArticle.liked);
+  const [hasSaved, setHasSaved] = useState(!!detailArticle.saved);
+  const [likePending, setLikePending] = useState(false);
+  const [savePending, setSavePending] = useState(false);
+
+  // Keep local toggle state in sync when the article reloads (route change
+  // brings a new detailArticle with fresh liked/saved/likes from the server).
+  useEffect(() => {
+    setPostLikes(detailArticle.likes || 0);
+    setHasLiked(!!detailArticle.liked);
+    setHasSaved(!!detailArticle.saved);
+  }, [detailArticle._id, detailArticle.liked, detailArticle.saved, detailArticle.likes]);
 
   // Newsletter signup state. status: 'idle' | 'submitting' | 'success' | 'error'
   const [newsletterEmail, setNewsletterEmail] = useState('');
@@ -986,6 +1041,55 @@ const MainContainer = ({
     }
   };
 
+  const handleLikeClick = async () => {
+    if (likePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setLikePending(true);
+    // Optimistic toggle so the icon feels instant. Reverts on failure.
+    const prevLiked = hasLiked;
+    const prevCount = postLikes;
+    setHasLiked(!prevLiked);
+    setPostLikes(prevLiked ? Math.max(0, prevCount - 1) : prevCount + 1);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/like`, null, {
+        headers: { Authorization: token },
+      });
+      setHasLiked(!!res.data?.liked);
+      setPostLikes(res.data?.totalLikes ?? prevCount);
+    } catch (err) {
+      setHasLiked(prevLiked);
+      setPostLikes(prevCount);
+      console.error('Like failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setLikePending(false);
+    }
+  };
+
+  const handleSaveClick = async () => {
+    if (savePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setSavePending(true);
+    const prevSaved = hasSaved;
+    setHasSaved(!prevSaved);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/save`, null, {
+        headers: { Authorization: token },
+      });
+      setHasSaved(!!res.data?.saved);
+    } catch (err) {
+      setHasSaved(prevSaved);
+      console.error('Save failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setSavePending(false);
+    }
+  };
+
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
     if (newsletterStatus === 'submitting') return;
@@ -1122,13 +1226,27 @@ const MainContainer = ({
               <StickyFooter>
                 <StickyContent>
                   <EngagementActions>
-                    <EngagementButton onClick={() => setPostLikes(prev => prev + 1)}>
-                      <FaRegThumbsUp />
+                    <EngagementButton
+                      onClick={handleLikeClick}
+                      disabled={likePending}
+                      style={hasLiked ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasLiked ? <FaThumbsUp /> : <FaRegThumbsUp />}
                       {postLikes}
+                      {!token && <Tooltip>Sign in to like — saves to your account</Tooltip>}
                     </EngagementButton>
                     <EngagementButton onClick={() => setViewComment(true)}>
                       <FaRegComment />
                       {commentCount ?? comments?.length ?? 0}
+                    </EngagementButton>
+                    <EngagementButton
+                      onClick={handleSaveClick}
+                      disabled={savePending}
+                      style={hasSaved ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasSaved ? <FaBookmark /> : <FaRegBookmark />}
+                      {hasSaved ? 'Saved' : 'Save'}
+                      {!token && <Tooltip>Sign in to save — syncs across devices</Tooltip>}
                     </EngagementButton>
                   </EngagementActions>
                   

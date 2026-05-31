@@ -13,6 +13,7 @@ import { GameScoreProvider } from "./Context/GameScoreContext";
 import ArticleItem from "./Pages/Articles/Article/Article";
 import NewsletterVerify from "./Pages/Newsletter/Verify";
 import NewsletterUnsubscribe from "./Pages/Newsletter/Unsubscribe";
+import Saved from "./Pages/Saved/Saved";
 import ProjectItem from "./Pages/Projects/Project/Project";
 import Login from "./Pages/Auth/login";
 import Register from "./Pages/Auth/register";
@@ -305,6 +306,7 @@ const App = () => {
                 <Route path="/blog/:id" exact={true} component={ArticleItem} />
                 <Route path="/newsletter/verify/:token" exact={true} component={NewsletterVerify} />
                 <Route path="/newsletter/unsubscribe/:token" exact={true} component={NewsletterUnsubscribe} />
+                <Route path="/saved" exact={true} component={Saved} />
                 <PrivateRoute
                   type={"admin"}
                   path="/admin/blog/new"

@@ -1,3 +1,8 @@
+// MUST be the first import — populates process.env from .env before any other
+// module (controllers, routes) is evaluated. ES module imports are depth-first
+// and module-level `const X = process.env.Y` captures happen at import time,
+// so deferring dotenv.config() to the body of server.js leaves those undefined.
+import "dotenv/config";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
@@ -25,6 +30,7 @@ import storeRouter from './routes/store.js';
 import ttsRouter from './routes/tts.js';
 import sitemapRouter from './routes/sitemap.js';
 import socialPreviewRouter from './routes/socialPreview.js';
+import linkedinRouter from './routes/linkedin.js';
 import connectDB from './config/db.js';
 import {imageOp} from './utils/imageOp.js';
 import rateLimit from 'express-rate-limit';
@@ -98,6 +104,10 @@ app.use('/api', uploadRouter);
 app.use('/api', paymentRouter);
 app.use('/api', productRouter);
 app.use('/api/user', userRouter);
+// LinkedIn's /callback is intentionally un-gated (LinkedIn's browser redirect
+// can't carry our JWT). Must mount before ANY router with a `router.use(auth)`
+// catch-all — including storeRouter, which has it at routes/store.js:15.
+app.use('/api', linkedinRouter);
 // Mount store BEFORE the routers below — they use a no-path
 // `router.use(auth)` catch-all that would otherwise intercept the
 // public /api/store/items handler (used by /shop/redeem).

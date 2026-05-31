@@ -99,6 +99,18 @@ const userSchema = new mongoose.Schema({
   },
   resetPasswordExpire: {
     type: Date
+  },
+  // LinkedIn cross-posting integration (admin only).
+  // Tokens are stored plaintext for now — acceptable for a single-admin blog,
+  // but worth moving behind an at-rest encryption layer if more authors are added.
+  linkedin: {
+    accessToken: { type: String },
+    refreshToken: { type: String },
+    expiresAt: { type: Date },
+    refreshExpiresAt: { type: Date },
+    urn: { type: String },           // urn:li:person:XXXX
+    displayName: { type: String },   // for UI "Connected as <name>"
+    connectedAt: { type: Date }
   }
 }, {
   timestamps: true

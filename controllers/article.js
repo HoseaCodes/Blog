@@ -3,6 +3,7 @@ import Articles from "../models/article.js";
 import Comments from "../models/comment.js";
 import Logger from "../utils/logger.js";
 import { cache } from "../utils/cache.js";
+import { getValidLinkedInToken, getLocalUserId } from "./linkedin.js";
 import axios from "axios";
 
 const logger = new Logger("articles");
@@ -10,6 +11,74 @@ const logger = new Logger("articles");
 // Public visibility predicate. Mirrors routes/sitemap.js.
 // Authenticated admin endpoints (getAdminArticles*) skip this filter.
 const PUBLIC_FILTER = { draft: { $ne: true }, archived: { $ne: true } };
+
+const SITE_URL = (process.env.SITE_URL || "https://hoseacodes.com").replace(/\/$/, "");
+
+// Default text when the user didn't supply a custom linkedinIntro.
+function defaultLinkedInText(article) {
+  const parts = [];
+  if (article.title) parts.push(article.title);
+  if (article.description) parts.push(article.description);
+  parts.push(`${SITE_URL}/blog/${article.slug}`);
+  return parts.join("\n\n");
+}
+
+// Cross-post an already-saved article to LinkedIn. Never throws — failures
+// are returned in the result so the article save itself stays successful.
+// Pass { force: true } to bypass the linkedinPostedAt idempotency check, e.g.
+// for the explicit "Post to LinkedIn now" button.
+async function postArticleToLinkedIn(article, userId, { force = false } = {}) {
+  if (!article || !userId) return { posted: false, skipped: "no-article-or-user" };
+  if (!force && article.linkedinPostedAt) return { posted: false, skipped: "already-posted" };
+  if (article.draft || article.archived) return { posted: false, skipped: "not-published" };
+
+  try {
+    const { accessToken, urn } = await getValidLinkedInToken(userId);
+    const text =
+      (article.linkedinIntro && article.linkedinIntro.trim()) ||
+      defaultLinkedInText(article);
+
+    const response = await axios.post(
+      "https://api.linkedin.com/v2/ugcPosts",
+      {
+        author: urn,
+        lifecycleState: "PUBLISHED",
+        specificContent: {
+          "com.linkedin.ugc.ShareContent": {
+            shareCommentary: { text },
+            shareMediaCategory: "NONE",
+          },
+        },
+        visibility: {
+          "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "X-Restli-Protocol-Version": "2.0.0",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const postUrn = response.headers["x-restli-id"] || response.data?.id || null;
+    await Articles.findByIdAndUpdate(article._id, {
+      linkedinPostedAt: new Date(),
+      linkedinPostUrn: postUrn,
+    });
+
+    logger.info(`Posted to LinkedIn: ${postUrn} for article ${article._id}`);
+    return { posted: true, postUrn };
+  } catch (err) {
+    const msg =
+      err.response?.data?.message ||
+      err.response?.data?.error_description ||
+      err.message;
+    logger.error(`LinkedIn cross-post failed: ${msg}`);
+    return { posted: false, error: msg };
+  }
+}
 
 async function getArticle(req, res) {
   try {
@@ -60,14 +129,18 @@ async function getArticleByID(req, res) {
 
     let article = null;
     if (isObjectId) {
-      article = await Articles.findOne({ _id: id, ...PUBLIC_FILTER });
+      article = await Articles.findOne({ _id: id, ...PUBLIC_FILTER }).lean();
     }
     if (!article) {
-      article = await Articles.findOne({ slug: id, ...PUBLIC_FILTER });
+      article = await Articles.findOne({ slug: id, ...PUBLIC_FILTER }).lean();
     }
 
     if (!article)
       return res.status(404).send({ msg: "Article does not exist" });
+
+    // See getArticle: the denormalized article.comments array is unreliable,
+    // so derive the count fresh from the Comments collection.
+    article.commentCount = await Comments.countDocuments({ blog: article._id });
 
     res.json({
       status: "success",
@@ -152,7 +225,7 @@ async function createArticle(req, res) {
       series,
       linkedin,
       linkedinContent,
-      linkedinAccessToken,
+      linkedinIntro,
     } = req.body;
 
     switch (req.body) {
@@ -220,16 +293,8 @@ async function createArticle(req, res) {
       medium,
       linkedin,
       linkedinContent,
+      linkedinIntro: linkedinIntro || null,
     });
-
-    try {
-    } catch (error) {
-      logger.error(error);
-      return res.status(error.response.status).json({
-        code: error.response.statusText,
-        msg: error.response.data,
-      });
-    }
 
     if (dev) {
       try {
@@ -305,81 +370,30 @@ async function createArticle(req, res) {
       }
     }
 
-    if (linkedin) {
-      try {
-        const redirectUri = "http://localhost:3000/admin/blog/new";
-        const clientId = process.env.LINKEDIN_CLIENT_ID || "86s5czbllv0b9s";
-        const clientSecret =
-          process.env.LINKEDIN_CLIENT_SECRET || "VvcAdF8uDmIddv2J";
-        const getAccessToken = async () => {
-          const response = await axios.post(
-            "https://www.linkedin.com/oauth/v2/accessToken",
-            null,
-            {
-              params: {
-                grant_type: "authorization_code",
-                code: linkedinAccessToken,
-                redirect_uri: redirectUri,
-                client_id: clientId,
-                client_secret: clientSecret,
-              },
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-            }
-          );
-          return response.data.access_token;
-        };
-        const accessToken = await getAccessToken();
-        const response = await axios.post(
-          "https://api.linkedin.com/v2/ugcPosts",
-          {
-            author: `urn:li:person:ZGV337BIbm`,
-            lifecycleState: "PUBLISHED",
-            specificContent: {
-              "com.linkedin.ugc.ShareContent": {
-                shareCommentary: {
-                  text: linkedinContent,
-                },
-                shareMediaCategory: "NONE",
-              },
-            },
-            visibility: {
-              "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "X-Restli-Protocol-Version": "2.0.0",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        logger.info("Published to LinkedIn", { res: response.data });
-      } catch (error) {
-        logger.error(error);
-        console.log(error);
-        return res.status(error.response.status).json({
-          code: error.response.statusText,
-          msg: error.response.data,
-        });
-      }
-    }
-
     res.clearCookie("artilces-cache");
     const savedArticle = await newArticle.save();
 
     logger.info(`New article ${title} has been created`);
 
-    res.json({ 
+    // Cross-post to LinkedIn after the article exists so we can stamp it
+    // with linkedinPostedAt and prevent duplicate posts on republish.
+    // Use local Users._id (resolved from email), not Storm-Gate's id — see
+    // controllers/linkedin.js getLocalUserId for why.
+    let linkedinResult = null;
+    if (linkedin && !savedArticle.draft && !savedArticle.archived) {
+      const localId = await getLocalUserId(req);
+      linkedinResult = await postArticleToLinkedIn(savedArticle, localId);
+    }
+
+    res.json({
       success: true,
       msg: "Created a new article",
       article: {
         article_id: savedArticle.article_id || savedArticle._id,
         title: savedArticle.title,
-        slug: savedArticle.slug
-      }
+        slug: savedArticle.slug,
+      },
+      linkedin: linkedinResult,
     });
   } catch (err) {
     logger.error(err);
@@ -473,14 +487,23 @@ async function updateArticle(req, res) {
 
     await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
 
-    const afterUpdate = await Articles.findOne({ _id: req.params.id }, { tags: 1 });
+    const afterUpdate = await Articles.findOne({ _id: req.params.id });
     logger.info("After update, tags in DB = " + JSON.stringify(afterUpdate?.tags));
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 
     logger.info(preparedLog);
 
-    res.json({ msg: "Updated a article" });
+    // Draft → publish transition: if the update set linkedin=true and the
+    // article is now public, cross-post (idempotent via linkedinPostedAt).
+    // Use local Users._id (resolved from email), not Storm-Gate's id.
+    let linkedinResult = null;
+    if (rest.linkedin && afterUpdate && !afterUpdate.draft && !afterUpdate.archived) {
+      const localId = await getLocalUserId(req);
+      linkedinResult = await postArticleToLinkedIn(afterUpdate, localId);
+    }
+
+    res.json({ msg: "Updated a article", linkedin: linkedinResult });
   } catch (err) {
     logger.error(err);
     console.log(err.message);
@@ -529,4 +552,5 @@ export {
   updateArticle,
   updateArticleComment,
   updateLikes,
+  postArticleToLinkedIn,
 };

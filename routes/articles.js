@@ -3,6 +3,8 @@ import {
   getArticle,
   createArticle,
   getArticleByID,
+  getAdminArticles,
+  getAdminArticleByID,
   conditionalArticle,
   deleteArticle,
   updateArticle,
@@ -20,6 +22,11 @@ import auth from '../utils/auth.js';
 const router = express.Router();
 const commentRouter = express.Router({mergeParams: true});
 router.use('/articles/:id/comments', commentRouter);
+
+// Admin routes — auth-gated; return drafts and archived. Must be registered
+// before /articles/:id so the prefix never gets shadowed.
+router.route("/admin/articles").get(auth, getAdminArticles);
+router.route("/admin/articles/:id").get(auth, getAdminArticleByID);
 
 router
   .route("/articles")

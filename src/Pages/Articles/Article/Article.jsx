@@ -127,6 +127,7 @@ const ArticleItem = () => {
   }, [params.id, articles]);
 
   if (!detailArticle._id) return null;
+  if (detailArticle.draft || detailArticle.archived) return null;
 
   const { createdAt, markdown } = detailArticle;
   const timeFormater = moment.utc(createdAt).format('MMMM Do, YYYY');

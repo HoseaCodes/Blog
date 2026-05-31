@@ -18,7 +18,10 @@ const ADMIN_USER_IDS = (process.env.ADMIN_USER_IDS || '')
 const CHUNK_SIZE = 3500;      // < 4096 OpenAI per-request hard limit, with headroom
 const MAX_TOTAL_CHARS = 30000; // safety guard: ~30s/min × ~10 min audio ceiling
 const VOICE = 'onyx';
-const MODEL = 'tts-1-hd';
+// tts-1 (not tts-1-hd): hd is 3-5x slower per chunk, and on long articles
+// the ~5 parallel chunk requests below were exceeding Fly.io's edge timeout
+// and returning 502 before the controller could respond.
+const MODEL = 'tts-1';
 
 // OpenAI list prices in USD per 1K characters. Override via env when pricing changes.
 const PRICE_PER_1K = {

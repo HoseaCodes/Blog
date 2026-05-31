@@ -7,9 +7,13 @@ import axios from "axios";
 
 const logger = new Logger("articles");
 
+// Public visibility predicate. Mirrors routes/sitemap.js.
+// Authenticated admin endpoints (getAdminArticles*) skip this filter.
+const PUBLIC_FILTER = { draft: { $ne: true }, archived: { $ne: true } };
+
 async function getArticle(req, res) {
   try {
-    const articles = await Articles.find().lean();
+    const articles = await Articles.find(PUBLIC_FILTER).lean();
 
     // Live comment counts from the Comments collection. The denormalized
     // `article.comments` field is unreliable (nested-array corruption from
@@ -56,10 +60,10 @@ async function getArticleByID(req, res) {
 
     let article = null;
     if (isObjectId) {
-      article = await Articles.findOne({ _id: id });
+      article = await Articles.findOne({ _id: id, ...PUBLIC_FILTER });
     }
     if (!article) {
-      article = await Articles.findOne({ slug: id });
+      article = await Articles.findOne({ slug: id, ...PUBLIC_FILTER });
     }
 
     if (!article)
@@ -72,6 +76,55 @@ async function getArticleByID(req, res) {
   } catch (err) {
     logger.error(err);
 
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// Admin-only: returns full article list including drafts and archived.
+// Auth-gated at the route layer.
+async function getAdminArticles(req, res) {
+  try {
+    const articles = await Articles.find().lean();
+
+    const counts = await Comments.aggregate([
+      { $group: { _id: "$blog", count: { $sum: 1 } } },
+    ]);
+    const countMap = new Map(counts.map((c) => [String(c._id), c.count]));
+    for (const a of articles) {
+      a.commentCount = countMap.get(String(a._id)) || 0;
+    }
+
+    res.json({
+      status: "success",
+      articles: articles,
+      result: articles.length,
+    });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// Admin-only: fetch any article by id or slug, drafts included.
+async function getAdminArticleByID(req, res) {
+  try {
+    const { id } = req.params;
+    const isObjectId = mongoose.Types.ObjectId.isValid(id) && /^[a-f0-9]{24}$/i.test(id);
+
+    let article = null;
+    if (isObjectId) {
+      article = await Articles.findOne({ _id: id });
+    }
+    if (!article) {
+      article = await Articles.findOne({ slug: id });
+    }
+
+    if (!article)
+      return res.status(404).send({ msg: "Article does not exist" });
+
+    res.json({ status: "success", article });
+  } catch (err) {
+    logger.error(err);
     return res.status(500).json({ msg: err.message });
   }
 }
@@ -468,6 +521,8 @@ async function conditionalArticle(req, res) {
 export {
   getArticle,
   getArticleByID,
+  getAdminArticles,
+  getAdminArticleByID,
   createArticle,
   conditionalArticle,
   deleteArticle,

@@ -572,8 +572,30 @@ const AdminBlogs = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
   const [user] = state.userAPI.user;
-  const [articles] = state.articlesAPI.articles;
   const [callback, setCallback] = state.articlesAPI.callback;
+
+  // Admin needs drafts/archived in the list, so this page fetches its own
+  // data from /api/admin/articles instead of using GlobalState (which now
+  // only returns published articles via the public /api/articles endpoint).
+  const [articles, setArticles] = useState([]);
+
+  useEffect(() => {
+    if (!token) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await axios.get("/api/admin/articles", {
+          headers: { Authorization: token },
+        });
+        if (!cancelled) setArticles(res.data.articles || []);
+      } catch (err) {
+        if (!cancelled) console.error("Failed to load admin articles:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [token, callback]);
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");

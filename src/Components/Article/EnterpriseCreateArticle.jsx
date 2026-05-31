@@ -387,7 +387,9 @@ function EnterpriseCreateArticle() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await axios.get(`/api/articles/${editId}`);
+        const res = await axios.get(`/api/admin/articles/${editId}`, {
+          headers: { Authorization: token },
+        });
         if (cancelled) return;
         const be = res.data?.article;
         if (!be) throw new Error("Article not found");
@@ -403,7 +405,7 @@ function EnterpriseCreateArticle() {
     return () => {
       cancelled = true;
     };
-  }, [editId]);
+  }, [editId, token]);
 
   const updateArticle = useCallback((updates) => {
     setArticle(prev => ({

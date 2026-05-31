@@ -823,23 +823,24 @@ const MainContainer = ({
       setAudioPlaying(true);
       setAudioPaused(false);
     } catch (err) {
-      // 429 = daily quota exceeded — surface the message, don't fall back silently
-      let msg = 'Could not play audio.';
+      // Surface what went wrong with OpenAI, then fall back to the free
+      // browser voice so the user still gets audio playback.
+      let msg = 'Using browser voice (premium unavailable).';
       if (err.response?.status === 429) {
-        msg = 'You\'ve used your daily listen. Try again tomorrow.';
+        msg = 'Daily premium listen reached — using browser voice.';
       } else if (err.response?.data) {
         // axios blob errors need decoding
         try {
           const text = await err.response.data.text();
           const parsed = JSON.parse(text);
-          msg = parsed.msg || msg;
+          if (parsed.msg) msg = `${parsed.msg} — using browser voice.`;
           console.error('Audio error response:', parsed);
-        } catch (parseErr) { 
-          // ignore parse errors and use generic message
+        } catch (parseErr) {
           console.error('Error parsing audio error response:', parseErr);
-         }
+        }
       }
       setAudioError(msg);
+      playWebSpeechFallback();
     } finally {
       setAudioLoading(false);
     }

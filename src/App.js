@@ -15,6 +15,9 @@ import NewsletterVerify from "./Pages/Newsletter/Verify";
 import NewsletterUnsubscribe from "./Pages/Newsletter/Unsubscribe";
 import Saved from "./Pages/Saved/Saved";
 import ProjectItem from "./Pages/Projects/Project/Project";
+import CaseStudies from "./Pages/CaseStudies/CaseStudies";
+import CaseStudyItem from "./Pages/CaseStudies/CaseStudy/CaseStudy";
+import CaseStudyEntry from "./Pages/CaseStudies/CaseStudyEntry";
 import Login from "./Pages/Auth/login";
 import Register from "./Pages/Auth/register";
 import ForgotPassword from "./Pages/Auth/forgotPassword";
@@ -290,17 +293,16 @@ const App = () => {
   return (
     <BrowserRouter history={history}>
       <CookiesProvider defaultSetOptions={{ path: '/' }}>
-        <Switch>
-          <DataProvider>
-            <GameScoreProvider>
-              <Layout>
+        <DataProvider>
+          <GameScoreProvider>
+            <Layout>
+              <Suspense fallback={<ProLoader />}>
+                <Switch>
                 <Route exact={true} path="/" render={() => <Home />} />
-                <Suspense fallback={<ProLoader />}>
                   {/* Static */}
                   <Route path="/about" exact={true} component={About} />
                   <Route path="/contact" exact={true} component={Contact} />
                   {/* Static */}
-                </Suspense>
                 {/* Blog */}
                 <Route path="/blog" exact={true} component={Articles} />
                 <Route path="/blog/:id" exact={true} component={ArticleItem} />
@@ -332,6 +334,9 @@ const App = () => {
                 {/* Showcase */}
                 <Route path="/project" exact={true} component={Projects} />
                 <Route path="/project/:id" exact={true} component={ProjectItem} />
+                <Route path="/case-studies" exact={true} component={CaseStudies} />
+                <Route path="/case-studies/:group/:study" exact={true} component={CaseStudyItem} />
+                <Route path="/case-studies/:slug" exact={true} component={CaseStudyEntry} />
                 {/* Showcase */}
                 {/* UserManagement */}
                 <PrivateRoute
@@ -530,13 +535,13 @@ const App = () => {
                   }
                 />
                 {/* GameStore */}
-                {/* 404 */}
-                {/* <Route component={Error} /> */}
-                {/* 404 */}
-              </Layout>
-            </GameScoreProvider>
-          </DataProvider>
-        </Switch>
+                  {/* 404 — catch-all, must remain last */}
+                  <Route component={Error} />
+                </Switch>
+              </Suspense>
+            </Layout>
+          </GameScoreProvider>
+        </DataProvider>
       </CookiesProvider>
     </BrowserRouter>
   );

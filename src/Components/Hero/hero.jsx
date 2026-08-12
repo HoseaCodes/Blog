@@ -294,7 +294,8 @@ const Hero = ({ username }) => {
           animate="visible"
           custom={0}
         >
-          Backend · Systems · Founder
+
+          Platform Engineer · Distributed Systems · Founder
         </Kicker>
 
         <Heading variants={fadeUp} initial="hidden" animate="visible" custom={1}>
@@ -306,9 +307,9 @@ const Hero = ({ username }) => {
         </Heading>
 
         <Tagline variants={fadeUp} initial="hidden" animate="visible" custom={2}>
-          Backend engineer and builder focused on AI-driven products, distributed
-          systems, and the kind of infrastructure that lets small teams move like
-          large ones.
+          Backend engineer and founder with a focus on product-driven building of
+          distributed backend systems,reliability, APIs, and scale, and cost-efficient
+          infrastructure for AI/ML workloads on AWS that lets small teams move like large ones.
         </Tagline>
 
         <RoleChipWrap

@@ -346,6 +346,7 @@ const NavBar = () => {
   const publicLinks = [
     { to: "/", label: "Home" },
     { to: "/project", label: "Projects" },
+    { to: "/case-studies", label: "Case Studies" },
     { to: "/blog", label: "Blog" },
     { to: "/about", label: "About" },
   ];

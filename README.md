@@ -1,816 +1,369 @@
-# [HoseaCodes-Blog](http://www.hoseacodes.com/)
+# HoseaCodes — Blog & Portfolio
 
-## Created by: Dominique Hosea
+[![Dev Pipeline](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/main.yaml/badge.svg?branch=staging)](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/main.yaml)
+[![Release Please](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/release-please.yml/badge.svg)](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/release-please.yml)
+[![Node 20](https://img.shields.io/badge/Node-20.x-339933)](https://nodejs.org/)
+[![React 17](https://img.shields.io/badge/React-17-61dafb)](https://react.dev/)
+[![Express 4](https://img.shields.io/badge/Express-4.21-000000)](https://expressjs.com/)
+[![MongoDB 7](https://img.shields.io/badge/MongoDB-7.0-47A248)](https://www.mongodb.com/)
+[![Deployed on Fly.io](https://img.shields.io/badge/Fly.io-deployed-8b5cf6)](https://fly.io/)
 
-### September 2020
+🌐 **[hoseacodes.com](http://www.hoseacodes.com/)** · 📖 **[Documentation](docs/)** · 🗺️ **[Roadmap](docs/ROADMAP.md)**
 
-Welcome, to my personal blog and portfolio. Sharing information is vital and especially in the dev commnunity. The blog showcases my latest works, testomines, articles, about me section, and contact me section. It mainly focuses on my current and most recent accomplishments.
+A personal blog and engineering portfolio: a React SPA and the Express API behind it — articles with drafts, scheduling and versioning, a media library, AI writing assistance, SEO analysis, a newsletter, a points economy with a redemption store, and LinkedIn cross-posting.
 
-[![NPM Version 7.6.3][npm-image]][npm-url]
+It is a **real, deployed, single-author site**, not a demo. That shapes every decision here: authentication is delegated to a separate service rather than reimplemented, the API and the SPA ship as one deployable because one person operates them, and the parts that are honestly unfinished are listed in [Known limitations](#known-limitations) rather than quietly omitted.
 
-### Homepage
-
-![Homepage](https://i.imgur.com/5k3N3ex.png)
-
-### Blog Page
-
-![Article Page](https://i.imgur.com/PeDkdtv.png)
-
-## Getting Started
-
-The user is brought to the home page where they can navigate to my [portfolio](www.dominiquehosea.com), my blog posts, my about me, or contact page. The home page is an introduction to who I am. The is a brief history of my experience with the option to download my resume. Additionally, I have the technologies that I am currently using, a project showcase, an embbed [Twitter](https://twitter.com/DominiqueRHosea) widget, and testimonies.
-
-
-## Game Zone
-
-What should I display here? The concept I was going for was like a main game center for my technical command center. Something like mini-games but with my own spin. I wanted users to have the ability to sign up and based off playing the high score, unlocks things on the website and allows you to buy things. The scores/points earned are more like crypto tokens. Also, during extended loading times, they have the ability to play the games to collect points.
-
-### Core Mini-Games for Your Technical Command Center
-
-1. Code Runner - Typing Speed Challenge
-
-```jsx
-// A coding-themed typing game where users type code snippets
-// Points based on WPM + accuracy
-// Unlocks: Advanced code templates, faster deployment tools
-```
-1. Load Balancer - Resource Management
-
-```jsx
-// Distribute incoming requests across servers
-// Players drag/drop requests to prevent server overload
-// Points for efficiency and uptime
-// Unlocks: Infrastructure monitoring tools, deployment credits
-``` 
-1. Memory Leak Hunter - Pattern Matching
-
-```jsx
-// Find and fix memory issues in visual code blocks
-// Similar to matching games but with technical concepts
-// Points for speed and accuracy
-// Unlocks: Debugging tools, performance insights
+```bash
+git clone https://github.com/HoseaCodes/Blog-Portfolio.git && cd Blog-Portfolio
+npm install --legacy-peer-deps
+npm run test:integration     # 17 tests, real MongoDB via Testcontainers. Needs Docker.
 ```
 
-1. API Tetris - System Architecture
+> **Status: deployed and in use, with known gaps.** Everything described below is implemented and readable in the source. Test coverage is thin and concentrated (see [Testing](#testing-strategy)), several authorization checks are missing (see [Security](#security)), and the scheduled-publish cron does not currently fire (see [Known limitations](#known-limitations)). Those are stated because finding them undocumented would be worse than reading them here.
 
-```jsx
-// Stack API components to build microservices
-// Different shapes = different services (auth, database, cache)
-// Points for clean architecture and completed systems
-// Unlocks: Architecture templates, service blueprints
-``` 
+---
 
-1. Crypto Miner - Simple Clicker Game
+## What it demonstrates
 
-```jsx
-// Perfect for loading screens - just click to mine tokens
-// Minimal interaction required
-// Steady point accumulation
-// Unlocks: Token multipliers, auto-mining tools
-```
-## Terminal Features
+| | |
+|---|---|
+| **Import-time-pure Express app** | `app.js` builds the app with **no** side effects — no DB connect, no cron, no `listen`. Tests import it directly; `server.js` owns the bootstrap. See [ADR-003](docs/adr/ADR-003-app-server-split.md) |
+| **Delegated authentication** | JWT issuance, refresh, password reset and OIDC live in **Storm-Gate**, a separate service consumed via `@storm-gate/express` (server) and `@storm-gate/client` (browser). See [ADR-001](docs/adr/ADR-001-delegated-auth.md) |
+| **Profile enrichment with graceful degradation** | The JWT carries only `{ id }`; role and status come from Storm-Gate's `/me`, cached 60s per id. If that call fails the request still succeeds — and admin checks fail *closed*, because `role` stays `undefined` |
+| **Integration testing against a real database** | Testcontainers boots `mongo:7.0`; supertest drives the real Express app over HTTP. No mocked repositories, and `nock.disableNetConnect()` guarantees no test reaches a third party |
+| **Mount-order correctness as a documented invariant** | Several routers use a no-path `router.use(auth)` catch-all, so public routes (LinkedIn OAuth callback, newsletter verify, store catalogue) **must** mount first. The rule is written at each mount site in `app.js`, because the failure mode is a silent 401 |
+| **Write-time sanitisation** | Markdown is rendered and DOMPurify-sanitised in a Mongoose `pre('validate')` hook, so the stored HTML is already safe. See [ADR-006](docs/adr/ADR-006-write-time-sanitisation.md) |
+| **Release automation with a single deploy path** | release-please opens a release PR on `master`; merging it tags `v*.*.*`, which fires the only workflow that deploys. Staging verifies and ships nothing |
+| **CI lessons encoded, not just fixed** | The lockfile rule, the module-scope SDK rule, and the two-branch tag-collision failure are all documented in [`docs/OPERATIONS.md`](docs/OPERATIONS.md) with the mechanism, not just the remedy |
+| **Product surface** | 22 routers, 19 Mongoose models: articles, comments, media, AI, SEO, analytics, collaboration, points, store, TTS, AI art, payments, projects, case studies, newsletter |
 
-The website includes an interactive terminal that you can use to navigate and learn more about me. Here's how to use it:
-
-### Opening the Terminal
-
-- Press Cmd + h to toggle the terminal open/closed
-- You can also close it by clicking the × button in the top right corner or pressing Escape
-
-### Available Commands
-
-- help - Lists all available commands
-- about - Displays information about me
-- cat - Opens a random cat picture in a new tab
-- echo <text> - Prints the given text to the console
-- twitter - Opens my Twitter profile
-- github - Opens my GitHub profile
-- linkedin - Opens my LinkedIn profile
-- languages - Shows programming languages I know and proficiency levels
-- skills - Displays my technical skills and proficiency levels
-- projects - Lists notable projects I've worked on
-- editor - Shows details about my current code editor setup
-- spotify - Displays my currently playing or recently played song on Spotify
-- clear - Clears the terminal screen
-- cd <directory> - Change directory
-- ls - List contents of current directory
-- mkdir <name> - Create a new directory
-
-Try typing help first to see all available commands!
+---
 
 ## Architecture
 
-This application uses a dual-backend microservices architecture:
+```mermaid
+graph TD
+    Browser["Browser — React 17 SPA<br/>CRA · styled-components · Storybook"]
 
-```
-Frontend (React on :3000)
-    ↓ (JWT token)
-Blog Backend (Express on localhost:3001 / Fly.io)
-    ↓ MongoDB Atlas
-    ↓ (validates token, handles blog/media/AI features)
-    ↓
-Auth Backend (Express on localhost:8080 / AWS Lambda)
-    ↓ MongoDB Atlas
-    ↓ (issues tokens, handles authentication)
-```
+    subgraph SG["Storm-Gate — separate deployable (AWS API Gateway)"]
+        SGAUTH["/api/auth/*<br/>register · login · refresh<br/>reset · OIDC"]
+        SGME["/me<br/>email · role · status"]
+    end
 
-**Authentication Flow:**
-1. User logs in via Auth Backend (:8080 / AWS)
-2. Auth Backend issues JWT token signed with `ACCESS_TOKEN_SECRET`
-3. Frontend stores token in cookies
-4. All blog operations use same token with Blog Backend (:3001 / Fly.io)
-5. Both backends share the same `ACCESS_TOKEN_SECRET` for token validation
+    subgraph APP["This repo — one Node 20 process on Fly.io"]
+        STATIC["express.static(build/)<br/>+ SPA catch-all — server.js"]
+        MW["CORS allowlist · cookies<br/>body + file parsing — app.js"]
+        AUTH["utils/auth.js<br/>verify HS256 · enrich from /me<br/>· mirror user into Mongo"]
+        ADMIN["utils/authAdmin.js<br/>role === 1"]
+        ROUTES["22 routers under /api"]
+        CTRL["Controllers — business logic"]
+        MODELS["19 Mongoose models"]
+        CRON["node-cron — scheduled publish"]
+    end
 
-**Why Dual Backend?**
-- **Separation of Concerns**: Auth logic isolated from business logic
-- **Scalability**: Each backend can scale independently
-- **Security**: Auth backend can have stricter security policies
-- **Deployment Flexibility**: Auth on AWS Lambda, Blog on Fly.io
+    DB[("MongoDB Atlas")]
+    EXT["Cloudinary · OpenAI · Stability<br/>PayPal · Resend · LinkedIn"]
 
-## Technologies Used
-
-This application was developed with a full MERN stack and written in JavaScript. Styling done with Bootstrap, Material UI, SASS/SCSS and CSS.
-
-**M** - MongoDB, NoSQL database (MongoDB Atlas)  
-**E** - Express, a back-end framework (dual backends)  
-**R** - React, a client side framework  
-**N** - NodeJS - to run back end services
-
-### Backend Services
-
-**Blog Backend (localhost:3001 / Fly.io)**
-- Article CRUD operations
-- Enterprise blog features (drafts, scheduling, versioning)
-- Media management (Cloudinary integration)
-- AI content assistance (OpenAI integration)
-- SEO analysis
-- Analytics tracking
-
-**Auth Backend (localhost:8080 / AWS Lambda)**
-- User authentication & authorization
-- JWT token generation
-- User management
-- Role-based access control
-
-### Key Dependencies
-
-- Morgan - HTTP request logger middleware for node.js
-- Axios - Promise based HTTP client for the browser and node.js
-- Bcrypt - A library to hash passwords
-- JWT - JSON Web Token for authentication
-- Mongoose - for MongoDB validation
-- React-Bootstrap - a React library for building pre-styled components
-- Material UI - a library for building pre-styled components
-- SASS - a preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets
-- Cloudinary - Media upload and management
-- OpenAI - AI-powered content generation
-
-## Features
-
-✅ Own your content
-
-✅ Write using Markdown On Github Issues
-
-✅ Syntax/Code Highlighting
-
-✅ Fully customizable
-
-✅ Tags - Topics
-
-✅ Links
-
-✅ Reactions
-
-✅ View Comments
-
-✅ Images
-
-✅ Minutes Read
-
-✅ Beautiful UI Like Medium
-
-✅ Easy deployment: Using Github Pages
-
-✅ Instant Effects on Blog when changing github issues
-
-✅ Beautiful blockquote
-
-## Frontend
-
-See [wiki](https://github.com/HoseaCodes/Blog/wiki/Frontend) for details.
-
-## Data
-
-See [wiki](https://github.com/HoseaCodes/Blog/wiki/Data) for details.
-
-## Backend
-
-### Dual Backend Architecture
-
-This project uses two Express backends for separation of concerns:
-
-#### 1. Blog Backend (Port 3001 / Fly.io)
-**Responsibilities:**
-- Article management (drafts, published, scheduled)
-- Enterprise blog features (auto-save, versioning, collaboration)
-- Media library (Cloudinary uploads)
-- AI content generation (OpenAI integration)
-- SEO analysis and optimization
-- Analytics tracking
-- Comment management
-
-**Endpoints:**
-```
-/api/blog/*         - Article CRUD operations
-/api/media/*        - Media upload and management
-/api/ai/*           - AI content assistance
-/api/seo/*          - SEO analysis and suggestions
-/api/analytics/*    - Performance metrics
-/api/collaboration/* - Reviews and team collaboration
+    Browser -->|"login"| SGAUTH
+    Browser -->|"Bearer JWT"| MW --> AUTH --> ADMIN --> ROUTES --> CTRL --> MODELS --> DB
+    Browser -->|"page load"| STATIC
+    AUTH -.->|"GET /me, 60s cache"| SGME
+    CTRL -.-> EXT
+    CRON --> MODELS
 ```
 
-## API Reference Quick Links
+Authorization is layered, and each layer catches what the one before it cannot: the CORS allowlist rejects unknown browser origins, `auth` rejects an unsigned or expired token, `authAdmin` rejects a non-admin, and the controller applies whatever resource rule it implements. **That last layer is the weak one** — most article and blog mutations stop at "is authenticated". See [Security](#security).
 
-- **BlogAPI**: Draft management, publishing, scheduling
-- **MediaAPI**: File uploads, media library
-- **AIAPI**: Content generation, improvement, translation
-- **SEOAPI**: SEO analysis, keyword research
-- **AnalyticsAPI**: Performance tracking, metrics
-- **CollaborationAPI**: Reviews, sharing, co-authoring
-
-
-#### 2. Auth Backend (Port 8080 / AWS Lambda)
-**Responsibilities:**
-- User authentication (login/register)
-- JWT token generation and refresh
-- User profile management
-- Role-based access control (admin, author, basic)
-- User status management (pending, approved)
-
-**Endpoints:**
-```
-/api/user/login      - User login
-/api/user/register   - User registration
-/api/user/refresh_token - Refresh JWT token
-/api/user/logout     - User logout
-/me                  - Get current user info
-```
-
-## 🎯 Key Features Implemented
-
-### 1. Draft Management
-- Auto-save functionality
-- Draft listing and management
-- Quick publish/schedule workflows
-- Batch operations
-
-### 2. Publishing Workflow
-- One-click publishing
-- Scheduled publishing with date/time
-- Unpublish and archive options
-- Version history (structure in place)
-
-### 3. AI-Powered Content Assistance
-- Content generation from prompts
-- Content improvement (grammar, clarity, engagement)
-- Title suggestions (5+ options)
-- Outline generation
-- Content expansion/summarization
-- Translation support
-- Social media post generation
-- Grammar checking
-- Meta tag generation
-- Key point extraction
-
-### 4. Media Management
-- File upload with progress tracking
-- Media library integration
-- Cloudinary integration maintained
-- Image optimization
-- Folder organization
-- Search functionality
-
-### 5. SEO Optimization
-- Real-time SEO scoring
-- Readability analysis (Flesch Reading Ease)
-- Keyword density analysis
-- Meta description generation
-- Title optimization suggestions
-- Link structure analysis
-- Structured data generation (Schema.org)
-
-### 6. Analytics & Tracking
-- View tracking
-- Engagement metrics
-- Performance dashboard data
-- Top articles reporting
-- Real-time statistics
-- Export functionality
-
-### 7. Collaboration Features (Structure)
-- Review request system
-- Collaborator management
-- Inline commenting (placeholder)
-- Activity feed (placeholder)
-- Share tracking
+Detail — module boundaries, request lifecycle, mount ordering, deployment topology: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ---
 
-## 📊 API Methods Available
+## Domain model
 
-### BlogAPI (10 methods)
-- saveDraft(articleData)
-- publishArticle(id, data)
-- scheduleArticle(id, data)
-- getVersionHistory(id)
-- restoreVersion(articleId, versionId)
-- duplicateArticle(id)
-- archiveArticle(id)
-- batchPublish(ids)
-- batchDelete(ids)
+```mermaid
+erDiagram
+    USER ||--o{ ARTICLE : writes
+    USER ||--o{ COMMENT : posts
+    USER ||--|| POINTSACCOUNT : owns
+    POINTSACCOUNT ||--o{ POINTSTRANSACTION : records
+    ARTICLE ||--o{ COMMENT : receives
+    ARTICLE ||--o{ VERSION : "snapshots into"
+    ARTICLE ||--o{ REVIEW : "is reviewed in"
+    ARTICLE }o--o{ CATEGORY : "filed under"
 
-### MediaAPI (8 methods)
-- uploadFile(file, folder)
-- uploadMultipleFiles(files, folder)
-- deleteMedia(publicId)
-- updateMediaMetadata(publicId, metadata)
-- searchMedia(query)
-- createFolder(name)
-- getMediaStats()
+    USER {
+        ObjectId _id PK
+        string email UK "mirrored from Storm-Gate"
+        number role "0 = user, 1 = admin"
+        string status "PENDING | APPROVED"
+        array likedArticles "per-user like dedup"
+        array savedArticles "bookmarks"
+    }
+    ARTICLE {
+        string article_id UK
+        string slug UK "lookup key for public reads"
+        string markdown "source of truth"
+        string sanitizedHtml "rendered at write time"
+        bool draft
+        bool published
+        bool scheduled
+        date scheduledDateTime
+        bool archived
+        number likes "denormalised count"
+        number views
+        date linkedinPostedAt "cross-post dedup"
+    }
+    POINTSTRANSACTION {
+        ObjectId account FK
+        string type "EARN | SPEND"
+        number amount
+    }
+```
 
-### AIAPI (13 methods)
-- generateContent(prompt, options)
-- improveContent(content, type)
-- generateTitles(content, count)
-- generateOutline(topic, depth)
-- expandContent(content, length)
-- summarizeContent(content, length)
-- translateContent(content, language)
-- generateSocialPosts(content, platforms)
-- checkGrammar(content)
-- getStyleSuggestions(content, style)
-- generateMetaTags(content)
-- extractKeyPoints(content, count)
-- generateCTA(context, goal)
+Users originate in **Storm-Gate**, not here. On each authenticated request `utils/auth.js` upserts a local `Users` row keyed by **email** — because Storm-Gate's id will never match a legacy blog `_id`, and this app's own collections (articles, points, comments) need a local document to reference.
 
-### SEOAPI (12 methods)
-- analyzeSEO(articleData)
-- getKeywordSuggestions(topic, lang)
-- analyzeKeywordDensity(content, keywords)
-- checkReadability(content)
-- generateMetaDescription(content, length)
-- generateTitleSuggestions(content, keywords)
-- checkDuplicateContent(content)
-- analyzeCompetitors(keyword, competitors)
-- generateStructuredData(articleData)
-- analyzeLinkStructure(content)
-- getTrendingTopics(category)
-- optimizeImageSEO(url, alt, context)
-
-### AnalyticsAPI (10 methods)
-- trackView(articleId, metadata)
-- trackEngagement(articleId, eventType, data)
-- getArticleStats(articleId)
-- getTopArticles(limit)
-- getReaderDemographics(articleId)
-- getTrafficSources(articleId)
-- getEngagementMetrics(articleId)
-- getConversionMetrics()
-- getRealTimeStats()
-- exportAnalytics(format)
-
-### CollaborationAPI (10 methods)
-- requestReview(articleId, reviewerIds, message)
-- submitReview(reviewId, feedback, approved)
-- addCollaborator(articleId, userId, role)
-- removeCollaborator(articleId, userId)
-- getCollaborators(articleId)
-- shareArticle(articleId, shareData)
-- getShareAnalytics(articleId)
-- addInlineComment(articleId, commentData)
-- resolveInlineComment(commentId)
-- getActivityFeed(articleId)
+`sanitizedHtml` is stored alongside `markdown` deliberately: sanitising once at write time means no read path can forget to do it. `likes` is a denormalised counter maintained with `$inc` so a like count never scans the user collection — non-atomic across two writes, which is an accepted trade for a single-author blog and is recorded as such in the source.
 
 ---
 
+## Security
 
-### Security
+**Authentication is not implemented here — and that is the design.** Storm-Gate issues HS256 JWTs; this API only verifies them, via `createRequireAuth({ secret: ACCESS_TOKEN_SECRET })` from `@storm-gate/express`. Both services share that secret. No password ever reaches this codebase; the local `Users` mirror stores the literal string `"storm-gate-managed"` in its password field precisely so that nothing can authenticate against it.
 
-#### Shared Secret Architecture
+**Profile enrichment fails closed.** The token carries only `{ id }`, so `role` and `status` are fetched from Storm-Gate's `/me` (cached 60s per id) and merged onto `req.user`:
 
-Both backends use the **same `ACCESS_TOKEN_SECRET`** to enable single-token authentication:
-
-```javascript
-// Auth Backend (AWS) - Issues token
-const token = jwt.sign(
-  { id: user._id, role: user.role },
-  process.env.ACCESS_TOKEN_SECRET,
-  { expiresIn: '1d' }
-);
-
-// Blog Backend (Fly.io) - Validates same token
-jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-  if (err) return res.status(401).json({ msg: 'Invalid token' });
-  req.user = user;
-  next();
-});
+```js
+try {
+  const profile = await fetchStormGateMe(req.headers.authorization, req.user.id);
+  if (profile) req.user = { ...req.user, ...profile };
+} catch (e) {
+  console.error("[auth] Storm-Gate /me lookup failed:", e.message);
+}
 ```
 
-#### JWT Authentication Flow
+The failure is swallowed on purpose: an auth-service blip should not 500 a blog read. It is safe because `authAdmin` requires `role === 1` — on a failed lookup `role` is `undefined`, so the admin check *denies*. An integration test pins this behaviour, asserting that article creation still succeeds while `/me` is unreachable.
 
-![Security](https://i.imgur.com/ZD1gtVH.png)
+**Where the model is weak.** Admin gating (`authAdmin`) is applied to payments, subscribers, users, products, categories and LinkedIn. It is **not** applied to article, blog, media, AI, SEO or analytics mutations — those require only a valid token. `deleteArticle` is the clearest case: it calls `findByIdAndDelete(req.params.id)` with no ownership or role check, so any authenticated Storm-Gate user can delete any article. On a single-author site the blast radius is bounded by who can obtain a token, but it is a real gap, not a theoretical one.
 
-![JWT](https://i.imgur.com/lFIJa0b.png)
+Full threat model, secret handling, CORS policy, sanitisation, and the complete gap list: [`docs/SECURITY.md`](docs/SECURITY.md).
 
-1. User submits credentials to Auth Backend (:8080)
-2. Auth Backend validates and returns JWT token
-3. Frontend stores token in httpOnly cookie
-4. All subsequent requests include token in `Authorization` header
-5. Both backends validate token with shared secret
-6. Token expires after 24 hours, refresh token extends session
+---
 
-See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
+## Testing strategy
 
-## Dev Ops
+**75 passing tests across two tiers**, honestly distributed:
 
-### Pipelines
-
-Three long-lived branches. Only two of them run CI.
-
-| Branch    | Workflow | Trigger | Runs | Deploys |
-| --------- | -------- | ------- | ---- | ------- |
-| `staging` | `main.yaml` (Dev Pipeline) | push to `staging` | static-scan → dependency-scan → lint → integration-test → build | **No** — verify only |
-| `prep`    | *none* | — | nothing | — |
-| `master`  | `master.yaml` (Snyk Scan), `release-please.yml` | push to `master` | security → build; release-please in parallel | via release tag — see below |
-
-**Staging verifies; it does not ship.** It runs the scans, the lint, the
-integration suite and a production build, and stops there. It cuts no release
-and deploys nowhere. Releasing and deploying belong to `master`.
-
-> **`prep` has no CI.** No workflow triggers on it and none reference it. Checks
-> displayed on a PR that *targets* `prep` are the `staging` pipeline's runs
-> against staging's head commit — they say nothing about the merge result.
-> `prep`'s own copies of the workflow files are stale: they still trigger on
-> `staging` and have no `integration-test` job.
-
-#### Dev Pipeline jobs (`staging`)
-
-| Job Name           | Use Case |
-| ------------------ | -------- |
-| static-scan        | Static application security testing (SAST). Analyzes source code for vulnerabilities that make the application susceptible to attack. |
-| dependency-scan    | Alerts on any open-source component, direct or transitive, that the code depends on and is known to be vulnerable. |
-| lint               | Scans source for errors and potential issues that lead to bugs and vulnerabilities. |
-| integration-test   | `npm run test:integration` — drives the real Express app over HTTP (supertest) against a real MongoDB (Testcontainers). Outbound third-party HTTP is blocked by `nock`. **Requires Docker.** |
-| build              | `npm ci --legacy-peer-deps` → `npm run build`. Proves the app compiles; the output is not published anywhere. |
-
-Jobs are gated: `build` needs all four scans/tests to pass. A failure early in
-the chain means later jobs never execute — so a green early stage is not
-evidence that the later ones work.
-
-#### Releases and deploys
-
-| Mechanism | Where | Tag format | Pushes version bump | Drives a deploy |
-| --------- | ----- | ---------- | ------------------- | --------------- |
-| conventional-changelog | `master` build job | `dev.v*` | No | No |
-| release-please | `master` | `v*` | Yes, via release PR | Yes |
-| `release-publish.yml` | on tag `v*.*.*` | — | — | Deploys to Fly.io |
-
-There is **one** deploy path: release-please opens a release PR on `master`;
-merging it creates a `v1.2.3` tag, which fires `release-publish.yml` and
-deploys to Fly.io. Nothing deploys from `staging`.
-
-#### Pipeline gotchas
-
-- **Never delete `package-lock.json` in CI.** `react-scripts@4.0.3` pins
-  `@babel/core` to exactly `7.12.3` while floating `babel-preset-react-app` to
-  `^10.0.0`, which resolves to `10.1.0` and requires `^7.16.0`. Resolving
-  without the lockfile fails the build with
-  `Requires Babel "^7.16.0", but was loaded with "7.12.3"`. Install with
-  `npm ci`.
-- **The integration suite needs no real API keys.** `test/setup/env.cjs` seeds
-  placeholders (including `OPENAI_API_KEY`) before app modules load, and
-  `nock.disableNetConnect()` blocks egress. Do not add real third-party
-  secrets to CI for tests.
-- **Do not construct third-party SDK clients at module scope.** `app.js`
-  imports every router at boot, so a client built at import time makes the
-  whole app unimportable without that credential — which takes down the
-  integration suite before a single test runs. Build clients lazily inside
-  handlers.
-- **CI cannot push to `staging`.** The branch is protected — "Changes must be
-  made through a pull request" — so any workflow step that pushes a commit is
-  rejected with `GH006: Protected branch update failed`. Note that **tags are
-  not covered by that rule**: a rejected push can still leave a tag behind
-  pointing at a commit that never landed.
-- **conventional-changelog versions come from the last tag _reachable from the
-  branch_, not from `package.json`.** Tag existence is global but reachability
-  is per-branch, and that gap is what broke releases on `staging`: its last
-  reachable `dev.v*` tag was `dev.v1.4.2`, so it kept computing 1.5.0 — while
-  `dev.v1.5.0` already existed globally, created by master's pipeline on a
-  commit `staging` cannot reach. The bump then failed with
-  `fatal: tag already exists`, every run, forever. Do not run two branches'
-  release automation in one tag namespace.
-- **`master`'s `dev.v*` tagging works, but feeds nothing.** Each tag is created
-  on master's own HEAD, so it stays reachable and the sequence advances
-  cleanly — the next one will be `dev.v1.8.0`, and it does *not* collide.
-  `package.json` (1.6.0) drifting behind the tags (1.7.0) is harmless, since
-  the version is not read from the file. The steps are simply redundant:
-  nothing consumes `dev.v*`, because `release-publish.yml` fires on `v*.*.*`,
-  which those tags do not match. Removing them from `master.yaml` is optional
-  cleanup, not a bug fix.
-
-See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
-
-## 3rd Party Packages
-
-| Name                                                  | Use Case    |
-| ----------------------------------------------------- | ----------- |
-| [AOS](https://www.markdownguide.org/extended-syntax/) | Animation   |
-| [Axios](https://www.npmjs.com/package/axios)          | HTTP client |
-| bcrypt                                                |             |
-| dompurify                                             |             |
-| framer-motion                                         |             |
-| imagemin                                              |             |
-| markdown                                              |             |
-| marked                                                |             |
-| moment                                                |             |
-| morgan                                                |             |
-| node-cache                                            |             |
-| node-sass                                             |             |
-| react-bootstrap                                       |             |
-| react-bootstrap                                       |             |
-| react-icons                                           |             |
-| react-masonry-css                                     |             |
-| react-sticky-state                                    |             |
-| react-twitter-widgets                                 |             |
-| source-map-explorer                                   |             |
-| styled-components                                     |             |
-| winston                                               |             |
-
-## External APIs
-
-See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
-
-### Service Dashboards
-
-- [LinkedIn App Settings](https://www.linkedin.com/developers/apps/217736152/settings) — manage OAuth credentials and permissions for LinkedIn cross-posting
-- [Resend Emails](https://resend.com/emails) — newsletter and transactional email delivery dashboard
-
-## How To Run App
-
-### Prerequisites
+| Tier | Runner | Suites | Tests | Needs Docker |
+|---|---|---|---|---|
+| Integration (`test/integration`) | `npm run test:integration` | 2 | **17** | Yes |
+| Unit (`test/unit`) | `npx jest` | 2 of 14 | **58** | No |
 
 ```bash
-# Install dependencies
-npm install --legacy-peer-deps
-
-# Set up environment variables
-cp .env.example .env
-# Edit .env with your:
-# - MONGODB_URL
-# - ACCESS_TOKEN_SECRET (must match Auth Backend!)
-# - CLOUDINARY credentials
-# - OPENAI_API_KEY
+npm run test:integration   # real Express + real MongoDB, ~5s after image pull
+npx jest                   # unit only, ~5s
 ```
 
-### Development (Local)
+**`npx jest` currently exits non-zero**, and not because anything is broken: 12 of the 14 unit files are empty placeholders, and Jest treats "no tests in this file" as a suite failure. The 58 tests that do exist are real (DOMPurify behaviour, image optimisation, media and upload controllers). This is a gap, and pretending it were a green suite would be worse than the gap.
 
-**Terminal 1 - Blog Backend:**
-```bash
-# Runs on localhost:3001
-nodemon ./server.js
-```
+There is **no coverage measurement and no coverage gate**. A percentage would be easy to add and easier to game; the file counts above describe the situation more truthfully than one number would.
 
-**Terminal 2 - Frontend:**
+Integration tests use **Testcontainers with `mongo:7.0`, not an in-memory substitute** — because the behaviour under test includes real unique-index enforcement, real `pre('validate')` hooks and real driver semantics, and an in-memory stand-in makes a passing test evidence about the stand-in ([ADR-004](docs/adr/ADR-004-testcontainers.md)). The container starts once for the whole run (`--runInBand`), and every collection is wiped between tests, so no test can depend on another's data.
+
+`nock.disableNetConnect()` is on for the entire integration run, with only `127.0.0.1` allowed for supertest. A test cannot reach OpenAI, Cloudinary, Resend, or the real Storm-Gate even by accident — the suite needs **no real API keys**, and `test/setup/env.cjs` seeds placeholders before any app module evaluates.
+
+What the suite actually proves, beyond "the endpoint responds":
+
+- **Writes land in the database** — every mutation assertion re-reads the document, so a 200 with no persistence fails
+- **Anonymous mutations write nothing** — the 401 assertion is paired with a "still absent from the DB" assertion
+- **The sanitiser runs on the write path** — asserted on stored `sanitizedHtml`, not on the response body
+- **Admin authorization is driven by the real `/me` response** — the same endpoint returns 200 for `role=1`, 403 for `role=0`, 401 with no token
+- **Auth degrades gracefully** — creation succeeds with Storm-Gate unreachable
+- **Newsletter signup is idempotent** — re-signup rotates the token instead of creating a second row
+
+More, including what a meaningful next test would cover: [`docs/TESTING.md`](docs/TESTING.md).
+
+---
+
+## Reliability & operations
+
+| Concern | Approach |
+|---|---|
+| Deploy | Exactly **one** path: merge the release-please PR on `master` → `v*.*.*` tag → `release-publish.yml` → Fly.io. Staging never deploys |
+| CI dependency install | `npm ci --legacy-peer-deps`, never a lockfile delete — `react-scripts@4.0.3` pins `@babel/core` to `7.12.3` while floating a preset that demands `^7.16.0`, so unlocked resolution fails the build |
+| Third-party SDK construction | Built **lazily inside handlers**. `app.js` imports every router at boot, so a client constructed at module scope makes the whole app unimportable without that credential — and takes the integration suite down before a single test runs |
+| Outbound email | No-op unless `RESEND_API_KEY` is set — signup still records the row, delivery is skipped and logged |
+| Cost control on paid APIs | TTS enforces a per-user quota and records usage; AI art is paid per generation |
+| Cold starts | `min_machines_running = 0` with auto stop/start — the first request after idle pays the boot |
+| Rollback | Redeploy the previous `v*` tag; Fly keeps prior releases |
+
+The one that has actually bitten this repo: **conventional-changelog computes the next version from the last tag reachable from the branch**, while tag existence is global. Two branches running release automation in one tag namespace deadlocked on `fatal: tag already exists`, on every run, forever. The mechanism and the fix are written up in [`docs/OPERATIONS.md`](docs/OPERATIONS.md), along with health checks, log access, restart procedure, and what breaks first under load.
+
+---
+
+## Local development
+
+**Prerequisites:** Node 20.x, Docker (integration tests only), a MongoDB you can reach, and a running Storm-Gate for authenticated flows.
+
 ```bash
-# Runs on localhost:3000
+git clone https://github.com/HoseaCodes/Blog-Portfolio.git
+cd Blog-Portfolio
+npm install --legacy-peer-deps      # --legacy-peer-deps is required, see below
+cp ".env example" .env              # then fill in the values
+
+# Terminal 1 — API on :3003
+node server.js                      # or: npx nodemon server.js
+
+# Terminal 2 — SPA on :3000, proxying /api to :3003
 npm start
 ```
 
-**Terminal 3 - Auth Backend (if running locally):**
-```bash
-# Runs on localhost:8080
-cd /path/to/auth-backend
-nodemon server.js
-```
+The SPA proxies to the API via `"proxy": "http://localhost:3003"`, with `src/setupProxy.js` force-proxying the handful of non-`/api` backend paths (`/sitemap.xml`, LinkedIn OAuth) that CRA's `Accept: text/html` heuristic would otherwise answer with the SPA shell.
 
-**Note:** Auth backend can also run on AWS Lambda. Set `REACT_APP_API_BASE_URL` in `.env` to point to AWS endpoint in production.
+Tests need **no running MongoDB** — Testcontainers manages its own.
 
-### Docker
+<details>
+<summary>Configuration reference</summary>
 
-Build image locally:
+| Variable | Default | Purpose |
+|---|---|---|
+| `MONGODB_URL` | `mongodb://localhost:27017/` | Mongo connection string |
+| `ACCESS_TOKEN_SECRET` | none | HS256 verification key — **must match Storm-Gate's signing key** |
+| `STORM_GATE_URL` | `http://localhost:8081` | Where `/me` is fetched. Wrong value in production ⇒ every admin check silently denies |
+| `REACT_APP_API_BASE_URL` | AWS API Gateway URL in prod, `http://localhost:8081` in dev | Storm-Gate base URL for the browser SDK |
+| `CORS_ORIGINS` | `http://localhost:3000,http://localhost:3003` | Comma-separated allowlist; unknown origins are rejected |
+| `PORT` | `3003` local, `8080` on Fly | HTTP port |
+| `CLOUD_API_KEY` / `CLOUD_API_SECRET` / `CLOUND_NAME` | none | Cloudinary (note the spelling of the third — it is load-bearing) |
+| `OPENAI_API_KEY` | none | AI writing assistance and TTS |
+| `STABILITY_API_KEY` | none | AI art generation |
+| `PAYPAL_CLIENT_ID` / `PAYPAL_CLIENT_SECRET` / `PAYPAL_ENV` | `sandbox` | Payments — set `live` only in production |
+| `RESEND_API_KEY` / `RESEND_FROM` | none | Newsletter. Unset ⇒ email is a logged no-op |
+| `LINKEDIN_CLIENT_ID` / `LINKEDIN_CLIENT_SECRET` / `LINKEDIN_REDIRECT_URI` | none | Cross-posting OAuth |
+| `SITE_URL` | none | Canonical URL used in emails and social previews |
+| `SWAGGER_DOCS_USER` / `SWAGGER_DOCS_PASS` | none | HTTP Basic credentials for `/api-docs` in production. Unset ⇒ the route 404s rather than opening |
+| `OPENAPI_SPEC_PATH` | `<root>/api/openapi.yaml` | Override if the spec moves |
 
-```bash
-docker build -t hoseacodes-blog .  
-```
+**`--legacy-peer-deps` is not optional.** React 17 with several React 18-era peer ranges will not resolve under npm 7+ strict peer resolution. Every install path — local, CI, Docker — passes the flag.
 
-Run local image in container:
+**Never delete `package-lock.json`.** See the [Operations](#reliability--operations) table for the exact failure.
+</details>
 
-```bash
-docker run --name hoseacodes-blog-c -p 3001:3001 \
-  -e MONGODB_URL="your_mongodb_url" \
-  -e ACCESS_TOKEN_SECRET="your_secret" \
-  -d hoseacodes-blog
-```
+---
 
-Tag Image for push:
+## API documentation
 
-```bash
-docker tag ${imageID} hoseacodes/hoseacodes-blog:latest
-```
+**Swagger UI is served at `/api-docs`** from `api/openapi.yaml` — open in development, HTTP Basic in production. Basic rather than bearer auth because a browser navigating to a page sends no `Authorization: Bearer` header, and Basic is the only scheme a browser will negotiate on its own; with `SWAGGER_DOCS_USER`/`SWAGGER_DOCS_PASS` unset in production it **404s rather than degrading to an open page**. The spec is read lazily on first request, not at import time, so `app.js` stays importable without it.
 
-Push Docker Image:
+**The spec currently describes 2 of roughly 150 endpoints.** Until it catches up, [`docs/API.md`](docs/API.md) is the real reference.
 
-```bash
-docker push hoseacodes/hoseacodes-blog:latest    
-```
+All routes are mounted under `/api`; crawler routes `/sitemap.xml` and `/blog/:slug` sit at the root.
 
-## How To Deploy App
-
-### Deploy Blog Backend to Fly.io
-
-```bash
-# First time setup
-fly launch
-
-# Set secrets (IMPORTANT: Use same ACCESS_TOKEN_SECRET as Auth Backend!)
-fly secrets set ACCESS_TOKEN_SECRET=your_secret
-fly secrets set MONGODB_URL=your_mongodb_url
-fly secrets set CLOUDINARY_CLOUD_NAME=your_cloudinary_name
-fly secrets set CLOUDINARY_API_KEY=your_cloudinary_key
-fly secrets set CLOUDINARY_API_SECRET=your_cloudinary_secret
-fly secrets set OPENAI_API_KEY=your_openai_key
-
-# Deploy
-fly deploy
-
-# Check status
-fly status
-
-# View logs
-fly logs
-```
-
-### Deploy Auth Backend to AWS Lambda
-
-Auth backend is deployed separately to AWS Lambda via API Gateway. Ensure Lambda environment variables match:
+| Family | Base | Auth |
+|---|---|---|
+| Articles, comments, likes, saves | `/api/articles` | Public read (`optionalAuth` adds per-viewer flags), token to write |
+| Blog workflow — drafts, publish, schedule, versions, batch | `/api/blog/*` | Token |
+| Media library — upload, search, folders | `/api/media/*` | Token |
+| AI assistance — 13 endpoints | `/api/ai/*` | Token |
+| SEO — 12 endpoints | `/api/seo/*` | Token |
+| Analytics — 11 endpoints | `/api/analytics/*` | Token |
+| Collaboration — reviews, collaborators, shares | `/api/collaboration/*` | Token |
+| Points & store | `/api/points/*`, `/api/store/*` | Token (catalogue is public) |
+| Newsletter | `/api/subscribers` | Public signup/verify, **admin** to list or broadcast |
+| LinkedIn cross-posting | `/api/admin/linkedin/*` | **Admin** (OAuth callback is intentionally public) |
+| Users, payments, products, categories, projects | `/api/user`, `/api/payment`, … | Mixed, mostly **admin** |
 
 ```bash
-ACCESS_TOKEN_SECRET=<same_as_flyio_backend>
-MONGODB_URL=<your_mongodb_atlas_url>
+# Public read — no token
+curl http://localhost:3003/api/articles
+
+# Authenticated write — token issued by Storm-Gate
+curl -X POST http://localhost:3003/api/articles \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Content-Type: application/json' \
+  -d '{"article_id":"demo","title":"Hello","markdown":"# Hi","images":{"url":"…"}}'
 ```
 
-## How To Restart App
+Responses are plain JSON and the shape is **not uniform** — some handlers return `{ success, article }`, others `{ status, article }` or `{ msg }`. That inconsistency is real and is on the [roadmap](docs/ROADMAP.md), not papered over here.
 
-**Fly.io:**
-```bash
-fly restart -a hoseacodes-blog
-```
+---
 
-**Check health:**
-```bash
-fly checks list
-fly logs
-```
+## Engineering decisions
 
-## Unsolved Problems
+Six decisions where a competent engineer could reasonably have chosen otherwise. Each [ADR](docs/adr/) states its downsides.
 
-- [ ] Fix Docker Image
+**[Delegate authentication to Storm-Gate](docs/adr/ADR-001-delegated-auth.md)** — this repo used to issue its own tokens and manage its own passwords. Auth is the highest-consequence, least blog-specific code in a blog, and it was being maintained twice across two projects. The cost is a hard runtime dependency on another service and an extra HTTP hop per request; the mitigation is a 60s `/me` cache and swallowed lookup failures.
 
-## Future Enhancements
+**[MongoDB with Mongoose](docs/adr/ADR-002-mongodb.md)** — articles are documents with genuinely variable shape (categories, tags, per-platform cross-post metadata, embedded comments) and the write pattern is one author, occasionally. The honest cost: no foreign keys, so referential integrity between articles, users and points is application-enforced — and unenforced in several places today.
 
-- User login with the ability to add comments and like post.
-- Routing for 404
-- Case Studies
-  - Add Calorie Kicthen, Sneaker-API, Ecommerce-Site, Ecommerce-Backend-Template, React-Crypto, Cypto-Learn, CareerConnect, and Expense-Tracker as project case studies.
-  - Create a template for all case studies 
-- Confgiure multiple env
-  - [x] Staging - Dev
-  - [ ] Pass in env to map to env
-- Syntax/Code Highlighting
-- Tags - Topics
-- Reactions
-- [x] ~~View Comment~~
-- [x] ~~Minutes Read~~
+**[`app.js` builds, `server.js` boots](docs/adr/ADR-003-app-server-split.md)** — the split exists so integration tests can `import app` without a `build/` folder, a database, or a cron scheduler. Every side effect that used to sit at module scope now lives in `server.js`. This is what makes real HTTP testing possible at all.
 
-  https://github.com/saadpasta/react-blog-github
+**[Testcontainers over an in-memory Mongo](docs/adr/ADR-004-testcontainers.md)** — the tests assert unique-index rejection and `pre('validate')` behaviour. Against a substitute, a pass would be evidence about the substitute. The cost is a hard Docker dependency and ~10s of container start.
 
-- Add [unsplash](https://unsplash.com/documentation)
-  - When adding a blog image a user should be able to use an unsplash image.
-- Sign up to newletter on blog page.
-  - with Brevo
-- Article Updates
-  - [ ] Save a blog post to favorites
-  - [x] Save blog post as a draft
-  - [ ] Schedule blog post
-  - [ ] Track views to blog post
-  - [ ] Like a comment
-  - [ ] Handle notifications button on blog post
-  - [ ] Allow signed in user the ability to edit post.
-- User Updates
-  - Save user to favorite authors
-  - Follow the author
-  - Update your profile page
-  - View your profile page
-- DevOps
-  - Add Github Actions
-  - Static Scan
-  - Dependency Scan
-  - Lint Errors (ES Lint, Prettier)
-  - Testing (Unit, Integration, E2E)
-  - Upload to EOT
-  - Handle Release
-  - Handle version
-- Games 
-  - Create Game Page
-- Shop 
-  - Create Shop Page
-  - Link shop page with etsy shop
-  - Allow ability to put in cart
-  - Allow ability to checkout
-  - Allow the Ability to see orders
-- Projects
-  - Hightlight projects
-    - Pure CSS
-    - Update Social Ring
-    - Update Kidvercity
-    - LeadGen
-    - SneakerAPI
-    - CareerConnect - When finished
-    - UIHeat - When Finished
-    - Analytics - When finished
-    - AI Quiz - When finished
-    - Writemind
-    - CareerCompose
-    - Budget App - When finished
-  - Landing Page
-    - Cloud Portfolio
-      - https://cassanellicarlo.com/
-      - https://djomegni.com/
-    - AI Portfolio
-      - https://kozodoi.me/portfolio/
-      - http://www.ericwadkins.com/
-      - https://github.com/thavlik/machine-learning-portfolio?tab=readme-ov-file
-      - https://aksh-ai.com/
-      - https://medium.com/muthoni-wanyoike/building-a-strong-ai-portfolio-showcase-your-skills-to-employers-d6be0c999f0a
-      - https://www.projectpro.io/article/ml-projects-ideas-with-source-code/474
-      - https://github.com/nitsuga1986/machine-learning-nd-portfolio
-    - DevOps Portfolio
-      - https://dev.to/softwaresennin/build-a-stellar-devops-portfolio-with-no-prior-experience-jp8
-      - https://medium.com/@AnnAfame/how-to-build-your-projects-portfolio-as-a-junior-devops-engineer-252b554f2291
-      - https://troyingram.net/
-      - https://adityacprtm.dev/portfolio
-      - https://adityagundecha.com/
-      - https://www.mayankdevops.com/
-      - https://www.jodywan.com/
-      - https://www.projectpro.io/article/real-time-devops-projects-for-practice/585
-      - https://www.surajdhakre.xyz/projects
-      - https://www.knowledgehut.com/blog/devops/devops-projects#devops%C2%A0project-ideas
-    - FrontEnd Porfolio
-      - https://itssharl.ee/fr
-      - https://www.behance.net/gallery/186671031/Portfolio-for-Frontend-Developer?tracking_source=search_projects|frontend+portfolio&l=7 or https://www.behance.net/gallery/186671031/Portfolio-for-Frontend-Developer
-      - https://tamalsen.dev/
-      - https://dunks1980.com/
-      - https://bepatrickdavid.com/
-      - https://www.lauren-waller.com/
-      - https://vanholtz.co/
-      - https://resn.co.nz/
-      - https://www.seyi.dev/?ref=catalins.tech
-      - https://cydstumpel.nl/
-    - Backend Dev
-      - https://blog.hubspot.com/website/backend-projects
-      - https://blog.devgenius.io/designing-a-backend-developer-portfolio-website-a-ux-case-study-5881236ec36b
-      - https://www.youtube.com/watch?v=nIracKeqsFk
-    - Game Dev
-      - https://bruno-simon.com/
-      - http://www.rleonardi.com/interactive-resume/?ref=hackernoon.com
-      - https://caferati.me/
-      - https://jesse-zhou.com/
-    - Mechnical Engineer
-      - https://mitcommlab.mit.edu/meche/commkit/portfolio/
-      - https://www.freelance.pizza/post/build-a-stunning-engineering-portfolio
-      - https://thanhvtran.com/
-      - https://static1.squarespace.com/static/5605c610e4b06b221b9e1b52/t/5a9b0a1c0d9297b125485029/1520110148892/Sienna+Magee+Portfolio+v2.pdf
-      - https://www.hannahgazdus.com/
-      - https://www.tjwatson.net/
-      - https://www.williamsadowski.com/Portfolio/DesignPortfolio_Sadowski.pdf
-      - https://mjaspeg.wixsite.com/mjaspe
-      - https://www.hardwareishard.net/portfolio-database
-      - https://fwachter.github.io/
-      - https://sites.google.com/view/sethschafferportfolio/home
-      - https://www.colinkeil.com/
-      - https://evangrant.wordpress.ncsu.edu/
-    - Electrical Engineer
-      - https://www.jeremyblum.com/portfolio/
-      - https://priswidjaja.wixsite.com/portfolio
-      - https://slidesgo.com/theme/electrical-engineer-portfolio
-      - https://twcarobotics.com/engineering-notebook/
-      - https://ftcbrowncoats.org/wp-content/uploads/2021/05/Engineering-Portfolio.pdf
-    - Robotics Engineer
-      - https://www.mccormick.northwestern.edu/robotics/curriculum/featured-project-portfolios.html
-      - https://www.kuriosityrobotics.com/_files/ugd/065d5b_84b3c96fc00c4ac7bedb8852eeddec67.pdf?index=true
-      - https://ethanholand.com/
-      - https://www.jesseweisberg.com/
-      - https://campussuite-storage.s3.amazonaws.com/prod/1558774/0fe95a24-a31d-11e9-aabe-12253009c2da/2378222/297345ce-9355-11ec-981c-0e9cb3837b5b/file/RoboClovers%20FTC%202021-2022%20Engineering%20Portfolio%20(rev%201.10.21).pdf
-    - Architect 
-      - https://www.schabell.org/2022/05/portfolio-architecture-examples-application-development-collection.html
-      - https://spetrescu.ro/
+**[One deployable serving both the API and the SPA](docs/adr/ADR-005-single-deployable.md)** — one operator, one release cadence, no CORS in production, no CDN invalidation step. Also records why the auth service *is* separate, and what would change the answer.
+
+**[Sanitise at write time, store rendered HTML](docs/adr/ADR-006-write-time-sanitisation.md)** — a `pre('validate')` hook renders markdown and runs it through DOMPurify, so no read path can forget. The cost is that changing the sanitiser policy requires a backfill.
+
+---
+
+## Known limitations
+
+- **The scheduled-publish cron cannot fire.** `cron/scheduledPost.js` compares `moment().format("YYYY-MM-DD")` (a string) with `article.scheduledDateTime` (a `Date`) using `===`, which is always false. Compounding it, `min_machines_running = 0` means there may be no process awake at 12:00 CT. Scheduling through `/api/blog/schedule/:id` records the intent correctly; nothing acts on it.
+- **No ownership checks on article mutations.** Any authenticated user can update or delete any article. Admin gating covers payments, subscribers, users and LinkedIn — not content.
+- **The rate limiter is configured but not applied.** `app.js` builds an `express-rate-limit` instance and the `app.use(limiter)` line is commented out. No endpoint is rate-limited, including the paid AI and TTS endpoints.
+- **No health endpoint.** No `/health`, no liveness/readiness split — Fly.io has only the TCP check to go on, so a process that is up but cannot reach Mongo still takes traffic.
+- **12 of 14 unit test suites are empty files**, which makes `npm test` exit non-zero. No coverage is measured.
+- **`react-scripts@4.0.3` and React 17** are several major versions behind, and the pinned `@babel/core` is the reason installs are lockfile-sensitive. Upgrading is a project, not a bump.
+- **The Docker image runs as root** from the full `node:20` base with no multi-stage build — large, and not least-privilege.
+- **Response shapes are inconsistent** across controllers (`success` vs `status` vs bare `msg`), so clients special-case per endpoint.
+- **`prep` has no CI.** Checks shown on a PR targeting it are staging's runs against staging's head, and say nothing about the merge result.
+- **The OpenAPI spec covers 2 endpoints.** Swagger UI is wired up and properly gated, but `api/openapi.yaml` still describes only the two article routes it was generated with, and its `servers` list includes a SwaggerHub mock.
+- **No structured error contract** — no RFC 7807, no correlation ids; failures surface as `{ msg }` with a 500.
+
+---
+
+## Future improvements
+
+Ranked by value, not effort:
+
+1. **Fix the scheduled-publish comparison** and give it a test — the feature is user-visible in the admin UI and silently does nothing
+2. **Ownership and role checks on content mutations**, with the negative case tested (one user cannot delete another's article)
+3. **Turn the rate limiter on**, starting with the endpoints that cost money per call
+4. **`/health` with a Mongo ping**, wired to a Fly.io HTTP check
+5. **Fill or delete the 12 empty unit suites** so `npm test` means something
+6. **A uniform response envelope** and a real error contract
+7. **React 18 / Vite migration**, which retires the Babel pin and the `--legacy-peer-deps` requirement
+
+The full product roadmap — games, shop, case studies, portfolio research — lives in [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
+---
+
+## Documentation
+
+| | |
+|---|---|
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Module boundaries, request lifecycle, mount ordering, deployment topology |
+| [`docs/AUTHENTICATION.md`](docs/AUTHENTICATION.md) | The Storm-Gate contract — HTTP surface, JWT claims, token flow, user status |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | Auth model, authorization matrix, secrets, CORS, sanitisation, gap list |
+| [`docs/OPERATIONS.md`](docs/OPERATIONS.md) | CI pipelines, release and deploy, backups, restart, failure modes |
+| [`docs/TESTING.md`](docs/TESTING.md) | Both tiers, the Testcontainers harness, what is and is not covered |
+| [`docs/MANUAL_TESTING.md`](docs/MANUAL_TESTING.md) | Walkthrough for the enterprise blog features, which have no automated coverage |
+| [`docs/METRICS.md`](docs/METRICS.md) | Performance, quality and delivery targets — and what is actually instrumented |
+| [`docs/API.md`](docs/API.md) | Endpoint reference by resource family, with auth requirements |
+| [`docs/FRONTEND_API.md`](docs/FRONTEND_API.md) | The `src/API/` client modules and how components consume them |
+| [`docs/FRONTEND.md`](docs/FRONTEND.md) | Typography, images, delivery, performance targets, Storybook |
+| [`docs/BLOG_PAGE_LOGIC.md`](docs/BLOG_PAGE_LOGIC.md) | How the `/blog` hero and "The Latest" slots are chosen |
+| [`docs/GAMES.md`](docs/GAMES.md) | Score-tracking contract, `useGameScore`, points sync |
+| [`docs/FEATURES.md`](docs/FEATURES.md) | Terminal, Game Zone, blog workflow, points economy, newsletter |
+| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | Branches, conventional commits, PRs, releases |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Planned work and portfolio research |
+| [`docs/adr/`](docs/adr/) | Six architecture decision records |
+| [`CLAUDE.md`](CLAUDE.md) | Debugging protocol for this repo — observe before hypothesising |
+| [`CHANGELOG.md`](CHANGELOG.md) | Generated by release-please from conventional commits |
+
+`docs/` supersedes the old [wiki](https://github.com/HoseaCodes/Blog/wiki), which lived on a different repository and had drifted — it still describes PM2, SendGrid and a `swagger-server` that no longer exists. Everything worth keeping from it has been folded in here, where it gets reviewed in the same pull request as the code that invalidates it.
+
+---
+
+## License
+
+No license file is present, so default copyright applies: all rights reserved. If you want this to be reusable, add a `LICENSE`.

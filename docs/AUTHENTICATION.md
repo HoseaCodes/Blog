@@ -86,7 +86,29 @@ That replaced a hand-rolled `jwt.verify` block. The old version returned **400**
 
 ## How a token moves
 
-**1. Login.** The SDK posts credentials and stores the returned token, with `rememberMeMaxAge` of 7 days or a 24-hour default.
+**1. Login.** The SDK posts credentials and stores the returned token in a cookie, with `rememberMeMaxAge` of 7 days or a 24-hour default.
+
+### Token storage — read this before changing anything
+
+The SDK writes the JWT with `document.cookie`:
+
+```js
+const parts = [`${cookieName}=${encodeURIComponent(cleaned)}`, "path=/", "SameSite=Lax"];
+if (typeof maxAge === "number") parts.push(`max-age=${Math.floor(maxAge)}`);
+document.cookie = parts.join("; ");
+```
+
+| Property | Value | Consequence |
+|---|---|---|
+| Name | `accesstoken` (`DEFAULT_COOKIE_NAME`) | `PrivateRouter.js` reads this name directly — renaming it breaks route protection |
+| `HttpOnly` | **absent** | The token is readable by any script on the page. **XSS means token theft.** A cookie written by JS can never be HttpOnly, so this is inherent to the design, not an oversight |
+| `Secure` | **absent** | Nothing stops the cookie being sent over plaintext HTTP. Fly.io's `force_https` mitigates this in production; the cookie itself does not |
+| `SameSite` | `Lax` | Reasonable CSRF protection for cross-site POSTs |
+| `path` | `/` | Sent to every route on the origin |
+
+The token is deliberately readable because the request interceptor reads it back out to attach it. Making it `HttpOnly` means Storm-Gate must set the cookie server-side and the client must switch to `withCredentials`, or hold the token in memory — see the *Cookie domain and CORS* item under [open contract questions](#open-contract-questions).
+
+The write path also strips a leading `JWT ` prefix (`JWT_PREFIX_PATTERN`) before storing, a tolerance carried over from the pre-SDK client.
 
 **2. Attachment.** `sdk.createAuthedAxios({ baseURL })` produces axios instances that attach the token automatically. Two exist:
 
@@ -95,7 +117,18 @@ export const apiLocal      = sdk.createAuthedAxios({ baseURL: LOCAL_API_BASE_URL
 export const apiStormGate  = sdk.createAuthedAxios({ baseURL: STORM_GATE_BASE_URL });   // auth service
 ```
 
+The interceptor attaches the token **raw**, with no scheme prefix:
+
+```js
+const token = cookieStore.read();
+if (token) config.headers.Authorization = token;
+```
+
+So real browser traffic carries `Authorization: <jwt>`, not `Authorization: Bearer <jwt>`. The server accepts both (see [edge cases](#edge-cases-the-sdk-absorbs)), and the `Bearer` form is used in this documentation's curl examples and in the test helpers because it is the conventional one — but if you are reading a HAR file or a proxy log, the bare token is what you will see.
+
 **3. Verification.** `utils/auth.js` verifies the signature, enriches `req.user` from `/me`, and upserts a local `Users` row keyed by email.
+
+The SDK assigns the **entire decoded payload** to `req.user` (`req.user = decoded`), which `utils/auth.js` then merges the `/me` profile over. Any claim Storm-Gate puts in the token is therefore visible downstream — convenient, and a reason not to put anything in the token you would not want a controller to trust.
 
 **4. Logout.** `sdk.logout()`, then `clearLocalSession()` clears `firstLogin`, `isLoggedIn`, `isAdmin` from localStorage and defensively expires the `refreshtoken` cookie the SDK does not own, then redirects to `/login`.
 
@@ -279,12 +312,16 @@ Carried forward because they are still unresolved, and each one is a real ambigu
 
 1. **Header format.** `extractToken` accepts `Bearer <jwt>` *and* a bare `<jwt>`, rather than requiring one. Permissiveness on an auth header is the kind of flexibility that makes a later tightening a breaking change — pick `Bearer`, document it, and deprecate the bare form.
 2. **A shared types package.** Only `@storm-gate/client` and `@storm-gate/express` are published; the proposed `@storm-gate/types` does not exist, so every consumer re-describes `User`, `LoginResponse` and `RegisterResponse` by hand.
-3. **Symmetric vs asymmetric signing.** HS256 means every consumer holds the signing secret and could mint tokens. RS256 with a JWKS endpoint would remove secret distribution entirely — the single biggest improvement available to this contract.
-4. **Logout semantics.** Is `/logout` real revocation, or just a cookie clear? Consumers need to know whether an old token stays valid until `exp`. (Today this API assumes it does, and mitigates with the per-request `/me` reload.)
-5. **Refresh-token rotation.** `/refresh_token` is a `GET` with no body — which cookie or header does it read, and what is the rotation policy?
-6. **`role` type.** This app compares against both `1` and `"admin"` because the type has been ambiguous. One type, documented.
-7. **Cookie domain and CORS.** When Storm-Gate is on a different origin, cookie-based token storage needs either `withCredentials` HttpOnly cookies set by Storm-Gate, or a token-in-memory mode.
-8. **The `application` field** on `/register`. This app sends the literal `"blog"`. The allowed values and what behaviour they change are still undocumented on the Storm-Gate side — it appears to be multi-tenant partitioning, but nothing here depends on that being true.
+
+3. **A `requireRole` helper.** `@storm-gate/express` exports only `createRequireAuth` and `extractToken`. Role checking is left to each consumer, which is why this repo hand-rolls `utils/authAdmin.js` — and why `getAllUsers` ended up gated **client-side only**, with a `TEMP` comment acknowledging that anyone can dump the user table. A `requireRole('admin')` in the package would have made the server-side check the path of least resistance instead of the one that got skipped. See [SECURITY.md](SECURITY.md#known-gaps).
+4. **Symmetric vs asymmetric signing.** HS256 means every consumer holds the signing secret and could mint tokens — a verifier is indistinguishable from an issuer. RS256 with a JWKS endpoint removes secret distribution entirely, and is the single biggest improvement available to this contract.
+
+   **The verification side is closer than it looks.** `createRequireAuth({ secret, algorithms = ["HS256"] })` already takes an `algorithms` option and passes it straight to `jwt.verify`, so an RS256 public key in `secret` plus `algorithms: ["RS256"]` would verify today. What is missing is **key distribution**: Storm-Gate publishing a JWKS endpoint, and the package fetching, caching and rotating keys from it. The package exports only `createRequireAuth` and `extractToken` — no JWKS helper — so that work is real, but it is additive rather than a rewrite.
+5. **Logout semantics.** Is `/logout` real revocation, or just a cookie clear? Consumers need to know whether an old token stays valid until `exp`. (Today this API assumes it does, and mitigates with the per-request `/me` reload.)
+6. **Refresh-token rotation.** `/refresh_token` is a `GET` with no body — which cookie or header does it read, and what is the rotation policy?
+7. **`role` type.** This app compares against both `1` and `"admin"` because the type has been ambiguous. One type, documented.
+8. **Cookie domain and CORS.** When Storm-Gate is on a different origin, cookie-based token storage needs either `withCredentials` HttpOnly cookies set by Storm-Gate, or a token-in-memory mode.
+9. **The `application` field** on `/register`. This app sends the literal `"blog"`. The allowed values and what behaviour they change are still undocumented on the Storm-Gate side — it appears to be multi-tenant partitioning, but nothing here depends on that being true.
 
 ---
 

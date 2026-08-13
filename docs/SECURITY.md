@@ -27,6 +27,17 @@ stormGateAuth = createRequireAuth({ secret: process.env.ACCESS_TOKEN_SECRET });
 - **Passwords:** never handled here. The mirrored local `Users` row stores the literal string `"storm-gate-managed"` in its password field, so nothing can authenticate against the local collection even if a legacy code path tried.
 - **Browser side:** `src/lib/stormGate.js` configures the SDK with `rememberMeMaxAge` of 7 days and a 24h default, an `onUnauthenticated` handler that clears local session keys and redirects to `/login`, and a defensive clear of the `refreshtoken` cookie the SDK does not own.
 
+### Token storage exposure
+
+The access token lives in a cookie written by JavaScript — `accesstoken`, `path=/`, `SameSite=Lax`, plus `max-age`. Two flags are **absent**:
+
+- **No `HttpOnly`.** Any script on the page can read the token, so an XSS anywhere on the origin is a full session compromise. This is structural rather than sloppy: the request interceptor reads the cookie back out to attach it, and a cookie set via `document.cookie` can never be `HttpOnly`. Escaping it means Storm-Gate setting the cookie server-side with `withCredentials`, or holding the token in memory only.
+- **No `Secure`.** Nothing in the cookie prevents it being sent over plaintext HTTP. Fly.io's `force_https` closes this in production; the cookie does not close it itself, and a non-HTTPS deployment would leak tokens silently.
+
+`SameSite=Lax` does give reasonable CSRF protection on cross-site POSTs.
+
+This raises the cost of the [unmetered XSS surface](#content-sanitisation): sanitisation is not just about defacement, it is what stands between a stored payload and every reader's session token.
+
 ### Profile enrichment, and why swallowing its failure is safe
 
 After signature verification, `utils/auth.js` calls Storm-Gate's `/me` and merges the profile onto `req.user`, caching per user id for 60 seconds:

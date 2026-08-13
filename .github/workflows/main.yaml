@@ -55,8 +55,22 @@ jobs:
       - name: lint
         continue-on-error: true
         run: npm run lint
+  integration-test:
+    needs: [static-scan, dependency-scan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # ubuntu-latest ships a running Docker daemon, so Testcontainers can boot
+      # the real MongoDB image the integration suite tests against.
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      - name: Run integration tests
+        run: npm run test:integration
   build:
-    needs: [static-scan, dependency-scan, lint]
+    needs: [static-scan, dependency-scan, lint, integration-test]
     runs-on: ubuntu-latest
     outputs:
       build_path: ${{ steps.archive_build.outputs.build_path }}

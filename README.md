@@ -500,14 +500,23 @@ deploys to Fly.io. Nothing deploys from `staging`.
   made through a pull request" — so any workflow step that pushes a commit is
   rejected with `GH006: Protected branch update failed`. Note that **tags are
   not covered by that rule**: a rejected push can still leave a tag behind
-  pointing at a commit that never landed. This is why staging no longer runs a
-  release step; it would need the version bump pushed back to advance.
-- **`master` still runs conventional-changelog with `tag-prefix: dev.v` and
-  `git-push: false`.** Because the bump is never pushed, `master`'s
-  `package.json` drifts behind its `dev.v*` tags, and the job will eventually
-  fail on a tag collision the same way `staging` did. Nothing consumes those
-  `dev.v*` tags — `release-publish.yml` fires on `v*.*.*`, which they do not
-  match. Removing those steps from `master.yaml` is the pending cleanup.
+  pointing at a commit that never landed.
+- **conventional-changelog versions come from the last tag _reachable from the
+  branch_, not from `package.json`.** Tag existence is global but reachability
+  is per-branch, and that gap is what broke releases on `staging`: its last
+  reachable `dev.v*` tag was `dev.v1.4.2`, so it kept computing 1.5.0 — while
+  `dev.v1.5.0` already existed globally, created by master's pipeline on a
+  commit `staging` cannot reach. The bump then failed with
+  `fatal: tag already exists`, every run, forever. Do not run two branches'
+  release automation in one tag namespace.
+- **`master`'s `dev.v*` tagging works, but feeds nothing.** Each tag is created
+  on master's own HEAD, so it stays reachable and the sequence advances
+  cleanly — the next one will be `dev.v1.8.0`, and it does *not* collide.
+  `package.json` (1.6.0) drifting behind the tags (1.7.0) is harmless, since
+  the version is not read from the file. The steps are simply redundant:
+  nothing consumes `dev.v*`, because `release-publish.yml` fires on `v*.*.*`,
+  which those tags do not match. Removing them from `master.yaml` is optional
+  cleanup, not a bug fix.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 

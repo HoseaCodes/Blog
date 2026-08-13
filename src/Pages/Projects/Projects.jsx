@@ -1,45 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { projectData } from "./ProjectsData";
-
-/* ------------------------------------------------------------------
-   Marketing copy + curated stack pills. Mirrors the SHOWCASE in
-   projectHighlight.jsx so the home page and this page stay aligned
-   without forcing schema changes upstream in ProjectsData.
------------------------------------------------------------------- */
-
-const SHOWCASE = [
-  {
-    id: 1,
-    eyebrow: "01 / SOCIAL RING",
-    title: "Custom borders for social profile pictures.",
-    description:
-      "iOS app letting users layer custom-designed rings around their profile pictures — 100+ borders, in-app editor, pinch-to-resize. Grew to 500+ active users before v2.",
-    role: "Software Lead",
-    timeframe: "Spring 2021 · 120 hrs",
-    type: "iOS App",
-    stack: ["Swift", "SwiftUI", "iOS", "UIKit"],
-    image: "https://i.imgur.com/138wx8D.png",
-    externals: [
-      { label: "App Store", href: "https://apps.apple.com/us/app/social-ring/id1551446005" },
-      { label: "Website", href: "https://www.social-ring.com/" },
-    ],
-  },
-  {
-    id: 2,
-    eyebrow: "02 / AIMLY",
-    title: "Digital fundraising platform with gourmet chips.",
-    description:
-      "Lead backend engineer on the API powering campaign creation, donations, team leaderboards, inventory, and shipment tracking. Real-time reporting, payment gateway integration, and serverless data layer.",
-    role: "Lead Backend Engineer",
-    timeframe: "Fall 2022 · 2.5k hrs",
-    type: "Web Platform",
-    stack: ["Node.js", "Next.js", "AWS", "MySQL", "Redux"],
-    image: "https://i.imgur.com/9k4vVxL.png",
-    externals: [{ label: "goaimly.com", href: "https://goaimly.com/" }],
-  },
-];
+import { GlobalState } from "../../GlobalState";
 
 /* ------------------------------------------------------------------
    Styled components
@@ -385,10 +347,27 @@ const ExternalsRow = styled.div`
 ------------------------------------------------------------------ */
 
 const Projects = () => {
-  // Only show showcase entries that exist as active projects upstream
-  const showcase = SHOWCASE.filter((s) =>
-    projectData.some((p) => p.id === s.id)
-  );
+  // Card copy now lives on the project document itself (previously a local
+  // SHOWCASE constant duplicated here and in projectHighlight.jsx), so adding
+  // a project is a DB write rather than an edit to three files.
+  const state = useContext(GlobalState);
+  const [projects] = state?.projectsAPI?.projects || [[]];
+
+  const showcase = (projects || []).map((p) => ({
+    id: p.projectId,
+    // Canonical URL path — slug, falling back to the numeric id so a record
+    // without one still links somewhere valid.
+    href: `/project/${p.slug || p.projectId}`,
+    eyebrow: p.eyebrow,
+    title: p.cardTitle || p.title,
+    description: p.description,
+    role: p.cardRole || p.role,
+    timeframe: p.timeframe,
+    type: p.type,
+    stack: p.stack || [],
+    image: p.image || p.headerImg,
+    externals: p.externals || [],
+  }));
 
   return (
     <Page>
@@ -414,7 +393,7 @@ const Projects = () => {
 
       <Grid>
         {showcase.map((project) => (
-          <Card key={project.id} to={`/project/${project.id}`}>
+          <Card key={project.id} to={project.href}>
             <Media>
               <MediaBadge>{project.type}</MediaBadge>
               <MediaImg
@@ -437,7 +416,7 @@ const Projects = () => {
                 ))}
               </Stack>
               <Footer>
-                <span>View case study</span>
+                <span>View showcase</span>
                 {project.externals.length > 0 ? (
                   <ExternalsRow>
                     {project.externals.map((e, i) => (

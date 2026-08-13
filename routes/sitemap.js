@@ -1,5 +1,6 @@
 import express from 'express';
 import Articles from '../models/article.js';
+import Projects from '../models/project.js';
 
 const router = express.Router();
 
@@ -28,6 +29,11 @@ router.get('/sitemap.xml', async (req, res) => {
       { slug: 1, _id: 1, updatedAt: 1, createdAt: 1 }
     ).lean();
 
+    const projects = await Projects.find(
+      { draft: { $ne: true }, archived: { $ne: true } },
+      { slug: 1, projectId: 1, updatedAt: 1, createdAt: 1 }
+    ).lean();
+
     const today = new Date().toISOString().split('T')[0];
 
     const staticEntries = STATIC_URLS.map(
@@ -43,7 +49,17 @@ router.get('/sitemap.xml', async (req, res) => {
       return `  <url>\n    <loc>${escapeXml(`${SITE_URL}/blog/${slug}`)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
     });
 
-    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...staticEntries, ...articleEntries].join('\n')}\n</urlset>\n`;
+    // Emit the slug form only — /project/1 redirects to it client-side, so
+    // listing both would advertise duplicate URLs for the same page.
+    const projectEntries = projects.map((project) => {
+      const slug = project.slug || project.projectId;
+      const lastmod = (project.updatedAt || project.createdAt || new Date())
+        .toISOString()
+        .split('T')[0];
+      return `  <url>\n    <loc>${escapeXml(`${SITE_URL}/project/${slug}`)}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>0.8</priority>\n  </url>`;
+    });
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${[...staticEntries, ...articleEntries, ...projectEntries].join('\n')}\n</urlset>\n`;
 
     res.set('Content-Type', 'application/xml; charset=utf-8');
     res.set('Cache-Control', 'public, max-age=3600');

@@ -26,7 +26,7 @@ function ProjectCard(props) {
                       <CardTitle>{props.project.name}</CardTitle>
                       <CardSubtitle>{props.project.title}</CardSubtitle>
                       <CardBtn>
-                        <span>Case Study</span>
+                        <span>Showcase</span>
                         <CardBtnMask />
                         <CardIcon>
                           <CardSVG xmlns="http://www.w3.org/2000/svg" viewBox="0 0 476.213 476.213"><CardSVGPath d="M405.606 167.5l-21.212 21.213 34.393 34.393H0v30h418.787L384.394 287.5l21.212 21.213 70.607-70.607"></CardSVGPath></CardSVG>

@@ -15,6 +15,7 @@ import categoryRouter from "./routes/category.js";
 import uploadRouter from "./routes/upload.js";
 import paymentRouter from "./routes/payment.js";
 import productRouter from "./routes/product.js";
+import projectRouter from "./routes/project.js";
 import userRouter from "./routes/user.js";
 import blogRouter from "./routes/blog.js";
 import mediaRouter from "./routes/media.js";
@@ -83,6 +84,7 @@ app.use('/api', categoryRouter);
 app.use('/api', uploadRouter);
 app.use('/api', paymentRouter);
 app.use('/api', productRouter);
+app.use('/api', projectRouter);
 app.use('/api/user', userRouter);
 // LinkedIn's /callback is intentionally un-gated (LinkedIn's browser redirect
 // can't carry our JWT). Must mount before ANY router with a `router.use(auth)`

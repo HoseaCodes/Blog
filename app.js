@@ -31,6 +31,7 @@ import sitemapRouter from "./routes/sitemap.js";
 import socialPreviewRouter from "./routes/socialPreview.js";
 import linkedinRouter from "./routes/linkedin.js";
 import subscriberRouter from "./routes/subscriber.js";
+import apiDocsRouter from "./routes/apiDocs.js";
 
 const app = express();
 app.use(logger("dev"));
@@ -116,5 +117,11 @@ app.use('/api', ttsRouter);
 // static + catch-all (which need build/) are registered in server.js.
 app.use('/', sitemapRouter);
 app.use('/', socialPreviewRouter);
+
+// Swagger UI at /api-docs. Mounted here rather than in server.js so it is
+// registered before the SPA catch-all (`app.get("/*")`, server.js), which
+// would otherwise answer /api-docs with index.html. Basic-auth gated in
+// production — see routes/apiDocs.js.
+app.use('/', apiDocsRouter);
 
 export default app;

@@ -11,8 +11,6 @@
 # production
 /build
 /logs
-swagger-server/node_modules
-swagger-server/package-lock.json
 
 # misc
 .DS_Store
@@ -31,7 +29,7 @@ src/icons
 .env
 index.js
 .eslintignore
-testing.md
+/testing.md
 test/db.js
 
 .eslintrc.cjs
@@ -49,3 +47,8 @@ set-fly-secrets.sh
 dump
 
 output.json
+
+storybook-static
+
+# MkDocs build output — generated, never committed
+site/

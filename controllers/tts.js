@@ -5,7 +5,15 @@ import Logger from '../utils/logger.js';
 
 const logger = new Logger('tts');
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Built on first use, not at import — the SDK constructor throws when
+// OPENAI_API_KEY is unset, and app.js imports this router at boot.
+let openaiClient;
+function getOpenAI() {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openaiClient;
+}
 
 const DAILY_LIMIT = 1;
 
@@ -110,7 +118,7 @@ async function synthesizeSpeech(req, res) {
 
     const buffers = await Promise.all(
       chunks.map(async (chunk) => {
-        const speech = await openai.audio.speech.create({
+        const speech = await getOpenAI().audio.speech.create({
           model: MODEL,
           voice: VOICE,
           input: chunk,

@@ -4,14 +4,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// Built on first use, not at import — the SDK constructor throws when
+// OPENAI_API_KEY is unset, and controllers/aiArt.js pulls this in at boot.
+// generateWithDallE is only reached once a caller picks the dalle provider.
+let openaiClient;
+function getOpenAI() {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  }
+  return openaiClient;
+}
 
 export const DALLE = 'dalle';
 export const STABILITY = 'stability';
 export const VALID_PROVIDERS = [DALLE, STABILITY];
 
 async function generateWithDallE({ prompt, size = '1024x1024' }) {
-  const response = await openai.images.generate({
+  const response = await getOpenAI().images.generate({
     model: 'dall-e-3',
     prompt,
     size,

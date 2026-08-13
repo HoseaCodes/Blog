@@ -439,9 +439,13 @@ Three long-lived branches. Only two of them run CI.
 
 | Branch    | Workflow | Trigger | Runs | Deploys |
 | --------- | -------- | ------- | ---- | ------- |
-| `staging` | `main.yaml` (Dev Pipeline) | push to `staging` | static-scan → dependency-scan → lint → integration-test → build → promote-dev | Fly.io, on every green build |
+| `staging` | `main.yaml` (Dev Pipeline) | push to `staging` | static-scan → dependency-scan → lint → integration-test → build | **No** — verify only |
 | `prep`    | *none* | — | nothing | — |
 | `master`  | `master.yaml` (Snyk Scan), `release-please.yml` | push to `master` | security → build; release-please in parallel | via release tag — see below |
+
+**Staging verifies; it does not ship.** It runs the scans, the lint, the
+integration suite and a production build, and stops there. It cuts no release
+and deploys nowhere. Releasing and deploying belong to `master`.
 
 > **`prep` has no CI.** No workflow triggers on it and none reference it. Checks
 > displayed on a PR that *targets* `prep` are the `staging` pipeline's runs
@@ -457,27 +461,23 @@ Three long-lived branches. Only two of them run CI.
 | dependency-scan    | Alerts on any open-source component, direct or transitive, that the code depends on and is known to be vulnerable. |
 | lint               | Scans source for errors and potential issues that lead to bugs and vulnerabilities. |
 | integration-test   | `npm run test:integration` — drives the real Express app over HTTP (supertest) against a real MongoDB (Testcontainers). Outbound third-party HTTP is blocked by `nock`. **Requires Docker.** |
-| build              | `npm ci --legacy-peer-deps` → `npm run build` → archives `build.tar.gz`, then cuts a `staging.v*` release. |
-| promote-dev        | Deploys the built artifact to Fly.io. |
+| build              | `npm ci --legacy-peer-deps` → `npm run build`. Proves the app compiles; the output is not published anywhere. |
 
-Jobs are gated: `build` needs all four scans/tests to pass, and `promote-dev`
-needs `build`. A failure early in the chain means later jobs never execute —
-so a green early stage is not evidence that the later ones work.
+Jobs are gated: `build` needs all four scans/tests to pass. A failure early in
+the chain means later jobs never execute — so a green early stage is not
+evidence that the later ones work.
 
 #### Releases and deploys
 
 | Mechanism | Where | Tag format | Pushes version bump | Drives a deploy |
 | --------- | ----- | ---------- | ------------------- | --------------- |
-| conventional-changelog | `staging` build job | `staging.v*` | Yes | No |
 | conventional-changelog | `master` build job | `dev.v*` | No | No |
 | release-please | `master` | `v*` | Yes, via release PR | Yes |
 | `release-publish.yml` | on tag `v*.*.*` | — | — | Deploys to Fly.io |
 
-Two deploy paths:
-
-- **staging** — `promote-dev` deploys to Fly.io directly on every green build.
-- **master** — release-please opens a release PR; merging it creates a `v1.2.3`
-  tag, which fires `release-publish.yml` and deploys to Fly.io.
+There is **one** deploy path: release-please opens a release PR on `master`;
+merging it creates a `v1.2.3` tag, which fires `release-publish.yml` and
+deploys to Fly.io. Nothing deploys from `staging`.
 
 #### Pipeline gotchas
 
@@ -496,12 +496,27 @@ Two deploy paths:
   whole app unimportable without that credential — which takes down the
   integration suite before a single test runs. Build clients lazily inside
   handlers.
-- **`master` still runs conventional-changelog with `tag-prefix: dev.v` and
-  `git-push: false`.** Because the bump is never pushed, `master`'s
-  `package.json` drifts behind its `dev.v*` tags, and the job will eventually
-  fail on a tag collision the same way `staging` did. Nothing consumes those
-  `dev.v*` tags — `release-publish.yml` fires on `v*.*.*`, which they do not
-  match. Removing those steps from `master.yaml` is the pending cleanup.
+- **CI cannot push to `staging`.** The branch is protected — "Changes must be
+  made through a pull request" — so any workflow step that pushes a commit is
+  rejected with `GH006: Protected branch update failed`. Note that **tags are
+  not covered by that rule**: a rejected push can still leave a tag behind
+  pointing at a commit that never landed.
+- **conventional-changelog versions come from the last tag _reachable from the
+  branch_, not from `package.json`.** Tag existence is global but reachability
+  is per-branch, and that gap is what broke releases on `staging`: its last
+  reachable `dev.v*` tag was `dev.v1.4.2`, so it kept computing 1.5.0 — while
+  `dev.v1.5.0` already existed globally, created by master's pipeline on a
+  commit `staging` cannot reach. The bump then failed with
+  `fatal: tag already exists`, every run, forever. Do not run two branches'
+  release automation in one tag namespace.
+- **`master`'s `dev.v*` tagging works, but feeds nothing.** Each tag is created
+  on master's own HEAD, so it stays reachable and the sequence advances
+  cleanly — the next one will be `dev.v1.8.0`, and it does *not* collide.
+  `package.json` (1.6.0) drifting behind the tags (1.7.0) is harmless, since
+  the version is not read from the file. The steps are simply redundant:
+  nothing consumes `dev.v*`, because `release-publish.yml` fires on `v*.*.*`,
+  which those tags do not match. Removing them from `master.yaml` is optional
+  cleanup, not a bug fix.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 

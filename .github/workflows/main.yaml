@@ -69,22 +69,15 @@ jobs:
         run: npm install --legacy-peer-deps
       - name: Run integration tests
         run: npm run test:integration
+  # Staging verifies only: scans, lint, integration tests and a production
+  # build. It does not release and it does not deploy. Releases and deploys are
+  # owned by master (release-please -> v* tag -> release-publish.yml -> Fly.io).
   build:
     needs: [static-scan, dependency-scan, lint, integration-test]
     runs-on: ubuntu-latest
-    # The changelog step pushes the chore(release) commit back to staging, so
-    # this job needs write access to repository contents.
-    permissions:
-      contents: write
-    outputs:
-      build_path: ${{ steps.archive_build.outputs.build_path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        with:
-          # Full history + tags: the changelog action derives the next version
-          # from prior tags, and pushing from a shallow clone is rejected.
-          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -102,55 +95,3 @@ jobs:
         run: npm run build
         env:
           SKIP_PREFLIGHT_CHECK: "true"
-      - name: Archive build output
-        id: archive_build
-        run: |
-          tar -czf build.tar.gz build/
-          echo "::set-output name=build_path::build.tar.gz"
-      # Staging owns the "staging.v" namespace. It previously tagged "dev.v",
-      # which master's release tooling also writes to — and with git-push
-      # disabled the chore(release) commit was discarded, so package.json here
-      # never advanced past 1.4.1. Every run then recomputed 1.5.0 and died on
-      # `git tag -a dev.v1.5.0` -> already exists. Pushing the bump is what
-      # makes the version move forward and keeps the tag free each run.
-      - name: Create conventional changelog action
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@latest
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag-prefix: "staging.v"
-          git-push: true
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.changelog.outputs.tag }}
-          release_name: Release ${{ steps.changelog.outputs.tag }}
-          body:  ${{steps.changelog.outputs.clean_changelog}}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build.tar.gz
-          asset_name: build.tar.gz
-          asset_content_type: application/gzip
-  promote-dev:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Deploy to Fly.io
-        uses: superfly/flyctl-actions@master
-        with:
-          args: "deploy"
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

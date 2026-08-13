@@ -1,8 +1,8 @@
 site_name: HoseaCodes Blog & Portfolio — Docs
 site_description: Architecture, security, operations and API documentation for the HoseaCodes blog and portfolio.
-site_url: https://hoseacodes.github.io/Blog-Portfolio/
-repo_url: https://github.com/HoseaCodes/Blog-Portfolio
-repo_name: HoseaCodes/Blog-Portfolio
+site_url: https://hoseacodes.github.io/Blog/
+repo_url: https://github.com/HoseaCodes/Blog
+repo_name: HoseaCodes/Blog
 edit_uri: edit/master/docs/
 copyright: © Dominique Hosea
 

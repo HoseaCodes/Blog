@@ -1,6 +1,6 @@
 # Blog page hero and "The Latest" logic
 
-The `/blog` page renders an HBR-style landing layout: a most-liked hero, a three-column featured grid, and a right-rail "The Latest" list. The picks are derived from a single `GET /api/articles` fetch in a `useEffect` in [`src/Pages/Articles/Articles.jsx`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/src/Pages/Articles/Articles.jsx) — search for `fetchMostLikedArticle`, around line 1317.
+The `/blog` page renders an HBR-style landing layout: a most-liked hero, a three-column featured grid, and a right-rail "The Latest" list. The picks are derived from a single `GET /api/articles` fetch in a `useEffect` in [`src/Pages/Articles/Articles.jsx`](https://github.com/HoseaCodes/Blog/blob/master/src/Pages/Articles/Articles.jsx) — search for `fetchMostLikedArticle`, around line 1317.
 
 This document records the rules so they do not have to be re-derived from the code.
 
@@ -63,6 +63,6 @@ Each article's category is `article.categories?.[0]` — **only the first tag co
 - **Hero derivation** — `fetchMostLikedArticle` `useEffect`, `Articles.jsx` ~1317, with `categoryCount` built at ~1330 and the slots assembled at ~1352–1373.
 - **Render** — `MainCard` / `MiddleColumn` / `RightColumn` blocks in the same file, ~1530+.
 - **Public-list filter** — the drafts/archived filter in `transformedArticles`, and the parallel filter on the hero fetch.
-- **Schema** — [`models/article.js`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/models/article.js): `createdAt`, `likes`, `categories`, `draft`, `archived`.
+- **Schema** — [`models/article.js`](https://github.com/HoseaCodes/Blog/blob/master/models/article.js): `createdAt`, `likes`, `categories`, `draft`, `archived`.
 
 Note that `likes` is a denormalised counter maintained with `$inc` (see [ARCHITECTURE.md](ARCHITECTURE.md#data-layer)), so hero selection depends on a value that is not transactionally consistent with the per-user like records.

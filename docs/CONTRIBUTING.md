@@ -40,7 +40,7 @@ The pipelines themselves are in [OPERATIONS.md](OPERATIONS.md#branches-and-pipel
 | Bugfix | Non-urgent bug fixes | `bugfix/<bug-name>` or `fix/<name>` | `staging` |
 | Hotfix | Emergency fixes | `hotfix/<issue-name>` | `master` |
 
-The intended long-term flow is **feature → `staging` → `prep` → `master`**, as described in the [pull request template](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/pull_request_template.md).
+The intended long-term flow is **feature → `staging` → `prep` → `master`**, as described in the [pull request template](https://github.com/HoseaCodes/Blog/blob/master/.github/pull_request_template.md).
 
 Two caveats that the branch table cannot show, and that matter more than the table:
 
@@ -176,7 +176,7 @@ A commit that fixes something subtle should say what it was guarding against, no
 
 ## Pull requests
 
-Fill in the [template](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/pull_request_template.md): source branch, target branch, description, related issues, and the checklist.
+Fill in the [template](https://github.com/HoseaCodes/Blog/blob/master/.github/pull_request_template.md): source branch, target branch, description, related issues, and the checklist.
 
 Before requesting review:
 
@@ -301,4 +301,4 @@ If a decision was hard to reverse or will be questioned later, write an [ADR](ad
 
 ## Contact
 
-Questions about this workflow go to the repository maintainer — Dominique Hosea ([@HoseaCodes](https://github.com/HoseaCodes)). For anything exploitable, use a [private security advisory](https://github.com/HoseaCodes/Blog-Portfolio/security/advisories) rather than an issue, per [SECURITY.md](SECURITY.md#reporting-a-vulnerability).
+Questions about this workflow go to the repository maintainer — Dominique Hosea ([@HoseaCodes](https://github.com/HoseaCodes)). For anything exploitable, use a [private security advisory](https://github.com/HoseaCodes/Blog/security/advisories) rather than an issue, per [SECURITY.md](SECURITY.md#reporting-a-vulnerability).

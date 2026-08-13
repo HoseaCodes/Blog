@@ -29,7 +29,7 @@ src/icons
 .env
 index.js
 .eslintignore
-testing.md
+/testing.md
 test/db.js
 
 .eslintrc.cjs

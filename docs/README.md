@@ -1,6 +1,6 @@
 # Documentation
 
-Documentation for [HoseaCodes Blog & Portfolio](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/README.md).
+Documentation for [HoseaCodes Blog & Portfolio](https://github.com/HoseaCodes/Blog/blob/master/README.md).
 
 **System**
 
@@ -37,17 +37,17 @@ Documentation for [HoseaCodes Blog & Portfolio](https://github.com/HoseaCodes/Bl
 
 **New to the codebase** → [ARCHITECTURE.md](ARCHITECTURE.md), then [adr/](adr/README.md) for why it looks like that.
 
-**Running it locally** → the [README quick start](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/README.md#local-development), then [OPERATIONS.md](OPERATIONS.md).
+**Running it locally** → the [README quick start](https://github.com/HoseaCodes/Blog/blob/master/README.md#local-development), then [OPERATIONS.md](OPERATIONS.md).
 
 **Assessing whether to trust it** → [SECURITY.md](SECURITY.md#known-gaps) and [TESTING.md](TESTING.md#gaps-worth-closing). Both lead with what is missing.
 
-**Debugging something** → [`CLAUDE.md`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/CLAUDE.md) first — it is the debugging protocol for this repo, and its central rule is to observe before hypothesising. Then [OPERATIONS.md](OPERATIONS.md#failure-modes).
+**Debugging something** → [`CLAUDE.md`](https://github.com/HoseaCodes/Blog/blob/master/CLAUDE.md) first — it is the debugging protocol for this repo, and its central rule is to observe before hypothesising. Then [OPERATIONS.md](OPERATIONS.md#failure-modes).
 
 **Looking for work to do** → [ROADMAP.md](ROADMAP.md#engineering-ranked). The first four items are correctness and safety issues, not features.
 
 ## Building this site
 
-These pages are published to GitHub Pages with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), built by [`.github/workflows/docs.yml`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/workflows/docs.yml) on every push to `master` that touches `docs/`. Pull requests build but do not deploy.
+These pages are published to GitHub Pages with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), built by [`.github/workflows/docs.yml`](https://github.com/HoseaCodes/Blog/blob/master/.github/workflows/docs.yml) on every push to `master` that touches `docs/`. Pull requests build but do not deploy.
 
 ```bash
 pip install -r requirements-docs.txt
@@ -66,6 +66,6 @@ Two things the build guards against:
 
 Each document states its limitations rather than omitting them. Where something is broken, it says so and links to the code — a document that only describes the parts that work is a document you cannot trust about the parts that do not.
 
-These files supersede the old [wiki](https://github.com/HoseaCodes/Blog/wiki). It lived on a different repository, was not versioned with the code, and had drifted accordingly — PM2, SendGrid, `src/services/authService.js`, and a `swagger-server` on port 8080, none of which still exist. Everything durable from its twenty pages has been folded in here and checked against the code; where an endpoint name or file path had gone stale, the version in `docs/` is the corrected one.
+These files supersede this repository's [wiki](https://github.com/HoseaCodes/Blog/wiki). A wiki is not versioned with the code and is not reviewed in the pull request that invalidates it, so it drifted — PM2, SendGrid, `src/services/authService.js`, and a `swagger-server` on port 8080, none of which still exist. Everything durable from its twenty pages has been folded in here and checked against the source; where an endpoint name or file path had gone stale, the version in `docs/` is the corrected one.
 
 Add new documentation here, in the pull request that makes it true. See [CONTRIBUTING.md](CONTRIBUTING.md#documentation).

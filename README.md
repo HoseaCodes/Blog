@@ -1,7 +1,7 @@
 # HoseaCodes — Blog & Portfolio
 
-[![Dev Pipeline](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/main.yaml/badge.svg?branch=staging)](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/main.yaml)
-[![Release Please](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/release-please.yml/badge.svg)](https://github.com/HoseaCodes/Blog-Portfolio/actions/workflows/release-please.yml)
+[![Dev Pipeline](https://github.com/HoseaCodes/Blog/actions/workflows/main.yaml/badge.svg?branch=staging)](https://github.com/HoseaCodes/Blog/actions/workflows/main.yaml)
+[![Release Please](https://github.com/HoseaCodes/Blog/actions/workflows/release-please.yml/badge.svg)](https://github.com/HoseaCodes/Blog/actions/workflows/release-please.yml)
 [![Node 20](https://img.shields.io/badge/Node-20.x-339933)](https://nodejs.org/)
 [![React 17](https://img.shields.io/badge/React-17-61dafb)](https://react.dev/)
 [![Express 4](https://img.shields.io/badge/Express-4.21-000000)](https://expressjs.com/)
@@ -15,7 +15,7 @@ A personal blog and engineering portfolio: a React SPA and the Express API behin
 It is a **real, deployed, single-author site**, not a demo. That shapes every decision here: authentication is delegated to a separate service rather than reimplemented, the API and the SPA ship as one deployable because one person operates them, and the parts that are honestly unfinished are listed in [Known limitations](#known-limitations) rather than quietly omitted.
 
 ```bash
-git clone https://github.com/HoseaCodes/Blog-Portfolio.git && cd Blog-Portfolio
+git clone https://github.com/HoseaCodes/Blog.git && cd Blog
 npm install --legacy-peer-deps
 npm run test:integration     # 17 tests, real MongoDB via Testcontainers. Needs Docker.
 ```
@@ -206,8 +206,8 @@ The one that has actually bitten this repo: **conventional-changelog computes th
 **Prerequisites:** Node 20.x, Docker (integration tests only), a MongoDB you can reach, and a running Storm-Gate for authenticated flows.
 
 ```bash
-git clone https://github.com/HoseaCodes/Blog-Portfolio.git
-cd Blog-Portfolio
+git clone https://github.com/HoseaCodes/Blog.git
+cd Blog
 npm install --legacy-peer-deps      # --legacy-peer-deps is required, see below
 cp ".env example" .env              # then fill in the values
 

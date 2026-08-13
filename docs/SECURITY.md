@@ -203,10 +203,10 @@ Ordered by how much they would matter if exploited.
 13. **Dependency scanning is advisory.** Snyk runs in CI with `continue-on-error: true` and `|| true`, so a finding never fails a build.
 14. **`status` is never enforced.** Storm-Gate reports `PENDING`/`APPROVED`; nothing in this app checks it, so an unapproved-but-authenticated user is treated as a normal user.
 
-Fixes are ranked in the README's [Future improvements](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/README.md#future-improvements).
+Fixes are ranked in the README's [Future improvements](https://github.com/HoseaCodes/Blog/blob/master/README.md#future-improvements).
 
 ---
 
 ## Reporting a vulnerability
 
-Open a private security advisory on the [repository](https://github.com/HoseaCodes/Blog-Portfolio/security/advisories) or contact the maintainer directly. Please do not open a public issue for anything exploitable.
+Open a private security advisory on the [repository](https://github.com/HoseaCodes/Blog/security/advisories) or contact the maintainer directly. Please do not open a public issue for anything exploitable.

@@ -1,0 +1,111 @@
+name: Docs
+
+# Publishes docs/ to GitHub Pages via MkDocs Material.
+#
+# Two jobs on purpose: `build` runs on every PR touching the docs so a broken
+# link fails review rather than production, and `deploy` only runs on master.
+# The build is --strict, so a dead internal link or a bad nav entry is an error,
+# not a warning that scrolls past in the log.
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'requirements-docs.txt'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'mkdocs.yml'
+      - 'requirements-docs.txt'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-docs.txt
+
+      - name: Install documentation dependencies
+        run: pip install -r requirements-docs.txt
+
+      # --strict turns MkDocs warnings into failures: unresolved internal links,
+      # missing anchors, and nav entries pointing at files that do not exist.
+      - name: Build site
+        run: mkdocs build --strict
+
+      # Guards the failure mode that pymdown-extensions 10.x caused silently:
+      # a fenced block containing a line starting with a block-level HTML tag
+      # swallowed the rest of the page. The build stayed green; the page was
+      # truncated. Compare heading counts instead of trusting the exit code.
+      - name: Verify no page was silently truncated
+        run: |
+          python - <<'PY'
+          import re, os, sys
+          def source_headings(path):
+              fence, n = False, 0
+              for line in open(path, encoding='utf-8'):
+                  if line.startswith('```'):
+                      fence = not fence
+                      continue
+                  if not fence and re.match(r'^#{2,3} ', line):
+                      n += 1
+              return n
+
+          failures = []
+          for root, _, files in os.walk('docs'):
+              for f in sorted(files):
+                  if not f.endswith('.md'):
+                      continue
+                  src = os.path.join(root, f)
+                  rel = os.path.relpath(src, 'docs')[:-3]
+                  out = ('site/index.html' if rel == 'README'
+                         else f"site/{rel[:-7]}/index.html" if rel.endswith('/README')
+                         else f"site/{rel}/index.html")
+                  if not os.path.exists(out):
+                      failures.append(f"{src}: no page built at {out}")
+                      continue
+                  rendered = len(re.findall(r'<h[23] id="', open(out, encoding='utf-8').read()))
+                  expected = source_headings(src)
+                  if rendered < expected:
+                      failures.append(f"{src}: rendered {rendered}/{expected} headings — page truncated")
+
+          for line in failures:
+              print("FAIL:", line)
+          sys.exit(1 if failures else 0)
+          PY
+
+      - name: Upload artifact
+        if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

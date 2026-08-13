@@ -226,7 +226,7 @@ For a React render problem, in development:
 npm run build -- --profile
 ```
 
-Then in Chrome DevTools: throttle to low-end mobile, open the Profiler, enable **"Record why each component rendered while profiling"**, and look at the orange-and-darker commits. Work out whether it is a state change, a prop change, or a context change driving the re-render before changing anything — the same observe-first rule as [`CLAUDE.md`](../CLAUDE.md).
+Then in Chrome DevTools: throttle to low-end mobile, open the Profiler, enable **"Record why each component rendered while profiling"**, and look at the orange-and-darker commits. Work out whether it is a state change, a prop change, or a context change driving the re-render before changing anything — the same observe-first rule as [`CLAUDE.md`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/CLAUDE.md).
 
 `@welldone-software/why-did-you-render` is wired up in `src/wdyr.js` for the same purpose, and `npm run analyze` (source-map-explorer) covers bundle size.
 

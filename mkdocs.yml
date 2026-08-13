@@ -1,0 +1,111 @@
+site_name: HoseaCodes Blog & Portfolio — Docs
+site_description: Architecture, security, operations and API documentation for the HoseaCodes blog and portfolio.
+site_url: https://hoseacodes.github.io/Blog-Portfolio/
+repo_url: https://github.com/HoseaCodes/Blog-Portfolio
+repo_name: HoseaCodes/Blog-Portfolio
+edit_uri: edit/master/docs/
+copyright: © Dominique Hosea
+
+docs_dir: docs
+site_dir: site
+
+theme:
+  name: material
+  language: en
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  # GitHub-compatible slugs, so every #anchor works identically in the repo
+  # file browser and on the published site.
+  - toc:
+      permalink: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify {kwds: {case: lower}}
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Mermaid diagrams are rendered client-side by Material's built-in support.
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+nav:
+  - Overview: README.md
+  - System:
+      - Architecture: ARCHITECTURE.md
+      - Authentication: AUTHENTICATION.md
+      - Security: SECURITY.md
+  - Decisions:
+      - Overview: adr/README.md
+      - ADR-001 Delegated auth: adr/ADR-001-delegated-auth.md
+      - ADR-002 MongoDB: adr/ADR-002-mongodb.md
+      - ADR-003 app/server split: adr/ADR-003-app-server-split.md
+      - ADR-004 Testcontainers: adr/ADR-004-testcontainers.md
+      - ADR-005 Single deployable: adr/ADR-005-single-deployable.md
+      - ADR-006 Write-time sanitisation: adr/ADR-006-write-time-sanitisation.md
+  - Building on it:
+      - API reference: API.md
+      - Frontend API modules: FRONTEND_API.md
+      - Frontend standards: FRONTEND.md
+      - Blog page logic: BLOG_PAGE_LOGIC.md
+      - Games and score tracking: GAMES.md
+      - Contributing: CONTRIBUTING.md
+  - Running it:
+      - Operations: OPERATIONS.md
+      - Testing: TESTING.md
+      - Manual testing: MANUAL_TESTING.md
+      - Metrics and KPIs: METRICS.md
+  - Product:
+      - Features: FEATURES.md
+      - Roadmap: ROADMAP.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/HoseaCodes
+    - icon: fontawesome/solid/globe
+      link: https://www.hoseacodes.com
+
+not_in_nav: |
+  index.md

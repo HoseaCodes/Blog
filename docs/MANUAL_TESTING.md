@@ -300,4 +300,4 @@ curl -X POST http://localhost:3003/api/seo/analyze \
 
 ## Reporting an issue
 
-Include reproduction steps, expected vs actual, console errors, failed network calls, browser and version, and the article id. Then read [`CLAUDE.md`](../CLAUDE.md) — this repository's debugging protocol asks for observation before a fix, and console output plus a DOM snapshot at the failure point is exactly what it wants first.
+Include reproduction steps, expected vs actual, console errors, failed network calls, browser and version, and the article id. Then read [`CLAUDE.md`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/CLAUDE.md) — this repository's debugging protocol asks for observation before a fix, and console output plus a DOM snapshot at the failure point is exactly what it wants first.

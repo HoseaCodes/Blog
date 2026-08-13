@@ -1,6 +1,6 @@
 # Frontend API modules
 
-The client half of the API. Every resource family has a hook-shaped module in [`src/API/`](../src/API/) that wraps axios calls and owns its own state; they are composed into `GlobalState` and consumed with `useContext`.
+The client half of the API. Every resource family has a hook-shaped module in [`src/API/`](https://github.com/HoseaCodes/Blog-Portfolio/tree/master/src/API) that wraps axios calls and owns its own state; they are composed into `GlobalState` and consumed with `useContext`.
 
 Backend endpoints are documented in [API.md](API.md). This is how the SPA calls them.
 

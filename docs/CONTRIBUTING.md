@@ -40,7 +40,7 @@ The pipelines themselves are in [OPERATIONS.md](OPERATIONS.md#branches-and-pipel
 | Bugfix | Non-urgent bug fixes | `bugfix/<bug-name>` or `fix/<name>` | `staging` |
 | Hotfix | Emergency fixes | `hotfix/<issue-name>` | `master` |
 
-The intended long-term flow is **feature → `staging` → `prep` → `master`**, as described in the [pull request template](../.github/pull_request_template.md).
+The intended long-term flow is **feature → `staging` → `prep` → `master`**, as described in the [pull request template](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/pull_request_template.md).
 
 Two caveats that the branch table cannot show, and that matter more than the table:
 
@@ -176,7 +176,7 @@ A commit that fixes something subtle should say what it was guarding against, no
 
 ## Pull requests
 
-Fill in the [template](../.github/pull_request_template.md): source branch, target branch, description, related issues, and the checklist.
+Fill in the [template](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/pull_request_template.md): source branch, target branch, description, related issues, and the checklist.
 
 Before requesting review:
 
@@ -295,7 +295,7 @@ Two places carry a standing obligation to be updated together with their code:
 - [BLOG_PAGE_LOGIC.md](BLOG_PAGE_LOGIC.md) and the comment block above `fetchMostLikedArticle` in `src/Pages/Articles/Articles.jsx`
 - [ARCHITECTURE.md § mount ordering](ARCHITECTURE.md#mount-ordering--a-real-invariant) and the mount comments in `app.js`
 
-If a decision was hard to reverse or will be questioned later, write an [ADR](adr/) instead of a comment.
+If a decision was hard to reverse or will be questioned later, write an [ADR](adr/README.md) instead of a comment.
 
 ---
 

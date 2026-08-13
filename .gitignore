@@ -49,3 +49,6 @@ dump
 output.json
 
 storybook-static
+
+# MkDocs build output — generated, never committed
+site/

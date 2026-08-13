@@ -1,0 +1,14 @@
+# Documentation site dependencies.
+# Build locally:  pip install -r requirements-docs.txt && mkdocs serve
+# CI builds with these exact pins — bump deliberately, not accidentally.
+mkdocs==1.6.1
+mkdocs-material==9.5.44
+markdown==3.10.3
+
+# pymdown-extensions MUST be >= 11. On 10.x, `pymdownx.superfences` lets
+# Python-Markdown's raw-HTML block processor run first, so any fenced block
+# containing a line that starts with a block-level HTML tag — `<Form ...>` in a
+# JSX sample, `<body ...>` in a commit-message template — swallows the fence and
+# every heading after it. The page renders, truncated, with no error.
+# Verified: 10.11.2 truncates ARCHITECTURE.md and CONTRIBUTING.md; 11.0.1 does not.
+pymdown-extensions==11.0.1

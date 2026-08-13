@@ -1,6 +1,6 @@
 # Documentation
 
-Documentation for [HoseaCodes Blog & Portfolio](../README.md).
+Documentation for [HoseaCodes Blog & Portfolio](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/README.md).
 
 **System**
 
@@ -9,7 +9,7 @@ Documentation for [HoseaCodes Blog & Portfolio](../README.md).
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Module boundaries, request lifecycle, mount ordering, data layer, deployment topology, integrations |
 | [AUTHENTICATION.md](AUTHENTICATION.md) | The Storm-Gate contract: HTTP surface, JWT claims, token flow, user status |
 | [SECURITY.md](SECURITY.md) | Auth model, authorization matrix, secrets, CORS, sanitisation, and the gap list |
-| [adr/](adr/) | Six architecture decision records |
+| [adr/](adr/README.md) | Six architecture decision records |
 
 **Building on it**
 
@@ -35,15 +35,32 @@ Documentation for [HoseaCodes Blog & Portfolio](../README.md).
 
 ## Where to start
 
-**New to the codebase** → [ARCHITECTURE.md](ARCHITECTURE.md), then [adr/](adr/) for why it looks like that.
+**New to the codebase** → [ARCHITECTURE.md](ARCHITECTURE.md), then [adr/](adr/README.md) for why it looks like that.
 
-**Running it locally** → the [README quick start](../README.md#local-development), then [OPERATIONS.md](OPERATIONS.md).
+**Running it locally** → the [README quick start](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/README.md#local-development), then [OPERATIONS.md](OPERATIONS.md).
 
 **Assessing whether to trust it** → [SECURITY.md](SECURITY.md#known-gaps) and [TESTING.md](TESTING.md#gaps-worth-closing). Both lead with what is missing.
 
-**Debugging something** → [`CLAUDE.md`](../CLAUDE.md) first — it is the debugging protocol for this repo, and its central rule is to observe before hypothesising. Then [OPERATIONS.md](OPERATIONS.md#failure-modes).
+**Debugging something** → [`CLAUDE.md`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/CLAUDE.md) first — it is the debugging protocol for this repo, and its central rule is to observe before hypothesising. Then [OPERATIONS.md](OPERATIONS.md#failure-modes).
 
 **Looking for work to do** → [ROADMAP.md](ROADMAP.md#engineering-ranked). The first four items are correctness and safety issues, not features.
+
+## Building this site
+
+These pages are published to GitHub Pages with [MkDocs Material](https://squidfunk.github.io/mkdocs-material/), built by [`.github/workflows/docs.yml`](https://github.com/HoseaCodes/Blog-Portfolio/blob/master/.github/workflows/docs.yml) on every push to `master` that touches `docs/`. Pull requests build but do not deploy.
+
+```bash
+pip install -r requirements-docs.txt
+mkdocs serve          # live reload on http://127.0.0.1:8000
+mkdocs build --strict # what CI runs — warnings are failures
+```
+
+`site/` is build output and is gitignored; never commit it.
+
+Two things the build guards against:
+
+- **`--strict`** turns unresolved internal links, missing anchors and bad nav entries into errors.
+- **A truncation check** compares heading counts in each source file against the rendered page. This exists because `pymdown-extensions` 10.x let Python-Markdown's raw-HTML processor run before fenced code, so a fence containing a line starting with a block-level tag — `<Form …>` in a JSX sample, `<body …>` in a commit template — silently swallowed the rest of the page. The build stayed green and the page lost two-thirds of its content. Hence the `>= 11` pin in `requirements-docs.txt`, and a check that does not trust the exit code.
 
 ## Conventions
 

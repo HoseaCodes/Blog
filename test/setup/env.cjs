@@ -26,3 +26,9 @@ process.env.allow_origins = "valid,valid1,(.*?)localhost";
 
 // Silence dev.to / medium / linkedin cross-post branches by leaving their keys
 // unset (controllers guard on them).
+
+// OpenAI: a placeholder, never a real key. The SDK constructor throws outright
+// on an undefined apiKey, and app.js eagerly imports the ai / tts / aiArt
+// routers, so without this the whole suite dies at import. Nothing reaches
+// OpenAI regardless — integrationSetup.cjs calls nock.disableNetConnect().
+process.env.OPENAI_API_KEY = process.env.OPENAI_API_KEY || "test-openai-key";

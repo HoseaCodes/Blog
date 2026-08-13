@@ -1,8 +1,10 @@
 # Publishes Storybook to GitHub Pages.
 #
-# Deploys from master only — staging is verify-only (see main.yaml), and the
-# component library people link to should track what is released, not what is
-# in flight.
+# Deploys from staging, so the published component library tracks in-flight
+# work rather than the last release. This is the one exception to staging being
+# verify-only (see main.yaml): it publishes docs, never the app — no Fly.io
+# deploy and no release are involved. Note the Pages site is public even though
+# staging is unreleased.
 #
 # Requires repo Settings -> Pages -> Source = "GitHub Actions". This uses the
 # Pages deployment API rather than pushing to a gh-pages branch, so no
@@ -12,7 +14,7 @@ name: Storybook
 on:
   push:
     branches:
-      - master
+      - staging
     # Only rebuild when something that affects the storybook changed.
     paths:
       - 'src/**'

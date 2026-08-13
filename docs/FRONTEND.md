@@ -2,11 +2,14 @@
 
 Craft rules the SPA is built to. Structure and tooling live in [ARCHITECTURE.md](ARCHITECTURE.md#frontend); this is the "how it should look and behave" half.
 
-- [Typography](#typography)
-- [Images](#images)
-- [Delivery](#delivery)
-- [Performance](#performance)
-- [Component library](#component-library)
+- [Frontend standards](#frontend-standards)
+  - [Typography](#typography)
+    - [CDN](#cdn)
+  - [Images](#images)
+  - [Delivery](#delivery)
+  - [Performance](#performance)
+  - [Code standards](#code-standards)
+  - [Component library](#component-library)
 
 ---
 
@@ -16,6 +19,17 @@ Craft rules the SPA is built to. Structure and tooling live in [ARCHITECTURE.md]
 
 - **No pixel font sizes.** Use `em` or `rem` so sizes compose from that base.
 - `rem` for anything that should track the root; `em` when it should track its container.
+
+### CDN
+
+A distributed network of servers that caches content close to end users. 
+
+- Improves load times
+- Reduces bandwidth costs
+- Increases availability
+- Improves Security
+
+![AWS CDN](https://i.imgur.com/DQeQ3q3.jpg)
 
 ## Images
 

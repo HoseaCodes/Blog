@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.7.0](https://github.com/HoseaCodes/Blog/compare/v1.6.0...v1.7.0) (2026-08-13)
+
+
+### Features
+
+* Add case study components and routing for case studies section ([7b66b51](https://github.com/HoseaCodes/Blog/commit/7b66b519860b011ed9fecee85787ff2b894878b0))
+* add integration tests for Articles and Subscribers APIs ([6bbf3df](https://github.com/HoseaCodes/Blog/commit/6bbf3dffa9a70c456ba3782ceb1177521c5b037c))
+* **error:** enhance 404 page with styled components and improved messaging ([d2a84c2](https://github.com/HoseaCodes/Blog/commit/d2a84c2e65083d1e25af0262dd20427ff6ca7b17))
+* Implement project management API and UI integration ([4a57bba](https://github.com/HoseaCodes/Blog/commit/4a57bbac732cefa750848079792fa78b3ad99793))
+* Implement project management API and UI integration ([ea8e1ba](https://github.com/HoseaCodes/Blog/commit/ea8e1ba3d2fa0820dada23e3e076e28be5a56d11))
+* **linkedin:** Implement LinkedIn integration for article cross-posting ([fe0c10c](https://github.com/HoseaCodes/Blog/commit/fe0c10c803c2a29c70a385222cce1f717a4cd34e))
+* **sharing:** enhance LinkedIn sharing functionality with custom text ([5ae2eba](https://github.com/HoseaCodes/Blog/commit/5ae2eba4ed44bfdb18fedaa99db55edd5cd69588))
+* **sharing:** simplify LinkedIn sharing functionality by updating share URL ([68d700f](https://github.com/HoseaCodes/Blog/commit/68d700f2983c5be98aa7bc6d73c77d63e0f3496f))
+
+
+### Bug Fixes
+
+* add newsletter subscription and management features ([dd8e737](https://github.com/HoseaCodes/Blog/commit/dd8e737cfe96384f993c2d2788570a4ecdb57db6))
+* **admin:** implement admin routes for managing drafts and archived articles ([87a97c1](https://github.com/HoseaCodes/Blog/commit/87a97c1060f60f53298389c945bb37b3ee359891))
+* **ai:** build OpenAI clients lazily so app.js imports without a key ([aed1c57](https://github.com/HoseaCodes/Blog/commit/aed1c5701f6a5e7dcdc7d707486dc8141ae252c2))
+* **article:** enhance blog content styling with custom checkbox and table designs ([f183a8f](https://github.com/HoseaCodes/Blog/commit/f183a8fec4ab4d2f301df5ded3fff5b0207e1706))
+* **article:** implement like and save functionality for articles with user-specific states ([751d749](https://github.com/HoseaCodes/Blog/commit/751d74978551309e7d748f2fc2885e856356eb89))
+* **article:** include commentCount in article details and update comment display logic ([1c6b15f](https://github.com/HoseaCodes/Blog/commit/1c6b15f998edb07a46b422dc154dc9c9d824a4a3))
+* **ci:** give staging its own release namespace and push the version … ([c0837a8](https://github.com/HoseaCodes/Blog/commit/c0837a8ac91526aeb5676df06e801d4dede9a9f3))
+* **ci:** give staging its own release namespace and push the version bump ([3e12090](https://github.com/HoseaCodes/Blog/commit/3e120909ef8bab66a37eda58ebb98547ce10be23))
+* **ci:** install the build job from the lockfile instead of deleting it ([3b35402](https://github.com/HoseaCodes/Blog/commit/3b354025386cf90536119645142008a000358a44))
+* **ci:** install the build job from the lockfile instead of deleting it ([b8a5616](https://github.com/HoseaCodes/Blog/commit/b8a5616e6013f9a9cc216f2505a86be536dcdcc1))
+* **ci:** staging verifies only — no Fly.io deploy, no release ([5df597d](https://github.com/HoseaCodes/Blog/commit/5df597d7a3f2689cf553cf968eb4147ec5487eba))
+* **dependencies:** update axios and form-data to latest versions for improved stability ([c168d20](https://github.com/HoseaCodes/Blog/commit/c168d20b70b70dc372603fa38f30318be6bbcd9d))
+* **hero:** update job title and enhance tagline for clarity and focus on distributed systems ([0f39856](https://github.com/HoseaCodes/Blog/commit/0f39856f5f920af339ffcb4923f62991531b3127))
+* **newsletter:** implement newsletter subscription with status handling and user feedback ([fc5cc14](https://github.com/HoseaCodes/Blog/commit/fc5cc14897698d970627921957dc00dcbe3e958d))
+* Remove outdated documentation files including the Testing Guide, Branching Strategy, and deprecated organization README; streamline project resources. ([79f522b](https://github.com/HoseaCodes/Blog/commit/79f522b994894c59513888a03feb3b37127725bb))
+
 ## [1.6.0](https://github.com/HoseaCodes/Blog/compare/v1.5.0...v1.6.0) (2026-05-31)
 
 

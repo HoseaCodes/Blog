@@ -21,6 +21,7 @@ import AIAPI from "./API/AIAPI";
 import CommentsAPI from "./API/CommentsAPI";
 import { v4 } from "uuid";
 import ProductsAPI from "./API/ProductsAPI";
+import ProjectsAPI from "./API/ProjectsAPI";
 import Notification from "./Components/Notification/Notification";
 import { useCookies } from "react-cookie";
 
@@ -52,6 +53,7 @@ export const DataProvider = ({ children }) => {
   const state = {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
+    projectsAPI: ProjectsAPI(),
     articlesAPI: ArticlesAPI(),
     commentsAPI: CommentsAPI,
     userAPI: UserAPI(token),

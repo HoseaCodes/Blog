@@ -40,7 +40,11 @@ router.get('/blog/:slug', async (req, res, next) => {
     const { slug } = req.params;
     const conditions = [{ slug }];
     if (mongoose.isValidObjectId(slug)) conditions.push({ _id: slug });
-    const article = await Articles.findOne({ $or: conditions }).lean();
+    const article = await Articles.findOne({
+      $or: conditions,
+      draft: { $ne: true },
+      archived: { $ne: true },
+    }).lean();
     if (!article) return next();
 
     const description = buildDescription(article);

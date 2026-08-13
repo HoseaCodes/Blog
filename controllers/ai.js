@@ -6,9 +6,19 @@ dotenv.config();
 
 const logger = new Logger('ai');
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// Built on first use, not at import. The SDK constructor throws when
+// OPENAI_API_KEY is unset, and app.js imports every router at boot — so a
+// module-scope client makes the entire app unimportable without the key.
+// Each handler below already guards on the key and returns a 500.
+let openaiClient;
+function getOpenAI() {
+  if (!openaiClient) {
+    openaiClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+  }
+  return openaiClient;
+}
 
 // Generate content with AI
 export async function generateContent(req, res) {
@@ -28,7 +38,7 @@ export async function generateContent(req, res) {
       return res.status(500).json({ msg: 'OpenAI API key not configured' });
     }
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: options.model || 'gpt-3.5-turbo',
       messages: [
         {
@@ -79,7 +89,7 @@ export async function improveContent(req, res) {
 
     const systemPrompt = prompts[improvementType] || prompts.grammar;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -114,7 +124,7 @@ export async function generateTitles(req, res) {
   try {
     const { content, count = 5 } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -158,7 +168,7 @@ export async function generateOutline(req, res) {
       comprehensive: 'Create a comprehensive outline with main sections, subsections, and key points'
     };
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -193,7 +203,7 @@ export async function expandContent(req, res) {
   try {
     const { content, targetLength } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -234,7 +244,7 @@ export async function summarizeContent(req, res) {
       long: 'in 2-3 paragraphs with key points'
     };
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -269,7 +279,7 @@ export async function translateContent(req, res) {
   try {
     const { content, targetLanguage } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -313,7 +323,7 @@ export async function generateSocialPosts(req, res) {
         facebook: 'Create a Facebook post promoting this content in an engaging, friendly tone'
       };
 
-      const completion = await openai.chat.completions.create({
+      const completion = await getOpenAI().chat.completions.create({
         model: 'gpt-3.5-turbo',
         messages: [
           {
@@ -349,7 +359,7 @@ export async function checkGrammar(req, res) {
   try {
     const { content } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -384,7 +394,7 @@ export async function getStyleSuggestions(req, res) {
   try {
     const { content, targetStyle } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -419,7 +429,7 @@ export async function generateMetaTags(req, res) {
   try {
     const { content } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -454,7 +464,7 @@ export async function extractKeyPoints(req, res) {
   try {
     const { content, count = 5 } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
@@ -489,7 +499,7 @@ export async function generateCTA(req, res) {
   try {
     const { articleContext, goal } = req.body;
 
-    const completion = await openai.chat.completions.create({
+    const completion = await getOpenAI().chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {

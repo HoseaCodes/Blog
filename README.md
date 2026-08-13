@@ -435,12 +435,88 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
 ### Pipelines
 
-| Job Name                                              | Use Case    |
-| ----------------------------------------------------- | ----------- |
-| Static-Scan                                           | Static application security testing (SAST) or static code analysis, analyzes source code to find security vulnerabilities that make the organization's applications susceptible to attack.   |
-| Dependency-Scan                                       | Dependency scanning generates an alert for any open-source component, direct or transitive, found to be vulnerable that the code depends upon.   |
-| Lint-Scan                                             | Lint scans source code for errors and potential issues that could lead to bugs, vulnerabilities, and other problems.   |
-| Build                                                 |   Build and deploying the project.          |
+Three long-lived branches. Only two of them run CI.
+
+| Branch    | Workflow | Trigger | Runs | Deploys |
+| --------- | -------- | ------- | ---- | ------- |
+| `staging` | `main.yaml` (Dev Pipeline) | push to `staging` | static-scan → dependency-scan → lint → integration-test → build | **No** — verify only |
+| `prep`    | *none* | — | nothing | — |
+| `master`  | `master.yaml` (Snyk Scan), `release-please.yml` | push to `master` | security → build; release-please in parallel | via release tag — see below |
+
+**Staging verifies; it does not ship.** It runs the scans, the lint, the
+integration suite and a production build, and stops there. It cuts no release
+and deploys nowhere. Releasing and deploying belong to `master`.
+
+> **`prep` has no CI.** No workflow triggers on it and none reference it. Checks
+> displayed on a PR that *targets* `prep` are the `staging` pipeline's runs
+> against staging's head commit — they say nothing about the merge result.
+> `prep`'s own copies of the workflow files are stale: they still trigger on
+> `staging` and have no `integration-test` job.
+
+#### Dev Pipeline jobs (`staging`)
+
+| Job Name           | Use Case |
+| ------------------ | -------- |
+| static-scan        | Static application security testing (SAST). Analyzes source code for vulnerabilities that make the application susceptible to attack. |
+| dependency-scan    | Alerts on any open-source component, direct or transitive, that the code depends on and is known to be vulnerable. |
+| lint               | Scans source for errors and potential issues that lead to bugs and vulnerabilities. |
+| integration-test   | `npm run test:integration` — drives the real Express app over HTTP (supertest) against a real MongoDB (Testcontainers). Outbound third-party HTTP is blocked by `nock`. **Requires Docker.** |
+| build              | `npm ci --legacy-peer-deps` → `npm run build`. Proves the app compiles; the output is not published anywhere. |
+
+Jobs are gated: `build` needs all four scans/tests to pass. A failure early in
+the chain means later jobs never execute — so a green early stage is not
+evidence that the later ones work.
+
+#### Releases and deploys
+
+| Mechanism | Where | Tag format | Pushes version bump | Drives a deploy |
+| --------- | ----- | ---------- | ------------------- | --------------- |
+| conventional-changelog | `master` build job | `dev.v*` | No | No |
+| release-please | `master` | `v*` | Yes, via release PR | Yes |
+| `release-publish.yml` | on tag `v*.*.*` | — | — | Deploys to Fly.io |
+
+There is **one** deploy path: release-please opens a release PR on `master`;
+merging it creates a `v1.2.3` tag, which fires `release-publish.yml` and
+deploys to Fly.io. Nothing deploys from `staging`.
+
+#### Pipeline gotchas
+
+- **Never delete `package-lock.json` in CI.** `react-scripts@4.0.3` pins
+  `@babel/core` to exactly `7.12.3` while floating `babel-preset-react-app` to
+  `^10.0.0`, which resolves to `10.1.0` and requires `^7.16.0`. Resolving
+  without the lockfile fails the build with
+  `Requires Babel "^7.16.0", but was loaded with "7.12.3"`. Install with
+  `npm ci`.
+- **The integration suite needs no real API keys.** `test/setup/env.cjs` seeds
+  placeholders (including `OPENAI_API_KEY`) before app modules load, and
+  `nock.disableNetConnect()` blocks egress. Do not add real third-party
+  secrets to CI for tests.
+- **Do not construct third-party SDK clients at module scope.** `app.js`
+  imports every router at boot, so a client built at import time makes the
+  whole app unimportable without that credential — which takes down the
+  integration suite before a single test runs. Build clients lazily inside
+  handlers.
+- **CI cannot push to `staging`.** The branch is protected — "Changes must be
+  made through a pull request" — so any workflow step that pushes a commit is
+  rejected with `GH006: Protected branch update failed`. Note that **tags are
+  not covered by that rule**: a rejected push can still leave a tag behind
+  pointing at a commit that never landed.
+- **conventional-changelog versions come from the last tag _reachable from the
+  branch_, not from `package.json`.** Tag existence is global but reachability
+  is per-branch, and that gap is what broke releases on `staging`: its last
+  reachable `dev.v*` tag was `dev.v1.4.2`, so it kept computing 1.5.0 — while
+  `dev.v1.5.0` already existed globally, created by master's pipeline on a
+  commit `staging` cannot reach. The bump then failed with
+  `fatal: tag already exists`, every run, forever. Do not run two branches'
+  release automation in one tag namespace.
+- **`master`'s `dev.v*` tagging works, but feeds nothing.** Each tag is created
+  on master's own HEAD, so it stays reachable and the sequence advances
+  cleanly — the next one will be `dev.v1.8.0`, and it does *not* collide.
+  `package.json` (1.6.0) drifting behind the tags (1.7.0) is harmless, since
+  the version is not read from the file. The steps are simply redundant:
+  nothing consumes `dev.v*`, because `release-publish.yml` fires on `v*.*.*`,
+  which those tags do not match. Removing them from `master.yaml` is optional
+  cleanup, not a bug fix.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 
@@ -473,6 +549,11 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 ## External APIs
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/External-APIs) for details.
+
+### Service Dashboards
+
+- [LinkedIn App Settings](https://www.linkedin.com/developers/apps/217736152/settings) — manage OAuth credentials and permissions for LinkedIn cross-posting
+- [Resend Emails](https://resend.com/emails) — newsletter and transactional email delivery dashboard
 
 ## How To Run App
 

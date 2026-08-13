@@ -347,7 +347,7 @@ const ROLES = [
   {
     label: "Previously",
     title: "Lead Backend Engineer · Aimly",
-    meta: "Austin, TX · Serverless AWS / Node",
+    meta: "Austin, TX · Volunteer · Serverless AWS / Node",
     current: false,
   },
 ];

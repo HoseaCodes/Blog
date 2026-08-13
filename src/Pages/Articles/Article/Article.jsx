@@ -113,7 +113,11 @@ const ArticleItem = () => {
 
     const fetchArticle = async () => {
       try {
-        const response = await axios.get(`/api/articles/${params.id}`);
+        // Pass auth header when present so the response includes per-viewer
+        // `liked` and `saved` flags. Anonymous viewers get the article with
+        // both fields defaulting to false.
+        const headers = token ? { Authorization: token } : {};
+        const response = await axios.get(`/api/articles/${params.id}`, { headers });
         if (!cancelled) setDetailArticle(response.data.article);
       } catch (err) {
         if (!cancelled) console.error('Error fetching article:', err);
@@ -124,9 +128,10 @@ const ArticleItem = () => {
     return () => {
       cancelled = true;
     };
-  }, [params.id, articles]);
+  }, [params.id, articles, token]);
 
   if (!detailArticle._id) return null;
+  if (detailArticle.draft || detailArticle.archived) return null;
 
   const { createdAt, markdown } = detailArticle;
   const timeFormater = moment.utc(createdAt).format('MMMM Do, YYYY');

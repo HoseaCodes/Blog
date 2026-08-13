@@ -1,15 +1,90 @@
 import mongoose from "mongoose";
 import Articles from "../models/article.js";
 import Comments from "../models/comment.js";
+import Users from "../models/user.js";
 import Logger from "../utils/logger.js";
 import { cache } from "../utils/cache.js";
+import { getValidLinkedInToken, getLocalUserId } from "./linkedin.js";
+import { broadcastArticle } from "./subscriber.js";
 import axios from "axios";
 
 const logger = new Logger("articles");
 
+// Public visibility predicate. Mirrors routes/sitemap.js.
+// Authenticated admin endpoints (getAdminArticles*) skip this filter.
+const PUBLIC_FILTER = { draft: { $ne: true }, archived: { $ne: true } };
+
+const SITE_URL = (process.env.SITE_URL || "https://hoseacodes.com").replace(/\/$/, "");
+
+// Default text when the user didn't supply a custom linkedinIntro.
+function defaultLinkedInText(article) {
+  const parts = [];
+  if (article.title) parts.push(article.title);
+  if (article.description) parts.push(article.description);
+  parts.push(`${SITE_URL}/blog/${article.slug}`);
+  return parts.join("\n\n");
+}
+
+// Cross-post an already-saved article to LinkedIn. Never throws — failures
+// are returned in the result so the article save itself stays successful.
+// Pass { force: true } to bypass the linkedinPostedAt idempotency check, e.g.
+// for the explicit "Post to LinkedIn now" button.
+async function postArticleToLinkedIn(article, userId, { force = false } = {}) {
+  if (!article || !userId) return { posted: false, skipped: "no-article-or-user" };
+  if (!force && article.linkedinPostedAt) return { posted: false, skipped: "already-posted" };
+  if (article.draft || article.archived) return { posted: false, skipped: "not-published" };
+
+  try {
+    const { accessToken, urn } = await getValidLinkedInToken(userId);
+    const text =
+      (article.linkedinIntro && article.linkedinIntro.trim()) ||
+      defaultLinkedInText(article);
+
+    const response = await axios.post(
+      "https://api.linkedin.com/v2/ugcPosts",
+      {
+        author: urn,
+        lifecycleState: "PUBLISHED",
+        specificContent: {
+          "com.linkedin.ugc.ShareContent": {
+            shareCommentary: { text },
+            shareMediaCategory: "NONE",
+          },
+        },
+        visibility: {
+          "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "X-Restli-Protocol-Version": "2.0.0",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const postUrn = response.headers["x-restli-id"] || response.data?.id || null;
+    await Articles.findByIdAndUpdate(article._id, {
+      linkedinPostedAt: new Date(),
+      linkedinPostUrn: postUrn,
+    });
+
+    logger.info(`Posted to LinkedIn: ${postUrn} for article ${article._id}`);
+    return { posted: true, postUrn };
+  } catch (err) {
+    const msg =
+      err.response?.data?.message ||
+      err.response?.data?.error_description ||
+      err.message;
+    logger.error(`LinkedIn cross-post failed: ${msg}`);
+    return { posted: false, error: msg };
+  }
+}
+
 async function getArticle(req, res) {
   try {
-    const articles = await Articles.find().lean();
+    const articles = await Articles.find(PUBLIC_FILTER).lean();
 
     // Live comment counts from the Comments collection. The denormalized
     // `article.comments` field is unreliable (nested-array corruption from
@@ -56,6 +131,83 @@ async function getArticleByID(req, res) {
 
     let article = null;
     if (isObjectId) {
+      article = await Articles.findOne({ _id: id, ...PUBLIC_FILTER }).lean();
+    }
+    if (!article) {
+      article = await Articles.findOne({ slug: id, ...PUBLIC_FILTER }).lean();
+    }
+
+    if (!article)
+      return res.status(404).send({ msg: "Article does not exist" });
+
+    // See getArticle: the denormalized article.comments array is unreliable,
+    // so derive the count fresh from the Comments collection.
+    article.commentCount = await Comments.countDocuments({ blog: article._id });
+
+    // If a token came along, populate the viewer's like/save state so the UI
+    // can render the buttons in the correct toggled position on first paint.
+    // No auth middleware on this route — we only attempt the lookup if a
+    // local user id resolves; failures stay silent (article still returns).
+    article.liked = false;
+    article.saved = false;
+    try {
+      const userId = await getLocalUserId(req);
+      if (userId) {
+        const user = await Users.findById(userId).select("likedArticles savedArticles");
+        if (user) {
+          const articleIdStr = String(article._id);
+          article.liked = user.likedArticles.map(String).includes(articleIdStr);
+          article.saved = user.savedArticles.map(String).includes(articleIdStr);
+        }
+      }
+    } catch (_) {
+      // anonymous viewer — defaults stay false
+    }
+
+    res.json({
+      status: "success",
+      article: article,
+    });
+  } catch (err) {
+    logger.error(err);
+
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// Admin-only: returns full article list including drafts and archived.
+// Auth-gated at the route layer.
+async function getAdminArticles(req, res) {
+  try {
+    const articles = await Articles.find().lean();
+
+    const counts = await Comments.aggregate([
+      { $group: { _id: "$blog", count: { $sum: 1 } } },
+    ]);
+    const countMap = new Map(counts.map((c) => [String(c._id), c.count]));
+    for (const a of articles) {
+      a.commentCount = countMap.get(String(a._id)) || 0;
+    }
+
+    res.json({
+      status: "success",
+      articles: articles,
+      result: articles.length,
+    });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// Admin-only: fetch any article by id or slug, drafts included.
+async function getAdminArticleByID(req, res) {
+  try {
+    const { id } = req.params;
+    const isObjectId = mongoose.Types.ObjectId.isValid(id) && /^[a-f0-9]{24}$/i.test(id);
+
+    let article = null;
+    if (isObjectId) {
       article = await Articles.findOne({ _id: id });
     }
     if (!article) {
@@ -65,13 +217,9 @@ async function getArticleByID(req, res) {
     if (!article)
       return res.status(404).send({ msg: "Article does not exist" });
 
-    res.json({
-      status: "success",
-      article: article,
-    });
+    res.json({ status: "success", article });
   } catch (err) {
     logger.error(err);
-
     return res.status(500).json({ msg: err.message });
   }
 }
@@ -99,7 +247,8 @@ async function createArticle(req, res) {
       series,
       linkedin,
       linkedinContent,
-      linkedinAccessToken,
+      linkedinIntro,
+      notifySubscribers,
     } = req.body;
 
     switch (req.body) {
@@ -167,16 +316,9 @@ async function createArticle(req, res) {
       medium,
       linkedin,
       linkedinContent,
+      linkedinIntro: linkedinIntro || null,
+      notifySubscribers: !!notifySubscribers,
     });
-
-    try {
-    } catch (error) {
-      logger.error(error);
-      return res.status(error.response.status).json({
-        code: error.response.statusText,
-        msg: error.response.data,
-      });
-    }
 
     if (dev) {
       try {
@@ -252,81 +394,45 @@ async function createArticle(req, res) {
       }
     }
 
-    if (linkedin) {
-      try {
-        const redirectUri = "http://localhost:3000/admin/blog/new";
-        const clientId = process.env.LINKEDIN_CLIENT_ID || "86s5czbllv0b9s";
-        const clientSecret =
-          process.env.LINKEDIN_CLIENT_SECRET || "VvcAdF8uDmIddv2J";
-        const getAccessToken = async () => {
-          const response = await axios.post(
-            "https://www.linkedin.com/oauth/v2/accessToken",
-            null,
-            {
-              params: {
-                grant_type: "authorization_code",
-                code: linkedinAccessToken,
-                redirect_uri: redirectUri,
-                client_id: clientId,
-                client_secret: clientSecret,
-              },
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-            }
-          );
-          return response.data.access_token;
-        };
-        const accessToken = await getAccessToken();
-        const response = await axios.post(
-          "https://api.linkedin.com/v2/ugcPosts",
-          {
-            author: `urn:li:person:ZGV337BIbm`,
-            lifecycleState: "PUBLISHED",
-            specificContent: {
-              "com.linkedin.ugc.ShareContent": {
-                shareCommentary: {
-                  text: linkedinContent,
-                },
-                shareMediaCategory: "NONE",
-              },
-            },
-            visibility: {
-              "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              "X-Restli-Protocol-Version": "2.0.0",
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        logger.info("Published to LinkedIn", { res: response.data });
-      } catch (error) {
-        logger.error(error);
-        console.log(error);
-        return res.status(error.response.status).json({
-          code: error.response.statusText,
-          msg: error.response.data,
-        });
-      }
-    }
-
     res.clearCookie("artilces-cache");
     const savedArticle = await newArticle.save();
 
     logger.info(`New article ${title} has been created`);
 
-    res.json({ 
+    // Cross-post to LinkedIn after the article exists so we can stamp it
+    // with linkedinPostedAt and prevent duplicate posts on republish.
+    // Use local Users._id (resolved from email), not Storm-Gate's id — see
+    // controllers/linkedin.js getLocalUserId for why.
+    let linkedinResult = null;
+    if (linkedin && !savedArticle.draft && !savedArticle.archived) {
+      const localId = await getLocalUserId(req);
+      linkedinResult = await postArticleToLinkedIn(savedArticle, localId);
+    }
+
+    // Newsletter broadcast: fire-and-forget so the response isn't blocked by
+    // N sequential Resend sends. broadcastArticle stamps newsletterSentAt, so
+    // republishing the same article won't re-broadcast on its own (admin can
+    // force via POST /api/subscribers/broadcast/:id if needed).
+    if (
+      savedArticle.notifySubscribers &&
+      !savedArticle.draft &&
+      !savedArticle.archived &&
+      !savedArticle.newsletterSentAt
+    ) {
+      broadcastArticle(savedArticle).catch((err) =>
+        logger.error(`Newsletter broadcast failed for ${savedArticle._id}: ${err.message}`)
+      );
+    }
+
+    res.json({
       success: true,
       msg: "Created a new article",
       article: {
         article_id: savedArticle.article_id || savedArticle._id,
         title: savedArticle.title,
-        slug: savedArticle.slug
-      }
+        slug: savedArticle.slug,
+      },
+      linkedin: linkedinResult,
     });
   } catch (err) {
     logger.error(err);
@@ -348,21 +454,100 @@ async function deleteArticle(req, res) {
   }
 }
 
-async function updateLikes(req, res) {
+// Toggle a like on the article for the authenticated user. Per-user dedup
+// lives on the User document (likedArticles array of article ids). The
+// Articles.likes count is maintained as a denormalized total via $inc to
+// avoid scanning the User collection on every read. Idempotent in spirit —
+// clicking twice unlikes — but not atomic across the two writes; for a
+// solo blog with low contention that's an acceptable trade.
+async function toggleLike(req, res) {
   try {
-    const post_id = req.params.id;
-    let { likes } = req.body;
-    likes += 1;
+    const articleId = req.params.id;
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required to like." });
 
-    await Articles.findOneAndUpdate({ _id: post_id }, { likes });
+    const user = await Users.findById(userId).select("likedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
 
-    res.json({
-      msg: `${post_id} received a new like`,
-      totalLikes: likes,
-    });
+    const alreadyLiked = user.likedArticles.map(String).includes(String(articleId));
+
+    if (alreadyLiked) {
+      await Users.findByIdAndUpdate(userId, { $pull: { likedArticles: articleId } });
+      const updated = await Articles.findByIdAndUpdate(
+        articleId,
+        { $inc: { likes: -1 } },
+        { new: true }
+      ).select("likes");
+      return res.json({ liked: false, totalLikes: Math.max(0, updated?.likes || 0) });
+    }
+
+    await Users.findByIdAndUpdate(userId, { $addToSet: { likedArticles: articleId } });
+    const updated = await Articles.findByIdAndUpdate(
+      articleId,
+      { $inc: { likes: 1 } },
+      { new: true }
+    ).select("likes");
+    return res.json({ liked: true, totalLikes: updated?.likes || 0 });
   } catch (err) {
     logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
 
+// Toggle a bookmark/save on the article for the authenticated user.
+// Source of truth is User.savedArticles. No counterpart on Articles since
+// total-saves isn't a public surface.
+async function toggleSave(req, res) {
+  try {
+    const articleId = req.params.id;
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required to save." });
+
+    const user = await Users.findById(userId).select("savedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
+
+    const alreadySaved = user.savedArticles.map(String).includes(String(articleId));
+
+    if (alreadySaved) {
+      await Users.findByIdAndUpdate(userId, { $pull: { savedArticles: articleId } });
+      return res.json({ saved: false });
+    }
+
+    await Users.findByIdAndUpdate(userId, { $addToSet: { savedArticles: articleId } });
+    return res.json({ saved: true });
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).json({ msg: err.message });
+  }
+}
+
+// GET /api/articles/saved — returns full article docs the authenticated user
+// has bookmarked, newest-saved first (preserves insertion order via the array).
+async function getSavedArticles(req, res) {
+  try {
+    const userId = await getLocalUserId(req);
+    if (!userId) return res.status(401).json({ msg: "Login required." });
+
+    const user = await Users.findById(userId).select("savedArticles");
+    if (!user) return res.status(404).json({ msg: "User not found." });
+
+    const ids = (user.savedArticles || []).map((id) => {
+      try { return new mongoose.Types.ObjectId(String(id)); } catch { return null; }
+    }).filter(Boolean);
+
+    const articles = await Articles.find({
+      _id: { $in: ids },
+      ...PUBLIC_FILTER,
+    }).lean();
+
+    // Preserve user's save order (newest first) — Mongo $in returns whatever
+    // order it likes.
+    const order = new Map(ids.map((id, i) => [String(id), i]));
+    articles.sort((a, b) => (order.get(String(a._id)) ?? 0) - (order.get(String(b._id)) ?? 0));
+
+    return res.json({ status: "success", articles, count: articles.length });
+  } catch (err) {
+    logger.error(err);
     return res.status(500).json({ msg: err.message });
   }
 }
@@ -420,14 +605,38 @@ async function updateArticle(req, res) {
 
     await Articles.findOneAndUpdate({ _id: req.params.id }, rest);
 
-    const afterUpdate = await Articles.findOne({ _id: req.params.id }, { tags: 1 });
+    const afterUpdate = await Articles.findOne({ _id: req.params.id });
     logger.info("After update, tags in DB = " + JSON.stringify(afterUpdate?.tags));
 
     const preparedLog = `Changing the following: ${originalBody} to ${req.body} for the article ${title}`;
 
     logger.info(preparedLog);
 
-    res.json({ msg: "Updated a article" });
+    // Draft → publish transition: if the update set linkedin=true and the
+    // article is now public, cross-post (idempotent via linkedinPostedAt).
+    // Use local Users._id (resolved from email), not Storm-Gate's id.
+    let linkedinResult = null;
+    if (rest.linkedin && afterUpdate && !afterUpdate.draft && !afterUpdate.archived) {
+      const localId = await getLocalUserId(req);
+      linkedinResult = await postArticleToLinkedIn(afterUpdate, localId);
+    }
+
+    // Draft → publish transition: if notifySubscribers is on and we haven't
+    // sent before, fire the newsletter broadcast. Fire-and-forget for the
+    // same reason as createArticle.
+    if (
+      afterUpdate &&
+      afterUpdate.notifySubscribers &&
+      !afterUpdate.draft &&
+      !afterUpdate.archived &&
+      !afterUpdate.newsletterSentAt
+    ) {
+      broadcastArticle(afterUpdate).catch((err) =>
+        logger.error(`Newsletter broadcast failed for ${afterUpdate._id}: ${err.message}`)
+      );
+    }
+
+    res.json({ msg: "Updated a article", linkedin: linkedinResult });
   } catch (err) {
     logger.error(err);
     console.log(err.message);
@@ -468,10 +677,15 @@ async function conditionalArticle(req, res) {
 export {
   getArticle,
   getArticleByID,
+  getAdminArticles,
+  getAdminArticleByID,
   createArticle,
   conditionalArticle,
   deleteArticle,
   updateArticle,
   updateArticleComment,
-  updateLikes,
+  toggleLike,
+  toggleSave,
+  getSavedArticles,
+  postArticleToLinkedIn,
 };

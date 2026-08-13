@@ -316,6 +316,7 @@ function EnterpriseCreateArticle() {
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(moment());
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSuccessPage, setShowSuccessPage] = useState(false);
 
   // Performance state - FIXED to properly update
@@ -387,7 +388,9 @@ function EnterpriseCreateArticle() {
     let cancelled = false;
     (async () => {
       try {
-        const res = await axios.get(`/api/articles/${editId}`);
+        const res = await axios.get(`/api/admin/articles/${editId}`, {
+          headers: { Authorization: token },
+        });
         if (cancelled) return;
         const be = res.data?.article;
         if (!be) throw new Error("Article not found");
@@ -403,7 +406,7 @@ function EnterpriseCreateArticle() {
     return () => {
       cancelled = true;
     };
-  }, [editId]);
+  }, [editId, token]);
 
   const updateArticle = useCallback((updates) => {
     setArticle(prev => ({
@@ -460,7 +463,7 @@ function EnterpriseCreateArticle() {
   }, [article, token, notify, mongoId]);
 
   // Publish article
-  const handlePublish = useCallback(async () => {
+  const handlePublish = useCallback(async (publishOpts = {}) => {
     // Validation
     if (!article.title || article.title.trim().length < 5) {
       notify({ type: 'error', message: 'Please add a title (at least 5 characters)' });
@@ -494,6 +497,15 @@ function EnterpriseCreateArticle() {
 
     setIsAutoSaving(true);
     try {
+      // Prefer the freshly-passed publishOpts (from PublishingWorkflow.publishArticle)
+      // because article.publishing might still be the pre-update value here —
+      // updateArticle batches and handlePublish would otherwise capture stale state.
+      const platforms = publishOpts.platforms || article.publishing?.platforms;
+      const linkedinEnabled = Boolean(platforms?.linkedin?.enabled);
+      const linkedinIntroText =
+        publishOpts.linkedinIntro ?? article.publishing?.linkedinIntro ?? null;
+      const notifySubscribers = Boolean(platforms?.newsletter?.enabled);
+
       const publishData = {
         article_id: article.id,
         title: article.title,
@@ -507,7 +519,10 @@ function EnterpriseCreateArticle() {
         metaTitle: article.publishing?.seo?.metaTitle || '',
         metaDescription: article.publishing?.seo?.metaDescription || '',
         canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
-        draft: false
+        draft: false,
+        linkedin: linkedinEnabled,
+        linkedinIntro: linkedinEnabled ? linkedinIntroText : null,
+        notifySubscribers,
       };
 
       const res = mongoId
@@ -527,7 +542,24 @@ function EnterpriseCreateArticle() {
           publishedAt: moment(),
           article_id: res.data.article?.article_id || article.id
         });
-        notify({ type: 'success', message: '🎉 Article published successfully!' });
+        notify({ type: 'success', message: 'Article published successfully!' });
+
+        // Surface LinkedIn cross-post result if it was attempted.
+        // posted=true → success toast. error → warning toast (article still saved).
+        const li = res.data?.linkedin;
+        if (li?.posted) {
+          notify({ type: 'success', message: 'Cross-posted to LinkedIn.' });
+        } else if (li?.error) {
+          notify({ type: 'warning', message: `Article published, but LinkedIn cross-post failed: ${li.error}` });
+        }
+
+        // Newsletter send happens fire-and-forget on the server, so we don't
+        // get sent/failed counts in the response. Surface a toast so the user
+        // knows it was queued.
+        if (notifySubscribers) {
+          notify({ type: 'success', message: 'Sending newsletter to subscribers in the background.' });
+        }
+
         setShowSuccessPage(true);
       } else {
         console.error('Publish failed: no success/msg in response');
@@ -541,6 +573,41 @@ function EnterpriseCreateArticle() {
     }
   }, [article, token, notify, updateArticle, mongoId]);
   
+  // Explicit "Post to LinkedIn now" — independent from the main publish flow.
+  // Article must already exist (mongoId set) and be published (not draft).
+  const handlePostToLinkedIn = useCallback(async (intro) => {
+    if (!mongoId) {
+      notify({ type: 'error', message: 'Save and publish the article first.' });
+      return { posted: false };
+    }
+    try {
+      const res = await axios.post(
+        `/api/admin/linkedin/post/${mongoId}`,
+        { intro: typeof intro === 'string' ? intro : null },
+        { headers: { Authorization: token } }
+      );
+      if (res.data?.posted) {
+        notify({ type: 'success', message: 'Posted to LinkedIn.' });
+        // Mirror the stamp in editor state so the workflow UI shows
+        // "Last posted X ago" without waiting for a reload.
+        updateArticle({
+          linkedinPostedAt: new Date().toISOString(),
+          linkedinPostUrn: res.data.postUrn || null,
+        });
+        return { posted: true };
+      }
+      notify({
+        type: 'warning',
+        message: 'LinkedIn post did not complete: ' + (res.data?.error || res.data?.skipped || 'unknown'),
+      });
+      return { posted: false };
+    } catch (err) {
+      const msg = err.response?.data?.msg || err.response?.data?.error || err.message;
+      notify({ type: 'error', message: 'LinkedIn post failed: ' + msg });
+      return { posted: false, error: msg };
+    }
+  }, [mongoId, token, notify]);
+
   // Handle schedule
   const handleSchedule = useCallback(async (scheduledDate) => {
     if (!article.title || !article.content) {
@@ -717,7 +784,6 @@ function EnterpriseCreateArticle() {
     { id: "metadata", label: "Metadata", icon: FiTag },
     { id: "seo", label: "SEO", icon: FiTrendingUp },
     { id: "collaboration", label: "Collaboration", icon: FiUsers },
-    { id: "workflow", label: "Workflow", icon: FiShare2 },
     { id: "analytics", label: "Analytics", icon: FiBarChart2 },
     { id: "versions", label: "Versions", icon: FiClock }
   ];
@@ -764,13 +830,6 @@ function EnterpriseCreateArticle() {
           collaborationAPI={collaborationAPI}
           mongoId={mongoId}
           token={token}
-        />;
-      case "workflow":
-        return <PublishingWorkflow 
-          article={article} 
-          updateArticle={updateArticle}
-          onPublish={handlePublish}
-          onSchedule={handleSchedule}
         />;
       case "analytics":
         return <PerformanceInsights 
@@ -865,13 +924,19 @@ function EnterpriseCreateArticle() {
 
           <QuickAction
             primary
-            onClick={handlePublish}
+            onClick={() => setShowPublishModal(true)}
             disabled={isAutoSaving}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <FiUpload />
-            {isAutoSaving ? 'Publishing...' : 'Publish'}
+            {isAutoSaving
+              ? 'Publishing...'
+              : article.status === 'published'
+              ? 'Publishing options'
+              : article.status === 'scheduled'
+              ? 'Manage schedule'
+              : 'Publish'}
           </QuickAction>
         </ActionBar>
       </HeaderBar>
@@ -984,6 +1049,92 @@ function EnterpriseCreateArticle() {
                 selectedText={selectedText}
                 setSelectedText={setSelectedText}
               />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showPublishModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={() => setShowPublishModal(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.7)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem'
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.18 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#0f0f23',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '16px',
+                width: '100%',
+                maxWidth: '720px',
+                maxHeight: '90vh',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '1rem 1.5rem',
+                borderBottom: '1px solid rgba(255,255,255,0.08)',
+                color: 'white'
+              }}>
+                <h2 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 600 }}>
+                  Publish article
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowPublishModal(false)}
+                  aria-label="Close"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#a3acb2',
+                    cursor: 'pointer',
+                    fontSize: '1.25rem',
+                    lineHeight: 1,
+                    padding: '0.25rem'
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                <PublishingWorkflow
+                  article={article}
+                  updateArticle={updateArticle}
+                  onPublish={async (opts) => {
+                    await handlePublish(opts);
+                    setShowPublishModal(false);
+                  }}
+                  onSchedule={async (date) => {
+                    await handleSchedule(date);
+                    setShowPublishModal(false);
+                  }}
+                  onPostToLinkedIn={handlePostToLinkedIn}
+                  mongoId={mongoId}
+                />
+              </div>
             </motion.div>
           </motion.div>
         )}

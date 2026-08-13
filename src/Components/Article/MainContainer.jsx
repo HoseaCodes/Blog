@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
 import axios from 'axios';
 import { GlobalState } from '../../GlobalState';
 import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail, AiOutlineLoading3Quarters } from 'react-icons/ai';
-import { FaRegThumbsUp, FaRegComment } from 'react-icons/fa';
+import { FaRegThumbsUp, FaThumbsUp, FaRegComment, FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { BsTwitter, BsFacebook, BsLinkedin, BsLink45Deg } from 'react-icons/bs';
 import { RiShareCircleFill } from 'react-icons/ri';
 import { TiSocialLinkedinCircular } from 'react-icons/ti';
@@ -363,11 +363,82 @@ const BlogContent = styled.div`
     margin-bottom: ${mediumTheme.spacing.sm};
   }
 
+  li:has(> input[type="checkbox"]) {
+    list-style: none;
+    margin-left: -${mediumTheme.spacing.lg};
+    display: flex;
+    align-items: baseline;
+    gap: ${mediumTheme.spacing.sm};
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border: 1px solid ${mediumTheme.colors.background.border};
+    border-radius: 3px;
+    background: ${mediumTheme.colors.background.light};
+    position: relative;
+    top: 2px;
+    cursor: default;
+
+    &:checked {
+      background: ${mediumTheme.colors.accent.green};
+      border-color: ${mediumTheme.colors.accent.green};
+    }
+
+    &:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 0px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
   img {
     max-width: 100%;
     height: auto;
     margin: ${mediumTheme.spacing.xl} 0;
     border-radius: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: ${mediumTheme.spacing.xl} 0;
+    font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+    font-size: ${mediumTheme.typography.fontSize.base};
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  thead {
+    background: ${mediumTheme.colors.accent.lightGreen};
+  }
+
+  th, td {
+    border: 1px solid ${mediumTheme.colors.background.border};
+    padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.md};
+    text-align: left;
+    vertical-align: top;
+    line-height: ${mediumTheme.typography.lineHeight.normal};
+  }
+
+  th {
+    font-weight: ${mediumTheme.typography.fontWeight.semibold};
+    color: ${mediumTheme.colors.text.primary};
+  }
+
+  tbody tr:nth-child(even) {
+    background: ${mediumTheme.colors.background.hover};
   }
 `;
 
@@ -647,6 +718,7 @@ const EngagementActions = styled.div`
 `;
 
 const EngagementButton = styled.button`
+  position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -667,6 +739,47 @@ const EngagementButton = styled.button`
 
   svg {
     font-size: 16px;
+  }
+`;
+
+// Tooltip shown above the engagement buttons. Default-hidden; appears on
+// hover of the parent button. Used to warn anonymous users that clicking
+// will redirect to login before they actually get redirected.
+const Tooltip = styled.span`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1e23;
+  color: #f4f6f8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* little arrow pointing down at the button */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1e23;
+  }
+
+  ${EngagementButton}:hover & {
+    opacity: 1;
+    visibility: visible;
   }
 `;
 
@@ -748,9 +861,10 @@ const MainContainer = ({
   deleteArticle,
   handleCheck
 }) => {
-  const { _id, likes, title, subtitle, description, images, markdown, comments } = detailArticle;
+  const { _id, likes, title, subtitle, description, images, markdown, comments, commentCount } = detailArticle;
   const globalState = useContext(GlobalState);
   const [token] = globalState.token;
+  const history = useHistory();
 
   // Audio states
   const [audioPlaying, setAudioPlaying] = useState(false);
@@ -761,6 +875,23 @@ const MainContainer = ({
   const audioUrlRef = useRef(null);       // blob URL for cleanup
   const fallbackUtteranceRef = useRef(null); // Web Speech utterance for anonymous users
   const [postLikes, setPostLikes] = useState(likes || 0);
+  const [hasLiked, setHasLiked] = useState(!!detailArticle.liked);
+  const [hasSaved, setHasSaved] = useState(!!detailArticle.saved);
+  const [likePending, setLikePending] = useState(false);
+  const [savePending, setSavePending] = useState(false);
+
+  // Keep local toggle state in sync when the article reloads (route change
+  // brings a new detailArticle with fresh liked/saved/likes from the server).
+  useEffect(() => {
+    setPostLikes(detailArticle.likes || 0);
+    setHasLiked(!!detailArticle.liked);
+    setHasSaved(!!detailArticle.saved);
+  }, [detailArticle._id, detailArticle.liked, detailArticle.saved, detailArticle.likes]);
+
+  // Newsletter signup state. status: 'idle' | 'submitting' | 'success' | 'error'
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
   
   // Related posts states
   const [idx, setIdx] = useState(4);
@@ -823,23 +954,24 @@ const MainContainer = ({
       setAudioPlaying(true);
       setAudioPaused(false);
     } catch (err) {
-      // 429 = daily quota exceeded — surface the message, don't fall back silently
-      let msg = 'Could not play audio.';
+      // Surface what went wrong with OpenAI, then fall back to the free
+      // browser voice so the user still gets audio playback.
+      let msg = 'Using browser voice (premium unavailable).';
       if (err.response?.status === 429) {
-        msg = 'You\'ve used your daily listen. Try again tomorrow.';
+        msg = 'Daily premium listen reached — using browser voice.';
       } else if (err.response?.data) {
         // axios blob errors need decoding
         try {
           const text = await err.response.data.text();
           const parsed = JSON.parse(text);
-          msg = parsed.msg || msg;
+          if (parsed.msg) msg = `${parsed.msg} — using browser voice.`;
           console.error('Audio error response:', parsed);
-        } catch (parseErr) { 
-          // ignore parse errors and use generic message
+        } catch (parseErr) {
           console.error('Error parsing audio error response:', parseErr);
-         }
+        }
       }
       setAudioError(msg);
+      playWebSpeechFallback();
     } finally {
       setAudioLoading(false);
     }
@@ -906,6 +1038,74 @@ const MainContainer = ({
     setIdx(newIdx);
     if (articles.length <= newIdx) {
       setMoreArticles(false);
+    }
+  };
+
+  const handleLikeClick = async () => {
+    if (likePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setLikePending(true);
+    // Optimistic toggle so the icon feels instant. Reverts on failure.
+    const prevLiked = hasLiked;
+    const prevCount = postLikes;
+    setHasLiked(!prevLiked);
+    setPostLikes(prevLiked ? Math.max(0, prevCount - 1) : prevCount + 1);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/like`, null, {
+        headers: { Authorization: token },
+      });
+      setHasLiked(!!res.data?.liked);
+      setPostLikes(res.data?.totalLikes ?? prevCount);
+    } catch (err) {
+      setHasLiked(prevLiked);
+      setPostLikes(prevCount);
+      console.error('Like failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setLikePending(false);
+    }
+  };
+
+  const handleSaveClick = async () => {
+    if (savePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setSavePending(true);
+    const prevSaved = hasSaved;
+    setHasSaved(!prevSaved);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/save`, null, {
+        headers: { Authorization: token },
+      });
+      setHasSaved(!!res.data?.saved);
+    } catch (err) {
+      setHasSaved(prevSaved);
+      console.error('Save failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setSavePending(false);
+    }
+  };
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (newsletterStatus === 'submitting') return;
+    setNewsletterStatus('submitting');
+    setNewsletterMessage('');
+    try {
+      const res = await axios.post('/api/subscribers', {
+        email: newsletterEmail,
+        source: 'article-inline',
+      });
+      setNewsletterStatus('success');
+      setNewsletterMessage(res.data?.msg || 'Check your inbox to confirm.');
+      setNewsletterEmail('');
+    } catch (err) {
+      setNewsletterStatus('error');
+      setNewsletterMessage(err.response?.data?.msg || 'Something went wrong. Try again?');
     }
   };
 
@@ -1026,13 +1226,27 @@ const MainContainer = ({
               <StickyFooter>
                 <StickyContent>
                   <EngagementActions>
-                    <EngagementButton onClick={() => setPostLikes(prev => prev + 1)}>
-                      <FaRegThumbsUp />
+                    <EngagementButton
+                      onClick={handleLikeClick}
+                      disabled={likePending}
+                      style={hasLiked ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasLiked ? <FaThumbsUp /> : <FaRegThumbsUp />}
                       {postLikes}
+                      {!token && <Tooltip>Sign in to like — saves to your account</Tooltip>}
                     </EngagementButton>
                     <EngagementButton onClick={() => setViewComment(true)}>
                       <FaRegComment />
-                      {comments?.length || 0}
+                      {commentCount ?? comments?.length ?? 0}
+                    </EngagementButton>
+                    <EngagementButton
+                      onClick={handleSaveClick}
+                      disabled={savePending}
+                      style={hasSaved ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasSaved ? <FaBookmark /> : <FaRegBookmark />}
+                      {hasSaved ? 'Saved' : 'Save'}
+                      {!token && <Tooltip>Sign in to save — syncs across devices</Tooltip>}
                     </EngagementButton>
                   </EngagementActions>
                   
@@ -1053,40 +1267,46 @@ const MainContainer = ({
                 </StickyContent>
               </StickyFooter>
 
-              <BlogNewsletter
-                action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b"
-                method="POST"
-              >
+              <BlogNewsletter onSubmit={handleNewsletterSubmit}>
                 <div>
-                  <h3>Sign up for Software Engineering News</h3>
+                  <h3>Get new posts in your inbox</h3>
                   <NewsletterContent>
-                    <p className="author">By Dominique Hosea</p>
+                    <p className="author">By D. Hosea</p>
                     <p>
-                      Latest news from Software Engineering on our Hackathons and some of our
-                      best articles! <u>Take a look.</u>
+                      One email when I publish something new. No schedule, no digests,
+                      no spam — just the post.
                     </p>
                   </NewsletterContent>
-                  <NewsletterForm>
-                    <NewsletterInput
-                      name="email_address"
-                      placeholder="Your email"
-                      type="email"
-                    />
-                    <input
-                      style={{ display: "none" }}
-                      name="from"
-                      value="Newsletter"
-                      type="text"
-                    />
-                    <NewsletterButton type="submit">
-                      <AiOutlineMail />
-                      Get this newsletter
-                    </NewsletterButton>
-                  </NewsletterForm>
+                  {newsletterStatus !== 'success' && (
+                    <NewsletterForm>
+                      <NewsletterInput
+                        name="email"
+                        placeholder="Your email"
+                        type="email"
+                        required
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        disabled={newsletterStatus === 'submitting'}
+                      />
+                      <NewsletterButton type="submit" disabled={newsletterStatus === 'submitting'}>
+                        <AiOutlineMail />
+                        {newsletterStatus === 'submitting' ? 'Subscribing…' : 'Get this newsletter'}
+                      </NewsletterButton>
+                    </NewsletterForm>
+                  )}
+                  {newsletterMessage && (
+                    <NewsletterDisclaimer
+                      style={{
+                        color: newsletterStatus === 'error' ? '#e0625e' : mediumTheme.colors.accent.green,
+                        fontSize: mediumTheme.typography.fontSize.sm,
+                      }}
+                    >
+                      {newsletterMessage}
+                    </NewsletterDisclaimer>
+                  )}
                   <NewsletterDisclaimer>
-                    By signing up, you will create a Medium account if you don't already
-                    have one. Review our Privacy Policy for more information about our
-                    privacy practices.
+                    You'll get a confirmation email first. One-click unsubscribe in every
+                    email. I don't share your address.
                   </NewsletterDisclaimer>
                 </div>
               </BlogNewsletter>

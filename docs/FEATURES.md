@@ -155,4 +155,4 @@ Endpoints: balance, transaction ledger, sync, earn, spend, pack purchase and cap
 
 View and engagement tracking, per-article statistics, top articles, traffic sources, reader demographics, conversion metrics, a real-time view and an export path — recorded in MongoDB, alongside `react-ga4` for page-level analytics in the browser.
 
-One caveat worth knowing: view tracking sits behind authentication, so anonymous reads are not counted.
+The write endpoints (`/api/analytics/view` and `/engagement`) are **public**, so anonymous reads are counted — but they are also unauthenticated and unthrottled, so the counts can be inflated by anyone with a loop. Reading the numbers back requires a token.

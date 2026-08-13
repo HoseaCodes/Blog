@@ -76,38 +76,40 @@ Route registration order in this file is load-bearing: literal paths (`/articles
 
 ## Blog workflow
 
-`routes/blog.js` — `router.use(auth)` gates the whole router. 🔑 throughout, **no ownership checks**.
+`routes/blog.js` — `router.use(auth)` gates the whole router, so everything is 🔑. **Ownership scoping is inconsistent**, and the pattern is worth internalising before you touch this file.
 
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/api/blog/drafts` | List drafts |
-| `POST` | `/api/blog/draft` | Create or auto-save a draft |
-| `PUT` | `/api/blog/publish/:id` | Publish |
-| `PUT` | `/api/blog/schedule/:id` | Schedule — records intent; **the cron that acts on it does not fire**, see [OPERATIONS.md](OPERATIONS.md#failure-modes) |
-| `GET` | `/api/blog/scheduled` | List scheduled posts |
-| `GET` | `/api/blog/versions/:id` | Version history |
-| `PUT` | `/api/blog/restore/:articleId/:versionId` | Restore a version |
-| `POST` | `/api/blog/duplicate/:id` | Duplicate |
-| `PUT` | `/api/blog/archive/:id` | Archive |
-| `POST` | `/api/blog/batch/publish` | Batch publish |
-| `POST` | `/api/blog/batch/delete` | Batch delete |
+| Method | Path | Owner-scoped | Purpose |
+|---|---|---|---|
+| `GET` | `/api/blog/drafts` | ✅ `postedBy: req.user.id` | List drafts |
+| `POST` | `/api/blog/draft` | ✅ | Create or auto-save a draft |
+| `GET` | `/api/blog/scheduled` | ✅ | List scheduled posts |
+| `POST` | `/api/blog/duplicate/:id` | ✅ | Duplicate |
+| `POST` | `/api/blog/batch/publish` | ✅ | Batch publish |
+| `POST` | `/api/blog/batch/delete` | ✅ | Batch delete |
+| `PUT` | `/api/blog/publish/:id` | ⚠️ **no** | Publish |
+| `PUT` | `/api/blog/schedule/:id` | ⚠️ **no** | Schedule — records intent; **the cron that acts on it does not fire**, see [OPERATIONS.md](OPERATIONS.md#failure-modes) |
+| `PUT` | `/api/blog/archive/:id` | ⚠️ **no** | Archive |
+| `GET` | `/api/blog/versions/:id` | ⚠️ **no** | Version history — readable for any article |
+| `PUT` | `/api/blog/restore/:articleId/:versionId` | ⚠️ **no** | Restore a version |
 
-None of these are covered by tests — and they are the widest-blast-radius mutations in the API.
+**The list and batch operations are scoped; the single-article mutations are not.** The batch endpoints filter with `{ _id: { $in: articleIds }, postedBy: req.user.id }`, so a batch delete can only touch your own articles — while `PUT /api/blog/publish/:id` on someone else's article succeeds. Whoever wrote this scoped the operations that *felt* dangerous and missed the ones that take a single id.
+
+None of these endpoints are covered by tests.
 
 ---
 
 ## Media
 
-`routes/media.js` — 🔑 throughout. Backed by Cloudinary. File *upload* lives under [Uploads](#uploads).
+`routes/media.js` — **`/library` and `/search` are public**; `router.use(auth)` gates everything after them. Backed by Cloudinary. File *upload* lives under [Uploads](#uploads).
 
-| Method | Path | Purpose |
-|---|---|---|
-| `GET` | `/api/media/library` | Browse the library |
-| `GET` | `/api/media/search` | Search by query |
-| `DELETE` | `/api/media` | Delete by public id |
-| `PUT` | `/api/media/metadata` | Update metadata |
-| `POST` | `/api/media/folder` | Create a folder |
-| `GET` | `/api/media/stats` | Library statistics |
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| `GET` | `/api/media/library` | — **public** | Browse the library |
+| `GET` | `/api/media/search` | — **public** | Search by query |
+| `DELETE` | `/api/media` | 🔑 | Delete by public id |
+| `PUT` | `/api/media/metadata` | 🔑 | Update metadata |
+| `POST` | `/api/media/folder` | 🔑 | Create a folder |
+| `GET` | `/api/media/stats` | 🔑 | Library statistics |
 
 ---
 
@@ -156,23 +158,25 @@ None of these are covered by tests — and they are the widest-blast-radius muta
 
 ## Analytics
 
-`routes/analytics.js` — 🔑 throughout.
+`routes/analytics.js` — **two public write endpoints, then `router.use(auth)` gates the rest.**
 
-| Method | Path | Purpose |
-|---|---|---|
-| `POST` | `/api/analytics/view` | Record a view |
-| `POST` | `/api/analytics/engagement` | Record an engagement event |
-| `GET` | `/api/analytics/article/:id` | Per-article statistics |
-| `GET` | `/api/analytics/performance` | Performance dashboard |
-| `GET` | `/api/analytics/top-articles` | Top articles |
-| `GET` | `/api/analytics/demographics/:id` | Reader demographics |
-| `GET` | `/api/analytics/traffic-sources/:id` | Traffic sources |
-| `GET` | `/api/analytics/engagement/:id` | Engagement metrics |
-| `GET` | `/api/analytics/conversions` | Conversion metrics |
-| `GET` | `/api/analytics/realtime` | Real-time statistics |
-| `GET` | `/api/analytics/export` | Export |
+| Method | Path | Auth | Purpose |
+|---|---|---|---|
+| `POST` | `/api/analytics/view` | — **public** | Record a view |
+| `POST` | `/api/analytics/engagement` | — **public** | Record an engagement event |
+| `GET` | `/api/analytics/article/:id` | 🔑 | Per-article statistics |
+| `GET` | `/api/analytics/performance` | 🔑 | Performance dashboard |
+| `GET` | `/api/analytics/top-articles` | 🔑 | Top articles |
+| `GET` | `/api/analytics/demographics/:id` | 🔑 | Reader demographics |
+| `GET` | `/api/analytics/traffic-sources/:id` | 🔑 | Traffic sources |
+| `GET` | `/api/analytics/engagement/:id` | 🔑 | Engagement metrics |
+| `GET` | `/api/analytics/conversions` | 🔑 | Conversion metrics |
+| `GET` | `/api/analytics/realtime` | 🔑 | Real-time statistics |
+| `GET` | `/api/analytics/export` | 🔑 | Export |
 
-Because view tracking sits behind `auth`, anonymous reads are not counted here.
+The split is deliberate: **writes are public so anonymous readers can be counted**, reads require a token so the numbers are not publicly exposed.
+
+The cost of that choice is that both write endpoints are unauthenticated and unthrottled — anyone can inflate a view or engagement count with a loop. Treat these figures as indicative, not trustworthy, and note that the [rate limiter is not applied](SECURITY.md#abuse-and-cost-controls).
 
 ---
 

@@ -79,7 +79,15 @@ async function deleteArticle(req, res) {
 }
 ```
 
-`updateArticle` and the `/api/blog/*` workflow endpoints are the same shape. On a single-author site where registration is gated behind Storm-Gate approval the practical blast radius is small — but it is bounded by *who can get a token*, not by any check in this code, and that is the wrong thing to be relying on.
+`updateArticle` is the same shape. On a single-author site where registration is gated behind Storm-Gate approval the practical blast radius is small — but it is bounded by *who can get a token*, not by any check in this code, and that is the wrong thing to be relying on.
+
+**`/api/blog/*` is inconsistent rather than uniformly missing**, and the split is instructive:
+
+| Scoped to `postedBy: req.user.id` | Not scoped |
+|---|---|
+| `getDrafts` · `getScheduledPosts` · `createDraft` · `duplicateArticle` · `batchPublish` · `batchDelete` | `publishArticle` · `scheduleArticle` · `archiveArticle` · `getVersionHistory` · `restoreVersion` |
+
+The list and **batch** operations filter by owner — `batchDelete` uses `{ _id: { $in: articleIds }, postedBy: req.user.id }`, so it cannot touch another user's articles. The single-id mutations do not. The operations that *look* dangerous were defended; the ones that take one id were not. `PUT /api/blog/publish/:id` will happily publish someone else's draft, and `getVersionHistory` will show you the revision history of any article in the system.
 
 Where ownership *is* enforced, it is per-user state rather than resource access: likes and saves resolve the caller's local user id and record against that user's document, so one user cannot like on another's behalf.
 
@@ -92,8 +100,11 @@ Where ownership *is* enforced, it is per-user state rather than resource access:
 | `GET /api/articles`, `GET /api/articles/:id` | ✅ read (`optionalAuth` adds `liked`/`saved` when a token is present) | ✅ | ✅ |
 | `POST/PUT/PATCH/DELETE /api/articles/:id` | ❌ 401 | ⚠️ **any article** | ✅ |
 | `/api/admin/articles*` | ❌ | ✅ (drafts + archived) | ✅ |
-| `/api/blog/*` — drafts, publish, schedule, versions, batch | ❌ | ⚠️ **any article** | ✅ |
-| `/api/media/*`, `/api/ai/*`, `/api/seo/*`, `/api/analytics/*`, `/api/collaboration/*` | ❌ | ✅ | ✅ |
+| `/api/blog/*` — drafts, scheduled, draft, duplicate, **batch** | ❌ | ✅ scoped to `postedBy` | ✅ |
+| `/api/blog/publish\|schedule\|archive\|versions\|restore` | ❌ | ⚠️ **any article** | ✅ |
+| `POST /api/analytics/view`, `/engagement` | 🔴 **ALLOWED — public writes** | ✅ | ✅ |
+| `GET /api/media/library`, `/media/search` | 🔴 **ALLOWED — public** | ✅ | ✅ |
+| `/api/ai/*`, `/api/seo/*`, `/api/collaboration/*`, rest of `/media/*` and `/analytics/*` | ❌ | ✅ | ✅ |
 | `/api/points/*` | ❌ | ✅ own account | ✅ |
 | `GET /api/store/items` | ✅ | ✅ | ✅ |
 | `/api/store/redeem`, `/api/store/my-redemptions` | ❌ | ✅ own | ✅ |
@@ -178,17 +189,19 @@ The unmetered AI endpoints are the sharpest cost exposure: one authenticated acc
 Ordered by how much they would matter if exploited.
 
 1. **`GET /api/user/admin/all` dumps every user to anyone.** No middleware at all despite the `admin` path — **verified against production**, returning real email addresses and statuses to an unauthenticated request. The controller carries a `TEMP` comment stating the risk and saying "lock down before deploying publicly"; it shipped anyway. Access is gated only by the client-side `/admin/users` page, which is not a boundary.
-2. **No ownership or role checks on content mutations.** Any authenticated user can update or delete any article, publish drafts, or run batch deletes.
-3. **No rate limiting anywhere**, including on endpoints that spend money per request.
-4. **No startup validation of `ACCESS_TOKEN_SECRET`** — a missing secret produces per-request failures instead of a loud refusal to boot.
-5. **No `/health` endpoint**, so a process that is up but cannot reach Mongo keeps taking traffic.
-6. **No audit log.** There is no immutable record of who published, edited or deleted what.
-7. **No structured error contract.** Failures surface as `{ msg: err.message }` with a 500, which can echo driver-level detail to the client. No correlation ids.
-8. **Token revocation is impossible before expiry** — inherent to stateless JWT. Partially mitigated by the per-request `/me` lookup: a deleted or demoted account loses privileges within the 60s cache TTL.
-9. **The 60s `/me` cache is in-process and unbounded.** It grows with distinct user ids for the process lifetime and is not shared across machines.
-10. **The Docker image runs as root** on the full `node:20` base, single-stage.
-11. **Dependency scanning is advisory.** Snyk runs in CI with `continue-on-error: true` and `|| true`, so a finding never fails a build.
-12. **`status` is never enforced.** Storm-Gate reports `PENDING`/`APPROVED`; nothing in this app checks it, so an unapproved-but-authenticated user is treated as a normal user.
+2. **Ownership checks are missing on single-article mutations.** Any authenticated user can update or delete any article, and can publish, schedule, archive or restore-a-version on anyone's. The list and batch endpoints under `/api/blog/*` *are* owner-scoped, so this is an inconsistency rather than a blanket absence — which makes it easier to miss.
+3. **`POST /api/analytics/view` and `/engagement` are public and unthrottled.** Anyone can inflate view and engagement counts arbitrarily. Public writes are the right call for counting anonymous readers; publishing them with no rate limit or deduplication is not.
+4. **`GET /api/media/library` and `/media/search` are public**, exposing the full Cloudinary media inventory — including assets attached to unpublished drafts — to anyone.
+5. **No rate limiting anywhere**, including on endpoints that spend money per request.
+6. **No startup validation of `ACCESS_TOKEN_SECRET`** — a missing secret produces per-request failures instead of a loud refusal to boot.
+7. **No `/health` endpoint**, so a process that is up but cannot reach Mongo keeps taking traffic.
+8. **No audit log.** There is no immutable record of who published, edited or deleted what.
+9. **No structured error contract.** Failures surface as `{ msg: err.message }` with a 500, which can echo driver-level detail to the client. No correlation ids.
+10. **Token revocation is impossible before expiry** — inherent to stateless JWT. Partially mitigated by the per-request `/me` lookup: a deleted or demoted account loses privileges within the 60s cache TTL.
+11. **The 60s `/me` cache is in-process and unbounded.** It grows with distinct user ids for the process lifetime and is not shared across machines.
+12. **The Docker image runs as root** on the full `node:20` base, single-stage.
+13. **Dependency scanning is advisory.** Snyk runs in CI with `continue-on-error: true` and `|| true`, so a finding never fails a build.
+14. **`status` is never enforced.** Storm-Gate reports `PENDING`/`APPROVED`; nothing in this app checks it, so an unapproved-but-authenticated user is treated as a normal user.
 
 Fixes are ranked in the README's [Future improvements](../README.md#future-improvements).
 

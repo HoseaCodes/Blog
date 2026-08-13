@@ -107,7 +107,7 @@ MTTR has no meaning yet: with no health check, no alerting and no on-call rotati
 
 There are two analytics systems: `react-ga4` in the browser, and the in-app [`/api/analytics/*`](API.md#analytics) endpoints writing to MongoDB. They will not agree.
 
-> **Article view tracking sits behind authentication**, so anonymous reads — which are nearly all reads on a public blog — are not counted by the in-app system. Any "views" figure from `/api/analytics` is a count of logged-in views only. Google Analytics is the more truthful source until that endpoint moves to `optionalAuth`.
+> **The in-app view and engagement writes are public and unthrottled.** `POST /api/analytics/view` and `/engagement` sit before `router.use(auth)`, so anonymous reads *are* counted — but so is anything else that can send a POST. There is no rate limit, no bot filtering and no deduplication, so treat these as indicative rather than as figures to report. Google Analytics is the better-defended source for traffic; the in-app data is more useful for per-article engagement shape than for absolute counts.
 
 ---
 

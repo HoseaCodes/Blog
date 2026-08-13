@@ -202,7 +202,7 @@ With a title and 200+ words, open the SEO tab.
 db.analytics.find({ articleId: "…" }).sort({ timestamp: -1 })
 ```
 
-Each event should carry a timestamp and metadata. Note that view tracking sits behind auth, so anonymous reads are not counted.
+Each event should carry a timestamp and metadata. Note the write endpoints are **public** — verify a logged-out visit still records a view, and that reading the stats back without a token returns 401.
 
 ---
 

@@ -1,15 +1,4 @@
-# Current Flow (Short-term Fix for Cleanup):
-## Feature Branch → Breakfix → Prep → Master
-**Feature Branch**: Works as usual for individual feature development.
-**Breakfix**: Temporary branch for urgent fixes that may need to be merged into both Staging and Prep.
-**Prep**: Acts as a pre-master environment for staging releases and should allow for easy reverts (think of it as a staging area that reflects what will go into Master).
-**Master**: Your production-ready branch for hoseacodes.com.
-> Merge into Staging after Breakfix:
-> 
-> This will ensure the changes are tested in the Staging environment first, preventing any conflicts from directly being merged into Master without testing.
-Staging should be updated frequently with changes from Prep to ensure it's in sync.
-
-# New Flow (Long-term Strategy):
+# Current Flow (Long-term Strategy):
 ## Feature Branch → Staging → Prep → Master:
 **Feature Branch**: Develop and test individual features.
 **Staging**: Collect multiple features for integration and testing.

@@ -50,7 +50,7 @@ const SearchInput = styled.input`
 
 const ToolButton = styled(motion.button)`
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'transparent'};
+  border: 1px solid ${props => props.active ? '#5bb39e' : 'transparent'};
   color: white;
   padding: 0.5rem;
   border-radius: 6px;
@@ -77,7 +77,7 @@ const DropOverlay = styled(motion.div)`
   right: 0;
   bottom: 0;
   background: rgba(102, 126, 234, 0.1);
-  border: 3px dashed #667eea;
+  border: 3px dashed #5bb39e;
   border-radius: 12px;
   margin: 1rem;
   z-index: 1000;
@@ -100,7 +100,7 @@ const DropZone = styled.div`
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -124,7 +124,7 @@ const MediaItem = styled(motion.div)`
   height: fit-content;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -132,7 +132,7 @@ const MediaItem = styled(motion.div)`
 const MediaPreview = styled.div`
   width: 100%;
   height: ${props => props.viewMode === 'grid' ? '150px' : '80px'};
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #5bb39e, #206a5d);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -232,7 +232,7 @@ const FilterTabs = styled.div`
 
 const FilterTab = styled(motion.button)`
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'transparent'};
-  border: 1px solid ${props => props.active ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
+  border: 1px solid ${props => props.active ? '#5bb39e' : 'rgba(255, 255, 255, 0.2)'};
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -240,7 +240,7 @@ const FilterTab = styled(motion.button)`
   font-size: 0.75rem;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -256,6 +256,32 @@ const UploadProgress = styled(motion.div)`
   min-width: 300px;
 `;
 
+const formatFileSize = (bytes) => {
+  if (!bytes && bytes !== 0) return '';
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+};
+
+const cloudinaryResourceToMedia = (r) => {
+  const name = r.display_name || r.filename || (r.public_id?.split('/').pop() ?? 'untitled');
+  const type =
+    r.resource_type === 'video' ? 'video' :
+    r.resource_type === 'image' ? 'image' : 'document';
+  return {
+    id: r.public_id,
+    cloudinaryId: r.public_id,
+    type,
+    name,
+    url: r.secure_url || r.url,
+    size: formatFileSize(r.bytes),
+    uploaded: r.created_at ? new Date(r.created_at).toLocaleDateString() : '',
+    tags: r.tags || []
+  };
+};
+
 function MediaLibrary({ article, updateArticle, mediaAPI }) {
   const [viewMode, setViewMode] = useState('grid');
   const [searchTerm, setSearchTerm] = useState('');
@@ -264,38 +290,9 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
   const [isDragActive, setIsDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState([]);
-  
-  // Mock data with some initial media files
-  const [mediaFiles, setMediaFiles] = useState([
-    {
-      id: 1,
-      type: 'image',
-      name: 'hero-image.jpg',
-      url: 'https://picsum.photos/400/300?random=1',
-      size: '2.4 MB',
-      uploaded: '2 days ago',
-      tags: ['hero', 'featured'],
-      alt: 'Hero image for the article'
-    },
-    {
-      id: 2,
-      type: 'video',
-      name: 'demo-video.mp4',
-      url: 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
-      size: '15.2 MB',
-      uploaded: '1 week ago',
-      tags: ['demo', 'tutorial'],
-      duration: '2:34'
-    },
-    {
-      id: 3,
-      type: 'document',
-      name: 'research-notes.pdf',
-      size: '890 KB',
-      uploaded: '3 days ago',
-      tags: ['research', 'notes']
-    }
-  ]);
+
+  const [mediaLibrary] = mediaAPI?.mediaLibrary || [[]];
+  const mediaFiles = (mediaLibrary || []).map(cloudinaryResourceToMedia);
 
   const fileInputRef = useRef();
 
@@ -333,107 +330,46 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
   }, []);
 
   const handleFileUpload = async (files) => {
+    if (!mediaAPI) {
+      console.error('MediaLibrary: mediaAPI not available, cannot upload');
+      return;
+    }
     setUploading(true);
     setUploadProgress([]);
-    
+
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      
       try {
-        // Update progress
         setUploadProgress(prev => [
           ...prev,
           { name: file.name, status: 'uploading', progress: 0 }
         ]);
-        
-        console.log('MediaLibrary: Uploading file:', {
-          name: file.name,
-          type: file.type,
-          size: file.size
-        });
-        
-        let uploadResult;
-        
-        if (mediaAPI) {
-          // Use real mediaAPI for Cloudinary upload
-          uploadResult = await mediaAPI.uploadFile(file, 'blog-articles');
-        } else {
-          // Fallback to mock upload
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          uploadResult = {
-            media: {
-              _id: Date.now() + Math.random(),
-              originalName: file.name,
-              url: URL.createObjectURL(file)
-            }
-          };
-        }
-        
-        const newMedia = {
-          id: uploadResult.media?._id || Date.now() + Math.random(),
-          type: file.type.startsWith('image/') ? 'image' : 
-                file.type.startsWith('video/') ? 'video' : 'document',
-          name: uploadResult.media?.originalName || file.name,
-          url: uploadResult.media?.url || URL.createObjectURL(file),
-          size: formatFileSize(file.size),
-          uploaded: 'Just now',
-          tags: [],
-          cloudinaryId: uploadResult.media?.cloudinaryId
-        };
-        
-        setMediaFiles(prev => [newMedia, ...prev]);
-        
-        // Update progress to complete
-        setUploadProgress(prev => 
-          prev.map(item => 
-            item.name === file.name 
+
+        await mediaAPI.uploadFile(file, 'blog-articles');
+
+        setUploadProgress(prev =>
+          prev.map(item =>
+            item.name === file.name
               ? { ...item, status: 'complete', progress: 100 }
               : item
           )
         );
-        
       } catch (error) {
         console.error('Upload failed:', error);
-        
-        // Update progress to failed
-        setUploadProgress(prev => 
-          prev.map(item => 
-            item.name === file.name 
+        setUploadProgress(prev =>
+          prev.map(item =>
+            item.name === file.name
               ? { ...item, status: 'failed', progress: 0 }
               : item
           )
         );
-        
-        // Still add the file with local URL
-        const newMedia = {
-          id: Date.now() + Math.random(),
-          type: file.type.startsWith('image/') ? 'image' : 
-                file.type.startsWith('video/') ? 'video' : 'document',
-          name: file.name,
-          url: URL.createObjectURL(file),
-          size: formatFileSize(file.size),
-          uploaded: 'Just now (upload failed)',
-          tags: [],
-          error: true
-        };
-        
-        setMediaFiles(prev => [newMedia, ...prev]);
       }
     }
-    
-    // Clear progress after a delay
+
     setTimeout(() => {
       setUploadProgress([]);
       setUploading(false);
     }, 3000);
-  };
-
-  const formatFileSize = (bytes) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
   };
 
   const filteredMedia = mediaFiles.filter(item => {
@@ -458,8 +394,13 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
     });
   };
 
-  const deleteMedia = (mediaId) => {
-    setMediaFiles(prev => prev.filter(item => item.id !== mediaId));
+  const deleteMedia = async (mediaId) => {
+    if (!mediaAPI?.deleteMedia) return;
+    try {
+      await mediaAPI.deleteMedia(mediaId);
+    } catch (err) {
+      console.error('Delete failed:', err);
+    }
   };
 
   const renderMediaIcon = (type) => {
@@ -548,8 +489,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
-              <FiUpload size={64} style={{ color: '#667eea', marginBottom: '1rem' }} />
-              <h2 style={{ margin: 0, marginBottom: '0.5rem', color: '#667eea' }}>
+              <FiUpload size={64} style={{ color: '#5bb39e', marginBottom: '1rem' }} />
+              <h2 style={{ margin: 0, marginBottom: '0.5rem', color: '#5bb39e' }}>
                 Drop files here to upload
               </h2>
               <p style={{ margin: 0, opacity: 0.7 }}>
@@ -567,7 +508,7 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 300 }}
             >
-              <h4 style={{ margin: '0 0 1rem 0', color: '#667eea' }}>Uploading files...</h4>
+              <h4 style={{ margin: '0 0 1rem 0', color: '#5bb39e' }}>Uploading files...</h4>
               {uploadProgress.map((item, index) => (
                 <div key={index} style={{ marginBottom: '0.5rem' }}>
                   <div style={{ 
@@ -579,8 +520,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                     <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>{item.name}</span>
                     <span style={{ 
                       fontSize: '0.625rem',
-                      color: item.status === 'complete' ? '#10b981' : 
-                             item.status === 'failed' ? '#ef4444' : '#667eea'
+                      color: item.status === 'complete' ? '#5bb39e' : 
+                             item.status === 'failed' ? '#ef4444' : '#5bb39e'
                     }}>
                       {item.status === 'complete' ? 'Complete' : 
                        item.status === 'failed' ? 'Failed' : 'Uploading...'}
@@ -597,8 +538,8 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                       width: item.status === 'complete' ? '100%' : 
                              item.status === 'failed' ? '0%' : '60%',
                       height: '100%',
-                      background: item.status === 'complete' ? '#10b981' : 
-                                 item.status === 'failed' ? '#ef4444' : '#667eea',
+                      background: item.status === 'complete' ? '#5bb39e' : 
+                                 item.status === 'failed' ? '#ef4444' : '#5bb39e',
                       transition: 'width 0.3s ease'
                     }} />
                   </div>
@@ -688,7 +629,7 @@ function MediaLibrary({ article, updateArticle, mediaAPI }) {
                           style={{
                             fontSize: '0.625rem',
                             background: 'rgba(102, 126, 234, 0.2)',
-                            color: '#667eea',
+                            color: '#5bb39e',
                             padding: '0.125rem 0.5rem',
                             borderRadius: '12px',
                             marginRight: '0.25rem'

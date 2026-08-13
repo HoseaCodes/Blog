@@ -1,6 +1,7 @@
-import { Button, Grid, Result } from "../common";
+import { Grid, Result } from "../common";
 import { layout, legends } from "./resource";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import useGameBridge from "../../../Hooks/useGameBridge";
 import styled from "styled-components";
 
 
@@ -74,7 +75,7 @@ const directionAmt = {
   UP: -width,
   DOWN: width,
 };
-const PacMan = () => {
+const PacMan = ({ onScoreUpdate, onGameComplete, gameStarted = true } = {}) => {
   const [cells, setCells] = useState(layout);
   const [pacman, setPacman] = useState(490);
   const [direction, setDirection] = useState("LEFT");
@@ -171,19 +172,29 @@ const PacMan = () => {
     }
     return () => clearTimeout(energyTimer);
   }, [energize]);
-  const resetGame = () => {
+  const resetGame = useCallback(() => {
     setCells(layout);
     setPacman(490);
     setDirection("LEFT");
-    setGameOver(false);
-  };
-  const toggleGame = () => {
-    if (start) setStart(false);
-    else {
-      resetGame();
-      setStart(true);
-    }
-  };
+    setGameOver("");
+    setScore(0);
+    setStart(true);
+  }, []);
+
+  // Slave internal `start` to the framework's `gameStarted` prop so the
+  // canonical control is the page-level Start/End Game button.
+  useEffect(() => {
+    if (!gameStarted) setStart(false);
+  }, [gameStarted]);
+
+  useGameBridge({
+    score,
+    gameStarted,
+    onScoreUpdate,
+    onReset: resetGame,
+    isGameOver: !!gameOver,
+    onGameComplete,
+  });
   return (
     <div style={{
       display: "flex",
@@ -216,7 +227,6 @@ const PacMan = () => {
         })}
       </Grid>
       <div>
-        <Button onClick={toggleGame}>{start ? "Stop" : "Start"}</Button>
         {score}
         {gameOver ? <Result>{gameOver}</Result> : ""}
       </div>

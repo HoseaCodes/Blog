@@ -65,6 +65,18 @@ const GamePage = () => {
   };
 
   const handleStartGame = () => {
+    if (gameStarted) {
+      // Second click = End Game → award points via updateGameScore.
+      setIsTimerRunning(false);
+      setGameStarted(false);
+      setIsGameComplete(true);
+      if (currentGame && score > 0) {
+        updateGameScore(currentGame.id, currentGame.name, score, timer);
+        const stats = getGameStats(currentGame.id);
+        setGameStats(stats);
+      }
+      return;
+    }
     setIsTimerRunning(true);
     setTimer(0);
     setScore(0);
@@ -83,10 +95,10 @@ const GamePage = () => {
   const handleGameComplete = (finalScore) => {
     setIsTimerRunning(false);
     setIsGameComplete(true);
-    
+    setGameStarted(false);
+
     if (currentGame) {
       updateGameScore(currentGame.id, currentGame.name, finalScore, timer);
-      // Refresh stats
       const stats = getGameStats(currentGame.id);
       setGameStats(stats);
     }
@@ -235,7 +247,9 @@ const GamePage = () => {
           </StatsSection>
         )}
         
-        <StartGameButton onClick={handleStartGame}>Start Game</StartGameButton>
+        <StartGameButton onClick={handleStartGame}>
+          {gameStarted ? "End Game" : isGameComplete ? "Play Again" : "Start Game"}
+        </StartGameButton>
 
         <StatsRow>
           <StatItem>

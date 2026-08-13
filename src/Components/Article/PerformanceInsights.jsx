@@ -83,12 +83,12 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const ActionButton = styled(motion.button)`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -138,12 +138,12 @@ const PredictionHeader = styled.div`
 
 const PredictionTitle = styled.div`
   font-weight: 600;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const Confidence = styled.div`
   background: rgba(16, 185, 129, 0.2);
-  color: #10b981;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -172,7 +172,7 @@ const EngagementItem = styled.div`
 const EngagementValue = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #5bb39e;
   margin-bottom: 0.25rem;
 `;
 
@@ -191,7 +191,7 @@ const TimeFilter = styled.select`
   margin-left: 0.5rem;
   
   option {
-    background: #1a1a2e;
+    background: #14191e;
     color: white;
   }
 `;
@@ -221,7 +221,7 @@ const PerformerTitle = styled.div`
 `;
 
 const PerformerMetric = styled.div`
-  color: #667eea;
+  color: #5bb39e;
   font-weight: 600;
 `;
 
@@ -288,14 +288,14 @@ function PerformanceInsights({ article, performanceScore, analyticsAPI }) {
       label: 'Total Views',
       change: realMetrics.viewsChange || '0%',
       trend: parseFloat(realMetrics.viewsChange) >= 0 ? 'up' : 'down',
-      gradient: '#667eea, #764ba2'
+      gradient: '#5bb39e, #206a5d'
     },
     {
       value: realMetrics.engagement?.toLocaleString() || '0',
       label: 'Engagements',
       change: realMetrics.engagementChange || '0%',
       trend: parseFloat(realMetrics.engagementChange) >= 0 ? 'up' : 'down',
-      gradient: '#10b981, #059669'
+      gradient: '#5bb39e, #059669'
     },
     {
       value: realMetrics.shares?.toLocaleString() || '0',
@@ -309,7 +309,7 @@ function PerformanceInsights({ article, performanceScore, analyticsAPI }) {
       label: 'Avg Read Time',
       change: realMetrics.readTimeChange || '0%',
       trend: parseFloat(realMetrics.readTimeChange) >= 0 ? 'up' : 'down',
-      gradient: '#8b5cf6, #7c3aed'
+      gradient: '#5bb39e, #7c3aed'
     }
   ] : null;
 
@@ -556,7 +556,7 @@ function PerformanceInsights({ article, performanceScore, analyticsAPI }) {
             textAlign: 'center'
           }}>
             <div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#10b981' }}>
+              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#5bb39e' }}>
                 {realTimeStats.activeReaders}
               </div>
               <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>
@@ -564,7 +564,7 @@ function PerformanceInsights({ article, performanceScore, analyticsAPI }) {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#667eea' }}>
+              <div style={{ fontSize: '1.25rem', fontWeight: 700, color: '#5bb39e' }}>
                 {realTimeStats.recentViews}
               </div>
               <div style={{ fontSize: '0.75rem', opacity: 0.8 }}>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import { 
+import {
   FiTag, FiUsers, FiGlobe, FiTrendingUp, FiClock, FiTarget,
   FiBookOpen, FiBarChart2, FiUser, FiCalendar, FiLink,
-  FiPlus, FiX, FiEdit3, FiLayers, FiStar
+  FiPlus, FiX, FiEdit3, FiLayers, FiStar, FiImage, FiUpload
 } from "react-icons/fi";
 
 const MetadataContainer = styled.div`
@@ -30,7 +30,7 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const FormGroup = styled.div`
@@ -60,7 +60,7 @@ const Input = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -76,12 +76,12 @@ const Select = styled.select`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
   
   option {
-    background: #1a1a2e;
+    background: #14191e;
     color: white;
   }
 `;
@@ -103,7 +103,7 @@ const Textarea = styled.textarea`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -117,8 +117,8 @@ const TagContainer = styled.div`
 
 const Tag = styled(motion.span)`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
-  color: #667eea;
+  border: 1px solid #5bb39e;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 16px;
   font-size: 0.75rem;
@@ -145,7 +145,7 @@ const TagInput = styled.input`
 
 const AddButton = styled(motion.button)`
   background: rgba(102, 126, 234, 0.2);
-  border: 1px solid #667eea;
+  border: 1px solid #5bb39e;
   border-radius: 6px;
   color: white;
   padding: 0.5rem;
@@ -170,7 +170,7 @@ const RadioGroup = styled.div`
 
 const RadioOption = styled(motion.label)`
   background: ${props => props.checked ? 'rgba(102, 126, 234, 0.3)' : 'rgba(255, 255, 255, 0.1)'};
-  border: 1px solid ${props => props.checked ? '#667eea' : 'rgba(255, 255, 255, 0.2)'};
+  border: 1px solid ${props => props.checked ? '#5bb39e' : 'rgba(255, 255, 255, 0.2)'};
   border-radius: 8px;
   padding: 0.75rem;
   cursor: pointer;
@@ -182,7 +182,7 @@ const RadioOption = styled(motion.label)`
   justify-content: center;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.2);
   }
 `;
@@ -204,7 +204,7 @@ const MetricGrid = styled.div`
 const MetricValue = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const MetricLabel = styled.div`
@@ -213,69 +213,85 @@ const MetricLabel = styled.div`
   margin-top: 0.25rem;
 `;
 
-function MetadataPanel({ article, updateArticle, seoAPI }) {
+function MetadataPanel({ article, updateArticle, seoAPI, mediaAPI }) {
+  const featuredImageInputRef = useRef();
+  const [featuredImageUploading, setFeaturedImageUploading] = useState(false);
+
+  const handleFeaturedImageUpload = async (file) => {
+    if (!file || !updateArticle) return;
+    setFeaturedImageUploading(true);
+    try {
+      let url, cloudinaryId, originalName;
+      if (mediaAPI) {
+        const res = await mediaAPI.uploadFile(file, "blog-articles");
+        url = res.media?.url || res.result?.secure_url;
+        cloudinaryId = res.media?.cloudinaryId || res.result?.public_id;
+        originalName = res.media?.originalName || file.name;
+      } else {
+        url = URL.createObjectURL(file);
+        originalName = file.name;
+      }
+      updateArticle({
+        media: {
+          ...(article?.media || {}),
+          featuredImage: { url, cloudinaryId, originalName }
+        }
+      });
+    } catch (err) {
+      console.error("Featured image upload failed:", err);
+    } finally {
+      setFeaturedImageUploading(false);
+    }
+  };
+
+  const clearFeaturedImage = () => {
+    if (!updateArticle) return;
+    updateArticle({
+      media: { ...(article?.media || {}), featuredImage: null }
+    });
+  };
+
   const [newTag, setNewTag] = useState('');
   const [newSkillTag, setNewSkillTag] = useState('');
   const [suggestedKeywords, setSuggestedKeywords] = useState([]);
   const [loadingKeywords, setLoadingKeywords] = useState(false);
 
-  const fetchKeywordSuggestions = useCallback(async () => {
-    // FIXED: Use title or category for keyword suggestions, not entire content
-    const topic = article.title || article.metadata?.category || 'blog post';
-    
-    if (!seoAPI || !topic || topic.length < 3) {
-      return;
-    }
-    
-    setLoadingKeywords(true);
-    try {
-      // Check if the method exists before calling it
-      if (typeof seoAPI.getKeywordSuggestions === 'function') {
-        console.log('Fetching keyword suggestions for topic:', topic);
-        const result = await seoAPI.getKeywordSuggestions(topic);
-        const keywords = result?.keywords || [];
-        
-        // Normalize keywords - handle both string arrays and object arrays
-        const normalizedKeywords = keywords.map(keyword => {
-          if (typeof keyword === 'string') {
-            return keyword;
-          } else if (keyword && typeof keyword === 'object' && keyword.term) {
-            return keyword.term;
-          }
-          return null;
-        }).filter(Boolean);
-        
-        console.log('Received keyword suggestions:', normalizedKeywords);
-        setSuggestedKeywords(normalizedKeywords);
-      }
-    } catch (error) {
-      console.error('Failed to fetch keyword suggestions:', error);
-      // Don't break the UI on error
-      setSuggestedKeywords([]);
-    } finally {
-      setLoadingKeywords(false);
-    }
-  }, [article.title, article.metadata?.category, seoAPI]);
-
-  // Fetch keyword suggestions when title or category changes (not content)
+  // Keep latest seoAPI in a ref so the keyword effect doesn't re-fire just
+  // because the parent re-rendered with a fresh seoAPI object reference.
+  const seoAPIRef = useRef(seoAPI);
   useEffect(() => {
-    let isMounted = true;
-    
-    const loadKeywords = async () => {
-      // Only trigger if we have a title or category and seoAPI
-      const hasTopic = article.title || article.metadata?.category;
-      if (seoAPI && hasTopic && isMounted) {
-        await fetchKeywordSuggestions();
+    seoAPIRef.current = seoAPI;
+  }, [seoAPI]);
+
+  useEffect(() => {
+    const topic = article.title || article.metadata?.category;
+    if (!topic || topic.length < 3) return;
+
+    let cancelled = false;
+    setLoadingKeywords(true);
+
+    (async () => {
+      try {
+        const api = seoAPIRef.current;
+        if (typeof api?.getKeywordSuggestions !== 'function') return;
+        const result = await api.getKeywordSuggestions(topic);
+        if (cancelled) return;
+        const normalized = (result?.keywords || [])
+          .map((k) => (typeof k === 'string' ? k : k?.term))
+          .filter(Boolean);
+        setSuggestedKeywords(normalized);
+      } catch (err) {
+        if (!cancelled) {
+          console.error('Failed to fetch keyword suggestions:', err);
+          setSuggestedKeywords([]);
+        }
+      } finally {
+        if (!cancelled) setLoadingKeywords(false);
       }
-    };
-    
-    loadKeywords();
-    
-    // Cleanup function to prevent memory leaks
-    return () => {
-      isMounted = false;
-    };
-  }, [article.title, article.metadata?.category, seoAPI, fetchKeywordSuggestions]); // Watch title and category, not content
+    })();
+
+    return () => { cancelled = true; };
+  }, [article.title, article.metadata?.category]);
 
   const applySuggestedKeyword = (keyword) => {
     if (!keyword || !updateArticle) return;
@@ -403,8 +419,96 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
     );
   }
 
+  const featuredImageUrl = article?.media?.featuredImage?.url || article?.media?.featuredImage?.secure_url;
+
   return (
     <MetadataContainer>
+      {/* Featured Image */}
+      <Section>
+        <SectionTitle>
+          <FiImage />
+          Featured Image
+        </SectionTitle>
+        <FormGroup>
+          {featuredImageUrl ? (
+            <div style={{ position: 'relative', marginBottom: '0.75rem' }}>
+              <img
+                src={featuredImageUrl}
+                alt="Featured"
+                style={{
+                  width: '100%',
+                  maxHeight: '200px',
+                  objectFit: 'cover',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(255,255,255,0.2)'
+                }}
+              />
+              <button
+                type="button"
+                onClick={clearFeaturedImage}
+                style={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  right: '0.5rem',
+                  background: 'rgba(0,0,0,0.7)',
+                  border: 'none',
+                  borderRadius: '4px',
+                  color: 'white',
+                  padding: '0.25rem 0.5rem',
+                  cursor: 'pointer'
+                }}
+              >
+                <FiX size={14} />
+              </button>
+            </div>
+          ) : (
+            <div
+              onClick={() => featuredImageInputRef.current?.click()}
+              style={{
+                border: '2px dashed rgba(255,255,255,0.3)',
+                borderRadius: '8px',
+                padding: '1.5rem',
+                textAlign: 'center',
+                cursor: 'pointer',
+                background: 'rgba(255,255,255,0.05)',
+                marginBottom: '0.75rem'
+              }}
+            >
+              <FiUpload size={24} style={{ opacity: 0.6, marginBottom: '0.5rem' }} />
+              <div style={{ fontSize: '0.875rem' }}>
+                {featuredImageUploading ? 'Uploading…' : 'Click to upload featured image'}
+              </div>
+            </div>
+          )}
+          <input
+            ref={featuredImageInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={(e) => handleFeaturedImageUpload(e.target.files?.[0])}
+          />
+          {featuredImageUrl && (
+            <button
+              type="button"
+              onClick={() => featuredImageInputRef.current?.click()}
+              disabled={featuredImageUploading}
+              style={{
+                width: '100%',
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                borderRadius: '8px',
+                padding: '0.5rem',
+                color: 'white',
+                cursor: featuredImageUploading ? 'not-allowed' : 'pointer',
+                fontSize: '0.875rem'
+              }}
+            >
+              {featuredImageUploading ? 'Uploading…' : 'Replace image'}
+            </button>
+          )}
+        </FormGroup>
+      </Section>
+
       {/* Content Metrics */}
       <Section>
         <SectionTitle>
@@ -638,7 +742,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
                     ? 'rgba(102, 126, 234, 0.4)' 
                     : 'rgba(255, 255, 255, 0.1)',
                   borderColor: (article?.metadata?.personaTarget || []).includes(persona) 
-                    ? '#667eea' 
+                    ? '#5bb39e' 
                     : 'rgba(255, 255, 255, 0.2)'
                 }}
                 whileHover={{ scale: 1.05 }}
@@ -663,7 +767,7 @@ function MetadataPanel({ article, updateArticle, seoAPI }) {
                     ? 'rgba(102, 126, 234, 0.4)' 
                     : 'rgba(255, 255, 255, 0.1)',
                   borderColor: (article?.metadata?.industryTarget || []).includes(industry) 
-                    ? '#667eea' 
+                    ? '#5bb39e' 
                     : 'rgba(255, 255, 255, 0.2)'
                 }}
                 whileHover={{ scale: 1.05 }}

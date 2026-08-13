@@ -125,6 +125,8 @@ export async function getTopArticles(req, res) {
 
     const articles = await Articles.find({
       published: true,
+      draft: { $ne: true },
+      archived: { $ne: true },
       createdAt: { $gte: startDate }
     })
     .sort({ views: -1 })

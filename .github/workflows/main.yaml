@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - staging
-    tags:
-      - v*
 jobs:
   static-scan:
     runs-on: ubuntu-latest
@@ -57,11 +55,26 @@ jobs:
       - name: lint
         continue-on-error: true
         run: npm run lint
-  build:
-    needs: [static-scan, dependency-scan, lint]
+  integration-test:
+    needs: [static-scan, dependency-scan]
     runs-on: ubuntu-latest
-    outputs:
-      build_path: ${{ steps.archive_build.outputs.build_path }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # ubuntu-latest ships a running Docker daemon, so Testcontainers can boot
+      # the real MongoDB image the integration suite tests against.
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+      - name: Run integration tests
+        run: npm run test:integration
+  # Staging verifies only: scans, lint, integration tests and a production
+  # build. It does not release and it does not deploy. Releases and deploys are
+  # owned by master (release-please -> v* tag -> release-publish.yml -> Fly.io).
+  build:
+    needs: [static-scan, dependency-scan, lint, integration-test]
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
@@ -69,57 +82,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-      - name: Clean install dependencies
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
+      # Install from the lockfile — do NOT delete it. react-scripts@4.0.3 pins
+      # @babel/core to 7.12.3 while floating babel-preset-react-app to ^10.0.0,
+      # which resolves to 10.1.0 and requires ^7.16.0. Resolving without the
+      # lockfile lets those land in an arrangement where the preset loads under
+      # 7.12.3 and the build dies with:
+      #   Requires Babel "^7.16.0", but was loaded with "7.12.3"
+      # The committed lockfile pins a tree that builds; npm ci reproduces it.
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
       - name: Build project
         run: npm run build
         env:
           SKIP_PREFLIGHT_CHECK: "true"
-      - name: Archive build output
-        id: archive_build
-        run: |
-          tar -czf build.tar.gz build/
-          echo "::set-output name=build_path::build.tar.gz"
-      - name: Create conventional changelog action
-        id: changelog
-        uses: TriPSs/conventional-changelog-action@latest
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag-prefix: "dev.v"
-          git-push: false
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.changelog.outputs.tag }}
-          release_name: Release ${{ steps.changelog.outputs.tag }}
-          body:  ${{steps.changelog.outputs.clean_changelog}}
-          draft: false
-          prerelease: false
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: build.tar.gz
-          asset_name: build.tar.gz
-          asset_content_type: application/gzip
-  promote-dev:
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-      
-      - name: Deploy to Fly.io
-        uses: superfly/flyctl-actions@master
-        with:
-          args: "deploy"
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

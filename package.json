@@ -1,28 +1,33 @@
 {
   "name": "blog",
-  "version": "1.1.0",
+  "version": "1.4.1",
   "private": true,
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^9.2.0",
     "@sentry/react": "^6.19.7",
     "@sentry/tracing": "^6.13.3",
+    "@storm-gate/client": "^0.1.0",
+    "@storm-gate/express": "^0.1.0",
+    "@tippyjs/react": "^4.2.6",
     "@use-effect/did-update": "^0.0.3",
     "@welldone-software/why-did-you-render": "^7.0.1",
     "ajv": "^8.17.1",
     "aos": "^2.3.4",
     "aws-sdk": "^2.1621.0",
-    "axios": "^1.12.0",
+    "axios": "^1.19.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^5.1.0",
     "cloudinary": "^2.7.0",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
-    "dompurify": "^3.2.4",
+    "dompurify": "^3.4.5",
     "dotenv": "^8.6.0",
     "env-cmd": "^10.1.0",
+    "expr-eval-fork": "^3.0.3",
     "express": "^4.21.2",
     "express-fileupload": "^1.2.1",
     "express-rate-limit": "^6.7.0",
@@ -40,13 +45,17 @@
     "mongoose": "^8.8.3",
     "morgan": "^1.10.1",
     "node-cache": "^5.1.2",
-    "node-cron": "^3.0.3",
+    "node-cron": "^4.0.0",
     "openai": "^4.0.0",
+    "perfect-freehand": "^1.2.3",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",
     "react-cookie": "6.1.3",
     "react-dom": "^17.0.2",
+    "react-draggable": "^4.5.0",
     "react-ga4": "^2.1.0",
+    "react-helmet-async": "^3.0.0",
+    "react-icomoon": "^2.6.1",
     "react-icons": "^4.12.0",
     "react-intersection-observer": "^9.8.1",
     "react-loading-skeleton": "^3.2.0",
@@ -59,6 +68,8 @@
     "react-sticky-state": "^2.1.9",
     "react-text-transition": "^1.3.0",
     "react-transition-group": "^4.4.2",
+    "resend": "^4.0.0",
+    "roughjs": "^4.6.6",
     "serve-favicon": "^2.5.0",
     "slug": "^5.1.0",
     "slugify": "^1.6.0",
@@ -86,7 +97,8 @@
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "test:integration": "jest --config jest.integration.config.cjs --runInBand"
   },
   "eslintConfig": {
     "extends": [
@@ -119,7 +131,13 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:3003",
+  "overrides": {
+    "jsonpath": "^1.3.0",
+    "fast-uri": "^3.1.2",
+    "underscore": "^1.13.8",
+    "diff": "^5.2.2"
+  },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@shelf/jest-mongodb": "^2.0.3",
@@ -129,12 +147,19 @@
     "@storybook/node-logger": "^6.3.10",
     "@storybook/preset-create-react-app": "^3.2.0",
     "@storybook/react": "^6.3.10",
+    "@testcontainers/mongodb": "^10.28.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/user-event": "^14.4.3",
+    "babel-jest": "^29.7.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-react": "^7.33.1",
-    "jest": "^26.6.0",
-    "supertest": "^6.3.3"
+    "http-proxy-middleware": "^3.0.5",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "nock": "^14.0.17",
+    "supertest": "^6.3.3",
+    "testcontainers": "^10.28.0"
   }
 }

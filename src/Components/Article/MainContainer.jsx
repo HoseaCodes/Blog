@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Alert from 'react-bootstrap/Alert';
-import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail } from 'react-icons/ai';
-import { FaRegThumbsUp, FaRegComment } from 'react-icons/fa';
+import axios from 'axios';
+import { GlobalState } from '../../GlobalState';
+import { AiFillStar, AiFillPlayCircle, AiFillPauseCircle, AiFillStop, AiOutlineMail, AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { FaRegThumbsUp, FaThumbsUp, FaRegComment, FaRegBookmark, FaBookmark } from 'react-icons/fa';
 import { BsTwitter, BsFacebook, BsLinkedin, BsLink45Deg } from 'react-icons/bs';
 import { RiShareCircleFill } from 'react-icons/ri';
 import { TiSocialLinkedinCircular } from 'react-icons/ti';
@@ -16,26 +18,26 @@ import marked from 'marked';
 const mediumTheme = {
   colors: {
     text: {
-      primary: '#242424',
-      secondary: '#6b6b6b',
-      light: '#8b8b8b'
+      primary: '#f4f6f8',
+      secondary: '#a3acb2',
+      light: '#6b7479'
     },
     background: {
-      white: '#ffffff',
-      light: '#fafafa',
-      border: '#e6e6e6',
-      hover: '#f2f2f2'
+      white: '#0f1216',
+      light: 'rgba(255, 255, 255, 0.025)',
+      border: 'rgba(255, 255, 255, 0.06)',
+      hover: 'rgba(255, 255, 255, 0.04)'
     },
     accent: {
-      green: '#1a8917',
-      lightGreen: '#f0fff0',
-      red: '#e74c3c'
+      green: '#5bb39e',
+      lightGreen: 'rgba(91, 179, 158, 0.1)',
+      red: '#f87171'
     }
   },
   typography: {
     fontFamily: {
       serif: 'charter, Georgia, Cambria, "Times New Roman", Times, serif',
-      sansSerif: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+      sansSerif: '"Lato", sans-serif'
     },
     fontSize: {
       xs: '12px',
@@ -79,16 +81,21 @@ const mediumTheme = {
 // STYLED COMPONENTS
 // =============================================
 const StyledMainContainer = styled.div`
-  max-width: 680px;
+  max-width: 1200px;
+  padding-top: 2rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
   margin: 0 auto;
   background: ${mediumTheme.colors.background.white};
+  width: 100%;
+  box-sizing: border-box;
 
   @media (max-width: ${mediumTheme.breakpoints.tablet}) {
-    padding: ${mediumTheme.spacing['2xl']} 0;
+    padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg};
   }
 
   @media (max-width: ${mediumTheme.breakpoints.mobile}) {
-    padding: ${mediumTheme.spacing.lg} 0;
+    padding: ${mediumTheme.spacing.xl} ${mediumTheme.spacing.md};
   }
 `;
 
@@ -164,6 +171,7 @@ const WrappedDate = styled.div`
 const AudioControls = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: ${mediumTheme.spacing.sm};
   margin-top: ${mediumTheme.spacing.sm};
 `;
@@ -256,9 +264,14 @@ const BlogContent = styled.div`
   margin-bottom: ${mediumTheme.spacing.xl};
   padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg};
 
+  @media (max-width: ${mediumTheme.breakpoints.mobile}) {
+    font-size: ${mediumTheme.typography.fontSize.lg};
+    padding: ${mediumTheme.spacing.xl} 0;
+  }
+
   p {
     margin-bottom: ${mediumTheme.spacing.xl};
-    
+
     ${props => props.isFirst && `
       &:first-of-type::first-letter {
         font-size: 4em;
@@ -267,6 +280,12 @@ const BlogContent = styled.div`
         margin: 0.1em 0.1em 0 0;
         font-weight: 400;
         color: ${mediumTheme.colors.text.primary};
+      }
+
+      @media (max-width: 768px) {
+        &:first-of-type::first-letter {
+          font-size: 2.6em;
+        }
       }
     `}
   }
@@ -309,12 +328,20 @@ const BlogContent = styled.div`
     padding: ${mediumTheme.spacing.lg};
     border-radius: 4px;
     overflow-x: auto;
+    max-width: 100%;
     margin: ${mediumTheme.spacing.xl} 0;
     border: 1px solid ${mediumTheme.colors.background.border};
+    -webkit-overflow-scrolling: touch;
 
     code {
       background: none;
       padding: 0;
+    }
+
+    @media (max-width: ${mediumTheme.breakpoints.mobile}) {
+      padding: ${mediumTheme.spacing.md};
+      font-size: 13px;
+      border-radius: 6px;
     }
   }
 
@@ -336,11 +363,82 @@ const BlogContent = styled.div`
     margin-bottom: ${mediumTheme.spacing.sm};
   }
 
+  li:has(> input[type="checkbox"]) {
+    list-style: none;
+    margin-left: -${mediumTheme.spacing.lg};
+    display: flex;
+    align-items: baseline;
+    gap: ${mediumTheme.spacing.sm};
+  }
+
+  input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    border: 1px solid ${mediumTheme.colors.background.border};
+    border-radius: 3px;
+    background: ${mediumTheme.colors.background.light};
+    position: relative;
+    top: 2px;
+    cursor: default;
+
+    &:checked {
+      background: ${mediumTheme.colors.accent.green};
+      border-color: ${mediumTheme.colors.accent.green};
+    }
+
+    &:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 0px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
   img {
     max-width: 100%;
     height: auto;
     margin: ${mediumTheme.spacing.xl} 0;
     border-radius: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: ${mediumTheme.spacing.xl} 0;
+    font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+    font-size: ${mediumTheme.typography.fontSize.base};
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  thead {
+    background: ${mediumTheme.colors.accent.lightGreen};
+  }
+
+  th, td {
+    border: 1px solid ${mediumTheme.colors.background.border};
+    padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.md};
+    text-align: left;
+    vertical-align: top;
+    line-height: ${mediumTheme.typography.lineHeight.normal};
+  }
+
+  th {
+    font-weight: ${mediumTheme.typography.fontWeight.semibold};
+    color: ${mediumTheme.colors.text.primary};
+  }
+
+  tbody tr:nth-child(even) {
+    background: ${mediumTheme.colors.background.hover};
   }
 `;
 
@@ -401,16 +499,21 @@ const NewsletterForm = styled.div`
 
 const NewsletterInput = styled.input`
   flex: 1;
-  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.md};
-  border: 1px solid ${mediumTheme.colors.background.border};
-  border-radius: 4px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(15, 18, 22, 0.65);
+  color: ${mediumTheme.colors.text.primary};
   font-size: ${mediumTheme.typography.fontSize.base};
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
 
   &:focus {
-    outline: none;
-    border-color: ${mediumTheme.colors.accent.green};
-    box-shadow: 0 0 0 3px ${mediumTheme.colors.accent.lightGreen};
+    border-color: rgba(91, 179, 158, 0.45);
+    box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
+    background: rgba(15, 18, 22, 0.85);
   }
 
   &::placeholder {
@@ -419,22 +522,30 @@ const NewsletterInput = styled.input`
 `;
 
 const NewsletterButton = styled.button`
-  background-color: ${mediumTheme.colors.accent.green};
-  color: white;
-  border: none;
-  padding: ${mediumTheme.spacing.sm} ${mediumTheme.spacing.lg};
-  border-radius: 4px;
+  background-color: #206a5d;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px 18px;
+  border-radius: 10px;
   font-size: ${mediumTheme.typography.fontSize.base};
-  font-weight: ${mediumTheme.typography.fontWeight.medium};
+  font-weight: ${mediumTheme.typography.fontWeight.semibold};
+  letter-spacing: 0.01em;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  display: flex;
+  transition: background-color 0.18s ease, transform 0.12s ease,
+    box-shadow 0.18s ease;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: ${mediumTheme.spacing.xs};
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 8px 22px rgba(32, 106, 93, 0.28);
 
   &:hover {
-    background-color: #0f6b14;
+    background-color: #267a6b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 26px rgba(32, 106, 93, 0.4);
   }
 
   svg {
@@ -460,16 +571,17 @@ const RelatedPostsSection = styled.div`
 `;
 
 const RelatedPostCard = styled.div`
-  background: white;
-  border-radius: 8px;
+  background: ${mediumTheme.colors.background.light};
+  border: 1px solid ${mediumTheme.colors.background.border};
+  border-radius: 12px;
   padding: ${mediumTheme.spacing.lg};
   margin-bottom: ${mediumTheme.spacing.lg};
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: ${mediumTheme.colors.background.hover};
+    border-color: rgba(91, 179, 158, 0.25);
   }
 
   &:last-child {
@@ -606,6 +718,7 @@ const EngagementActions = styled.div`
 `;
 
 const EngagementButton = styled.button`
+  position: relative;
   background: none;
   border: none;
   cursor: pointer;
@@ -629,9 +742,51 @@ const EngagementButton = styled.button`
   }
 `;
 
+// Tooltip shown above the engagement buttons. Default-hidden; appears on
+// hover of the parent button. Used to warn anonymous users that clicking
+// will redirect to login before they actually get redirected.
+const Tooltip = styled.span`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a1e23;
+  color: #f4f6f8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: ${mediumTheme.typography.fontFamily.sansSerif};
+  font-weight: 400;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+
+  /* little arrow pointing down at the button */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1a1e23;
+  }
+
+  ${EngagementButton}:hover & {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
 const SocialShare = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: ${mediumTheme.spacing.sm};
 `;
 
@@ -685,7 +840,7 @@ const AdminControls = styled.div`
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #c0392b;
+      background-color: #dc4444;
     }
   }
 `;
@@ -706,13 +861,37 @@ const MainContainer = ({
   deleteArticle,
   handleCheck
 }) => {
-  const { _id, likes, title, subtitle, description, images, markdown, comments } = detailArticle;
-  
+  const { _id, likes, title, subtitle, description, images, markdown, comments, commentCount } = detailArticle;
+  const globalState = useContext(GlobalState);
+  const [token] = globalState.token;
+  const history = useHistory();
+
   // Audio states
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [audioPaused, setAudioPaused] = useState(false);
-  const [utterance, setUtterance] = useState(null);
+  const [audioLoading, setAudioLoading] = useState(false);
+  const [audioError, setAudioError] = useState('');
+  const audioRef = useRef(null);          // <audio> element for OpenAI MP3 playback
+  const audioUrlRef = useRef(null);       // blob URL for cleanup
+  const fallbackUtteranceRef = useRef(null); // Web Speech utterance for anonymous users
   const [postLikes, setPostLikes] = useState(likes || 0);
+  const [hasLiked, setHasLiked] = useState(!!detailArticle.liked);
+  const [hasSaved, setHasSaved] = useState(!!detailArticle.saved);
+  const [likePending, setLikePending] = useState(false);
+  const [savePending, setSavePending] = useState(false);
+
+  // Keep local toggle state in sync when the article reloads (route change
+  // brings a new detailArticle with fresh liked/saved/likes from the server).
+  useEffect(() => {
+    setPostLikes(detailArticle.likes || 0);
+    setHasLiked(!!detailArticle.liked);
+    setHasSaved(!!detailArticle.saved);
+  }, [detailArticle._id, detailArticle.liked, detailArticle.saved, detailArticle.likes]);
+
+  // Newsletter signup state. status: 'idle' | 'submitting' | 'success' | 'error'
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState('idle');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
   
   // Related posts states
   const [idx, setIdx] = useState(4);
@@ -721,40 +900,126 @@ const MainContainer = ({
 
   const avatar = user.avatar || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0k6I8WItSjK0JTttL3FwACOA6yugI29xvLw&usqp=CAU";
 
-  // Audio functions
+  // Clean up audio resources on unmount or article change
   useEffect(() => {
-    if (markdown) {
-      const synth = window.speechSynthesis;
-      const u = new SpeechSynthesisUtterance(markdown);
-      const voices = synth.getVoices();
-      if (voices[15]) u.voice = voices[15];
-      u.rate = 0.95;
-      setUtterance(u);
-    }
-  }, [markdown]);
-
-  const handlePlay = () => {
-    const synth = window.speechSynthesis;
-    if (utterance) {
-      if (audioPaused) {
-        synth.resume();
-      } else {
-        synth.speak(utterance);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
       }
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
+      if (window.speechSynthesis) window.speechSynthesis.cancel();
+    };
+  }, [_id]);
+
+  const playWebSpeechFallback = () => {
+    const synth = window.speechSynthesis;
+    if (!synth) {
+      setAudioError('Audio not supported in this browser.');
+      return;
+    }
+    const u = new SpeechSynthesisUtterance(markdown || '');
+    u.rate = 0.95;
+    u.onend = () => {
+      setAudioPlaying(false);
+      setAudioPaused(false);
+    };
+    fallbackUtteranceRef.current = u;
+    synth.speak(u);
+    setAudioPlaying(true);
+    setAudioPaused(false);
+  };
+
+  const playOpenAIVoice = async () => {
+    setAudioLoading(true);
+    setAudioError('');
+    try {
+      const res = await axios.post(
+        '/api/tts/synthesize',
+        { text: markdown || '' },
+        { headers: { Authorization: token }, responseType: 'blob' }
+      );
+      const url = URL.createObjectURL(res.data);
+      audioUrlRef.current = url;
+      const audio = new Audio(url);
+      audioRef.current = audio;
+      audio.onended = () => {
+        setAudioPlaying(false);
+        setAudioPaused(false);
+      };
+      await audio.play();
       setAudioPlaying(true);
       setAudioPaused(false);
+    } catch (err) {
+      // Surface what went wrong with OpenAI, then fall back to the free
+      // browser voice so the user still gets audio playback.
+      let msg = 'Using browser voice (premium unavailable).';
+      if (err.response?.status === 429) {
+        msg = 'Daily premium listen reached — using browser voice.';
+      } else if (err.response?.data) {
+        // axios blob errors need decoding
+        try {
+          const text = await err.response.data.text();
+          const parsed = JSON.parse(text);
+          if (parsed.msg) msg = `${parsed.msg} — using browser voice.`;
+          console.error('Audio error response:', parsed);
+        } catch (parseErr) {
+          console.error('Error parsing audio error response:', parseErr);
+        }
+      }
+      setAudioError(msg);
+      playWebSpeechFallback();
+    } finally {
+      setAudioLoading(false);
+    }
+  };
+
+  const handlePlay = () => {
+    if (audioLoading) return;
+    // Resume case
+    if (audioPaused && audioRef.current) {
+      audioRef.current.play();
+      setAudioPaused(false);
+      setAudioPlaying(true);
+      return;
+    }
+    if (audioPaused && window.speechSynthesis?.paused) {
+      window.speechSynthesis.resume();
+      setAudioPaused(false);
+      setAudioPlaying(true);
+      return;
+    }
+    // Fresh play
+    if (isLoggedIn) {
+      playOpenAIVoice();
+    } else {
+      playWebSpeechFallback();
     }
   };
 
   const handlePause = () => {
-    const synth = window.speechSynthesis;
-    synth.pause();
+    if (audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    } else if (window.speechSynthesis?.speaking) {
+      window.speechSynthesis.pause();
+    }
     setAudioPaused(true);
   };
 
   const handleStop = () => {
-    const synth = window.speechSynthesis;
-    synth.cancel();
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+    if (audioUrlRef.current) {
+      URL.revokeObjectURL(audioUrlRef.current);
+      audioUrlRef.current = null;
+    }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
     setAudioPlaying(false);
     setAudioPaused(false);
   };
@@ -773,6 +1038,74 @@ const MainContainer = ({
     setIdx(newIdx);
     if (articles.length <= newIdx) {
       setMoreArticles(false);
+    }
+  };
+
+  const handleLikeClick = async () => {
+    if (likePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setLikePending(true);
+    // Optimistic toggle so the icon feels instant. Reverts on failure.
+    const prevLiked = hasLiked;
+    const prevCount = postLikes;
+    setHasLiked(!prevLiked);
+    setPostLikes(prevLiked ? Math.max(0, prevCount - 1) : prevCount + 1);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/like`, null, {
+        headers: { Authorization: token },
+      });
+      setHasLiked(!!res.data?.liked);
+      setPostLikes(res.data?.totalLikes ?? prevCount);
+    } catch (err) {
+      setHasLiked(prevLiked);
+      setPostLikes(prevCount);
+      console.error('Like failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setLikePending(false);
+    }
+  };
+
+  const handleSaveClick = async () => {
+    if (savePending) return;
+    if (!token) {
+      history.push('/login');
+      return;
+    }
+    setSavePending(true);
+    const prevSaved = hasSaved;
+    setHasSaved(!prevSaved);
+    try {
+      const res = await axios.post(`/api/articles/${_id}/save`, null, {
+        headers: { Authorization: token },
+      });
+      setHasSaved(!!res.data?.saved);
+    } catch (err) {
+      setHasSaved(prevSaved);
+      console.error('Save failed:', err.response?.data?.msg || err.message);
+    } finally {
+      setSavePending(false);
+    }
+  };
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    if (newsletterStatus === 'submitting') return;
+    setNewsletterStatus('submitting');
+    setNewsletterMessage('');
+    try {
+      const res = await axios.post('/api/subscribers', {
+        email: newsletterEmail,
+        source: 'article-inline',
+      });
+      setNewsletterStatus('success');
+      setNewsletterMessage(res.data?.msg || 'Check your inbox to confirm.');
+      setNewsletterEmail('');
+    } catch (err) {
+      setNewsletterStatus('error');
+      setNewsletterMessage(err.response?.data?.msg || 'Something went wrong. Try again?');
     }
   };
 
@@ -819,7 +1152,7 @@ const MainContainer = ({
                 <span>·</span>
                 <span>
                   {readTime > 60
-                    ? `${Math.floor(readTime / 60)} Hours${
+                    ? `${Math.floor(readTime / 60)} ${Math.floor(readTime / 60) === 1 ? 'Hour' : 'Hours'}${
                         readTime % 60 ? ` ${readTime % 60} min` : ''
                       } read`
                     : `${readTime} min read`}
@@ -827,7 +1160,12 @@ const MainContainer = ({
                 </span>
               </WrappedDate>
               <AudioControls>
-                {!audioPlaying ? (
+                {audioLoading ? (
+                  <AudioButton green disabled>
+                    <AiOutlineLoading3Quarters style={{ animation: 'spin 1s linear infinite' }} />
+                    Loading…
+                  </AudioButton>
+                ) : !audioPlaying ? (
                   <AudioButton green onClick={handlePlay}>
                     <AiFillPlayCircle />
                     Listen
@@ -849,6 +1187,11 @@ const MainContainer = ({
                     Stop
                   </AudioButton>
                 )}
+                {audioError && (
+                  <span style={{ color: '#e0625e', fontSize: '0.75rem', marginLeft: '0.5rem' }}>
+                    {audioError}
+                  </span>
+                )}
               </AudioControls>
             </AuthorInfo>
           </AuthorSection>
@@ -869,10 +1212,13 @@ const MainContainer = ({
 
           <BlogCard>
             <BlogPost>
-              <BlogContent isFirst>
-                {description}
-              </BlogContent>
-              
+              {
+                description && (
+                  <BlogContent isFirst>
+                  {description}
+                </BlogContent>
+                )
+              }
               <BlogContent 
                 dangerouslySetInnerHTML={{ __html: marked(markdown || '') }}
               />
@@ -880,13 +1226,27 @@ const MainContainer = ({
               <StickyFooter>
                 <StickyContent>
                   <EngagementActions>
-                    <EngagementButton onClick={() => setPostLikes(prev => prev + 1)}>
-                      <FaRegThumbsUp />
+                    <EngagementButton
+                      onClick={handleLikeClick}
+                      disabled={likePending}
+                      style={hasLiked ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasLiked ? <FaThumbsUp /> : <FaRegThumbsUp />}
                       {postLikes}
+                      {!token && <Tooltip>Sign in to like — saves to your account</Tooltip>}
                     </EngagementButton>
                     <EngagementButton onClick={() => setViewComment(true)}>
                       <FaRegComment />
-                      {comments?.length || 0}
+                      {commentCount ?? comments?.length ?? 0}
+                    </EngagementButton>
+                    <EngagementButton
+                      onClick={handleSaveClick}
+                      disabled={savePending}
+                      style={hasSaved ? { color: mediumTheme.colors.accent.green } : {}}
+                    >
+                      {hasSaved ? <FaBookmark /> : <FaRegBookmark />}
+                      {hasSaved ? 'Saved' : 'Save'}
+                      {!token && <Tooltip>Sign in to save — syncs across devices</Tooltip>}
                     </EngagementButton>
                   </EngagementActions>
                   
@@ -907,40 +1267,46 @@ const MainContainer = ({
                 </StickyContent>
               </StickyFooter>
 
-              <BlogNewsletter
-                action="https://getform.io/f/7efda21f-ca67-48f6-8a1e-723776d4ae3b"
-                method="POST"
-              >
+              <BlogNewsletter onSubmit={handleNewsletterSubmit}>
                 <div>
-                  <h3>Sign up for Software Engineering News</h3>
+                  <h3>Get new posts in your inbox</h3>
                   <NewsletterContent>
-                    <p className="author">By Dominique Hosea</p>
+                    <p className="author">By D. Hosea</p>
                     <p>
-                      Latest news from Software Engineering on our Hackathons and some of our
-                      best articles! <u>Take a look.</u>
+                      One email when I publish something new. No schedule, no digests,
+                      no spam — just the post.
                     </p>
                   </NewsletterContent>
-                  <NewsletterForm>
-                    <NewsletterInput
-                      name="email_address"
-                      placeholder="Your email"
-                      type="email"
-                    />
-                    <input
-                      style={{ display: "none" }}
-                      name="from"
-                      value="Newsletter"
-                      type="text"
-                    />
-                    <NewsletterButton type="submit">
-                      <AiOutlineMail />
-                      Get this newsletter
-                    </NewsletterButton>
-                  </NewsletterForm>
+                  {newsletterStatus !== 'success' && (
+                    <NewsletterForm>
+                      <NewsletterInput
+                        name="email"
+                        placeholder="Your email"
+                        type="email"
+                        required
+                        value={newsletterEmail}
+                        onChange={(e) => setNewsletterEmail(e.target.value)}
+                        disabled={newsletterStatus === 'submitting'}
+                      />
+                      <NewsletterButton type="submit" disabled={newsletterStatus === 'submitting'}>
+                        <AiOutlineMail />
+                        {newsletterStatus === 'submitting' ? 'Subscribing…' : 'Get this newsletter'}
+                      </NewsletterButton>
+                    </NewsletterForm>
+                  )}
+                  {newsletterMessage && (
+                    <NewsletterDisclaimer
+                      style={{
+                        color: newsletterStatus === 'error' ? '#e0625e' : mediumTheme.colors.accent.green,
+                        fontSize: mediumTheme.typography.fontSize.sm,
+                      }}
+                    >
+                      {newsletterMessage}
+                    </NewsletterDisclaimer>
+                  )}
                   <NewsletterDisclaimer>
-                    By signing up, you will create a Medium account if you don't already
-                    have one. Review our Privacy Policy for more information about our
-                    privacy practices.
+                    You'll get a confirmation email first. One-click unsubscribe in every
+                    email. I don't share your address.
                   </NewsletterDisclaimer>
                 </div>
               </BlogNewsletter>
@@ -964,21 +1330,41 @@ const MainContainer = ({
 
         {/* Related Posts */}
         <RelatedPostsSection>
-          {recentPosts.map((article) => (
+          {recentPosts.map((article) => {
+            const articleDate = article.createdAt
+              ? new Date(article.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              : "";
+            const articleWordCount = (article.markdown?.length || 0) + 700;
+            const articleReadTime = Math.max(
+              1,
+              Math.round(articleWordCount / 238)
+            );
+            const articleAvatar =
+              article.postedBy?.avatar?.url ||
+              article.postedBy?.avatar ||
+              avatar;
+            const articleCategory =
+              (Array.isArray(article.categories) && article.categories[0]) ||
+              "Software";
+            return (
             <RelatedPostCard key={article._id}>
               <RelatedPostHeader>
                 <CircleImage
-                  src={avatar}
+                  src={articleAvatar}
                   alt="author"
                 />
                 <div>
-                  <NamePlate>{user.name || "Will Smith"}</NamePlate>
+                  <NamePlate>{article.postedBy?.name || "D. Hosea"}</NamePlate>
                   <span style={{color: mediumTheme.colors.text.secondary, fontSize: mediumTheme.typography.fontSize.sm}}>
-                    {timeFormater}
+                    {articleDate}
                   </span>
                 </div>
               </RelatedPostHeader>
-              
+
               <RelatedPostContent>
                 <RelatedPostText>
                   <Link to={`/blog/${article._id}`}>
@@ -991,18 +1377,19 @@ const MainContainer = ({
                   alt="post"
                 />
               </RelatedPostContent>
-              
+
               <RelatedPostMeta>
                 <div>
-                  <Tag>Software</Tag>
+                  <Tag>{articleCategory}</Tag>
                   <span style={{color: mediumTheme.colors.text.secondary, fontSize: mediumTheme.typography.fontSize.sm}}>
-                    {readTime} min read
+                    {articleReadTime} min read
                   </span>
                 </div>
                 <MdBookmarkBorder style={{ fontSize: "24px", color: mediumTheme.colors.text.secondary }} />
               </RelatedPostMeta>
             </RelatedPostCard>
-          ))}
+            );
+          })}
           
           <ReadMoreButton
             onClick={handleReadMore}

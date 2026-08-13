@@ -1,47 +1,176 @@
-.products {
+.shop-products {
   display: flex;
-  justify-content: center;
-  width: 100%;
-  min-height: 90vh;
-  padding: 0px 20px 0px 20px;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
 }
-.my-masonry-grid {
-  display: -webkit-box; /* Not needed if autoprefixing */
-  display: -ms-flexbox; /* Not needed if autoprefixing */
+
+.shop-header-bar {
   display: flex;
-  margin-left: -20px; /* gutter size offset */
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-wrap: wrap;
+}
+
+.shop-header-bar > div {
+  min-width: 0;
+}
+
+.shop-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #f4f6f8;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.shop-subtitle {
+  color: #a3acb2;
+  margin: 4px 0 0;
+  font-size: 0.95rem;
+}
+
+.shop-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: #206a5d;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.shop-cta:hover {
+  background: #267a6b;
+  color: #fff;
+  text-decoration: none;
+}
+
+.shop-cta:active {
+  transform: translateY(1px);
+}
+
+.shop-admin-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+}
+
+.shop-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #a3acb2;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  margin: 0;
+}
+
+.shop-select-all input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.shop-delete-all {
+  background: transparent;
+  border: 1px solid crimson;
+  color: crimson;
+  padding: 6px 16px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.shop-delete-all:hover {
+  background: crimson;
+  color: #fff;
+}
+
+.products {
+  width: 100%;
+  min-width: 0;
+}
+
+.my-masonry-grid {
+  display: flex;
+  margin-left: -20px;
   width: auto;
 }
+
 .my-masonry-grid_column {
-  padding-left: 20px; /* gutter size */
+  padding-left: 20px;
   background-clip: padding-box;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.my-masonry-grid_column > * {
+  max-width: 100%;
 }
 
 @import url("./ProductItem.css");
 
-.delete-all {
-  text-align: right;
-  margin: 20px;
+.shop-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  text-align: center;
+  padding: 48px 24px;
 }
 
-.delete-all input {
-  height: 25px;
-  width: 25px;
-  transform: translateY(5px);
-  margin: 0 15px;
+.shop-empty {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  gap: 12px;
 }
 
-.delete-all span {
-  text-transform: uppercase;
-  color: rgb(3, 165, 206);
-  letter-spacing: 1.3px;
+.shop-empty-icon {
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.08);
+  margin-bottom: 4px;
 }
 
-.delete-all button {
-  border: 1px solid crimson;
-  padding: 10px 25px;
-  color: crimson;
-  text-transform: uppercase;
+.shop-empty h3,
+.shop-state-error h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #f4f6f8;
+  font-weight: 600;
+}
+
+.shop-empty p,
+.shop-state-error p {
+  margin: 0 0 8px;
+  color: #a3acb2;
+  max-width: 420px;
+}
+
+.shop-state-error {
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  border-radius: 12px;
+  color: #f8b4b4;
 }
 
 .filter_menu {
@@ -57,7 +186,7 @@
 
 .filter_menu section,
 input {
-  border: 1px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0 10px;
   outline: none;
   height: 40px;
@@ -70,11 +199,22 @@ input {
 
 .load_more {
   text-align: center;
+  margin-top: 8px;
 }
 
 .load_more button {
   padding: 10px 25px;
   margin-bottom: 20px;
-  border: 1px solid #555;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   text-transform: capitalize;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.load_more button:hover {
+  background: #206a5d;
+  color: #fff;
+  border-color: #f4f6f8;
 }

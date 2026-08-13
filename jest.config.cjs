@@ -159,9 +159,12 @@ const config = {
     "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
 
-  // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
+  // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped.
+  // Integration tests run under jest.integration.config.cjs (node env + a real
+  // Mongo via Testcontainers), so exclude them from this (jsdom) default config.
   testPathIgnorePatterns: [
-    "/node_modules/"
+    "/node_modules/",
+    "/test/integration/"
   ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files

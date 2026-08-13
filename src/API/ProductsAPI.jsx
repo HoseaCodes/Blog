@@ -9,15 +9,27 @@ function ProductsAPI() {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(1)
     const [result, setResult] = useState(0)
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
         const getProducts = async () => {
-            const res = await axios.get(`/api/products?limit=${page * 9}&${sort}&title[regex]=${search}`)
-            // const res = await axios.get("/api/products")
-            console.log(res.data.products, 'from front-end api products')
-            console.log(res.data.location, 'pulled location')
-            setProducts(res.data.products)
-            setResult(res.data.result)
+            setLoading(true)
+            setError(null)
+            try {
+                const res = await axios.get(`/api/products?limit=${page * 9}&${sort}&title[regex]=${search}`)
+                console.log(res.data.products, 'from front-end api products')
+                console.log(res.data.location, 'pulled location')
+                setProducts(res.data.products)
+                setResult(res.data.result)
+            } catch (err) {
+                console.error('Failed to load products:', err.message)
+                setProducts([])
+                setResult(0)
+                setError(err.message || 'Failed to load products')
+            } finally {
+                setLoading(false)
+            }
         }
         getProducts()
     }, [callback, category, sort, search, page])
@@ -29,7 +41,9 @@ function ProductsAPI() {
         sort: [sort, setSort],
         search: [search, setSearch],
         page: [page, setPage],
-        result: [result, setResult]
+        result: [result, setResult],
+        loading: [loading, setLoading],
+        error: [error, setError]
     }
 
 

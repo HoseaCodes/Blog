@@ -13,25 +13,25 @@ import axios from "axios";
 const mediumTheme = {
   colors: {
     text: {
-      primary: '#242424',
-      secondary: '#6b6b6b',
-      light: '#8b8b8b'
+      primary: '#f4f6f8',
+      secondary: '#a3acb2',
+      light: '#6b7479'
     },
     background: {
-      white: '#ffffff',
-      light: '#fafafa',
-      border: '#e6e6e6',
-      hover: '#f2f2f2'
+      white: '#0f1216',
+      light: 'rgba(255, 255, 255, 0.025)',
+      border: 'rgba(255, 255, 255, 0.06)',
+      hover: 'rgba(255, 255, 255, 0.04)'
     },
     accent: {
-      green: '#1a8917',
-      lightGreen: '#f0fff0'
+      green: '#5bb39e',
+      lightGreen: 'rgba(91, 179, 158, 0.1)'
     }
   },
   typography: {
     fontFamily: {
       serif: 'charter, Georgia, Cambria, "Times New Roman", Times, serif',
-      sansSerif: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif'
+      sansSerif: '"Lato", sans-serif'
     },
     fontSize: {
       xs: '12px',
@@ -69,23 +69,27 @@ const mediumTheme = {
 // =============================================
 // STYLED COMPONENTS
 // =============================================
-const StyledRightContainer = styled.aside`
+const StyledRightSlot = styled.aside`
   width: 300px;
-  padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg} 0;
-  border-left: 1px solid ${mediumTheme.colors.background.border};
-  background: ${mediumTheme.colors.background.white};
-  height: 100vh;
-  overflow-y: auto;
-  position: sticky;
-  top: 0;
-  align-self: flex-start;
-  z-index: 10;
+  flex-shrink: 0;
 
   @media (max-width: ${mediumTheme.breakpoints.tablet}) {
     display: none;
   }
+`;
 
-  /* Custom scrollbar */
+const StyledRightContainer = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100vh;
+  overflow-y: auto;
+  padding: ${mediumTheme.spacing['2xl']} ${mediumTheme.spacing.lg} 0;
+  border-left: 1px solid ${mediumTheme.colors.background.border};
+  background: ${mediumTheme.colors.background.white};
+  z-index: 10;
+
   &::-webkit-scrollbar {
     width: 6px;
   }
@@ -141,7 +145,7 @@ const ActionButton = styled.button`
   font-family: ${mediumTheme.typography.fontFamily.sansSerif};
 
   &:hover {
-    background-color: ${props => props.primary ? '#0f6b14' : mediumTheme.colors.accent.lightGreen};
+    background-color: ${props => props.primary ? '#267a6b' : mediumTheme.colors.accent.lightGreen};
     transform: translateY(-1px);
   }
 
@@ -456,7 +460,7 @@ const CommentForm = styled.div`
         color: white;
         
         &:hover {
-          background-color: #0f6b14;
+          background-color: #267a6b;
         }
       }
     }
@@ -587,6 +591,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
   const [token] = state.token;
   const [currentUser, setCurrentUser] = useState(user);
   const [isLoggedIn] = state.userAPI.isLoggedIn;
+  const [isAdmin] = state.userAPI.isAdmin;
   const [search, setSearch] = useState("");
   const [comments, setComments] = useState({ comments: [] });
   const [comment, setComment] = useState("");
@@ -668,6 +673,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
   };
 
   return (
+    <StyledRightSlot>
     <StyledRightContainer>
       {viewComment ? (
         <>
@@ -827,6 +833,7 @@ const RightColumn = ({ user, articles, viewComment, setViewComment }) => {
         </>
       )}
     </StyledRightContainer>
+    </StyledRightSlot>
   );
 };
 

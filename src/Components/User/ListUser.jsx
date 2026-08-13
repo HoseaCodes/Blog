@@ -1,187 +1,746 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { Button, Row, Table, Container } from 'react-bootstrap';
-import {CircleImage} from '../../Layout/Image/styledImage';
-import { GlobalState } from '../../GlobalState';
-import axios from "axios";
-import moment from 'moment-timezone'
-import { useHistory } from 'react-router-dom';
+import React, { useState, useContext, useEffect, useCallback } from "react";
+import styled from "styled-components";
+import moment from "moment-timezone";
+import { GlobalState, useNotification } from "../../GlobalState";
+import { apiLocal, apiStormGate, auth, friendlyAuthError } from "../../lib/stormGate";
 
 const initialState = {
   name: "",
   email: "",
   password: "",
-  role: 0
-}
-const UsersList = () =>  {
-  const state = useContext(GlobalState)
-  const [user] = state.userAPI.user
-  const [users, setUsers] = useState([])
-  const [active, setActive] = useState(false)
-  const [userView, setUserView] = useState(false)
-	const [createdUser, setCreatedUser] = useState(initialState);
-  const history = useHistory()
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com';
+  role: 0,
+};
+
+const Page = styled.div`
+  min-height: 80vh;
+  background: #0f1216;
+  padding: 32px 24px;
+`;
+
+const Shell = styled.div`
+  max-width: 1180px;
+  margin: 0 auto;
+`;
+
+const Header = styled.header`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+`;
+
+const TitleBlock = styled.div`
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #f4f6f8;
+    margin: 0;
+    line-height: 1.2;
+  }
+  p {
+    font-size: 14px;
+    color: #a3acb2;
+    margin: 4px 0 0;
+  }
+`;
+
+const Toolbar = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const SearchInput = styled.input`
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  color: #f4f6f8;
+  width: 240px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+
+  &:focus {
+    border-color: rgba(91, 179, 158, 0.45);
+    box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
+  }
+
+  &::placeholder {
+    color: #6b7479;
+  }
+`;
+
+const PrimaryButton = styled.button`
+  background: #206a5d;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+
+  &:hover { background: #267a6b; }
+  &:active { transform: translateY(1px); }
+`;
+
+const GhostButton = styled.button`
+  background: transparent;
+  color: #a3acb2;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover { background: rgba(255, 255, 255, 0.04); }
+`;
+
+const DangerLink = styled.button`
+  background: transparent;
+  color: #f87171;
+  border: 0;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 4px 8px;
+
+  &:hover { text-decoration: underline; }
+`;
+
+const SectionHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 28px 0 12px;
+
+  h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f4f6f8;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  span {
+    font-size: 12px;
+    color: #a3acb2;
+  }
+`;
+
+const ApproveBtn = styled.button`
+  background: #206a5d;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: #267a6b; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+`;
+
+const DenyBtn = styled.button`
+  background: transparent;
+  color: #f87171;
+  border: 1px solid rgba(248, 113, 113, 0.32);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+
+  &:hover:not(:disabled) { background: rgba(248, 113, 113, 0.08); }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
+`;
+
+const Card = styled.div`
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+`;
+
+const TableWrap = styled.div`
+  overflow-x: auto;
+`;
+
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+
+  thead th {
+    text-align: left;
+    font-weight: 500;
+    color: #a3acb2;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.025);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #f4f6f8;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover {
+    background: rgba(91, 179, 158, 0.04);
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+`;
+
+const UserCell = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+
+const UserMeta = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+`;
+
+const UserName = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.3;
+  color: #f4f6f8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const UserEmail = styled.span`
+  font-size: 13px;
+  line-height: 1.3;
+  color: #a3acb2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const Avatar = styled.div`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: ${({ bg }) => bg || "rgba(91, 179, 158, 0.12)"};
+  color: #5bb39e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  background-image: ${({ src }) => (src ? `url(${src})` : "none")};
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+`;
+
+const Badge = styled.span`
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  background: ${({ tone }) =>
+    tone === "admin" ? "rgba(91, 179, 158, 0.12)" : "rgba(255, 255, 255, 0.03)"};
+  color: ${({ tone }) => (tone === "admin" ? "#5bb39e" : "#a3acb2")};
+`;
+
+const EmptyState = styled.div`
+  padding: 56px 24px;
+  text-align: center;
+  color: #a3acb2;
+  font-size: 14px;
+`;
+
+const ErrorBox = styled.div`
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  color: #f8b4b4;
+  border-radius: 8px;
+  font-size: 13px;
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+`;
+
+const ModalCard = styled.div`
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 460px;
+  padding: 24px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #f4f6f8;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    color: #a3acb2;
+    margin-bottom: 4px;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 9px 12px;
+    font-size: 14px;
+    margin-bottom: 14px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.025) 0%, rgba(255, 255, 255, 0.008) 100%);
+    color: #f4f6f8;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:focus {
+      border-color: rgba(91, 179, 158, 0.45);
+      box-shadow: 0 0 0 3px rgba(91, 179, 158, 0.15);
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 4px;
+  }
+`;
+
+const initials = (name = "") =>
+  name
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((p) => p[0]?.toUpperCase())
+    .join("") || "?";
+
+const isAdminRole = (role) => role === 1 || role === "admin";
+
+const formatJoined = (date) => {
+  if (!date) return "—";
+  const d = moment.utc(date);
+  if (!d.isValid()) return "—";
+  return d.format("MMM D, YYYY");
+};
+
+const UsersList = () => {
+  const state = useContext(GlobalState);
+  const [user] = state.userAPI.user;
+  const [users, setUsers] = useState([]);
+  const [search, setSearch] = useState("");
+  const [active, setActive] = useState(false);
+  const [userView, setUserView] = useState(false);
+  const [createdUser, setCreatedUser] = useState(initialState);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pending, setPending] = useState([]);
+  const [pendingLoading, setPendingLoading] = useState(true);
+  const [pendingError, setPendingError] = useState(null);
+  const [busyId, setBusyId] = useState(null);
+  const notify = useNotification();
+
+  const userId = user?.id || user?._id;
+
+  const loadPending = useCallback(async () => {
+    setPendingLoading(true);
+    setPendingError(null);
+    try {
+      const res = await apiLocal.get("/api/user/admin/all");
+      const list = res.data?.users || res.data?.data || (Array.isArray(res.data) ? res.data : []);
+      setPending(list.filter((u) => u.status === "PENDING"));
+    } catch (err) {
+      setPendingError(friendlyAuthError(err, "Couldn't load pending users."));
+    } finally {
+      setPendingLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
+    if (!userId) return;
+    if (!isAdminRole(user?.role)) return;
+    loadPending();
+  }, [userId, user?.role, loadPending]);
+
+  // Local DB is the source of truth for the UI. Storm-Gate is a best-effort
+  // sync so its auth records stay aligned; a Storm-Gate failure does not roll
+  // back the local change, but is surfaced as a warning.
+  const syncStormGate = async (path, payload) => {
+    try {
+      await apiStormGate.post(path, payload, { _skipAuthNormalize: true });
+      return null;
+    } catch (err) {
+      return friendlyAuthError(err, "Storm-Gate sync failed.");
+    }
+  };
+
+  const approveUser = async (u) => {
+    setBusyId(u._id);
+    const prev = pending;
+    setPending((list) => list.filter((p) => p._id !== u._id));
+    try {
+      await apiLocal.patch(`/api/user/${u._id}/status`, { status: "APPROVED" });
+      const sgErr = await syncStormGate("/api/auth/oidc/manual-approve", { userId: u._id });
+      notify({
+        type: sgErr ? "warning" : "SUCCESS",
+        message: sgErr
+          ? `Approved ${u.name || u.email} locally — Storm-Gate sync: ${sgErr}`
+          : `Approved ${u.name || u.email}`,
+      });
+      setActive((a) => !a);
+    } catch (err) {
+      setPending(prev);
+      notify({
+        type: "error",
+        message: friendlyAuthError(err, "Failed to approve user."),
+      });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  const denyUser = async (u) => {
+    if (!window.confirm(`Deny ${u.name || u.email}? They won't be able to log in.`)) {
+      return;
+    }
+    setBusyId(u._id);
+    const prev = pending;
+    setPending((list) => list.filter((p) => p._id !== u._id));
+    try {
+      await apiLocal.patch(`/api/user/${u._id}/status`, { status: "DENIED" });
+      const sgErr = await syncStormGate("/api/auth/oidc/manual-deny", { userId: u._id });
+      notify({
+        type: sgErr ? "warning" : "SUCCESS",
+        message: sgErr
+          ? `Denied ${u.name || u.email} locally — Storm-Gate sync: ${sgErr}`
+          : `Denied ${u.name || u.email}`,
+      });
+      setActive((a) => !a);
+    } catch (err) {
+      setPending(prev);
+      notify({
+        type: "error",
+        message: friendlyAuthError(err, "Failed to deny user."),
+      });
+    } finally {
+      setBusyId(null);
+    }
+  };
+
+  useEffect(() => {
+    if (!userId) return;
+    if (!isAdminRole(user?.role)) {
+      setError("Admin role required to view users.");
+      setLoading(false);
+      return;
+    }
+
+    let cancelled = false;
     const getAllUsers = async () => {
-      const res = await axios.get(`${API_BASE_URL}/api/auth/admin/${user._id}`,
-        { headers: { Authorization: user.accesstoken } }
-        )
-        console.log(res.data.location, 'res')
-        setUsers(res.data.users)
-        console.log(users, 'users from userslist')
-        console.log(user, 'user from userlist pulled from state')
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await apiLocal.get(`/api/user/admin/all`);
+        if (cancelled) return;
+        const list = res.data?.users || res.data?.data || (Array.isArray(res.data) ? res.data : []);
+        setUsers(list);
+      } catch (err) {
+        if (cancelled) return;
+        setError(
+          err.response?.status
+            ? `Request failed (${err.response.status}) — ${err.response?.data?.msg || err.response?.data?.error || err.response?.statusText || "see console"}`
+            : err.message
+        );
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    };
+
+    getAllUsers();
+    return () => {
+      cancelled = true;
+    };
+  }, [userId, user?.role, active]);
+
+  const deleteUser = async (id) => {
+    if (!window.confirm("Delete this user? This action cannot be undone.")) return;
+    try {
+      await apiStormGate.delete(`/api/user/${id}`);
+      setActive((a) => !a);
+    } catch (err) {
+      alert(err.response?.data?.msg || "Failed to delete user");
     }
-    getAllUsers()
-}, [user, active])
+  };
 
-const deleteUser = async (id) => {
-  try {
-      const deleteUser = axios.delete(`/api/user/${id}`)
-      await deleteUser
-      setActive(!active)
-      history.push('/users')
-  } catch (err) {
-      alert(err.response.data.msg)
-  }
-}
+  const addUser = async (e) => {
+    e?.preventDefault?.();
+    try {
+      await auth.register({ ...createdUser });
+      setUserView(false);
+      setCreatedUser(initialState);
+      setActive((a) => !a);
+    } catch (err) {
+      alert(err.response?.data?.msg || "Failed to add user");
+    }
+  };
 
-const addUser = async () => {
-  try {
-      const addUser = axios.post(`${API_BASE_URL}/register`, { ...createdUser })
-      await addUser
-      setUserView(false)
-      history.push('/users')
-  } catch (err) {
-      alert(err.response.data.msg)
-  }
-}
+  const handleChangeInput = (e) => {
+    const { name, value } = e.target;
+    setCreatedUser({ ...createdUser, [name]: value });
+  };
 
-  const timeFormater = (date) => {
-    return moment.utc(date).format('MMMM Do')
-  }
-
-  const joinedDate = (date) => {
-    const today = new Date()
-    const year = today.getFullYear()
-    const month = today.getMonth()
-    const createdDateYear = moment.utc(date).format('YYYY')
-    const createdDateMonth = moment.utc(date).format('M')
-    const returnYear = year - createdDateYear
-    const returnMonth = createdDateMonth - month
-    return `${returnMonth} Mon. ${returnYear} Yr.`
-  }
-
-  const handleChangeInput = e => {
-    const { name, value } = e.target
-    console.log(name)
-    console.log(value)
-    setCreatedUser({ ...createdUser, [name]: value })
-}
-
-const {name, email, password, role} = createdUser;
-
-  const addUserView = () => {
+  const filtered = users.filter((u) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
     return (
-      <>
-        <div className="create_product" style={{minHeight: '60vh', display: 'flex', alignItems: 'center'}}>
-          <Row>
+      u.name?.toLowerCase().includes(q) ||
+      u.email?.toLowerCase().includes(q)
+    );
+  });
+
+  return (
+    <Page>
+      <Shell>
+        <Header>
+          <TitleBlock>
+            <h1>User Management</h1>
+            <p>{loading ? "Loading users…" : `${users.length} ${users.length === 1 ? "user" : "users"} total`}</p>
+          </TitleBlock>
+          <Toolbar>
+            <SearchInput
+              type="search"
+              placeholder="Search by name or email"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <PrimaryButton onClick={() => setUserView(true)}>+ Add User</PrimaryButton>
+          </Toolbar>
+        </Header>
+
+        {error && <ErrorBox>{error}</ErrorBox>}
+
+        <SectionHeader>
+          <h2>Pending approval</h2>
+          <span>
+            {pendingLoading
+              ? "Loading…"
+              : `${pending.length} ${pending.length === 1 ? "user" : "users"} waiting`}
+          </span>
+        </SectionHeader>
+
+        {pendingError && <ErrorBox>{pendingError}</ErrorBox>}
+
+        <Card>
+          <TableWrap>
+            <Table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Requested</th>
+                  <th style={{ width: 1, textAlign: "right" }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {!pendingLoading && pending.length === 0 && (
+                  <tr>
+                    <td colSpan={3}>
+                      <EmptyState>No accounts waiting for approval.</EmptyState>
+                    </td>
+                  </tr>
+                )}
+                {pending.map((u) => (
+                  <tr key={u._id}>
+                    <td>
+                      <UserCell>
+                        <Avatar>{initials(u.name)}</Avatar>
+                        <UserMeta>
+                          <UserName>{u.name || "Unnamed"}</UserName>
+                          <UserEmail>{u.email}</UserEmail>
+                        </UserMeta>
+                      </UserCell>
+                    </td>
+                    <td style={{ color: "#a3acb2" }}>{formatJoined(u.createdAt)}</td>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                      <ApproveBtn
+                        onClick={() => approveUser(u)}
+                        disabled={busyId === u._id}
+                      >
+                        {busyId === u._id ? "…" : "Approve"}
+                      </ApproveBtn>
+                      <DenyBtn
+                        onClick={() => denyUser(u)}
+                        disabled={busyId === u._id}
+                      >
+                        Deny
+                      </DenyBtn>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableWrap>
+        </Card>
+
+        <SectionHeader>
+          <h2>All users</h2>
+          <span>{loading ? "Loading…" : `${users.length} total`}</span>
+        </SectionHeader>
+
+        <Card>
+          <TableWrap>
+            <Table>
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th style={{ width: 1 }}></th>
+                </tr>
+              </thead>
+              <tbody>
+                {!loading && filtered.length === 0 && (
+                  <tr>
+                    <td colSpan={4}>
+                      <EmptyState>
+                        {users.length === 0
+                          ? "No users to show yet."
+                          : "No users match your search."}
+                      </EmptyState>
+                    </td>
+                  </tr>
+                )}
+                {filtered.map((u) => (
+                  <tr key={u._id}>
+                    <td>
+                      <UserCell>
+                        <Avatar src={u.avatar}>{!u.avatar && initials(u.name)}</Avatar>
+                        <UserMeta>
+                          <UserName>{u.name || "Unnamed"}</UserName>
+                          <UserEmail>{u.email}</UserEmail>
+                        </UserMeta>
+                      </UserCell>
+                    </td>
+                    <td>
+                      <Badge tone={isAdminRole(u.role) ? "admin" : "basic"}>
+                        {isAdminRole(u.role) ? "Admin" : "Basic"}
+                      </Badge>
+                    </td>
+                    <td style={{ color: "#a3acb2" }}>{formatJoined(u.createdAt)}</td>
+                    <td>
+                      <DangerLink onClick={() => deleteUser(u._id)}>Delete</DangerLink>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </TableWrap>
+        </Card>
+      </Shell>
+
+      {userView && (
+        <Modal onClick={() => setUserView(false)}>
+          <ModalCard onClick={(e) => e.stopPropagation()}>
             <h3>Add User</h3>
-          </Row>
-            <form
-                onSubmit={addUser}
-            >
-                <div className="row">
-                    <label htmlFor="Name">Name</label>
-                    <input type="text" name="name" id="name"
-                        required  value={name}
-                        onChange={handleChangeInput}
+            <form onSubmit={addUser}>
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                required
+                value={createdUser.name}
+                onChange={handleChangeInput}
+              />
 
-                    />
-                </div>
-                <div className="row">
-                    <label htmlFor="Role">Role</label>
-                    <input type="number" name="role" id="role"
-                        required value={role}
-                        onChange={handleChangeInput}
+              <label htmlFor="email">Email</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                required
+                value={createdUser.email}
+                onChange={handleChangeInput}
+              />
 
-                    />
-                </div>
-                <div className="row">
-                    <label htmlFor="email">Email</label>
-                    <textarea type="email" name="email" id="email"
-                        required value={email}
-                        onChange={handleChangeInput}
-                        rows="5"
-                    />
-                </div>
-                <div className="row">
-                    <label htmlFor="password">Password</label>
-                    <textarea type="text" name="password" id="password"
-                        required value={password}
-                        onChange={handleChangeInput}
-                        rows="5"
-                    />
-                </div>
-                <button type="submit">Save</button>
-                <div  onClick={() => setUserView(false)}>Cancel</div>
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                value={createdUser.password}
+                onChange={handleChangeInput}
+              />
+
+              <label htmlFor="role">Role</label>
+              <select
+                name="role"
+                id="role"
+                value={createdUser.role}
+                onChange={handleChangeInput}
+              >
+                <option value={0}>Basic</option>
+                <option value={1}>Admin</option>
+              </select>
+
+              <div className="actions">
+                <GhostButton type="button" onClick={() => setUserView(false)}>
+                  Cancel
+                </GhostButton>
+                <PrimaryButton type="submit">Save</PrimaryButton>
+              </div>
             </form>
-        </div>
-      </>
-  )}
+          </ModalCard>
+        </Modal>
+      )}
+    </Page>
+  );
+};
 
-    return (
-            <>
-              {userView && addUserView()}
-              {!userView &&
-              <>
-              <Container style={{height: '80vh'}}>
-                <h2 className="text-center" style={{padding:"1em"}}>User Management</h2>
-                <div style={{textAlign:'left'}}>
-                  <Button color="primary" onClick={() => setUserView(true)}>Add User</Button>
-                </div>
-                  <Row>
-                      <Table striped bordered responsive hover>
-                          <thead>
-                              <tr>
-                                  <th>Avatar</th>
-                                  <th>First Name</th>
-                                  <th>Last Name</th>
-                                  <th>Email ID</th>
-                                  <th>Account Type</th>
-                                  <th>Anniversary</th>
-                                  <th>Member Since</th>
-                                  <th>Actions</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              {
-                                users.map(
-                                  user =>
-                                  <tr key = {user._id}>
-                                          <td> <CircleImage Secondary src={user.avatar} alt={user._id} /> </td>
-                                          <td> {user.name.split(' ')[0]} </td>
-                                          <td> {user.name.split(' ')[1] || "N/A"} </td>
-                                          <td> {user.email} </td>
-                                          <td> {user.role === 1 ? "Admin" : "Basic"} </td>
-                                          <td> {timeFormater(user.createdAt)} </td>
-                                          <td> {joinedDate(user.createdAt)} </td>
-                                          <td>
-                                              {/* <Button onClick={ ()=> this.edituser(employee.id) } color="primary">Update</Button> */}
-                                            <Button style={{marginLeft: "1em"}} onClick={ ()=> deleteUser(user._id) } variant="danger">Delete</Button>
-                                          </td>
-                                      </tr>
-                                  )
-                                }
-                          </tbody>
-                      </Table>
-                  </Row>
-                </Container>
-              </>
-              }
-            </>
-        )
-    }
-
-    export default UsersList;
-
+export default UsersList;

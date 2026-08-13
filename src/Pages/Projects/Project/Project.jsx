@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useContext } from "react";
+import { useParams, Redirect } from "react-router-dom";
 import { StyledHr } from "../../../Layout/Hr/styledHr";
-import { projectData } from "../ProjectsData";
+import { GlobalState } from "../../../GlobalState";
 import "./Project.css";
 // import Carousel from "../../../Components/Carousel/Carousel";
 import AnimatedImage from "../../../Components/Animation/Image/AnimatedImage";
@@ -13,10 +13,48 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useInView } from "react-intersection-observer";
 
+// Canonical project URL. Falls back to the numeric id only if a record somehow
+// has no slug, so links never render as `/project/undefined`.
+const projectPath = (p) => `/project/${p?.slug || p?.projectId}`;
+
 const ProjectItem = () => {
   const params = useParams();
-  const newparm = parseInt(params.id);
+  // `:id` accepts either form: the slug (canonical) or the legacy numeric id.
+  const rawParam = params.id;
+  const numericParam = Number(rawParam);
+  const isNumericParam = Number.isInteger(numericParam) && `${numericParam}` === rawParam;
 
+  const state = useContext(GlobalState);
+  const [projects] = state?.projectsAPI?.projects || [[]];
+
+  // Previously `projectData[params.id - 1]` — array position doubling as the
+  // identifier. Mongo returns documents without a guaranteed position, so
+  // lookup is by slug/projectId and prev/next walk an explicitly sorted list.
+  const sorted = [...(projects || [])].sort(
+    (a, b) => (a.order ?? a.projectId) - (b.order ?? b.projectId)
+  );
+  const index = sorted.findIndex((p) =>
+    isNumericParam ? p.projectId === numericParam : p.slug === rawParam
+  );
+  const project = index > -1 ? sorted[index] : null;
+  const nextProject = index > -1 ? sorted[index + 1] : null;
+  const prevProject = index > 0 ? sorted[index - 1] : null;
+
+  // Old numeric links stay alive but don't dual-serve: /project/1 resolves the
+  // record, then redirects to /project/social-ring so there is exactly one
+  // canonical URL per project for crawlers and for anyone copying the address.
+  const needsCanonicalRedirect =
+    isNumericParam && project && project.slug && project.slug !== rawParam;
+
+  useEffect(() => {
+    // Scroll to the top of the page on component mount (reload)
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Projects arrive asynchronously, so the first render has an empty list.
+  // Destructure off `|| {}` rather than bailing early here: six useInView()
+  // hooks run further down, and an early return would change the hook count
+  // between the empty and loaded renders.
   const {
     headerImg,
     name,
@@ -37,6 +75,7 @@ const ProjectItem = () => {
     date,
     websites,
     app,
+    appLogo,
     typography,
     designColor,
     frontEnd,
@@ -46,30 +85,26 @@ const ProjectItem = () => {
     features,
     goal,
     version,
-    prototype,
-  } = projectData[params.id - 1];
-
-  useEffect(() => {
-    // Scroll to the top of the page on component mount (reload)
-    window.scrollTo(0, 0);
-  }, []);
+    // Stored as prototypeUrl — see models/project.js.
+    prototypeUrl: prototype,
+  } = project || {};
 
   const nextProjectLink = (
     <>
-      {newparm + 1 <= projectData.length && newparm !== 0 ? (
+      {nextProject ? (
         <>
           <div id="overlay-wrapper">
             <a
               style={{
-                backgroundImage: `url(${projectData[newparm].headerImg})`,
+                backgroundImage: `url(${nextProject.headerImg})`,
               }}
-              href={`/project/${newparm + 1}`}
+              href={projectPath(nextProject)}
               className="next-work next-work-headerimg"
             >
               <div className="project-content">
                 <h5 className="h5 next-work-lead">Next Work</h5>
                 <h4 className="h2 next-work-title">
-                  {projectData[newparm].name}
+                  {nextProject.name}
                 </h4>
                 <div className="next-work-arrow">
                   <svg
@@ -88,13 +123,13 @@ const ProjectItem = () => {
         <div id="overlay-wrapper">
           <a
             style={{
-              // backgroundImage: `url(${projectData[newparm - 2].headerImg})`
+              // backgroundImage: `url(${prevProject?.headerImg})`
               backgroundImage: `url(https://i.imgur.com/6zFLMoK.jpg)`,
               objectFit: "contain",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            href={`/project/${newparm - 1}`}
+            href={prevProject ? projectPath(prevProject) : "/project"}
             className="next-work pervious-work"
           >
             <div className="project-content">
@@ -102,7 +137,7 @@ const ProjectItem = () => {
                 Previous Work
               </h5>
               <h4 className="h2 next-work-title pervious-work-title">
-                {projectData[newparm - 2].name}
+                {prevProject?.name}
               </h4>
               <div className="next-work-arrow pervious-work-arrow">
                 <svg
@@ -143,6 +178,23 @@ const ProjectItem = () => {
     useInView();
   const { ref: otherFeatureBulletTextSection, inView: otherFeatureBulletTextSectionIsVisible } =
     useInView();
+
+  // Safe to bail now — every hook above has run, so the hook count is identical
+  // on the empty first render and the loaded one.
+  if (!project) {
+    return (
+      <div id="single-work" className="project-group">
+        <div style={{ minHeight: "60vh" }} />
+      </div>
+    );
+  }
+
+  // Legacy /project/1 -> /project/social-ring. Placed after the hooks for the
+  // same reason as the guard above.
+  if (needsCanonicalRedirect) {
+    return <Redirect to={projectPath(project)} />;
+  }
+
   return (
     <>
       <div id="single-work" className="project-group">
@@ -166,7 +218,16 @@ const ProjectItem = () => {
                   rel="noopener noreferrer"
                   className="button highlight"
                 >
-                  <i className="fa fa-apple fa-lg"></i>Get The App
+                  {appLogo ? (
+                    <img
+                      src={appLogo}
+                      alt={`${name} logo`}
+                      className="app-logo"
+                    />
+                  ) : (
+                    <i className="fa fa-apple fa-lg"></i>
+                  )}
+                  Get The App
                 </a>
               </div>
             )}
@@ -913,7 +974,7 @@ const ProjectItem = () => {
               </div>
             </section>
           )}
-          {projectData.length >= 1 ? nextProjectLink : null}
+          {sorted.length >= 1 ? nextProjectLink : null}
         </main>
       </div>
       <StyledHr Primary />

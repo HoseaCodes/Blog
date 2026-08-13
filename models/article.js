@@ -72,6 +72,22 @@ const articleSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
+    // Per-post LinkedIn intro text. If null/empty when posting, the controller
+    // falls back to a template built from title + description + URL.
+    linkedinIntro: {
+        type: String,
+        default: null,
+    },
+    // Stamped after a successful LinkedIn cross-post. Prevents duplicates on
+    // re-publish (e.g. small edit + republish).
+    linkedinPostedAt: {
+        type: Date,
+        default: null,
+    },
+    linkedinPostUrn: {
+        type: String,
+        default: null,
+    },
     markdown: {
         type: String,
         required: false,
@@ -89,6 +105,18 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
+    },
+    metaTitle: {
+        type: String,
+        default: ''
+    },
+    metaDescription: {
+        type: String,
+        default: ''
+    },
+    canonicalUrl: {
+        type: String,
+        default: ''
     },
     views: {
         type: Number,
@@ -108,6 +136,14 @@ const articleSchema = new mongoose.Schema({
     sanitizedHtml: {
         type: String,
         required: false
+    },
+    notifySubscribers: {
+        type: Boolean,
+        default: false
+    },
+    newsletterSentAt: {
+        type: Date,
+        default: null
     }
 
 }, {

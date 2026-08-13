@@ -2,13 +2,21 @@
 # Build locally:  pip install -r requirements-docs.txt && mkdocs serve
 # CI builds with these exact pins — bump deliberately, not accidentally.
 mkdocs==1.6.1
-mkdocs-material==9.5.44
 markdown==3.10.3
 
+# These two are coupled and must be bumped together.
+#
 # pymdown-extensions MUST be >= 11. On 10.x, `pymdownx.superfences` lets
 # Python-Markdown's raw-HTML block processor run first, so any fenced block
 # containing a line that starts with a block-level HTML tag — `<Form ...>` in a
 # JSX sample, `<body ...>` in a commit-message template — swallows the fence and
-# every heading after it. The page renders, truncated, with no error.
-# Verified: 10.11.2 truncates ARCHITECTURE.md and CONTRIBUTING.md; 11.0.1 does not.
+# every heading after it. The page renders truncated, with no error and a zero
+# exit code. Verified: 10.11.2 truncates ARCHITECTURE.md (10/11 headings) and
+# CONTRIBUTING.md (6/15); 11.0.1 renders both in full.
+#
+# mkdocs-material pins pymdown-extensions itself, so the two versions are not
+# independent: 9.5.x requires `pymdown-extensions~=10.2` and will refuse to
+# install alongside 11.x. 9.7.7 is the first pairing here that resolves cleanly.
+# If you downgrade material, you reintroduce the silent-truncation bug.
+mkdocs-material==9.7.7
 pymdown-extensions==11.0.1

@@ -21,7 +21,16 @@ Ranked by value, not effort. The first six are correctness or safety issues, not
 2. **Fix scheduled publishing.** `cron/scheduledPost.js` compares a formatted string to a `Date` with `===`. Fix the comparison, add a test, and decide how the job survives `min_machines_running = 0`.
 3. **Ownership and role checks on content mutations.** Any authenticated user can edit or delete any article. Write the negative test first — it should fail today.
 4. **Turn on the rate limiter.** It is already constructed in `app.js`; the `app.use` line is commented out. Start with `/api/ai/*` and `/api/tts/*`, which cost money per call.
-5. **Fix `GET /api/user/admin/all`** — **confirmed exposed in production**: an unauthenticated request returns real user records including email addresses and status. No middleware is applied despite the `admin` path. Also replace `loginRequired`, which passes whenever `req.params.id` exists — i.e. always.
+5. **Fix `GET /api/user/admin/all`** — **confirmed exposed in production**: an unauthenticated request returns real user records including email addresses and status. This is not an oversight; the controller says so itself:
+
+   ```js
+   // TEMP: no server-side auth. The /admin/users page gates access client-side
+   // using the role returned from Storm-Gate's /me. Anyone who can reach this
+   // endpoint (including unauthenticated) can dump every user. Lock down before
+   // deploying publicly — re-add auth middleware + a real admin check.
+   ```
+
+   It was deployed publicly. Re-add `auth` + `authAdmin`. Also replace `loginRequired`, which passes whenever `req.params.id` exists — i.e. always.
 6. **Fix slug generation.** `createArticle` builds the slug as `title.toLowerCase().replace(/ /g, "-")`, which replaces spaces and **strips no punctuation** — a title with a comma or colon produces a slug like `one-contract:-building-an-arcade`. Both `slug` and `slugify` are already dependencies and unused here. Note the schema's own slugify hook is commented out in `models/article.js`, so the controller is the only place this happens.
 7. **Add `/health`** with a Mongo ping, and wire an HTTP check in `fly.toml`.
 8. **Fill or delete the 12 empty unit test suites** so `npm test` exits zero and means something. Fix `imageOp.test.js`'s transform config while there.

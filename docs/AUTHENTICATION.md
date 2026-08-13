@@ -237,8 +237,15 @@ Each of these was hand-written in the app before the package existed, and each i
 - **Selective 401 redirect** — configurable via `isAuthRequiredRoute`, rather than redirecting on every 401.
 - **`requiresApproval` on register** — a success response with no token.
 - **`limitedAccess` on login** — a token that grants less than a normal one.
-- **Header format** — the old client tolerated a bare JWT *and* a `JWT `-prefixed one. The SDK picks one.
-- **Expired-token status code** — normalised, rather than the 400 that broke redirect logic.
+- **Header format** — the old client tolerated a bare JWT *and* a `JWT `-prefixed one. The SDK **still tolerates both**: `extractToken` matches `/^\s*bearer\s+(.+)$/i` and otherwise falls through to treating the whole trimmed header as the token. So `Bearer <jwt>` and a raw `<jwt>` are both accepted, case-insensitively. That is permissive rather than standardised — the contract question is [still open](#open-contract-questions), not settled.
+- **Expired-token status code — resolved.** `createRequireAuth` returns **401** for both an invalid and an expired token, with a distinguishing `code` field:
+
+  ```js
+  const msg = err.name === "TokenExpiredError" ? "Token expired" : "Invalid authentication token";
+  return res.status(401).json({ msg, code: err.name });
+  ```
+
+  This is the fix for the old hand-rolled middleware's 400, which broke the client's automatic-redirect path. A missing token is also 401 (`{ msg: "Missing authentication token" }`).
 - **`rememberMe` lifetimes** — an option, not a hardcoded constant.
 
 ---
@@ -266,14 +273,18 @@ Each of these was hand-written in the app before the package existed, and each i
 
 ## Open contract questions
 
-Carried forward because they are still unresolved, and each one is a real ambiguity:
+Carried forward because they are still unresolved, and each one is a real ambiguity.
 
-1. **Symmetric vs asymmetric signing.** HS256 means every consumer holds the signing secret and could mint tokens. RS256 with a JWKS endpoint would remove secret distribution entirely — the single biggest improvement available to this contract.
-2. **Logout semantics.** Is `/logout` real revocation, or just a cookie clear? Consumers need to know whether an old token stays valid until `exp`. (Today this API assumes it does, and mitigates with the per-request `/me` reload.)
-3. **Refresh-token rotation.** `/refresh_token` is a `GET` with no body — which cookie or header does it read, and what is the rotation policy?
-4. **`role` type.** This app compares against both `1` and `"admin"` because the type has been ambiguous. One type, documented.
-5. **Cookie domain and CORS.** When Storm-Gate is on a different origin, cookie-based token storage needs either `withCredentials` HttpOnly cookies set by Storm-Gate, or a token-in-memory mode.
-6. **The `application` field** on `/register`. This app sends the literal `"blog"`. The allowed values and what behaviour they change are still undocumented on the Storm-Gate side — it appears to be multi-tenant partitioning, but nothing here depends on that being true.
+**Resolved since the original list:** the expired-token status code is now **401** with a `code` field, not the 400 that broke client redirects.
+
+1. **Header format.** `extractToken` accepts `Bearer <jwt>` *and* a bare `<jwt>`, rather than requiring one. Permissiveness on an auth header is the kind of flexibility that makes a later tightening a breaking change — pick `Bearer`, document it, and deprecate the bare form.
+2. **A shared types package.** Only `@storm-gate/client` and `@storm-gate/express` are published; the proposed `@storm-gate/types` does not exist, so every consumer re-describes `User`, `LoginResponse` and `RegisterResponse` by hand.
+3. **Symmetric vs asymmetric signing.** HS256 means every consumer holds the signing secret and could mint tokens. RS256 with a JWKS endpoint would remove secret distribution entirely — the single biggest improvement available to this contract.
+4. **Logout semantics.** Is `/logout` real revocation, or just a cookie clear? Consumers need to know whether an old token stays valid until `exp`. (Today this API assumes it does, and mitigates with the per-request `/me` reload.)
+5. **Refresh-token rotation.** `/refresh_token` is a `GET` with no body — which cookie or header does it read, and what is the rotation policy?
+6. **`role` type.** This app compares against both `1` and `"admin"` because the type has been ambiguous. One type, documented.
+7. **Cookie domain and CORS.** When Storm-Gate is on a different origin, cookie-based token storage needs either `withCredentials` HttpOnly cookies set by Storm-Gate, or a token-in-memory mode.
+8. **The `application` field** on `/register`. This app sends the literal `"blog"`. The allowed values and what behaviour they change are still undocumented on the Storm-Gate side — it appears to be multi-tenant partitioning, but nothing here depends on that being true.
 
 ---
 

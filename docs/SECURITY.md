@@ -91,11 +91,12 @@ Where ownership *is* enforced, it is per-user state rather than resource access:
 | `/api/admin/linkedin/*` | ❌ | ❌ 403 | ✅ |
 | `GET /api/admin/linkedin/callback` | ✅ **by design** — OAuth redirect cannot carry a JWT | ✅ | ✅ |
 | `/api/payment*` | ❌ | ❌ 403 | ✅ |
-| `/api/user/admin/all`, `/api/user/:id/status` | ❌ | ❌ 403 | ✅ |
+| `GET /api/user/admin/all` | 🔴 **ALLOWED — no middleware** | 🔴 allowed | ✅ |
+| `PATCH /api/user/:id/status` | ❌ | ❌ 403 | ✅ |
 | `/sitemap.xml`, `/blog/:slug` (social preview) | ✅ | ✅ | ✅ |
 | `/api-docs` | ✅ in development · **HTTP Basic** in production | | |
 
-⚠️ marks the gap: authenticated is sufficient where entitled should be required.
+⚠️ marks the gap: authenticated is sufficient where entitled should be required. 🔴 marks an endpoint that is open to the public internet and should not be.
 
 The public LinkedIn callback is a considered exception, not an oversight. It must also be mounted before any router with a `router.use(auth)` catch-all — see [ARCHITECTURE.md](ARCHITECTURE.md#mount-ordering--a-real-invariant).
 
@@ -165,17 +166,18 @@ The unmetered AI endpoints are the sharpest cost exposure: one authenticated acc
 
 Ordered by how much they would matter if exploited.
 
-1. **No ownership or role checks on content mutations.** Any authenticated user can update or delete any article, publish drafts, or run batch deletes.
-2. **No rate limiting anywhere**, including on endpoints that spend money per request.
-3. **No startup validation of `ACCESS_TOKEN_SECRET`** — a missing secret produces per-request failures instead of a loud refusal to boot.
-4. **No `/health` endpoint**, so a process that is up but cannot reach Mongo keeps taking traffic.
-5. **No audit log.** There is no immutable record of who published, edited or deleted what.
-6. **No structured error contract.** Failures surface as `{ msg: err.message }` with a 500, which can echo driver-level detail to the client. No correlation ids.
-7. **Token revocation is impossible before expiry** — inherent to stateless JWT. Partially mitigated by the per-request `/me` lookup: a deleted or demoted account loses privileges within the 60s cache TTL.
-8. **The 60s `/me` cache is in-process and unbounded.** It grows with distinct user ids for the process lifetime and is not shared across machines.
-9. **The Docker image runs as root** on the full `node:20` base, single-stage.
-10. **Dependency scanning is advisory.** Snyk runs in CI with `continue-on-error: true` and `|| true`, so a finding never fails a build.
-11. **`status` is never enforced.** Storm-Gate reports `PENDING`/`APPROVED`; nothing in this app checks it, so an unapproved-but-authenticated user is treated as a normal user.
+1. **`GET /api/user/admin/all` dumps every user to anyone.** No middleware at all despite the `admin` path — **verified against production**, returning real email addresses and statuses to an unauthenticated request. The controller carries a `TEMP` comment stating the risk and saying "lock down before deploying publicly"; it shipped anyway. Access is gated only by the client-side `/admin/users` page, which is not a boundary.
+2. **No ownership or role checks on content mutations.** Any authenticated user can update or delete any article, publish drafts, or run batch deletes.
+3. **No rate limiting anywhere**, including on endpoints that spend money per request.
+4. **No startup validation of `ACCESS_TOKEN_SECRET`** — a missing secret produces per-request failures instead of a loud refusal to boot.
+5. **No `/health` endpoint**, so a process that is up but cannot reach Mongo keeps taking traffic.
+6. **No audit log.** There is no immutable record of who published, edited or deleted what.
+7. **No structured error contract.** Failures surface as `{ msg: err.message }` with a 500, which can echo driver-level detail to the client. No correlation ids.
+8. **Token revocation is impossible before expiry** — inherent to stateless JWT. Partially mitigated by the per-request `/me` lookup: a deleted or demoted account loses privileges within the 60s cache TTL.
+9. **The 60s `/me` cache is in-process and unbounded.** It grows with distinct user ids for the process lifetime and is not shared across machines.
+10. **The Docker image runs as root** on the full `node:20` base, single-stage.
+11. **Dependency scanning is advisory.** Snyk runs in CI with `continue-on-error: true` and `|| true`, so a finding never fails a build.
+12. **`status` is never enforced.** Storm-Gate reports `PENDING`/`APPROVED`; nothing in this app checks it, so an unapproved-but-authenticated user is treated as a normal user.
 
 Fixes are ranked in the README's [Future improvements](../README.md#future-improvements).
 

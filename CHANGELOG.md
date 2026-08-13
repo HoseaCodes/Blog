@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.8.0](https://github.com/HoseaCodes/Blog/compare/v1.7.0...v1.8.0) (2026-08-13)
+
+
+### Features
+
+* **docs:** add comprehensive documentation for roadmap, security, and architectural decisions ([949d015](https://github.com/HoseaCodes/Blog/commit/949d015d2271ad94a0c6f523811e5b573126ae14))
+* **docs:** add MkDocs configuration and documentation for site generation ([6ad0a2d](https://github.com/HoseaCodes/Blog/commit/6ad0a2da28e6e439d1c63fe67affcb60575e6d54))
+* integrate Swagger UI for API documentation ([217160a](https://github.com/HoseaCodes/Blog/commit/217160a1f23594ddc5cf8f24a5d9bf8bee5d9dd0))
+
+
+### Bug Fixes
+
+* **docs:** clarify API authentication and ownership checks in documentation ([98ba1c6](https://github.com/HoseaCodes/Blog/commit/98ba1c699f941bcefafa899fbbc0d4d9ad3fd606))
+* **docs:** update authentication and security documentation to address middleware gaps and clarify endpoint access ([eecbd40](https://github.com/HoseaCodes/Blog/commit/eecbd40aa0a4e83d27ca772a024c99b6264de3ce))
+* **docs:** update links in documentation for consistency and accuracy ([6ad0a2d](https://github.com/HoseaCodes/Blog/commit/6ad0a2da28e6e439d1c63fe67affcb60575e6d54))
+* **docs:** update mkdocs-material version and clarify dependency notes in requirements ([1366768](https://github.com/HoseaCodes/Blog/commit/136676864fddef5c5b2fa3693a5ef78ac61f68ee))
+* **docs:** update repository links and clarify documentation references ([a753fb4](https://github.com/HoseaCodes/Blog/commit/a753fb431dcce79943fe6fbb626e9d9c73d6c136))
+* **storybook:** update deployment branch from master to staging ([7b475cf](https://github.com/HoseaCodes/Blog/commit/7b475cfa006de0beeff4cc0c5ca5f23517690368))
+
 ## [1.7.0](https://github.com/HoseaCodes/Blog/compare/v1.6.0...v1.7.0) (2026-08-13)
 
 

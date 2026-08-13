@@ -72,11 +72,19 @@ jobs:
   build:
     needs: [static-scan, dependency-scan, lint, integration-test]
     runs-on: ubuntu-latest
+    # The changelog step pushes the chore(release) commit back to staging, so
+    # this job needs write access to repository contents.
+    permissions:
+      contents: write
     outputs:
       build_path: ${{ steps.archive_build.outputs.build_path }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          # Full history + tags: the changelog action derives the next version
+          # from prior tags, and pushing from a shallow clone is rejected.
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
@@ -99,13 +107,19 @@ jobs:
         run: |
           tar -czf build.tar.gz build/
           echo "::set-output name=build_path::build.tar.gz"
+      # Staging owns the "staging.v" namespace. It previously tagged "dev.v",
+      # which master's release tooling also writes to — and with git-push
+      # disabled the chore(release) commit was discarded, so package.json here
+      # never advanced past 1.4.1. Every run then recomputed 1.5.0 and died on
+      # `git tag -a dev.v1.5.0` -> already exists. Pushing the bump is what
+      # makes the version move forward and keeps the tag free each run.
       - name: Create conventional changelog action
         id: changelog
         uses: TriPSs/conventional-changelog-action@latest
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag-prefix: "dev.v"
-          git-push: false
+          tag-prefix: "staging.v"
+          git-push: true
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1

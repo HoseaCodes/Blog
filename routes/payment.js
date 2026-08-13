@@ -13,7 +13,7 @@ router.route('/payment')
     .post(auth, createPayment)
 
 router.route('/payment/:id')
-    .get(authAdmin, nodecache, getPayments)
+    .get(auth, authAdmin, nodecache, getPayments)
 
 
 export default router;

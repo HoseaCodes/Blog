@@ -42,7 +42,35 @@ const productSchema = new mongoose.Schema({
     },
     quantity: {
       type: Number
-    }
+    },
+    type: {
+        type: String,
+        enum: ['physical', 'ai-art', 'redeem'],
+        default: 'physical',
+    },
+    tier: {
+        type: String,
+        enum: ['png', 'png_nft'],
+        default: 'png',
+    },
+    // Pricing currency. 'dollars' is the legacy default; 'points' makes
+    // the product redeemable in the gamecorner redeem store (/shop/redeem).
+    priceType: {
+        type: String,
+        enum: ['dollars', 'points'],
+        default: 'dollars',
+        index: true,
+    },
+    // Cost in points when priceType === 'points'. Ignored otherwise.
+    pointsPrice: {
+        type: Number,
+        default: 0,
+        min: 0,
+    },
+    aiPrompt: String,
+    aiModel: String,
+    aiSeed: String,
+    creatorUserId: String,
 }, {
     timestamps: true
 })

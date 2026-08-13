@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef, useContext } from "react";
+import { useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import axios from "axios";
@@ -21,13 +22,12 @@ import SEOAnalyzer from "./SEOAnalyzer";
 import VersionHistory from "./VersionHistory";
 import PerformanceInsights from "./PerformanceInsights";
 import AdvancedBlocks from "./AdvancedBlocks";
-import ContentIntelligence from "./ContentIntelligence";
 import PublishSuccess from "./PublishSuccess";
 import CollaborationPanel from "./CollaborationPanel";
 
 const EnterpriseContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, #0f1216 0%, #14191e 50%, #0f1216 100%);
   color: #ffffff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
@@ -49,7 +49,7 @@ const HeaderBar = styled(motion.header)`
 const Logo = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(45deg, #5bb39e 0%, #206a5d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -62,7 +62,7 @@ const ActionBar = styled.div`
 `;
 
 const QuickAction = styled(motion.button)`
-  background: ${props => props.primary ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)' : 'rgba(255, 255, 255, 0.1)'};
+  background: ${props => props.primary ? 'linear-gradient(45deg, #5bb39e 0%, #206a5d 100%)' : 'rgba(255, 255, 255, 0.1)'};
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -114,7 +114,7 @@ const Tab = styled(motion.button)`
   padding: 1rem;
   background: ${props => props.active ? 'rgba(102, 126, 234, 0.3)' : 'transparent'};
   border: none;
-  color: ${props => props.active ? '#667eea' : '#888'};
+  color: ${props => props.active ? '#5bb39e' : '#6b7479'};
   font-weight: ${props => props.active ? '600' : '400'};
   cursor: pointer;
   display: flex;
@@ -125,7 +125,7 @@ const Tab = styled(motion.button)`
 
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    color: #667eea;
+    color: #5bb39e;
   }
 `;
 
@@ -145,23 +145,103 @@ const StatusDot = styled.div`
   border-radius: 50%;
   background: ${props => {
     switch (props.status) {
-      case 'draft': return '#fbbf24';
-      case 'review': return '#3b82f6';
-      case 'approved': return '#10b981';
-      case 'scheduled': return '#8b5cf6';
-      default: return '#6b7280';
+      case 'draft': return '#fcd34d';
+      case 'review': return '#5bb39e';
+      case 'approved': return '#5bb39e';
+      case 'scheduled': return '#5bb39e';
+      default: return '#a3acb2';
     }
   }};
 `;
+
+const STATUS_FROM_BE = (be) => {
+  if (be.archived) return "draft";
+  if (be.published) return "published";
+  if (be.scheduled) return "scheduled";
+  return "draft";
+};
+
+const beArticleToEditorShape = (be) => {
+  const content = be.markdown || "";
+  const wordCount = content.split(/\s+/).filter((w) => w.length > 0).length;
+  const readingTime = Math.max(1, Math.round(wordCount / 238));
+
+  return {
+  id: be.article_id || be._id,
+  title: be.title || "",
+  subtitle: be.subtitle || "",
+  slug: be.slug || "",
+  description: be.description || "",
+  content,
+  excerpt: "",
+  status: STATUS_FROM_BE(be),
+  author: be.postedBy || "",
+  createdAt: be.createdAt ? moment(be.createdAt) : moment(),
+  updatedAt: be.updatedAt ? moment(be.updatedAt) : moment(),
+  publishedAt: be.published ? moment(be.updatedAt || be.createdAt) : null,
+  scheduledAt: be.scheduledDateTime ? moment(be.scheduledDateTime) : null,
+  metadata: {
+    category: be.categories?.[0] || "",
+    subcategory: "",
+    tags: be.tags || [],
+    skillsTags: [],
+    personaTarget: [],
+    industryTarget: [],
+    geoTarget: "",
+    readingTime,
+    wordCount,
+    seoScore: 0,
+    difficulty: "intermediate"
+  },
+  media: {
+    featuredImage: be.images || null,
+    gallery: [],
+    attachments: []
+  },
+  publishing: {
+    platforms: {
+      linkedin: { enabled: !!be.linkedin, content: be.linkedinContent || "", published: false },
+      medium: { enabled: false, content: "", published: false },
+      devto: { enabled: false, content: "", published: false },
+      ghost: { enabled: false, content: "", published: false }
+    },
+    seo: {
+      metaTitle: be.metaTitle || "",
+      metaDescription: be.metaDescription || "",
+      canonicalUrl: be.canonicalUrl || "",
+      openGraph: {},
+      twitterCard: {}
+    }
+  },
+  collaboration: {
+    comments: be.comments || [],
+    reviewers: [],
+    approvers: [],
+    shares: []
+  },
+  analytics: {
+    views: be.views || 0,
+    engagement: 0,
+    shares: 0,
+    comments: 0,
+    predictions: {}
+  },
+  versions: []
+  };
+};
 
 function EnterpriseCreateArticle() {
   // Access GlobalState APIs
   const state = useContext(GlobalState);
   const notify = useNotification();
-  
+  const params = useParams();
+  const editId = params.id;
+
   // Destructure APIs from GlobalState
   const { aiAPI, mediaAPI, seoAPI, analyticsAPI, collaborationAPI, articlesAPI } = state;
   const [token] = state.token;
+  const [mongoId, setMongoId] = useState(null);
+  const [editLoading, setEditLoading] = useState(!!editId);
   
   // Core article state
   const [article, setArticle] = useState({
@@ -236,6 +316,7 @@ function EnterpriseCreateArticle() {
   const [isAutoSaving, setIsAutoSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState(moment());
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showPublishModal, setShowPublishModal] = useState(false);
   const [showSuccessPage, setShowSuccessPage] = useState(false);
 
   // Performance state - FIXED to properly update
@@ -274,9 +355,12 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
         draft: true
       };
-      
+
       console.log('Auto-saving draft:', draftData);
       
       // Use your existing pattern for saving
@@ -298,6 +382,31 @@ function EnterpriseCreateArticle() {
 
     return () => clearTimeout(autoSaveRef.current);
   }, [article.title, article.content, article.description, handleAutoSave]);
+
+  useEffect(() => {
+    if (!editId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await axios.get(`/api/admin/articles/${editId}`, {
+          headers: { Authorization: token },
+        });
+        if (cancelled) return;
+        const be = res.data?.article;
+        if (!be) throw new Error("Article not found");
+        setArticle(beArticleToEditorShape(be));
+        setMongoId(be._id);
+      } catch (err) {
+        if (cancelled) return;
+        console.error("Failed to load article for editing:", err);
+      } finally {
+        if (!cancelled) setEditLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [editId, token]);
 
   const updateArticle = useCallback((updates) => {
     setArticle(prev => ({
@@ -326,14 +435,22 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
         draft: true
       };
 
-      const res = await axios.post('/api/articles', draftData, {
-        headers: { Authorization: token }
-      });
+      const res = mongoId
+        ? await axios.put(`/api/articles/${mongoId}`, draftData, {
+            headers: { Authorization: token }
+          })
+        : await axios.post('/api/articles', draftData, {
+            headers: { Authorization: token }
+          });
 
-      if (res.data.success) {
+      const ok = res.data?.success || res.data?.msg;
+      if (ok) {
         setLastSaved(moment());
         notify({ type: 'success', message: 'Draft saved successfully!' });
       }
@@ -343,10 +460,10 @@ function EnterpriseCreateArticle() {
     } finally {
       setIsAutoSaving(false);
     }
-  }, [article, token, notify]);
+  }, [article, token, notify, mongoId]);
 
   // Publish article
-  const handlePublish = useCallback(async () => {
+  const handlePublish = useCallback(async (publishOpts = {}) => {
     // Validation
     if (!article.title || article.title.trim().length < 5) {
       notify({ type: 'error', message: 'Please add a title (at least 5 characters)' });
@@ -380,6 +497,15 @@ function EnterpriseCreateArticle() {
 
     setIsAutoSaving(true);
     try {
+      // Prefer the freshly-passed publishOpts (from PublishingWorkflow.publishArticle)
+      // because article.publishing might still be the pre-update value here —
+      // updateArticle batches and handlePublish would otherwise capture stale state.
+      const platforms = publishOpts.platforms || article.publishing?.platforms;
+      const linkedinEnabled = Boolean(platforms?.linkedin?.enabled);
+      const linkedinIntroText =
+        publishOpts.linkedinIntro ?? article.publishing?.linkedinIntro ?? null;
+      const notifySubscribers = Boolean(platforms?.newsletter?.enabled);
+
       const publishData = {
         article_id: article.id,
         title: article.title,
@@ -390,33 +516,53 @@ function EnterpriseCreateArticle() {
         images: article.media?.featuredImage || { url: "https://i.imgur.com/19i5Whc.png" },
         categories: article.metadata?.category ? [article.metadata.category] : [],
         tags: article.metadata?.tags || [],
-        draft: false
+        metaTitle: article.publishing?.seo?.metaTitle || '',
+        metaDescription: article.publishing?.seo?.metaDescription || '',
+        canonicalUrl: article.publishing?.seo?.canonicalUrl || '',
+        draft: false,
+        linkedin: linkedinEnabled,
+        linkedinIntro: linkedinEnabled ? linkedinIntroText : null,
+        notifySubscribers,
       };
 
-      const res = await axios.post('/api/articles', publishData, {
-        headers: { Authorization: token }
-      });
+      const res = mongoId
+        ? await axios.put(`/api/articles/${mongoId}`, publishData, {
+            headers: { Authorization: token }
+          })
+        : await axios.post('/api/articles', publishData, {
+            headers: { Authorization: token }
+          });
 
       console.log('Publish response:', res.data);
-      
-      if (res.data.success) {
-        // Update article status to published
-        const updatedArticle = {
+
+      const ok = res.data?.success || res.data?.msg;
+      if (ok) {
+        updateArticle({
           status: 'published',
           publishedAt: moment(),
           article_id: res.data.article?.article_id || article.id
-        };
-        
-        updateArticle(updatedArticle);
-        
-        // Show success notification
-        notify({ type: 'success', message: '🎉 Article published successfully!' });
-        
-        console.log('Setting showSuccessPage to true');
-        // Show success page
+        });
+        notify({ type: 'success', message: 'Article published successfully!' });
+
+        // Surface LinkedIn cross-post result if it was attempted.
+        // posted=true → success toast. error → warning toast (article still saved).
+        const li = res.data?.linkedin;
+        if (li?.posted) {
+          notify({ type: 'success', message: 'Cross-posted to LinkedIn.' });
+        } else if (li?.error) {
+          notify({ type: 'warning', message: `Article published, but LinkedIn cross-post failed: ${li.error}` });
+        }
+
+        // Newsletter send happens fire-and-forget on the server, so we don't
+        // get sent/failed counts in the response. Surface a toast so the user
+        // knows it was queued.
+        if (notifySubscribers) {
+          notify({ type: 'success', message: 'Sending newsletter to subscribers in the background.' });
+        }
+
         setShowSuccessPage(true);
       } else {
-        console.error('Publish failed: success flag is false');
+        console.error('Publish failed: no success/msg in response');
         notify({ type: 'error', message: 'Publish failed: ' + (res.data.msg || 'Unknown error') });
       }
     } catch (error) {
@@ -425,8 +571,43 @@ function EnterpriseCreateArticle() {
     } finally {
       setIsAutoSaving(false);
     }
-  }, [article, token, notify, updateArticle]);
+  }, [article, token, notify, updateArticle, mongoId]);
   
+  // Explicit "Post to LinkedIn now" — independent from the main publish flow.
+  // Article must already exist (mongoId set) and be published (not draft).
+  const handlePostToLinkedIn = useCallback(async (intro) => {
+    if (!mongoId) {
+      notify({ type: 'error', message: 'Save and publish the article first.' });
+      return { posted: false };
+    }
+    try {
+      const res = await axios.post(
+        `/api/admin/linkedin/post/${mongoId}`,
+        { intro: typeof intro === 'string' ? intro : null },
+        { headers: { Authorization: token } }
+      );
+      if (res.data?.posted) {
+        notify({ type: 'success', message: 'Posted to LinkedIn.' });
+        // Mirror the stamp in editor state so the workflow UI shows
+        // "Last posted X ago" without waiting for a reload.
+        updateArticle({
+          linkedinPostedAt: new Date().toISOString(),
+          linkedinPostUrn: res.data.postUrn || null,
+        });
+        return { posted: true };
+      }
+      notify({
+        type: 'warning',
+        message: 'LinkedIn post did not complete: ' + (res.data?.error || res.data?.skipped || 'unknown'),
+      });
+      return { posted: false };
+    } catch (err) {
+      const msg = err.response?.data?.msg || err.response?.data?.error || err.message;
+      notify({ type: 'error', message: 'LinkedIn post failed: ' + msg });
+      return { posted: false, error: msg };
+    }
+  }, [mongoId, token, notify]);
+
   // Handle schedule
   const handleSchedule = useCallback(async (scheduledDate) => {
     if (!article.title || !article.content) {
@@ -599,12 +780,10 @@ function EnterpriseCreateArticle() {
 
   const tabs = [
     { id: "editor", label: "Editor", icon: FiEdit3 },
-    { id: "ai", label: "AI Assistant", icon: FiCpu },
     { id: "media", label: "Media", icon: FiImage },
     { id: "metadata", label: "Metadata", icon: FiTag },
     { id: "seo", label: "SEO", icon: FiTrendingUp },
     { id: "collaboration", label: "Collaboration", icon: FiUsers },
-    { id: "workflow", label: "Workflow", icon: FiShare2 },
     { id: "analytics", label: "Analytics", icon: FiBarChart2 },
     { id: "versions", label: "Versions", icon: FiClock }
   ];
@@ -624,27 +803,18 @@ function EnterpriseCreateArticle() {
           mediaAPI={mediaAPI}
           onTextSelection={handleTextSelection}
         />;
-      case "ai":
-        return <AIAssistant 
-          article={article} 
-          updateArticle={updateArticle}
-          isOpen={aiAssistantOpen}
-          setIsOpen={setAiAssistantOpen}
-          aiAPI={aiAPI}
-          selectedText={selectedText}
-          setSelectedText={setSelectedText}
-        />;
       case "media":
-        return <MediaLibrary 
-          article={article} 
+        return <MediaLibrary
+          article={article}
           updateArticle={updateArticle}
           mediaAPI={mediaAPI}
         />;
       case "metadata":
-        return <MetadataPanel 
-          article={article} 
+        return <MetadataPanel
+          article={article}
           updateArticle={updateArticle}
           seoAPI={seoAPI}
+          mediaAPI={mediaAPI}
         />;
       case "seo":
         return <SEOAnalyzer 
@@ -654,17 +824,12 @@ function EnterpriseCreateArticle() {
           seoAPI={seoAPI}
         />;
       case "collaboration":
-        return <CollaborationPanel 
-          article={article} 
+        return <CollaborationPanel
+          article={article}
           updateArticle={updateArticle}
           collaborationAPI={collaborationAPI}
-        />;
-      case "workflow":
-        return <PublishingWorkflow 
-          article={article} 
-          updateArticle={updateArticle}
-          onPublish={handlePublish}
-          onSchedule={handleSchedule}
+          mongoId={mongoId}
+          token={token}
         />;
       case "analytics":
         return <PerformanceInsights 
@@ -681,6 +846,14 @@ function EnterpriseCreateArticle() {
         return null;
     }
   };
+
+  if (editLoading) {
+    return (
+      <EnterpriseContainer style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ opacity: 0.7 }}>Loading article…</div>
+      </EnterpriseContainer>
+    );
+  }
 
   // Show success page after publishing
   if (showSuccessPage) {
@@ -751,13 +924,19 @@ function EnterpriseCreateArticle() {
 
           <QuickAction
             primary
-            onClick={handlePublish}
+            onClick={() => setShowPublishModal(true)}
             disabled={isAutoSaving}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <FiUpload />
-            {isAutoSaving ? 'Publishing...' : 'Publish'}
+            {isAutoSaving
+              ? 'Publishing...'
+              : article.status === 'published'
+              ? 'Publishing options'
+              : article.status === 'scheduled'
+              ? 'Manage schedule'
+              : 'Publish'}
           </QuickAction>
         </ActionBar>
       </HeaderBar>
@@ -820,14 +999,6 @@ function EnterpriseCreateArticle() {
               </motion.div>
             )}
             
-            {activeTab === "ai" && (
-              <ContentIntelligence 
-                article={article} 
-                updateArticle={updateArticle}
-                aiAPI={aiAPI}
-                seoAPI={seoAPI}
-              />
-            )}
           </div>
         </SidePanel>
       </MainLayout>
@@ -858,7 +1029,7 @@ function EnterpriseCreateArticle() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               style={{
-                background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)',
+                background: 'linear-gradient(135deg, #14191e 0%, #0f1216 100%)',
                 border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '20px',
                 width: '90%',
@@ -878,6 +1049,92 @@ function EnterpriseCreateArticle() {
                 selectedText={selectedText}
                 setSelectedText={setSelectedText}
               />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showPublishModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={() => setShowPublishModal(false)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0, 0, 0, 0.7)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '2rem'
+            }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 12 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 12 }}
+              transition={{ duration: 0.18 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                background: '#0f0f23',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '16px',
+                width: '100%',
+                maxWidth: '720px',
+                maxHeight: '90vh',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '1rem 1.5rem',
+                borderBottom: '1px solid rgba(255,255,255,0.08)',
+                color: 'white'
+              }}>
+                <h2 style={{ margin: 0, fontSize: '1.125rem', fontWeight: 600 }}>
+                  Publish article
+                </h2>
+                <button
+                  type="button"
+                  onClick={() => setShowPublishModal(false)}
+                  aria-label="Close"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#a3acb2',
+                    cursor: 'pointer',
+                    fontSize: '1.25rem',
+                    lineHeight: 1,
+                    padding: '0.25rem'
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+              <div style={{ flex: 1, overflowY: 'auto' }}>
+                <PublishingWorkflow
+                  article={article}
+                  updateArticle={updateArticle}
+                  onPublish={async (opts) => {
+                    await handlePublish(opts);
+                    setShowPublishModal(false);
+                  }}
+                  onSchedule={async (date) => {
+                    await handleSchedule(date);
+                    setShowPublishModal(false);
+                  }}
+                  onPostToLinkedIn={handlePostToLinkedIn}
+                  mongoId={mongoId}
+                />
+              </div>
             </motion.div>
           </motion.div>
         )}

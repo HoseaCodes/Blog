@@ -15,7 +15,9 @@ const initialState = {
     description: 'Description',
     content: 'Content',
     category: '',
-    id: ''
+    id: '',
+    priceType: 'dollars',
+    pointsPrice: 0,
 }
 
 function CreateProduct() {
@@ -133,7 +135,7 @@ function CreateProduct() {
     console.log(product)
 
     return (
-      <>
+      <div className="create_product_wrap">
         <div className="create_product">
             <div className="upload">
                 <input type="file" name="file" id="file_up"
@@ -161,13 +163,40 @@ function CreateProduct() {
                     />
                 </div>
                 <div className="row">
-                    <label htmlFor="price">Price</label>
-                    <input type="number" name="price" id="price"
-                        required value={product.price}
+                    <label htmlFor="priceType">Price Type</label>
+                    <select
+                        name="priceType"
+                        id="priceType"
+                        value={product.priceType || 'dollars'}
                         onChange={handleChangeInput}
-
-                    />
+                    >
+                        <option value="dollars">Dollars (cash purchase)</option>
+                        <option value="points">Points (redeem store)</option>
+                    </select>
                 </div>
+                {product.priceType === 'points' ? (
+                    <div className="row">
+                        <label htmlFor="pointsPrice">Points Price</label>
+                        <input
+                            type="number"
+                            name="pointsPrice"
+                            id="pointsPrice"
+                            min="0"
+                            step="1"
+                            required
+                            value={product.pointsPrice || 0}
+                            onChange={handleChangeInput}
+                        />
+                    </div>
+                ) : (
+                    <div className="row">
+                        <label htmlFor="price">Price (USD)</label>
+                        <input type="number" name="price" id="price"
+                            required value={product.price}
+                            onChange={handleChangeInput}
+                        />
+                    </div>
+                )}
                 <div className="row">
                     <label htmlFor="description">Description</label>
                     <textarea type="text" name="description" id="description"
@@ -202,7 +231,7 @@ function CreateProduct() {
                 <button type="submit">{onEdit ? "Update" : "Create"}</button>
             </form>
         </div>
-      </>
+      </div>
     )
 }
 

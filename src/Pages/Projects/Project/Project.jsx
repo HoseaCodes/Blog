@@ -37,6 +37,7 @@ const ProjectItem = () => {
     date,
     websites,
     app,
+    appLogo,
     typography,
     designColor,
     frontEnd,
@@ -166,7 +167,16 @@ const ProjectItem = () => {
                   rel="noopener noreferrer"
                   className="button highlight"
                 >
-                  <i className="fa fa-apple fa-lg"></i>Get The App
+                  {appLogo ? (
+                    <img
+                      src={appLogo}
+                      alt={`${name} logo`}
+                      className="app-logo"
+                    />
+                  ) : (
+                    <i className="fa fa-apple fa-lg"></i>
+                  )}
+                  Get The App
                 </a>
               </div>
             )}

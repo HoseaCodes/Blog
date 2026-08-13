@@ -87,12 +87,6 @@ const truncate = (str) => {
   return str.length > 10 ? str.substring(0, 150) + "..." : str;
 };
 
-const getBasicAuth = (username, password) => {
-  const encoded = btoa(`${username}:${password}`);
-  const auth = `Basic ${encoded}`;
-  return auth;
-};
-
 function countWords(text) {
   text = text.trim();
   const words = text.split(/\s+/);
@@ -100,4 +94,4 @@ function countWords(text) {
   return wordCount;
 }
 
-export { copyTextToClipboard, responsive, sleep, truncate, getBasicAuth, countWords };
+export { copyTextToClipboard, responsive, sleep, truncate, countWords };

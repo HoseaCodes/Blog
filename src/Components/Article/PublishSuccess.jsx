@@ -11,7 +11,7 @@ import moment from "moment";
 
 const SuccessContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  background: linear-gradient(135deg, #0f1216 0%, #14191e 50%, #0f1216 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -34,7 +34,7 @@ const IconWrapper = styled(motion.div)`
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #5bb39e, #059669);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +47,7 @@ const Title = styled.h1`
   font-weight: 700;
   text-align: center;
   margin: 0 0 1rem 0;
-  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(45deg, #5bb39e 0%, #206a5d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -86,7 +86,7 @@ const ArticleUrl = styled.div`
   margin-top: 1rem;
   font-size: 0.875rem;
   word-break: break-all;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const StatsGrid = styled.div`
@@ -107,7 +107,7 @@ const StatCard = styled.div`
 const StatValue = styled.div`
   font-size: 1.75rem;
   font-weight: 700;
-  color: #667eea;
+  color: #5bb39e;
   margin-bottom: 0.25rem;
 `;
 
@@ -125,7 +125,7 @@ const ActionGrid = styled.div`
 
 const ActionButton = styled(motion.button)`
   background: ${props => props.primary 
-    ? 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)' 
+    ? 'linear-gradient(45deg, #5bb39e 0%, #206a5d 100%)' 
     : 'rgba(255, 255, 255, 0.1)'};
   border: 1px solid ${props => props.primary ? 'transparent' : 'rgba(255, 255, 255, 0.2)'};
   color: white;
@@ -189,7 +189,7 @@ const AnalyticsTag = styled.div`
   gap: 0.5rem;
   background: rgba(16, 185, 129, 0.2);
   border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #10b981;
+  color: #5bb39e;
   padding: 0.5rem 1rem;
   border-radius: 8px;
   font-size: 0.875rem;

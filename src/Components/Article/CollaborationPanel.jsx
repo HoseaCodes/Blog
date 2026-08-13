@@ -6,6 +6,7 @@ import {
   FiEye, FiCheckCircle, FiClock, FiAlertTriangle, FiX, FiSend
 } from "react-icons/fi";
 import moment from "moment";
+import AdminCommentManager from "./AdminCommentManager";
 
 const CollaborationContainer = styled.div`
   padding: 1.5rem;
@@ -26,7 +27,7 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const CollaboratorCard = styled.div`
@@ -50,7 +51,7 @@ const Avatar = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #667eea, #764ba2);
+  background: linear-gradient(45deg, #5bb39e, #206a5d);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +74,7 @@ const Role = styled.div`
 
 const Permission = styled.div`
   background: rgba(102, 126, 234, 0.2);
-  color: #667eea;
+  color: #5bb39e;
   padding: 0.25rem 0.75rem;
   border-radius: 12px;
   font-size: 0.75rem;
@@ -132,7 +133,7 @@ const ActionButton = styled(motion.button)`
   
   &:hover {
     background: rgba(102, 126, 234, 0.2);
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -162,7 +163,7 @@ const CommentInput = styled.textarea`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -204,7 +205,7 @@ const Toggle = styled.label`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.checked ? '#667eea' : '#374151'};
+    background-color: ${props => props.checked ? '#5bb39e' : '#374151'};
     transition: 0.4s;
     border-radius: 24px;
     
@@ -247,9 +248,9 @@ const ActivityIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${props => props.type === 'comment' ? '#3b82f6' : 
-                    props.type === 'edit' ? '#10b981' :
-                    '#8b5cf6'};
+  color: ${props => props.type === 'comment' ? '#5bb39e' : 
+                    props.type === 'edit' ? '#5bb39e' :
+                    '#5bb39e'};
 `;
 
 const ActivityContent = styled.div`
@@ -266,7 +267,7 @@ const ActivityTime = styled.div`
   opacity: 0.7;
 `;
 
-function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
+function CollaborationPanel({ article, updateArticle, collaborationAPI, mongoId, token }) {
   const [newComment, setNewComment] = useState('');
   const [shareSettings, setShareSettings] = useState({
     allowComments: true,
@@ -278,7 +279,6 @@ function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch real collaboration data
   useEffect(() => {
     if (collaborationAPI && article?.id) {
       fetchCollaborationData();
@@ -485,7 +485,7 @@ function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
                     {comment.resolved && (
                       <div style={{ 
                         background: 'rgba(16, 185, 129, 0.2)',
-                        color: '#10b981',
+                        color: '#5bb39e',
                         padding: '0.125rem 0.5rem',
                         borderRadius: '8px',
                         fontSize: '0.625rem',
@@ -626,6 +626,8 @@ function CollaborationPanel({ article, updateArticle, collaborationAPI }) {
           )}
         </ActivityFeed>
       </Section>
+
+      {mongoId && <AdminCommentManager articleId={mongoId} token={token} />}
     </CollaborationContainer>
   );
 }

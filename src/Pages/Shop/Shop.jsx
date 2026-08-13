@@ -1,23 +1,20 @@
 import React from 'react';
 import Products from '../../Components/Product/Products';
-// import Masonry from '../../Components/Masonry/Masonry';
 import Sidebar from './Header';
 import './Shop.css';
 
 const Shop = () => {
     return (
-          <div>
-            {/* <iframe title='hoseacodes-store' src='https://teespring.com/stores/hoseacodes-2'>
-            </iframe> */}
-            <div className="wrapper">
-              {/* <NavBar/> */}
-              <div className="shop-container">
-                  <Sidebar className="sidebar" />
-                  <Products/>
-                  {/* <Masonry/> */}
-              </div>
+        <div className="shop-page">
+            <div className="shop-container">
+                <aside className="shop-sidebar">
+                    <Sidebar />
+                </aside>
+                <main className="shop-main">
+                    <Products/>
+                </main>
             </div>
-          </div>
+        </div>
     )
 }
 

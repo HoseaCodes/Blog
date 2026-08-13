@@ -1,6 +1,32 @@
 # flyctl launch added from .gitignore
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# version control & CI (not needed in the image; huge build-context bloat)
+.git
+.github
+.gitignore
+
+# docs & storybook (not part of the runtime image)
+docs
+**/*.stories.js
+**/*.stories.jsx
+storybook-static
+
+# large media not imported by the build (verified: not referenced in src)
+src/Pages/GameStore/image/showcase.gif
+src/Pages/GameStore/image/pyke.mp4
+src/Pages/GameStore/image/preview0.png
+src/Pages/GameStore/image/preview1.png
+src/Pages/GameStore/image/preview2.png
+src/Pages/GameStore/image/preview3.png
+src/Pages/GameStore/image/preview4.png
+src/Components/SVG/zpvo_43sn_180514 copy.jpg
+
+# runtime logs & stray archives (not needed in image)
+logs
+**/*.log
+build.tar.gz
+
 # dependencies
 node_modules
 .pnp

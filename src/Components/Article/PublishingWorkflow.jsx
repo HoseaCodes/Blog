@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import styled from "styled-components";
-import { 
+import axios from "axios";
+import {
   FiSend, FiClock, FiUsers, FiCheckCircle, FiX, FiCalendar,
   FiGlobe, FiLinkedin, FiGithub, FiEdit3, FiEye, FiSettings,
-  FiAlertCircle, FiArrowRight, FiPlay, FiPause, FiRefreshCw
+  FiAlertCircle, FiArrowRight, FiPlay, FiPause, FiRefreshCw, FiMail
 } from "react-icons/fi";
 import moment from "moment";
+import { GlobalState } from "../../GlobalState";
 
 const WorkflowContainer = styled.div`
   padding: 1.5rem;
@@ -19,12 +21,12 @@ const WorkflowContainer = styled.div`
 const StatusCard = styled.div`
   background: linear-gradient(135deg, ${props => {
     switch (props.status) {
-      case 'draft': return '#6b7280, #4b5563';
-      case 'review': return '#3b82f6, #2563eb';
-      case 'approved': return '#10b981, #059669';
-      case 'scheduled': return '#8b5cf6, #7c3aed';
+      case 'draft': return '#a3acb2, #4b5563';
+      case 'review': return '#5bb39e, #2563eb';
+      case 'approved': return '#5bb39e, #059669';
+      case 'scheduled': return '#5bb39e, #7c3aed';
       case 'published': return '#06b6d4, #0891b2';
-      default: return '#6b7280, #4b5563';
+      default: return '#a3acb2, #4b5563';
     }
   }});
   border-radius: 16px;
@@ -84,7 +86,7 @@ const SectionTitle = styled.h3`
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #667eea;
+  color: #5bb39e;
 `;
 
 const PlatformGrid = styled.div`
@@ -101,7 +103,7 @@ const PlatformCard = styled.div`
   transition: all 0.3s ease;
   
   &:hover {
-    border-color: #667eea;
+    border-color: #5bb39e;
     background: rgba(102, 126, 234, 0.1);
   }
 `;
@@ -139,10 +141,10 @@ const PlatformStatus = styled.div`
   font-size: 0.75rem;
   color: ${props => {
     switch (props.status) {
-      case 'connected': return '#10b981';
+      case 'connected': return '#5bb39e';
       case 'published': return '#06b6d4';
       case 'error': return '#ef4444';
-      default: return '#6b7280';
+      default: return '#a3acb2';
     }
   }};
   font-weight: 500;
@@ -167,7 +169,7 @@ const Toggle = styled.label`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: ${props => props.checked ? '#667eea' : '#374151'};
+    background-color: ${props => props.checked ? '#5bb39e' : '#374151'};
     transition: 0.4s;
     border-radius: 24px;
     
@@ -204,7 +206,7 @@ const DateInput = styled.input`
   
   &:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #5bb39e;
   }
 `;
 
@@ -232,9 +234,9 @@ const StepIndicator = styled.div`
   border-radius: 50%;
   background: ${props => {
     switch (props.status) {
-      case 'completed': return '#10b981';
-      case 'current': return '#667eea';
-      case 'pending': return '#6b7280';
+      case 'completed': return '#5bb39e';
+      case 'current': return '#5bb39e';
+      case 'pending': return '#a3acb2';
       default: return '#374151';
     }
   }};
@@ -265,57 +267,222 @@ const StepAction = styled.div`
   margin-left: 1rem;
 `;
 
-function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blogAPI }) {
+function PublishingWorkflow({
+  article,
+  updateArticle,
+  onPublish,
+  onSchedule,
+  onPostToLinkedIn,
+  mongoId,
+  blogAPI,
+}) {
+  const state = useContext(GlobalState);
+  const [token] = state.token;
+  const [isAdmin] = state.userAPI.isAdmin;
+  const [linkedinPosting, setLinkedinPosting] = useState(false);
+  const [linkedinGenerating, setLinkedinGenerating] = useState(false);
+  // When the article has been posted, the intro section collapses. User can
+  // override (e.g. to re-post with a new intro) by clicking the re-post link.
+  const [forceShowLinkedinIntro, setForceShowLinkedinIntro] = useState(false);
+
   const [selectedPlatforms, setSelectedPlatforms] = useState({
     linkedin: false,
     medium: false,
     devto: false,
-    ghost: false
+    ghost: false,
+    newsletter: false
   });
-  
-  // Using blogAPI and handlers from parent:
-  // onPublish() - triggers publish workflow
-  // onSchedule(date) - schedules article
-  // blogAPI.publishArticle(), blogAPI.scheduleArticle()
-  
+
+  const [linkedinStatus, setLinkedinStatus] = useState({ loading: true, connected: false });
+  const [linkedinIntro, setLinkedinIntro] = useState(
+    article?.publishing?.linkedinIntro || ''
+  );
+
   const [scheduleDate, setScheduleDate] = useState(
     moment().add(1, 'day').format('YYYY-MM-DDTHH:mm')
   );
-  
+
   const [approvalStep, setApprovalStep] = useState(0);
 
+  // Fetch real LinkedIn connection state. Only admins can connect/post.
+  const fetchLinkedInStatus = useCallback(async () => {
+    if (!isAdmin || !token) {
+      setLinkedinStatus({ loading: false, connected: false });
+      return;
+    }
+    try {
+      const res = await axios.get('/api/admin/linkedin/status', {
+        headers: { Authorization: token },
+      });
+      setLinkedinStatus({ loading: false, ...res.data });
+    } catch (err) {
+      console.error('LinkedIn status fetch failed:', err);
+      setLinkedinStatus({ loading: false, connected: false });
+    }
+  }, [isAdmin, token]);
+
+  useEffect(() => { fetchLinkedInStatus(); }, [fetchLinkedInStatus]);
+
+  // Once we know LinkedIn is connected, auto-enable its toggle so the user
+  // doesn't have to flip it manually every time they open the workflow.
+  // They opted in by connecting; this just stops the "looks off" confusion.
+  useEffect(() => {
+    if (linkedinStatus.connected) {
+      setSelectedPlatforms(prev => (prev.linkedin ? prev : { ...prev, linkedin: true }));
+    }
+  }, [linkedinStatus.connected]);
+
+  // After every successful post, recollapse the intro section. linkedinPostedAt
+  // changes both on first post AND on each re-post (new timestamp), so the
+  // intro hides itself again every time without sticky-expanded state.
+  useEffect(() => {
+    if (article?.linkedinPostedAt) {
+      setForceShowLinkedinIntro(false);
+    }
+  }, [article?.linkedinPostedAt]);
+
+  // Detect post-OAuth redirect (?linkedin=connected or =error). Refetch status,
+  // strip the query params so refreshes don't re-trigger the side-effect.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const liResult = params.get('linkedin');
+    if (!liResult) return;
+
+    if (liResult === 'connected') fetchLinkedInStatus();
+    if (liResult === 'error') {
+      const reason = params.get('reason') || 'unknown';
+      console.error(`LinkedIn connect failed: ${reason}`);
+    }
+
+    params.delete('linkedin');
+    params.delete('reason');
+    const qs = params.toString();
+    const newUrl = window.location.pathname + (qs ? `?${qs}` : '') + window.location.hash;
+    window.history.replaceState({}, '', newUrl);
+  }, [fetchLinkedInStatus]);
+
+  const handleConnectLinkedIn = async () => {
+    // XHR with auth header (browser navigation can't carry Authorization).
+    // Backend sets the state cookie on this response, then returns the LinkedIn
+    // authorize URL. Then we navigate the browser there.
+    const returnTo = window.location.pathname + window.location.search;
+    try {
+      const res = await axios.get('/api/admin/linkedin/connect', {
+        params: { returnTo },
+        headers: { Authorization: token },
+      });
+      if (res.data?.authUrl) {
+        window.location.href = res.data.authUrl;
+      } else {
+        alert('LinkedIn connect failed: no auth URL returned.');
+      }
+    } catch (err) {
+      alert('Failed to start LinkedIn connect: ' + (err.response?.data?.msg || err.message));
+    }
+  };
+
+  const SITE_URL = 'https://hoseacodes.com';
+
+  const handleGenerateLinkedInIntro = async () => {
+    if (linkedinGenerating) return;
+    const content = article?.content || article?.markdown;
+    if (!content || content.trim().length < 50) {
+      alert('Add some article content first — the generator needs something to summarize.');
+      return;
+    }
+    if (linkedinIntro && !window.confirm('Replace the current intro with a generated one?')) {
+      return;
+    }
+    setLinkedinGenerating(true);
+    try {
+      const res = await axios.post(
+        '/api/ai/social-posts',
+        { content, platforms: ['linkedin'] },
+        { headers: { Authorization: token } }
+      );
+      const generated = res.data?.posts?.linkedin?.trim();
+      if (!generated) {
+        alert('Generation returned empty — try again or write the intro manually.');
+        return;
+      }
+      const slug = article?.slug;
+      const url = slug ? `${SITE_URL}/blog/${slug}` : null;
+      const withLink = url ? `${generated}\n\nRead the full article: ${url}` : generated;
+      setLinkedinIntro(withLink);
+    } catch (err) {
+      alert('Failed to generate intro: ' + (err.response?.data?.msg || err.message));
+    } finally {
+      setLinkedinGenerating(false);
+    }
+  };
+
+  const handlePostToLinkedInClick = async () => {
+    if (!onPostToLinkedIn || linkedinPosting) return;
+    setLinkedinPosting(true);
+    try {
+      await onPostToLinkedIn(linkedinIntro || null);
+    } finally {
+      setLinkedinPosting(false);
+    }
+  };
+
+  const handleDisconnectLinkedIn = async () => {
+    if (!window.confirm("Disconnect LinkedIn? You'll need to reconnect to cross-post.")) return;
+    try {
+      await axios.delete('/api/admin/linkedin/disconnect', {
+        headers: { Authorization: token },
+      });
+      setLinkedinStatus({ loading: false, connected: false });
+    } catch (err) {
+      alert('Failed to disconnect: ' + (err.response?.data?.msg || err.message));
+    }
+  };
+
+  // Real per-platform status: LinkedIn pulled from API; others remain TODO.
   const platforms = [
-    {
+    ...(isAdmin ? [{
       id: 'linkedin',
       name: 'LinkedIn',
       icon: FiLinkedin,
       color: '#0077b5',
-      status: 'connected',
-      description: 'Professional networking platform'
-    },
+      status: linkedinStatus.connected ? 'connected' : 'disconnected',
+      description: linkedinStatus.connected
+        ? `Connected as ${linkedinStatus.displayName || 'you'}`
+        : 'Professional networking platform'
+    }] : []),
     {
       id: 'medium',
       name: 'Medium',
       icon: FiEdit3,
       color: '#00ab6c',
-      status: 'connected',
-      description: 'Publishing platform for writers'
+      status: 'disconnected',
+      description: 'Publishing platform for writers (not wired)'
     },
     {
       id: 'devto',
       name: 'Dev.to',
       icon: FiGithub,
       color: '#0a0a0a',
-      status: 'connected',
-      description: 'Community for developers'
+      status: 'disconnected',
+      description: 'Community for developers (not wired)'
     },
+    ...(isAdmin ? [{
+      id: 'newsletter',
+      name: 'Email Newsletter',
+      icon: FiMail,
+      color: '#206a5d',
+      status: article?.newsletterSentAt ? 'connected' : 'connected',
+      description: article?.newsletterSentAt
+        ? `Already sent ${moment(article.newsletterSentAt).fromNow()} — toggling on will re-send`
+        : 'Email this article to verified subscribers on publish'
+    }] : []),
     {
       id: 'ghost',
       name: 'Ghost',
       icon: FiGlobe,
       color: '#15171a',
       status: 'disconnected',
-      description: 'Professional publishing'
+      description: 'Professional publishing (not wired)'
     }
   ];
 
@@ -349,24 +516,33 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
 
   const publishArticle = async () => {
     try {
-      // Store selected platforms before publishing
-      updateArticle({ 
+      const platforms = Object.keys(selectedPlatforms).reduce((acc, key) => {
+        acc[key] = {
+          enabled: selectedPlatforms[key],
+          content: "",
+          published: false
+        };
+        return acc;
+      }, {});
+
+      // Pass the freshly-snapshotted publish options directly to onPublish.
+      // updateArticle is async (state batches) so handlePublish would otherwise
+      // read stale article.publishing here and skip the LinkedIn cross-post.
+      const publishOpts = {
+        platforms,
+        linkedinIntro: linkedinIntro || null,
+      };
+
+      // Still mirror into article state for any consumers reading article.publishing.
+      updateArticle({
         publishing: {
           ...article.publishing,
-          platforms: Object.keys(selectedPlatforms).reduce((acc, key) => {
-            acc[key] = { 
-              enabled: selectedPlatforms[key], 
-              content: "", 
-              published: false 
-            };
-            return acc;
-          }, {})
+          ...publishOpts,
         }
       });
-      
-      // Use real onPublish handler from parent
+
       if (onPublish) {
-        await onPublish();
+        await onPublish(publishOpts);
       } else {
         // Fallback to local state update
         updateArticle({ status: 'published', publishedAt: moment() });
@@ -410,12 +586,12 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
     switch (article.status) {
       case 'draft':
         return {
-          title: 'Draft Status',
-          description: 'Your article is saved as a draft. You can continue editing or submit for review.',
+          title: 'Ready to publish',
+          description: 'Your article is saved as a draft. Publish now to make it live, or schedule it for later.',
           actions: [
-            { label: 'Submit for Review', icon: FiSend, action: submitForReview, primary: true },
+            { label: 'Publish Now', icon: FiSend, action: publishArticle, primary: true },
             { label: 'Schedule', icon: FiClock, action: scheduleArticle },
-            { label: 'Preview', icon: FiEye, action: () => {} }
+            { label: 'Submit for Review', icon: FiEdit3, action: submitForReview }
           ]
         };
       case 'review':
@@ -557,15 +733,34 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
                 </Toggle>
               </PlatformHeader>
               
-              <p style={{ 
-                fontSize: '0.875rem', 
-                opacity: 0.8, 
+              <p style={{
+                fontSize: '0.875rem',
+                opacity: 0.8,
                 margin: 0,
-                lineHeight: 1.4 
+                lineHeight: 1.4
               }}>
                 {platform.description}
               </p>
-              
+
+              {/* Persistent "posted" indicator — visible regardless of toggle state */}
+              {platform.id === 'linkedin' && platform.status === 'connected' && article?.linkedinPostedAt && (
+                <div style={{
+                  marginTop: '0.5rem',
+                  padding: '0.375rem 0.625rem',
+                  background: 'rgba(91, 179, 158, 0.1)',
+                  border: '1px solid rgba(91, 179, 158, 0.25)',
+                  borderRadius: '6px',
+                  fontSize: '0.75rem',
+                  color: '#5bb39e',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.375rem'
+                }}>
+                  <FiCheckCircle />
+                  Posted to LinkedIn {moment(article.linkedinPostedAt).fromNow()}
+                </div>
+              )}
+
               {selectedPlatforms[platform.id] && platform.status === 'connected' && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
@@ -573,9 +768,9 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
                   exit={{ opacity: 0, height: 0 }}
                   style={{ marginTop: '1rem' }}
                 >
-                  <div style={{ 
-                    fontSize: '0.75rem', 
-                    color: '#10b981',
+                  <div style={{
+                    fontSize: '0.75rem',
+                    color: '#5bb39e',
                     display: 'flex',
                     alignItems: 'center',
                     gap: '0.25rem'
@@ -583,6 +778,163 @@ function PublishingWorkflow({ article, updateArticle, onPublish, onSchedule, blo
                     <FiCheckCircle />
                     Ready to publish
                   </div>
+
+                  {platform.id === 'linkedin' &&
+                    (!article?.linkedinPostedAt || forceShowLinkedinIntro) && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginBottom: '0.25rem'
+                      }}>
+                        <label style={{ fontSize: '0.75rem', opacity: 0.8 }}>
+                          LinkedIn intro (optional)
+                        </label>
+                        <button
+                          type="button"
+                          onClick={handleGenerateLinkedInIntro}
+                          disabled={linkedinGenerating}
+                          style={{
+                            background: 'rgba(91, 179, 158, 0.15)',
+                            border: '1px solid rgba(91, 179, 158, 0.3)',
+                            color: '#5bb39e',
+                            borderRadius: '4px',
+                            padding: '0.25rem 0.5rem',
+                            fontSize: '0.7rem',
+                            cursor: linkedinGenerating ? 'not-allowed' : 'pointer'
+                          }}
+                          title="Generate a LinkedIn intro from this article using AI"
+                        >
+                          {linkedinGenerating ? 'Generating…' : '✨ Generate from article'}
+                        </button>
+                      </div>
+                      <textarea
+                        value={linkedinIntro}
+                        onChange={(e) => setLinkedinIntro(e.target.value)}
+                        placeholder="Custom intro for your LinkedIn post. Leave blank for the default title + description + URL, or click 'Generate from article' for an AI-written intro."
+                        rows={4}
+                        style={{
+                          width: '100%',
+                          background: 'rgba(255,255,255,0.05)',
+                          border: '1px solid rgba(255,255,255,0.1)',
+                          color: 'white',
+                          borderRadius: '6px',
+                          padding: '0.5rem',
+                          fontSize: '0.8125rem',
+                          fontFamily: 'inherit',
+                          resize: 'vertical'
+                        }}
+                      />
+                      <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
+                        <button
+                          type="button"
+                          onClick={handlePostToLinkedInClick}
+                          disabled={!mongoId || linkedinPosting || article?.draft}
+                          title={
+                            !mongoId
+                              ? 'Save the article first'
+                              : article?.draft
+                              ? 'Publish the article first'
+                              : 'Post this article to LinkedIn now'
+                          }
+                          style={{
+                            background: !mongoId || article?.draft ? '#374151' : '#0077b5',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '6px',
+                            padding: '0.5rem 0.875rem',
+                            fontSize: '0.8125rem',
+                            cursor: !mongoId || linkedinPosting || article?.draft ? 'not-allowed' : 'pointer',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.375rem',
+                            opacity: !mongoId || article?.draft ? 0.6 : 1
+                          }}
+                        >
+                          <FiLinkedin />
+                          {linkedinPosting ? 'Posting…' : 'Post to LinkedIn now'}
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Re-post escape hatch — only when collapsed (i.e. already posted) */}
+                  {platform.id === 'linkedin' &&
+                    article?.linkedinPostedAt &&
+                    !forceShowLinkedinIntro && (
+                    <button
+                      type="button"
+                      onClick={() => setForceShowLinkedinIntro(true)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: '#a3acb2',
+                        fontSize: '0.75rem',
+                        cursor: 'pointer',
+                        textDecoration: 'underline',
+                        padding: '0.5rem 0 0',
+                        display: 'block'
+                      }}
+                    >
+                      Re-post anyway
+                    </button>
+                  )}
+
+                  {platform.id === 'linkedin' && (
+                    <div style={{ marginTop: '0.75rem' }}>
+                      <button
+                        type="button"
+                        onClick={handleDisconnectLinkedIn}
+                        style={{
+                          marginTop: '0.5rem',
+                          background: 'none',
+                          border: 'none',
+                          color: '#a3acb2',
+                          fontSize: '0.75rem',
+                          cursor: 'pointer',
+                          textDecoration: 'underline'
+                        }}
+                      >
+                        Disconnect LinkedIn
+                      </button>
+                    </div>
+                  )}
+                </motion.div>
+              )}
+
+              {selectedPlatforms[platform.id] &&
+                platform.status === 'disconnected' &&
+                platform.id === 'linkedin' && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  style={{ marginTop: '1rem' }}
+                >
+                  <button
+                    type="button"
+                    onClick={handleConnectLinkedIn}
+                    disabled={linkedinStatus.loading}
+                    style={{
+                      background: '#0077b5',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '6px',
+                      padding: '0.5rem 0.875rem',
+                      fontSize: '0.8125rem',
+                      cursor: linkedinStatus.loading ? 'not-allowed' : 'pointer',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.375rem'
+                    }}
+                  >
+                    <FiLinkedin />
+                    {linkedinStatus.loading ? 'Checking…' : 'Connect LinkedIn'}
+                  </button>
+                  <p style={{ fontSize: '0.75rem', opacity: 0.7, margin: '0.5rem 0 0' }}>
+                    Authorize once. We'll cross-post when you click Publish.
+                  </p>
                 </motion.div>
               )}
             </PlatformCard>

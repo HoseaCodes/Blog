@@ -1,0 +1,23 @@
+name: Release Please
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          # PAT required (not GITHUB_TOKEN) so the release tag this action
+          # pushes triggers the downstream release-publish.yml deploy workflow.
+          # GITHUB_TOKEN-authored events do not trigger other workflows.
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          release-type: node
+          target-branch: master

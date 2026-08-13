@@ -40,13 +40,13 @@
   text-decoration: none;
   font-family: "Oregon";
   text-decoration: none;
-  color: #000000;
+  color: #f4f6f8;
   width: auto;
   font-size: 0.9rem;
   letter-spacing: 1px;
 }
 .cart-title-wrapper a:hover {
-  background-color: #000000;
+  background-color: #f4f6f8;
   color: #ffffff;
   text-decoration: none;
 }
@@ -137,7 +137,7 @@
   border-bottom: 1px solid #00000031;
 }
 .total-products-container span {
-  color: #26c917;
+  color: #5bb39e;
 }
 
 @media only screen and (max-width: 900px) {
@@ -174,7 +174,7 @@
 .amount button {
     width: 40px;
     height: 40px;
-    border: 1px solid #777;
+    border: 1px solid rgba(255, 255, 255, 0.12);
 }
 .delete {
     position: absolute;
@@ -215,6 +215,6 @@
 .btn-primary,
 .btn-primary.disabled,
 .btn-primary:disabled {
-  background-color: #4466f2 !important;
-  border-color: #4466f2 !important;
+  background-color: #5bb39e !important;
+  border-color: #5bb39e !important;
 }

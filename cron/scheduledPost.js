@@ -3,7 +3,7 @@ import Articles from "../models/article.js";
 import moment from "moment";
 
 export const initScheduledPostJob = () => {
-  const scheduledJobFunction = CronJob.schedule(
+  CronJob.schedule(
     "0 12 * * *",
     async () => {
       const articles = await Articles.find({
@@ -24,10 +24,7 @@ export const initScheduledPostJob = () => {
       });
     },
     {
-      scheduled: true,
       timezone: "America/Chicago",
     }
   );
-
-  scheduledJobFunction.start();
 };

@@ -51,7 +51,14 @@ describe("Articles API", () => {
       mockStormGateMe();
       const auth = bearerToken();
       const first = buildArticle();
-      await api().post("/api/articles").set("Authorization", auth).send(first);
+      const seed = await api()
+        .post("/api/articles")
+        .set("Authorization", auth)
+        .send(first);
+      // Assert the precondition: if this create silently fails there is no
+      // duplicate to reject, and the real cause shows up as a confusing
+      // "expected 400, got 200" on the assertion below instead of here.
+      expect(seed.status).toBe(200);
 
       const res = await api()
         .post("/api/articles")

@@ -11,8 +11,6 @@
 # production
 /build
 /logs
-swagger-server/node_modules
-swagger-server/package-lock.json
 
 # misc
 .DS_Store
@@ -49,3 +47,5 @@ set-fly-secrets.sh
 dump
 
 output.json
+
+storybook-static

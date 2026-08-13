@@ -1,0 +1,73 @@
+# Publishes Storybook to GitHub Pages.
+#
+# Deploys from staging, so the published component library tracks in-flight
+# work rather than the last release. This is the one exception to staging being
+# verify-only (see main.yaml): it publishes docs, never the app — no Fly.io
+# deploy and no release are involved. Note the Pages site is public even though
+# staging is unreleased.
+#
+# Requires repo Settings -> Pages -> Source = "GitHub Actions". This uses the
+# Pages deployment API rather than pushing to a gh-pages branch, so no
+# gh-pages branch is created and no PAT is needed.
+name: Storybook
+
+on:
+  push:
+    branches:
+      - staging
+    # Only rebuild when something that affects the storybook changed.
+    paths:
+      - 'src/**'
+      - '.storybook/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/storybook.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it — a half-applied Pages
+# deployment is worse than a slightly stale one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      # Install from the lockfile — do NOT delete it. Same constraint as the
+      # build job in main.yaml: react-scripts@4.0.3 pins @babel/core to 7.12.3
+      # while floating babel-preset-react-app to ^10.0.0, and a fresh resolve
+      # can land a combination that dies with
+      #   Requires Babel "^7.16.0", but was loaded with "7.12.3"
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+      # NODE_OPTIONS=--openssl-legacy-provider is set inside the npm script.
+      # Without it webpack 4's md4 hashing fails on Node 17+ with
+      #   error:0308010C:digital envelope routines::unsupported
+      - name: Build Storybook
+        run: npm run build-storybook
+        env:
+          SKIP_PREFLIGHT_CHECK: 'true'
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

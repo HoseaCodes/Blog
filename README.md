@@ -435,12 +435,73 @@ See [wiki](https://github.com/HoseaCodes/Blog/wiki/Backend) for details.
 
 ### Pipelines
 
-| Job Name                                              | Use Case    |
-| ----------------------------------------------------- | ----------- |
-| Static-Scan                                           | Static application security testing (SAST) or static code analysis, analyzes source code to find security vulnerabilities that make the organization's applications susceptible to attack.   |
-| Dependency-Scan                                       | Dependency scanning generates an alert for any open-source component, direct or transitive, found to be vulnerable that the code depends upon.   |
-| Lint-Scan                                             | Lint scans source code for errors and potential issues that could lead to bugs, vulnerabilities, and other problems.   |
-| Build                                                 |   Build and deploying the project.          |
+Three long-lived branches. Only two of them run CI.
+
+| Branch    | Workflow | Trigger | Runs | Deploys |
+| --------- | -------- | ------- | ---- | ------- |
+| `staging` | `main.yaml` (Dev Pipeline) | push to `staging` | static-scan → dependency-scan → lint → integration-test → build → promote-dev | Fly.io, on every green build |
+| `prep`    | *none* | — | nothing | — |
+| `master`  | `master.yaml` (Snyk Scan), `release-please.yml` | push to `master` | security → build; release-please in parallel | via release tag — see below |
+
+> **`prep` has no CI.** No workflow triggers on it and none reference it. Checks
+> displayed on a PR that *targets* `prep` are the `staging` pipeline's runs
+> against staging's head commit — they say nothing about the merge result.
+> `prep`'s own copies of the workflow files are stale: they still trigger on
+> `staging` and have no `integration-test` job.
+
+#### Dev Pipeline jobs (`staging`)
+
+| Job Name           | Use Case |
+| ------------------ | -------- |
+| static-scan        | Static application security testing (SAST). Analyzes source code for vulnerabilities that make the application susceptible to attack. |
+| dependency-scan    | Alerts on any open-source component, direct or transitive, that the code depends on and is known to be vulnerable. |
+| lint               | Scans source for errors and potential issues that lead to bugs and vulnerabilities. |
+| integration-test   | `npm run test:integration` — drives the real Express app over HTTP (supertest) against a real MongoDB (Testcontainers). Outbound third-party HTTP is blocked by `nock`. **Requires Docker.** |
+| build              | `npm ci --legacy-peer-deps` → `npm run build` → archives `build.tar.gz`, then cuts a `staging.v*` release. |
+| promote-dev        | Deploys the built artifact to Fly.io. |
+
+Jobs are gated: `build` needs all four scans/tests to pass, and `promote-dev`
+needs `build`. A failure early in the chain means later jobs never execute —
+so a green early stage is not evidence that the later ones work.
+
+#### Releases and deploys
+
+| Mechanism | Where | Tag format | Pushes version bump | Drives a deploy |
+| --------- | ----- | ---------- | ------------------- | --------------- |
+| conventional-changelog | `staging` build job | `staging.v*` | Yes | No |
+| conventional-changelog | `master` build job | `dev.v*` | No | No |
+| release-please | `master` | `v*` | Yes, via release PR | Yes |
+| `release-publish.yml` | on tag `v*.*.*` | — | — | Deploys to Fly.io |
+
+Two deploy paths:
+
+- **staging** — `promote-dev` deploys to Fly.io directly on every green build.
+- **master** — release-please opens a release PR; merging it creates a `v1.2.3`
+  tag, which fires `release-publish.yml` and deploys to Fly.io.
+
+#### Pipeline gotchas
+
+- **Never delete `package-lock.json` in CI.** `react-scripts@4.0.3` pins
+  `@babel/core` to exactly `7.12.3` while floating `babel-preset-react-app` to
+  `^10.0.0`, which resolves to `10.1.0` and requires `^7.16.0`. Resolving
+  without the lockfile fails the build with
+  `Requires Babel "^7.16.0", but was loaded with "7.12.3"`. Install with
+  `npm ci`.
+- **The integration suite needs no real API keys.** `test/setup/env.cjs` seeds
+  placeholders (including `OPENAI_API_KEY`) before app modules load, and
+  `nock.disableNetConnect()` blocks egress. Do not add real third-party
+  secrets to CI for tests.
+- **Do not construct third-party SDK clients at module scope.** `app.js`
+  imports every router at boot, so a client built at import time makes the
+  whole app unimportable without that credential — which takes down the
+  integration suite before a single test runs. Build clients lazily inside
+  handlers.
+- **`master` still runs conventional-changelog with `tag-prefix: dev.v` and
+  `git-push: false`.** Because the bump is never pushed, `master`'s
+  `package.json` drifts behind its `dev.v*` tags, and the job will eventually
+  fail on a tag collision the same way `staging` did. Nothing consumes those
+  `dev.v*` tags — `release-publish.yml` fires on `v*.*.*`, which they do not
+  match. Removing those steps from `master.yaml` is the pending cleanup.
 
 See [wiki](https://github.com/HoseaCodes/Blog/wiki/Dev-Ops) for details.
 

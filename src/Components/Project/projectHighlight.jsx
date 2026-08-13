@@ -1,48 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { projectData } from "../../Pages/Projects/ProjectsData";
-
-/* ------------------------------------------------------------------
-   Curated showcase data — overrides + supplements ProjectsData
-   for the home-page treatment. Keeps source of truth in ProjectsData
-   but lets us cherry-pick the marketing copy, tech stack, and links
-   without forcing schema changes upstream.
------------------------------------------------------------------- */
-
-const SHOWCASE = [
-  {
-    id: 1,
-    eyebrow: "01 / SOCIAL RING",
-    title: "Custom borders for social profile pictures.",
-    description:
-      "iOS app letting users layer custom-designed rings around their profile pictures — 100+ borders, in-app editor, pinch-to-resize. Grew to 500+ active users before v2.",
-    role: "Software Lead · Swift / SwiftUI",
-    timeframe: "Spring 2021 · 120 hrs",
-    stack: ["Swift", "SwiftUI", "iOS", "UIKit"],
-    image: "https://i.imgur.com/138wx8D.png",
-    links: [
-      { label: "Case study", href: "/project/1", internal: true, primary: true },
-      { label: "App Store", href: "https://apps.apple.com/us/app/social-ring/id1551446005", external: true },
-      { label: "Website", href: "https://www.social-ring.com/", external: true },
-    ],
-  },
-  {
-    id: 2,
-    eyebrow: "02 / AIMLY",
-    title: "Digital fundraising platform with gourmet chips.",
-    description:
-      "Lead backend engineer on the API powering campaign creation, donations, team leaderboards, inventory, and shipment tracking. Real-time reporting, payment gateway integration, and serverless data layer.",
-    role: "Lead Backend Engineer",
-    timeframe: "Fall 2022 · 2.5k hrs",
-    stack: ["Node.js", "Next.js", "AWS", "MySQL", "Redux"],
-    image: "https://i.imgur.com/9k4vVxL.png",
-    links: [
-      { label: "Case study", href: "/project/2", internal: true, primary: true },
-      { label: "goaimly.com", href: "https://goaimly.com/", external: true },
-    ],
-  },
-];
+import { GlobalState } from "../../GlobalState";
 
 /* ------------------------------------------------------------------
    Styled components
@@ -426,7 +385,25 @@ const FooterCTA = styled.a`
 ------------------------------------------------------------------ */
 
 function ProjectHighlight() {
-  const showcase = SHOWCASE.filter((s) => projectData.some((p) => p.id === s.id));
+  // Card copy comes off the project document now (was a local SHOWCASE const
+  // duplicated here and in Pages/Projects/Projects.jsx).
+  const state = useContext(GlobalState);
+  const [projects] = state?.projectsAPI?.projects || [[]];
+
+  const showcase = (projects || []).map((p) => ({
+    id: p.projectId,
+    // Canonical URL path — slug, falling back to the numeric id.
+    href: `/project/${p.slug || p.projectId}`,
+    eyebrow: p.eyebrow,
+    title: p.cardTitle || p.title,
+    description: p.description,
+    // Defaulted to "" because the MediaBadge does role.split("·") unguarded.
+    role: p.highlightRole || p.role || "",
+    timeframe: p.timeframe,
+    stack: p.stack || [],
+    image: p.image || p.headerImg,
+    links: p.links || [],
+  }));
 
   return (
     <Section>
@@ -446,7 +423,7 @@ function ProjectHighlight() {
             const reverse = idx % 2 === 1;
             return (
               <Row key={project.id} reverse={reverse}>
-                <Media to={`/project/${project.id}`} aria-label={`Open ${project.title} case study`}>
+                <Media to={project.href} aria-label={`Open ${project.title} showcase`}>
                   <MediaBadge>{project.role.split("·")[0].trim()}</MediaBadge>
                   <MediaImg src={project.image} alt={project.title} loading="lazy" />
                 </Media>

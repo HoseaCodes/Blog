@@ -10,6 +10,24 @@ const RESUME =
 
 const TIMELINE = [
   {
+    year: "2026",
+    title: "Distributed Systems, Platform Engineering & AI",
+    body:
+      "Expanded deeper into production architecture and platform engineering — building and supporting Java/Spring services, GraphQL integrations, reactive gateways, cloud infrastructure, and event-driven systems. Worked across Terraform, container platforms, observability, resilience, and production diagnostics while using AI coding agents to accelerate delivery under human review, testing, and CI guardrails.",
+  },
+  {
+    year: "2025",
+    title: "Architecture, Reliability & Technical Ownership",
+    body:
+      "Took on broader ownership across system design, reliability, and production engineering. Worked on shared services, API orchestration, cloud integrations, deployment safety, health checks, caching, security remediation, and observability. My role with Aimly also evolved from full-time engineering into consulting, with greater focus on architecture, backend systems, AWS infrastructure, and technical decision-making.",
+  },
+  {
+    year: "2024",
+    title: "Backend Engineering → Cloud & Systems Architecture",
+    body:
+      "Continued growing beyond application development into architecture and operational concerns. At State Farm, worked across enterprise Java/Spring systems, performance improvements, automation, technical documentation, and production support. At Aimly, led backend engineering for a cloud-native fundraising platform using Node.js, MySQL, AWS, APIs, and third-party integrations.",
+  },
+  {
     year: "2023",
     title: "Software Engineer II — Architecture & SRE",
     body:
@@ -762,29 +780,47 @@ const About = () => {
               <em>Operations Manager</em> role at J.B. Hunt in 2014.
             </p>
             <p>
-              The pattern in operations was the same as in software:{" "}
-              <em>identify underlying problems</em>, analyze possible
-              solutions, ship resolutions. I went back for an M.S. in
-              Management Information Systems in 2017 to formalize the
-              connection — relational databases, SQL, C#/C++, and how
-              technology fits real business processes.
+              The pattern in operations turned out to be the same one that
+              drew me to software: <em>identify the underlying problem</em>,
+              understand the system around it, evaluate the tradeoffs, and
+              ship a solution. I went back for an M.S. in Management
+              Information Systems in 2017 to formalize that connection —
+              studying relational databases, SQL, C#/C++, and how technology
+              fits into real business processes.
             </p>
             <p>
               In 2020 I enrolled in General Assembly's immersive full-stack
-              program — MERN, Python, Django, OAuth, SPA architecture — and
-              landed at <em>State Farm</em> as a full-stack Java engineer in
-              March 2021. Promoted to Software Engineer II within the year,
-              and since then I've moved into architecture and SRE: serverless
-              on AWS, Lambda + DynamoDB, Terraform, chaos engineering,
-              observability with OpenTelemetry.
+              engineering program, working across MERN, Python, Django, OAuth,
+              and SPA architecture. In March 2021 I joined{" "}
+              <em>State Farm</em> as a full-stack Java engineer and was
+              promoted to Software Engineer II within my first year.
             </p>
             <p>
-              Alongside the day job I've been the{" "}
-              <em>Lead Backend Engineer</em> at Aimly (Austin) building a
-              digital fundraising platform — API design, serverless data
-              layer, payment integration. And I write about all of it on the
-              blog.
+              Since then, my work has expanded well beyond application
+              development. I've worked across Java/Spring services,
+              distributed APIs, GraphQL integrations, reactive gateways,
+              serverless AWS systems, infrastructure as code, observability,
+              resilience engineering, and production diagnostics.
+              Increasingly, my focus is on{" "}
+              <em>the architecture around the code</em> — how systems
+              communicate, fail safely, remain observable, and evolve without
+              disrupting the people who depend on them.
             </p>
+            <p>
+              Alongside my enterprise work, I've helped build{" "}
+              <em>Aimly</em>, a digital fundraising platform, first as an
+              engineer and later through consulting. My work there has
+              included backend architecture with Node.js and MySQL, AWS
+              infrastructure, API design, integrations, and the technical
+              decisions required to take a product from idea to production.
+            </p>
+            <p>
+              More recently, I've also been exploring how AI coding agents and
+              LLM-powered systems can accelerate engineering without giving up
+              the things that matter in production: testing, security,
+              observability, maintainability, and human accountability.
+            </p>
+            <p>And I write about what I learn along the way.</p>
           </StoryBody>
         </StoryShell>
       </Section>

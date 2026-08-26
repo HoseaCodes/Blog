@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200"
+     preserveAspectRatio="xMidYMid slice" role="img" aria-label="AI Quiz">
+  <title>AI Quiz</title>
+  <defs>
+    <linearGradient id="hbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="hbolt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fde047"/>
+      <stop offset="1" stop-color="#f59e0b"/>
+    </linearGradient>
+    <radialGradient id="hglow" cx="50%" cy="42%" r="60%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="hgrid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M80 0H0V80" fill="none" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <!-- No text: this is scaled with background-size: cover behind the page's own
+       title, so any wordmark here would be cropped and would duplicate it. -->
+  <rect width="1600" height="1200" fill="url(#hbg)"/>
+  <rect width="1600" height="1200" fill="url(#hgrid)"/>
+  <rect width="1600" height="1200" fill="url(#hglow)"/>
+
+  <g transform="translate(800 600) scale(6.2) translate(-32 -32)" opacity="0.16">
+    <path d="M36 6 L16 36 H28 L24 58 L48 26 H34 Z" fill="url(#hbolt)"/>
+  </g>
+</svg>

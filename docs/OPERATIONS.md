@@ -113,6 +113,33 @@ Authenticated flows additionally need a reachable Storm-Gate at `STORM_GATE_URL`
 
 ---
 
+## Adding a project
+
+The database is the source of truth. `src/Pages/Projects/ProjectsData.jsx` was the pre-migration source and is now read only by `scripts/seedProjects.mjs`; editing it changes nothing on the site. Project records are **not** committed to the repo — a copy in git goes stale the moment the document is edited by any other route.
+
+**1. Put the images somewhere reachable first.** Cloudinary is the media store, and `POST /api/upload` accepts SVG alongside JPEG, PNG, GIF and WebP. Upload, then use the returned `secure_url`. Do not reference a path under `public/`: that directory only reaches the server on a deploy, so `/images/foo.svg` returns the SPA's HTML fallback — a broken image — until the next release.
+
+`image` is the `/project` card, rendered at 16/10. `headerImg` is the full-bleed detail hero, also reused as the previous project's "next" tile. They should not be the same file: anything with text in it gets cropped by the hero and collides with the title drawn on top of it.
+
+**2. Write the record.** Put the JSON in a scratch directory outside the repo and run:
+
+```bash
+node scripts/upsertProject.mjs /tmp/<name>.json --dry-run
+node scripts/upsertProject.mjs /tmp/<name>.json
+```
+
+The upsert keys on `projectId`, so re-running updates rather than duplicating, and it `$set`s only the keys present — a file holding `projectId`, `slug` and three fields is a valid partial patch, not a truncated record.
+
+Three things to know before you run it:
+
+- **It writes to production.** `MONGODB_URL` in `.env` points at the live Atlas cluster, and `draft: false` publishes to [hoseacodes.com/project](https://www.hoseacodes.com/project) the moment the write lands. There is no local sandbox — see [the known gap](#failure-modes). Stage with `draft: true` and flip it when you're ready.
+- **`slug` is required.** `findOneAndUpdate` does not run the `pre('validate')` hook that derives one, so a record without an explicit slug saves with none and `/project/:slug` will not resolve it. `POST /api/projects` uses `save()` and does derive it — the gap is specific to the script.
+- **Some detail-page fields are read unguarded.** `source` and `websites` must be arrays, and the `frontEnd`/`backEnd` sections dereference `design` and `designImg` without a null check. Omitting them renders a broken section rather than hiding it.
+
+`createProject`, `updateProject` and `deleteProject` are implemented behind auth in [`routes/project.js`](https://github.com/HoseaCodes/Blog/blob/master/routes/project.js) but have no caller — there is no admin page for projects the way there is for blogs, products and art. That is the only reason this is a script rather than a form.
+
+---
+
 ## Docker
 
 ```bash

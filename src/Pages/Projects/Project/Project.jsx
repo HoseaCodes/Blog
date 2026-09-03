@@ -12,6 +12,7 @@ import AnimatedParagraphFade from "../../../Components/Animation/Text/AnimatedPa
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useInView } from "react-intersection-observer";
+import { getProjectView } from "../projectViews";
 
 // Canonical project URL. Falls back to the numeric id only if a record somehow
 // has no slug, so links never render as `/project/undefined`.
@@ -214,6 +215,14 @@ const ProjectItem = () => {
   // same reason as the guard above.
   if (needsCanonicalRedirect) {
     return <Redirect to={projectPath(project)} />;
+  }
+
+  // A record can name its own detail view instead of the case-study layout
+  // below (see projectViews.js). Also after the hooks, and after the canonical
+  // redirect so a custom view still gets one URL rather than two.
+  const CustomView = getProjectView(project.customView);
+  if (CustomView) {
+    return <CustomView project={project} />;
   }
 
   return (

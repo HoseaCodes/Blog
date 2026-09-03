@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-label="GitHub catalog: 89 public repositories">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#206a5d" stop-opacity="0.28" />
+      <stop offset="100%" stop-color="#206a5d" stop-opacity="0" />
+    </radialGradient>
+    <clipPath id="barClip">
+      <rect x="0" y="0" width="1200" height="750" rx="0" />
+    </clipPath>
+  </defs>
+  <rect width="1200" height="750" fill="#14191e" />
+  <rect width="1200" height="750" fill="url(#glow)" />
+  <text x="600" y="335" text-anchor="middle" font-family="Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="180" font-weight="800" letter-spacing="-6" fill="#f4f6f8">89</text>
+  <text x="600" y="405" text-anchor="middle" font-family="Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="6" fill="#6b7479">PUBLIC REPOSITORIES</text>
+  <g clip-path="url(#barClip)">
+    <rect x="280" y="455" width="640" height="12" rx="6" fill="#20262b" />
+    <rect x="280.00" y="455" width="194.16" height="12" fill="#f1e05a" />
+    <rect x="474.16" y="455" width="43.15" height="12" fill="#e34c26" />
+    <rect x="517.30" y="455" width="43.15" height="12" fill="#3178c6" />
+    <rect x="560.45" y="455" width="35.96" height="12" fill="#3572a5" />
+    <rect x="596.40" y="455" width="21.57" height="12" fill="#a91e50" />
+    <rect x="617.98" y="455" width="21.57" height="12" fill="#b07219" />
+    <rect x="639.55" y="455" width="14.38" height="12" fill="#89e051" />
+    <rect x="653.93" y="455" width="7.19" height="12" fill="#563d7c" />
+    <rect x="661.12" y="455" width="7.19" height="12" fill="#f05138" />
+    <rect x="668.31" y="455" width="251.69" height="12" fill="#4d5559" />
+  </g>
+  <text x="600" y="515" text-anchor="middle" font-family="Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="2" fill="#4d5559">60 ORIGINAL · 29 FORKS</text>
+</svg>

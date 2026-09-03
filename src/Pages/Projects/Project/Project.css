@@ -1059,3 +1059,54 @@ a.next-work {
   transform: none !important;
   transition: opacity 0.5s ease, transform 0.5s ease !important;
 }
+
+/* ============================================================
+   Unknown /project/:id — shown once the fetch resolves with no
+   matching record. Reuses the .project-group token block above.
+   ============================================================ */
+
+.project-group .project-not-found {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 180px 24px 160px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.project-group .project-not-found h1 {
+  font-size: 28px;
+  color: var(--text);
+  margin: 0 0 12px;
+}
+
+.project-group .project-not-found p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.project-group .project-not-found code {
+  font-family: "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.project-group .project-not-found a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.project-group .project-not-found a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 720px) {
+  .project-group .project-not-found {
+    padding: 120px 18px 100px;
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from "react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, Redirect, Link } from "react-router-dom";
 import { StyledHr } from "../../../Layout/Hr/styledHr";
 import { GlobalState } from "../../../GlobalState";
 import "./Project.css";
@@ -12,6 +12,7 @@ import AnimatedParagraphFade from "../../../Components/Animation/Text/AnimatedPa
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useInView } from "react-intersection-observer";
+import { getProjectView } from "../projectViews";
 
 // Canonical project URL. Falls back to the numeric id only if a record somehow
 // has no slug, so links never render as `/project/undefined`.
@@ -26,6 +27,9 @@ const ProjectItem = () => {
 
   const state = useContext(GlobalState);
   const [projects] = state?.projectsAPI?.projects || [[]];
+  // `loading` separates the empty first render from a finished fetch that
+  // simply has no record for this slug — the second is a real 404.
+  const [projectsLoading] = state?.projectsAPI?.loading || [false];
 
   // Previously `projectData[params.id - 1]` — array position doubling as the
   // identifier. Mongo returns documents without a guaranteed position, so
@@ -182,9 +186,27 @@ const ProjectItem = () => {
   // Safe to bail now — every hook above has run, so the hook count is identical
   // on the empty first render and the loaded one.
   if (!project) {
+    // Still fetching: hold the layout open rather than flashing a 404 that the
+    // very next render would contradict.
+    if (projectsLoading) {
+      return (
+        <div id="single-work" className="project-group">
+          <div style={{ minHeight: "60vh" }} />
+        </div>
+      );
+    }
+
+    // Fetch finished and nothing matched `:id` — say so instead of leaving a
+    // blank page that reads as a broken build.
     return (
       <div id="single-work" className="project-group">
-        <div style={{ minHeight: "60vh" }} />
+        <div className="project-not-found">
+          <h1>Project not found</h1>
+          <p>
+            No project exists at <code>/project/{rawParam}</code>.{" "}
+            <Link to="/project">View all projects →</Link>
+          </p>
+        </div>
       </div>
     );
   }
@@ -193,6 +215,14 @@ const ProjectItem = () => {
   // same reason as the guard above.
   if (needsCanonicalRedirect) {
     return <Redirect to={projectPath(project)} />;
+  }
+
+  // A record can name its own detail view instead of the case-study layout
+  // below (see projectViews.js). Also after the hooks, and after the canonical
+  // redirect so a custom view still gets one URL rather than two.
+  const CustomView = getProjectView(project.customView);
+  if (CustomView) {
+    return <CustomView project={project} />;
   }
 
   return (

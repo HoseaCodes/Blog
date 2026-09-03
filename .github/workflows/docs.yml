@@ -25,8 +25,11 @@ on:
 permissions:
   contents: read
 
+# Must match storybook.yml's group. A repo has exactly ONE Pages site, and both
+# workflows deploy to it — sharing the group stops them racing. It does NOT stop
+# them overwriting each other; see the note in docs/README.md.
 concurrency:
-  group: pages-${{ github.ref }}
+  group: pages
   cancel-in-progress: false
 
 jobs:

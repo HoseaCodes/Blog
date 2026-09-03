@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.0](https://github.com/HoseaCodes/Blog/compare/v1.8.0...v1.9.0) (2026-09-03)
+
+
+### Features
+
+* add GitHub breakdown component and detail view ([21f97a1](https://github.com/HoseaCodes/Blog/commit/21f97a173bc39a141a64ab1800a9519cb031f526))
+* Add project management scripts and SVG assets for AI Quiz ([3379466](https://github.com/HoseaCodes/Blog/commit/337946620c06e0b1584a863dcc3e38f82e0dfc57))
+* **projects:** enhance project fetching with loading state and not found handling ([c2637bf](https://github.com/HoseaCodes/Blog/commit/c2637bf356f5ab7a2f80f5bb2b7049e01770443a))
+
+
+### Bug Fixes
+
+* **docs:** update concurrency group in GitHub Actions workflow for clarity ([19eb915](https://github.com/HoseaCodes/Blog/commit/19eb91507d4f4e517c2a35c5546ba42d61cd7a7a))
+
 ## [1.8.0](https://github.com/HoseaCodes/Blog/compare/v1.7.0...v1.8.0) (2026-08-13)
 
 

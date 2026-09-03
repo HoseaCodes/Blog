@@ -125,6 +125,12 @@ const projectSchema = new mongoose.Schema({
     uiDesignImgs: { type: mongoose.Schema.Types.Mixed },
     features: { type: mongoose.Schema.Types.Mixed },
 
+    // Names a rendered detail view in src/Pages/Projects/projectViews.js in
+    // place of the case-study layout — the GitHub catalog is a project record
+    // like any other, it just draws itself. Unset for normal projects, and an
+    // unrecognised key falls back to the standard layout.
+    customView: { type: String, trim: true },
+
     /* ---------- visibility ---------- */
     // Mirrors the Articles pattern so unfinished projects can be staged.
     draft: {

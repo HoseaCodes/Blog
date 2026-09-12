@@ -49,7 +49,12 @@ async function syncBlogUser(tok) {
 
 const auth = (req, res, next) => {
   if (!stormGateAuth) {
-    stormGateAuth = createRequireAuth({ secret: process.env.ACCESS_TOKEN_SECRET });
+    stormGateAuth = createRequireAuth({
+      secret: process.env.ACCESS_TOKEN_SECRET, // keeps today's HS256 tokens working
+      jwksUri: 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com/.well-known/jwks.json',
+      issuer: 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com',
+    });
+
   }
   stormGateAuth(req, res, async (err) => {
     if (err) return next(err);

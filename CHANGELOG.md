@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/HoseaCodes/Blog/compare/v1.9.0...v1.9.1) (2026-09-12)
+
+
+### Bug Fixes
+
+* Remove unused images, game components, and constants; add Asperia link utility ([38ea83f](https://github.com/HoseaCodes/Blog/commit/38ea83f77afbc2900e5d20fc4535b325eae6006e))
+
 ## [1.9.0](https://github.com/HoseaCodes/Blog/compare/v1.8.0...v1.9.0) (2026-09-03)
 
 

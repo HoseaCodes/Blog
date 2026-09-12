@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.9.2](https://github.com/HoseaCodes/Blog/compare/v1.9.1...v1.9.2) (2026-09-12)
+
+
+### Bug Fixes
+
+* **docs:** Update documentation link in README ([0260820](https://github.com/HoseaCodes/Blog/commit/02608204ceaf38af31c2d5d63f807e772686e8cb))
+* **docs:** Update documentation link in README ([ac90453](https://github.com/HoseaCodes/Blog/commit/ac9045319a72ce3ecbe07c66c00a899b508e30cd))
+
 ## [1.9.1](https://github.com/HoseaCodes/Blog/compare/v1.9.0...v1.9.1) (2026-09-12)
 
 

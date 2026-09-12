@@ -1,5 +1,124 @@
 # Changelog
 
+## [1.9.0](https://github.com/HoseaCodes/Blog/compare/v1.8.0...v1.9.0) (2026-09-03)
+
+
+### Features
+
+* add GitHub breakdown component and detail view ([21f97a1](https://github.com/HoseaCodes/Blog/commit/21f97a173bc39a141a64ab1800a9519cb031f526))
+* Add project management scripts and SVG assets for AI Quiz ([3379466](https://github.com/HoseaCodes/Blog/commit/337946620c06e0b1584a863dcc3e38f82e0dfc57))
+* **projects:** enhance project fetching with loading state and not found handling ([c2637bf](https://github.com/HoseaCodes/Blog/commit/c2637bf356f5ab7a2f80f5bb2b7049e01770443a))
+
+
+### Bug Fixes
+
+* **docs:** update concurrency group in GitHub Actions workflow for clarity ([19eb915](https://github.com/HoseaCodes/Blog/commit/19eb91507d4f4e517c2a35c5546ba42d61cd7a7a))
+
+## [1.8.0](https://github.com/HoseaCodes/Blog/compare/v1.7.0...v1.8.0) (2026-08-13)
+
+
+### Features
+
+* **docs:** add comprehensive documentation for roadmap, security, and architectural decisions ([949d015](https://github.com/HoseaCodes/Blog/commit/949d015d2271ad94a0c6f523811e5b573126ae14))
+* **docs:** add MkDocs configuration and documentation for site generation ([6ad0a2d](https://github.com/HoseaCodes/Blog/commit/6ad0a2da28e6e439d1c63fe67affcb60575e6d54))
+* integrate Swagger UI for API documentation ([217160a](https://github.com/HoseaCodes/Blog/commit/217160a1f23594ddc5cf8f24a5d9bf8bee5d9dd0))
+
+
+### Bug Fixes
+
+* **docs:** clarify API authentication and ownership checks in documentation ([98ba1c6](https://github.com/HoseaCodes/Blog/commit/98ba1c699f941bcefafa899fbbc0d4d9ad3fd606))
+* **docs:** update authentication and security documentation to address middleware gaps and clarify endpoint access ([eecbd40](https://github.com/HoseaCodes/Blog/commit/eecbd40aa0a4e83d27ca772a024c99b6264de3ce))
+* **docs:** update links in documentation for consistency and accuracy ([6ad0a2d](https://github.com/HoseaCodes/Blog/commit/6ad0a2da28e6e439d1c63fe67affcb60575e6d54))
+* **docs:** update mkdocs-material version and clarify dependency notes in requirements ([1366768](https://github.com/HoseaCodes/Blog/commit/136676864fddef5c5b2fa3693a5ef78ac61f68ee))
+* **docs:** update repository links and clarify documentation references ([a753fb4](https://github.com/HoseaCodes/Blog/commit/a753fb431dcce79943fe6fbb626e9d9c73d6c136))
+* **storybook:** update deployment branch from master to staging ([7b475cf](https://github.com/HoseaCodes/Blog/commit/7b475cfa006de0beeff4cc0c5ca5f23517690368))
+
+## [1.7.0](https://github.com/HoseaCodes/Blog/compare/v1.6.0...v1.7.0) (2026-08-13)
+
+
+### Features
+
+* Add case study components and routing for case studies section ([7b66b51](https://github.com/HoseaCodes/Blog/commit/7b66b519860b011ed9fecee85787ff2b894878b0))
+* add integration tests for Articles and Subscribers APIs ([6bbf3df](https://github.com/HoseaCodes/Blog/commit/6bbf3dffa9a70c456ba3782ceb1177521c5b037c))
+* **error:** enhance 404 page with styled components and improved messaging ([d2a84c2](https://github.com/HoseaCodes/Blog/commit/d2a84c2e65083d1e25af0262dd20427ff6ca7b17))
+* Implement project management API and UI integration ([4a57bba](https://github.com/HoseaCodes/Blog/commit/4a57bbac732cefa750848079792fa78b3ad99793))
+* Implement project management API and UI integration ([ea8e1ba](https://github.com/HoseaCodes/Blog/commit/ea8e1ba3d2fa0820dada23e3e076e28be5a56d11))
+* **linkedin:** Implement LinkedIn integration for article cross-posting ([fe0c10c](https://github.com/HoseaCodes/Blog/commit/fe0c10c803c2a29c70a385222cce1f717a4cd34e))
+* **sharing:** enhance LinkedIn sharing functionality with custom text ([5ae2eba](https://github.com/HoseaCodes/Blog/commit/5ae2eba4ed44bfdb18fedaa99db55edd5cd69588))
+* **sharing:** simplify LinkedIn sharing functionality by updating share URL ([68d700f](https://github.com/HoseaCodes/Blog/commit/68d700f2983c5be98aa7bc6d73c77d63e0f3496f))
+
+
+### Bug Fixes
+
+* add newsletter subscription and management features ([dd8e737](https://github.com/HoseaCodes/Blog/commit/dd8e737cfe96384f993c2d2788570a4ecdb57db6))
+* **admin:** implement admin routes for managing drafts and archived articles ([87a97c1](https://github.com/HoseaCodes/Blog/commit/87a97c1060f60f53298389c945bb37b3ee359891))
+* **ai:** build OpenAI clients lazily so app.js imports without a key ([aed1c57](https://github.com/HoseaCodes/Blog/commit/aed1c5701f6a5e7dcdc7d707486dc8141ae252c2))
+* **article:** enhance blog content styling with custom checkbox and table designs ([f183a8f](https://github.com/HoseaCodes/Blog/commit/f183a8fec4ab4d2f301df5ded3fff5b0207e1706))
+* **article:** implement like and save functionality for articles with user-specific states ([751d749](https://github.com/HoseaCodes/Blog/commit/751d74978551309e7d748f2fc2885e856356eb89))
+* **article:** include commentCount in article details and update comment display logic ([1c6b15f](https://github.com/HoseaCodes/Blog/commit/1c6b15f998edb07a46b422dc154dc9c9d824a4a3))
+* **ci:** give staging its own release namespace and push the version … ([c0837a8](https://github.com/HoseaCodes/Blog/commit/c0837a8ac91526aeb5676df06e801d4dede9a9f3))
+* **ci:** give staging its own release namespace and push the version bump ([3e12090](https://github.com/HoseaCodes/Blog/commit/3e120909ef8bab66a37eda58ebb98547ce10be23))
+* **ci:** install the build job from the lockfile instead of deleting it ([3b35402](https://github.com/HoseaCodes/Blog/commit/3b354025386cf90536119645142008a000358a44))
+* **ci:** install the build job from the lockfile instead of deleting it ([b8a5616](https://github.com/HoseaCodes/Blog/commit/b8a5616e6013f9a9cc216f2505a86be536dcdcc1))
+* **ci:** staging verifies only — no Fly.io deploy, no release ([5df597d](https://github.com/HoseaCodes/Blog/commit/5df597d7a3f2689cf553cf968eb4147ec5487eba))
+* **dependencies:** update axios and form-data to latest versions for improved stability ([c168d20](https://github.com/HoseaCodes/Blog/commit/c168d20b70b70dc372603fa38f30318be6bbcd9d))
+* **hero:** update job title and enhance tagline for clarity and focus on distributed systems ([0f39856](https://github.com/HoseaCodes/Blog/commit/0f39856f5f920af339ffcb4923f62991531b3127))
+* **newsletter:** implement newsletter subscription with status handling and user feedback ([fc5cc14](https://github.com/HoseaCodes/Blog/commit/fc5cc14897698d970627921957dc00dcbe3e958d))
+* Remove outdated documentation files including the Testing Guide, Branching Strategy, and deprecated organization README; streamline project resources. ([79f522b](https://github.com/HoseaCodes/Blog/commit/79f522b994894c59513888a03feb3b37127725bb))
+
+## [1.6.0](https://github.com/HoseaCodes/Blog/compare/v1.5.0...v1.6.0) (2026-05-31)
+
+
+### Features
+
+* **socialPreview:** add social preview route for article metadata rendering ([9a866bf](https://github.com/HoseaCodes/Blog/commit/9a866bfb8eee8d259af4ba4323bbdf47d55684b1))
+
+
+### Bug Fixes
+
+* update layout and styling for main and right column components ([9bd02d5](https://github.com/HoseaCodes/Blog/commit/9bd02d541654d356e2b280bdfb71072f1531809c))
+
+## [1.5.0](https://github.com/HoseaCodes/Blog/compare/v1.4.2...v1.5.0) (2026-05-29)
+
+
+### Features
+
+* **auth:** integrate Storm Gate SDK for authentication and update dependencies ([ef6692d](https://github.com/HoseaCodes/Blog/commit/ef6692d74622555566a13f77c958372d04a9ac8c))
+* enhance article and comment management features ([26cbf1d](https://github.com/HoseaCodes/Blog/commit/26cbf1d5ca6d1a6b71a5dfc7dedbce7c4a365ecf))
+* implement Storm-Gate integration and refactor authentication handling ([526d31a](https://github.com/HoseaCodes/Blog/commit/526d31ad6a565835a7a4cd13efc27991ee25f8d5))
+* **tts:** implement text-to-speech functionality with usage tracking and admin costs ([b74d37f](https://github.com/HoseaCodes/Blog/commit/b74d37fc5849758cab1efae88785dbf973bce412))
+
+
+### Bug Fixes
+
+* **admin:** update article archiving logic ([012c43f](https://github.com/HoseaCodes/Blog/commit/012c43f7736b7c825b330fc009f8f6ab2f28ed13))
+* **article:** enhance article creation and update with SEO metadata and tags ([bf9ea58](https://github.com/HoseaCodes/Blog/commit/bf9ea5884141ca53ac44d84b38782be0dde41410))
+* **articles:** filter out drafts and archived articles from public listing ([6f01814](https://github.com/HoseaCodes/Blog/commit/6f018142a51e8beea092b0372816dd62bcce01c8))
+* **article:** simplify updateArticle logic and remove draft/archive handlingl;enhance audio playback with loading state and error handling; update callback state after article deletion and update ([ca028db](https://github.com/HoseaCodes/Blog/commit/ca028db40552c4440dc8cdb90445fa80f82fa569))
+* **auth:** enhance authentication flow and state management with cookie checks ([aede476](https://github.com/HoseaCodes/Blog/commit/aede47627952b0b92ac9e8085f44420fd4eebdc0))
+* **footer:** add AI Quiz SDK link to footer ([ded7b4a](https://github.com/HoseaCodes/Blog/commit/ded7b4a89f49161c39186e972764794f4e5c39d1))
+* **user:** implement user registration and status management with Storm-Gate integration ([5e0a3a0](https://github.com/HoseaCodes/Blog/commit/5e0a3a04253cdc4cdb91b06294fdda87ad3147d5))
+
+## [1.4.2](https://github.com/HoseaCodes/Blog/compare/v1.4.1...v1.4.2) (2026-05-25)
+
+
+### Bug Fixes
+
+* **Articles:** add createdAt field to article data and sort articles by creation date ([830280b](https://github.com/HoseaCodes/Blog/commit/830280b38c7c2605f5d7cdbf5a6cf696a38f2fa6))
+* change files for various image assets ([0c6eed0](https://github.com/HoseaCodes/Blog/commit/0c6eed0bedba1e1484dc1c82181e692d26f3c8fc))
+* clean up release job and improve styling in Article components ([4e7a08c](https://github.com/HoseaCodes/Blog/commit/4e7a08cce45bee5597e4c9d2dbca53277e641034))
+* clean up release job and improve styling in Article components ([1c8ff9b](https://github.com/HoseaCodes/Blog/commit/1c8ff9b3d282a7675297e431da8f8970c65c324f))
+* **NavBar:** update logo path to use local header image ([398f769](https://github.com/HoseaCodes/Blog/commit/398f76924991f5f280ce51d564b80aa1d37e9777))
+
+## [1.4.1](https://github.com/HoseaCodes/Blog/compare/v1.4.0...v1.4.1) (2026-05-25)
+
+
+### Bug Fixes
+
+* **Articles:** add createdAt field to article data and sort articles by creation date ([830280b](https://github.com/HoseaCodes/Blog/commit/830280b38c7c2605f5d7cdbf5a6cf696a38f2fa6))
+* change files for various image assets ([0c6eed0](https://github.com/HoseaCodes/Blog/commit/0c6eed0bedba1e1484dc1c82181e692d26f3c8fc))
+* **NavBar:** update logo path to use local header image ([398f769](https://github.com/HoseaCodes/Blog/commit/398f76924991f5f280ce51d564b80aa1d37e9777))
+
 ## 1.4.1 (2026-05-24)
 
 Build hotfix. Removed a dead `react-hooks/exhaustive-deps` disable directive
@@ -497,6 +616,3 @@ dependency/CI refresh. 175 commits since v1.1.0.
 * **user:** added user profile ([ccc19cc](https://github.com/HoseaCodes/Blog/commit/ccc19cc7fe67a62ba82735e7a50440a666caf660))
 * **user:** added user pull endpoint ([c8fa6ff](https://github.com/HoseaCodes/Blog/commit/c8fa6ff374b2337e643ab03f2f1dcd2fb55bdef4))
 * **wdyr:** added why did you render ([613927c](https://github.com/HoseaCodes/Blog/commit/613927c7001edae1650363e9a3f730713161ae8b))
-
-
-

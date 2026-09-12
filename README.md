@@ -8,7 +8,7 @@
 [![MongoDB 7](https://img.shields.io/badge/MongoDB-7.0-47A248)](https://www.mongodb.com/)
 [![Deployed on Fly.io](https://img.shields.io/badge/Fly.io-deployed-8b5cf6)](https://fly.io/)
 
-🌐 **[hoseacodes.com](http://www.hoseacodes.com/)** · 📖 **[Documentation](docs/)** · 🗺️ **[Roadmap](docs/ROADMAP.md)**
+🌐 **[hoseacodes.com](http://www.hoseacodes.com/)** · 📖 **[Documentation](https://hoseacodes.github.io/Blog/)** · 🗺️ **[Roadmap](docs/ROADMAP.md)**
 
 A personal blog and engineering portfolio: a React SPA and the Express API behind it — articles with drafts, scheduling and versioning, a media library, AI writing assistance, SEO analysis, a newsletter, a points economy with a redemption store, and LinkedIn cross-posting.
 

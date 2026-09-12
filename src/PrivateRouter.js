@@ -28,7 +28,7 @@ const Spinner = () => (
   </div>
 );
 
-const PrivateRoute = ({ type, exact, path, element: Element, isGame, Game, children }) => {
+const PrivateRoute = ({ type, exact, path, element: Element, children }) => {
   const state = useContext(GlobalState);
   const [user] = state.userAPI.user;
   const [authLoading] = state.userAPI.loading;
@@ -59,7 +59,6 @@ const PrivateRoute = ({ type, exact, path, element: Element, isGame, Game, child
 
     if (type === "login") {
       if (!isLoggedIn) return <Redirect to="/login" />;
-      if (isGame && Game) return Game;
       if (Element) return <Element />;
       return children || null;
     }

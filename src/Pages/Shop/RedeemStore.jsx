@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import storeAPI from '../../API/StoreAPI';
 import { GlobalState } from '../../GlobalState';
 import { useGameScore } from '../../Context/GameScoreContext';
+import { asperiaLink } from '../../lib/asperia';
 import './RedeemStore.css';
 
 const RedeemStore = () => {
@@ -103,7 +104,11 @@ const RedeemStore = () => {
             <span className="redeem-kicker">── Redeem Store ──</span>
             <h1>Spend points on digital items</h1>
             <p>
-              Earned in the <Link to="/gamecorner">Game Corner</Link>. Spend here. Items
+              Earned at{" "}
+              <a href={asperiaLink('/arcade')} target="_blank" rel="noopener noreferrer">
+                Asperia Games
+              </a>
+              . Spend here. Items
               never expire and live in <Link to="/shop/my-art">your library</Link>.
             </p>
           </div>

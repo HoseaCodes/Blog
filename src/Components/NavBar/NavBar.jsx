@@ -323,11 +323,10 @@ const NavBar = () => {
     setOpen(false);
   }, [currentPath]);
 
-  // Hide on blog reader / gamecorner — but NOT on /admin/blog/* admin routes.
+  // Hide on the blog reader — but NOT on /admin/blog/* admin routes.
   // Match `/blog/:id` exactly (one path segment after /blog/).
   const isBlogReader = /^\/blog\/[^/]+/.test(currentPath);
-  const isGameCorner = currentPath.includes("gamecorner");
-  if (isBlogReader || isGameCorner) {
+  if (isBlogReader) {
     return null;
   }
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { ubuntuTheme } from '../styled/tokens';
 
-const HOME_URL = '/gamecorner';
+const HOME_URL = 'https://asperiagames.com';
 
 const Wrap = styled.div`
   height: 100%;

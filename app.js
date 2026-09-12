@@ -36,7 +36,19 @@ import apiDocsRouter from "./routes/apiDocs.js";
 const app = express();
 app.use(logger("dev"));
 app.use(express.json());
-const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:3000,http://localhost:3003')
+// Default allowlist. asperiagames.com is included so the Asperia Games arcade
+// (a separate origin) can call the shared points API (/api/points/earn). Ports:
+// 3000/3003 = this app; 4321 = asperiagames Astro dev server. Override via the
+// CORS_ORIGINS env/secret in production — if that secret is set it REPLACES this
+// default, so it must also list the asperiagames origins.
+const DEFAULT_CORS_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:3003',
+  'http://localhost:4321',
+  'https://asperiagames.com',
+  'https://www.asperiagames.com',
+].join(',');
+const allowedOrigins = (process.env.CORS_ORIGINS || DEFAULT_CORS_ORIGINS)
   .split(',')
   .map((s) => s.trim())
   .filter(Boolean);

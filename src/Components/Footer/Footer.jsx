@@ -307,10 +307,9 @@ const Footer = () => {
   const location = useLocation();
   const currentPath = location.pathname;
 
-  // Hide on blog reader / gamecorner — but NOT on /admin/blog/* admin routes.
+  // Hide on the blog reader — but NOT on /admin/blog/* admin routes.
   const isBlogReader = /^\/blog\/[^/]+/.test(currentPath);
-  const isGameCorner = currentPath.includes("/gamecorner");
-  if (isBlogReader || isGameCorner) {
+  if (isBlogReader) {
     return null;
   }
 

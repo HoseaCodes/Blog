@@ -278,11 +278,19 @@ describe("aiArt.js — purchase-with-points", () => {
 });
 
 /**
- * Where the three writers disagree. Each of these is a real inconsistency in
- * current behaviour — recorded here so a consolidation has to choose one
- * answer deliberately rather than inherit whichever it happens to copy.
+ * Receipt and rollback semantics.
+ *
+ * These three cases USED to disagree between the writers. On 2026-09-12 they
+ * were converged on points.js's answer when the ledger was extracted into
+ * services/points.js: a failed receipt write never reverses a balance movement
+ * that already happened. `balance` is the source of truth for spend
+ * authorization; the receipt is an audit artifact. Rolling money back because
+ * the audit log failed would leave two movements and no record of either.
+ *
+ * A genuine failure of the dependent work (creating the purchase) still rolls
+ * the debit back — that part was always correct and is unchanged.
  */
-describe("divergences between the three writers", () => {
+describe("receipt and rollback semantics", () => {
   it("points.js treats a failed transaction-log write as NON-fatal: the debit stands", async () => {
     const { userId, auth } = await userWithBalance(100);
     jest.spyOn(PointsTransactions, "create").mockRejectedValue(new Error("tx log down"));
@@ -297,7 +305,7 @@ describe("divergences between the three writers", () => {
     expect((await accountOf(userId)).balance).toBe(70);
   });
 
-  it("store.js treats the SAME failure as fatal and refunds instead", async () => {
+  it("store.js now matches points.js: a lost receipt does not reverse the redeem", async () => {
     const { userId, auth } = await userWithBalance(500);
     const product = await seedProduct({ priceType: "points", pointsPrice: 120, type: "redeem" });
     jest.spyOn(PointsTransactions, "create").mockRejectedValue(new Error("tx log down"));
@@ -307,20 +315,23 @@ describe("divergences between the three writers", () => {
       .set("Authorization", auth)
       .send({ productId: product._id.toString() });
 
-    expect(res.status).toBe(500);
-    expect(res.body.msg).toMatch(/refunded/i);
+    // Before 2026-09-12 this returned 500 and refunded the points while LEAVING
+    // the purchase row completed — the user kept the item for free. Converging
+    // on the non-fatal receipt rule removed that hole: the charge and the item
+    // now always agree, and only the receipt is lost.
+    expect(res.status).toBe(200);
 
     const acct = await accountOf(userId);
-    expect(acct.balance).toBe(500); // refunded
-    expect(acct.lifetimeSpent).toBe(0); // and the lifetime counter unwound
+    expect(acct.balance).toBe(380); // charged
+    expect(acct.lifetimeSpent).toBe(120);
 
-    // ...but the purchase row created moments earlier is NOT removed.
     const purchase = await ArtPurchases.findOne({ userId, productId: product._id }).lean();
-    expect(purchase).not.toBeNull();
-    expect(purchase.paymentStatus).toBe("completed");
+    expect(purchase.paymentStatus).toBe("completed"); // and owns it
+
+    expect(await txOf(userId)).toHaveLength(0); // receipt is the only casualty
   });
 
-  it("a rolled-back redeem leaves NO audit trail of either the debit or the refund", async () => {
+  it("a genuinely failed purchase still rolls the debit back, leaving no audit trail", async () => {
     const { userId, auth } = await userWithBalance(500);
     const product = await seedProduct({ priceType: "points", pointsPrice: 120, type: "redeem" });
     jest.spyOn(ArtPurchases, "findOneAndUpdate").mockRejectedValue(new Error("purchase write failed"));

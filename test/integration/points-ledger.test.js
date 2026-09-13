@@ -348,3 +348,117 @@ describe("receipt and rollback semantics", () => {
     expect(await txOf(userId)).toHaveLength(0);
   });
 });
+
+/**
+ * Daily earn budget.
+ *
+ * `POST /api/points/earn` takes a client-supplied amount from a browser origin,
+ * and Storm-Gate issues guest tokens to anyone unauthenticated — so before this
+ * cap existed the wallet was mintable without limit. The per-call cap bounds one
+ * request; these bound a day.
+ *
+ * 429 is deliberate, not 400: the arcade client
+ * (Asperia Games/web/public/arcade/play/_lib/points.js) already maps 429 to
+ * `daily-cap` and stops retrying, so this needed no client change to ship.
+ */
+describe("daily earn cap", () => {
+  const CAP = 100;
+  let previousCap;
+
+  beforeEach(() => {
+    previousCap = process.env.POINTS_MAX_DAILY_EARN;
+    process.env.POINTS_MAX_DAILY_EARN = String(CAP);
+  });
+
+  afterEach(() => {
+    if (previousCap === undefined) delete process.env.POINTS_MAX_DAILY_EARN;
+    else process.env.POINTS_MAX_DAILY_EARN = previousCap;
+  });
+
+  const earn = (auth, amount) =>
+    api().post("/api/points/earn").set("Authorization", auth).send({ amount, gameId: "pac-man" });
+
+  it("credits under the cap and reports what is left", async () => {
+    const { userId, auth } = await userWithBalance(0);
+
+    const res = await earn(auth, 40);
+
+    expect(res.status).toBe(200);
+    expect(res.body).toMatchObject({ status: "success", credited: 40, balance: 40, remaining: 60 });
+    expect((await accountOf(userId)).balance).toBe(40);
+  });
+
+  it("returns 429 once the day's budget is exhausted", async () => {
+    const { userId, auth } = await userWithBalance(0);
+
+    await earn(auth, 60);
+    await earn(auth, 40); // exactly at the cap
+    const over = await earn(auth, 1);
+
+    expect(over.status).toBe(429);
+    expect(over.body).toMatchObject({ cap: CAP, earnedToday: CAP });
+    expect(over.body.msg).toMatch(/daily earn limit/i);
+
+    // Nothing was credited for the refused call.
+    expect((await accountOf(userId)).balance).toBe(100);
+    expect((await txOf(userId)).filter((t) => t.type === "earn")).toHaveLength(2);
+  });
+
+  it("refuses a single earn larger than the whole daily budget", async () => {
+    const { userId, auth } = await userWithBalance(0);
+
+    const res = await earn(auth, CAP + 1);
+
+    expect(res.status).toBe(429);
+    expect((await accountOf(userId)).balance).toBe(0);
+    expect(await txOf(userId)).toHaveLength(0);
+  });
+
+  it("budgets per user — one player exhausting the cap does not block another", async () => {
+    const a = await userWithBalance(0);
+    await earn(a.auth, CAP);
+    expect((await earn(a.auth, 1)).status).toBe(429);
+
+    const b = await userWithBalance(0);
+    const res = await earn(b.auth, 50);
+
+    expect(res.status).toBe(200);
+    expect((await accountOf(b.userId)).balance).toBe(50);
+  });
+
+  /**
+   * The precondition `earned: { $lte: cap - amount }` is what keeps this honest.
+   * A read-then-write cap would let concurrent requests all observe the same
+   * under-limit total and collectively blow past it.
+   */
+  it("cannot be raced past the cap by concurrent earns", async () => {
+    const { userId, auth } = await userWithBalance(0);
+
+    const results = await Promise.all(
+      Array.from({ length: 10 }, () => earn(auth, 30))
+    );
+
+    const ok = results.filter((r) => r.status === 200);
+    const capped = results.filter((r) => r.status === 429);
+
+    expect(ok).toHaveLength(3); // 3 x 30 = 90; a 4th would exceed 100
+    expect(capped).toHaveLength(7);
+
+    const acct = await accountOf(userId);
+    expect(acct.balance).toBe(90);
+    expect(acct.balance).toBeLessThanOrEqual(CAP);
+    expect((await txOf(userId)).filter((t) => t.type === "earn")).toHaveLength(3);
+  });
+
+  it("does not cap spending — only earning", async () => {
+    const { userId, auth } = await userWithBalance(500);
+
+    const res = await api()
+      .post("/api/points/spend")
+      .set("Authorization", auth)
+      .send({ amount: 400, reason: "not-an-earn" });
+
+    expect(res.status).toBe(200);
+    expect((await accountOf(userId)).balance).toBe(100);
+  });
+});

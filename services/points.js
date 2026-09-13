@@ -22,9 +22,24 @@
  */
 import PointsAccounts from '../models/pointsAccount.js';
 import PointsTransactions from '../models/pointsTransaction.js';
+import PointsEarnWindows from '../models/pointsEarnWindow.js';
 import Logger from '../utils/logger.js';
 
 const logger = new Logger('points-ledger');
+
+export const DEFAULT_MAX_DAILY_EARN = 10000;
+
+function dailyEarnCap() {
+  const configured = Number(process.env.POINTS_MAX_DAILY_EARN);
+  return Number.isFinite(configured) && configured >= 0
+    ? configured
+    : DEFAULT_MAX_DAILY_EARN;
+}
+
+/** UTC calendar day, 'YYYY-MM-DD'. */
+function currentWindow(now = new Date()) {
+  return now.toISOString().slice(0, 10);
+}
 
 // ---------------------------------------------------------------- reads
 
@@ -149,16 +164,82 @@ export async function spend(userId, amount, { type = 'spend', meta = {}, afterDe
 
 // -------------------------------------------------------------- credit
 
-/** Credit points earned in play. */
+/**
+ * Atomically consume today's earn budget.
+ *
+ * The precondition `earned: { $lte: cap - amount }` is what makes this safe
+ * under concurrency — same shape as the debit's `balance: { $gte: amount }`.
+ * When a window document already exists but is too full, the filter misses, the
+ * upsert attempts an insert, and the unique index rejects it with E11000. That
+ * duplicate-key error IS the over-cap signal, not a failure to handle.
+ *
+ * @returns {Promise<{ok: true, earnedToday: number, remaining: number}
+ *                 | {ok: false, reason: 'daily-cap', cap: number, earnedToday: number}>}
+ */
+export async function consumeDailyEarnBudget(userId, amount, now = new Date()) {
+  const cap = dailyEarnCap();
+  const windowStart = currentWindow(now);
+
+  // A single request larger than the whole day's budget can never fit.
+  if (amount > cap) {
+    const existing = await PointsEarnWindows.findOne({ userId, windowStart });
+    return { ok: false, reason: 'daily-cap', cap, earnedToday: existing?.earned || 0 };
+  }
+
+  try {
+    const updated = await PointsEarnWindows.findOneAndUpdate(
+      { userId, windowStart, earned: { $lte: cap - amount } },
+      { $inc: { earned: amount }, $setOnInsert: { userId, windowStart } },
+      { upsert: true, new: true }
+    );
+    return { ok: true, earnedToday: updated.earned, remaining: cap - updated.earned };
+  } catch (err) {
+    if (err?.code === 11000) {
+      const existing = await PointsEarnWindows.findOne({ userId, windowStart });
+      return { ok: false, reason: 'daily-cap', cap, earnedToday: existing?.earned || 0 };
+    }
+    throw err;
+  }
+}
+
+/** Release budget consumed by an earn that did not end up crediting. */
+async function refundDailyEarnBudget(userId, amount, now = new Date()) {
+  try {
+    await PointsEarnWindows.updateOne(
+      { userId, windowStart: currentWindow(now) },
+      { $inc: { earned: -amount } }
+    );
+  } catch (err) {
+    // Budget accounting must never mask the real failure it is unwinding.
+    logger.error('Failed to release earn budget', { userId, amount, err: err.message });
+  }
+}
+
+/**
+ * Credit points earned in play, bounded by the daily budget.
+ *
+ * @returns {Promise<{ok: true, balance: number, remaining: number}
+ *                 | {ok: false, reason: 'daily-cap', cap: number, earnedToday: number}>}
+ */
 export async function earn(userId, amount, meta = {}) {
-  await getOrCreateAccount(userId);
-  const updated = await PointsAccounts.findOneAndUpdate(
-    { userId },
-    { $inc: { balance: amount, lifetimeEarned: amount } },
-    { new: true }
-  );
-  await recordReceipt(userId, 'earn', amount, updated.balance, meta);
-  return { balance: updated.balance };
+  const budget = await consumeDailyEarnBudget(userId, amount);
+  if (!budget.ok) return budget;
+
+  try {
+    await getOrCreateAccount(userId);
+    const updated = await PointsAccounts.findOneAndUpdate(
+      { userId },
+      { $inc: { balance: amount, lifetimeEarned: amount } },
+      { new: true }
+    );
+    await recordReceipt(userId, 'earn', amount, updated.balance, meta);
+    return { ok: true, balance: updated.balance, remaining: budget.remaining };
+  } catch (err) {
+    // The budget was spent but nothing was credited — give it back, or a failed
+    // earn would silently eat the player's allowance for the day.
+    await refundDailyEarnBudget(userId, amount);
+    throw err;
+  }
 }
 
 /** Credit a purchased points pack. Tracks `lifetimePurchased` separately. */

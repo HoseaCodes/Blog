@@ -123,9 +123,24 @@ export async function creditEarnedPoints(req, res) {
       return res.status(400).json({ msg: `Single-game earn exceeds limit of ${MAX_SINGLE_EARN}` });
     }
 
-    const { balance } = await ledger.earn(req.user.id, safe, { gameId, gameName });
+    const result = await ledger.earn(req.user.id, safe, { gameId, gameName });
 
-    res.json({ status: 'success', credited: safe, balance });
+    if (!result.ok) {
+      // 429, not 400: the arcade client treats this status as `daily-cap` and
+      // stops retrying, where a 400 would look like a malformed request.
+      return res.status(429).json({
+        msg: `Daily earn limit of ${result.cap} reached`,
+        earnedToday: result.earnedToday,
+        cap: result.cap,
+      });
+    }
+
+    res.json({
+      status: 'success',
+      credited: safe,
+      balance: result.balance,
+      remaining: result.remaining,
+    });
   } catch (err) {
     logger.error('creditEarnedPoints failed', { message: err.message });
     res.status(500).json({ msg: err.message });

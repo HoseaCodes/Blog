@@ -22,6 +22,14 @@ function getPool() {
       );
     }
     pool = new Pool({ connectionString: url, max: 4 });
+    // A pg Pool with no 'error' listener rethrows idle-client errors as an
+    // unhandled 'error' event, killing the process. Teardown closes the pool
+    // (see integrationSetup.cjs) so this should stay quiet; it is here so a
+    // teardown race degrades to a log line instead of a red run.
+    pool.on("error", (err) => {
+      // eslint-disable-next-line no-console
+      console.warn(`[integration] arcade ledger pool error: ${err.message}`);
+    });
   }
   return pool;
 }

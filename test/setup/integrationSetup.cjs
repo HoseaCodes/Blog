@@ -5,6 +5,7 @@
 //    so tests can never hit a real third party; suites nock what they need.
 const mongoose = require("mongoose");
 const nock = require("nock");
+const { closePool } = require("../helpers/arcadeLedger.cjs");
 
 beforeAll(async () => {
   if (!process.env.MONGO_URL) {
@@ -37,4 +38,10 @@ afterAll(async () => {
   nock.restore();
   await mongoose.connection.dropDatabase();
   await mongoose.disconnect();
+  // Release the arcade ledger pool here, not in globalTeardown: the pool is
+  // created inside the test module registry, so globalTeardown would only see a
+  // fresh (empty) copy of the helper. Leaving it open means globalTeardown
+  // stops Postgres underneath live connections, and pg raises 57P01 on an idle
+  // client — which crashes the run with exit 1 *after* every test has passed.
+  await closePool();
 });

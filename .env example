@@ -25,3 +25,17 @@ PAYPAL_ENV=sandbox
 RESEND_API_KEY=
 RESEND_FROM="Dominique Hosea <newsletter@hoseacodes.com>"
 SITE_URL=https://hoseacodes.com
+
+# --- Points abuse limits -----------------------------------------------------
+# /api/points/earn takes a client-supplied amount from a browser origin, and
+# Storm-Gate issues guest tokens to anyone unauthenticated, so both ceilings
+# matter. Omit either to take the default shown.
+#
+# Largest single earn accepted (one game-over). The arcade client caps itself
+# at 500, so this is only a backstop against a forged request.
+POINTS_MAX_SINGLE_EARN=10000
+# Total a user may earn per UTC day. Exceeding it returns HTTP 429, which the
+# arcade client already understands as `daily-cap`.
+POINTS_MAX_DAILY_EARN=10000
+# Largest one-shot localStorage offline claim (/api/points/sync).
+POINTS_MAX_OFFLINE_CLAIM=50000

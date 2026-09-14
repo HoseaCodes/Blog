@@ -60,15 +60,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # The points ledger lives in the Go arcade-api service, and the integration
+      # suite boots a real one (test/setup/arcadeService.cjs) rather than mocking
+      # it. That needs the source *and* a Go toolchain on the runner: without
+      # them the run dies in globalSetup with `spawnSync go ENOENT`.
+      - name: Checkout arcade-api
+        uses: actions/checkout@v4
+        with:
+          repository: AsperiaGames/arcade-api
+          path: arcade-api
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: arcade-api/go.mod
+          cache-dependency-path: arcade-api/go.sum
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
       # ubuntu-latest ships a running Docker daemon, so Testcontainers can boot
-      # the real MongoDB image the integration suite tests against.
+      # the real MongoDB and Postgres images the integration suite tests against.
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       - name: Run integration tests
         run: npm run test:integration
+        env:
+          # arcadeService.cjs otherwise looks for a sibling checkout next to the
+          # repo, which on a runner resolves outside the workspace.
+          ARCADE_API_DIR: ${{ github.workspace }}/arcade-api
   # Staging verifies only: scans, lint, integration tests and a production
   # build. It does not release and it does not deploy. Releases and deploys are
   # owned by master (release-please -> v* tag -> release-publish.yml -> Fly.io).

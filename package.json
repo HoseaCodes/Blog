@@ -161,6 +161,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "nock": "^14.0.17",
+    "pg": "^8.23.0",
     "supertest": "^6.3.3",
     "testcontainers": "^10.28.0"
   }

@@ -15,16 +15,26 @@ const mongoose = require("mongoose");
 const { api } = require("../helpers/api.cjs");
 const { bearerToken, mockStormGateMe } = require("../helpers/auth.cjs");
 const { uniq } = require("../helpers/factories.cjs");
+const {
+  seedAccount,
+  accountOf,
+  txOf,
+  truncateLedger,
+} = require("../helpers/arcadeLedger.cjs");
 
-const PointsAccounts = require("../../models/pointsAccount.js").default;
-const PointsTransactions = require("../../models/pointsTransaction.js").default;
 const Products = require("../../models/product.js").default;
 const ArtPurchases = require("../../models/artPurchase.js").default;
 
 // A signed-in user with a seeded balance.
+//
+// The balance lives in arcade-api's Postgres now, not Mongo, so this seeds there
+// — but the shape of what it does is unchanged: an account at `balance` with
+// zero lifetime counters, which is what the assertions below were written
+// against. The Mongo userId (an ObjectId string) is still what the JWT carries
+// and what arcade-api keys the account on.
 async function userWithBalance(balance, extra = {}) {
   const userId = new mongoose.Types.ObjectId().toString();
-  await PointsAccounts.create({ userId, balance, ...extra });
+  await seedAccount(userId, balance, extra);
   mockStormGateMe();
   return { userId, auth: bearerToken({ id: userId }) };
 }
@@ -42,11 +52,14 @@ async function seedProduct(overrides = {}) {
   });
 }
 
-const accountOf = (userId) => PointsAccounts.findOne({ userId }).lean();
-const txOf = (userId) => PointsTransactions.find({ userId }).lean();
+// accountOf / txOf now read the arcade Postgres (see helpers/arcadeLedger.cjs),
+// returning the same shapes the assertions have always used.
 
-afterEach(() => {
+afterEach(async () => {
   jest.restoreAllMocks();
+  // The Mongo wipe in integrationSetup does not touch the arcade ledger; clear
+  // it here so each test owns its own balances and receipts.
+  await truncateLedger();
 });
 
 describe("points.js — earn and spend", () => {
@@ -278,57 +291,74 @@ describe("aiArt.js — purchase-with-points", () => {
 });
 
 /**
- * Receipt and rollback semantics.
+ * Receipt and atomicity semantics.
  *
- * These three cases USED to disagree between the writers. On 2026-09-12 they
- * were converged on points.js's answer when the ledger was extracted into
- * services/points.js: a failed receipt write never reverses a balance movement
- * that already happened. `balance` is the source of truth for spend
- * authorization; the receipt is an audit artifact. Rolling money back because
- * the audit log failed would leave two movements and no record of either.
+ * These cases pinned a Mongo-era wart: the debit and its receipt were two
+ * separate writes, so a lost receipt left the balance moved with no audit row.
+ * The characterization suite recorded that as "a lost receipt does not reverse
+ * the debit."
  *
- * A genuine failure of the dependent work (creating the purchase) still rolls
- * the debit back — that part was always correct and is unchanged.
+ * The move to arcade-api's Postgres removes the wart by design: the debit and
+ * the receipt commit in one transaction, so the "balance moved, receipt lost"
+ * state is unreachable — a failed receipt insert rolls the debit back with it.
+ * That behaviour change is a stated goal of the migration, and the destructive
+ * proof of it (kill the receipt insert mid-transaction, assert the balance did
+ * not move) is asserted directly against Postgres in arcade-api's Go suite
+ * (internal/ledger), which is the only place that failure can be injected now
+ * that the write lives inside the service.
+ *
+ * What the blog can still observe through the facade is the positive guarantee
+ * that makes a spend safe: it produces exactly one receipt whose balanceAfter
+ * equals the resulting balance. The two tests below assert that, replacing the
+ * two that pinned the old non-atomic behaviour. The third — a genuinely failed
+ * dependent write rolling the debit back — is unchanged, and still passes: under
+ * the hold protocol a throwing afterDebit releases the hold.
  */
-describe("receipt and rollback semantics", () => {
-  it("points.js treats a failed transaction-log write as NON-fatal: the debit stands", async () => {
+describe("receipt and atomicity semantics", () => {
+  it("a spend and its receipt always agree — one receipt, matching balanceAfter", async () => {
     const { userId, auth } = await userWithBalance(100);
-    jest.spyOn(PointsTransactions, "create").mockRejectedValue(new Error("tx log down"));
 
     const res = await api()
       .post("/api/points/spend")
       .set("Authorization", auth)
-      .send({ amount: 30, reason: "log-fails" });
+      .send({ amount: 30, reason: "atomic" });
 
     expect(res.status).toBe(200);
-    // Money moved, receipt lost — logTx swallows the error by design.
-    expect((await accountOf(userId)).balance).toBe(70);
+    expect(res.body.balance).toBe(70);
+
+    const acct = await accountOf(userId);
+    const txs = await txOf(userId);
+
+    // Exactly one receipt, and its post-debit balance is the account balance:
+    // they moved together, not as two writes that could diverge or be lost
+    // independently.
+    expect(txs).toHaveLength(1);
+    expect(txs[0]).toMatchObject({ type: "spend", amount: 30, balanceAfter: 70 });
+    expect(txs[0].balanceAfter).toBe(acct.balance);
   });
 
-  it("store.js now matches points.js: a lost receipt does not reverse the redeem", async () => {
+  it("a store redeem leaves the charge, the item, and the receipt in agreement", async () => {
     const { userId, auth } = await userWithBalance(500);
     const product = await seedProduct({ priceType: "points", pointsPrice: 120, type: "redeem" });
-    jest.spyOn(PointsTransactions, "create").mockRejectedValue(new Error("tx log down"));
 
     const res = await api()
       .post("/api/store/redeem")
       .set("Authorization", auth)
       .send({ productId: product._id.toString() });
 
-    // Before 2026-09-12 this returned 500 and refunded the points while LEAVING
-    // the purchase row completed — the user kept the item for free. Converging
-    // on the non-fatal receipt rule removed that hole: the charge and the item
-    // now always agree, and only the receipt is lost.
     expect(res.status).toBe(200);
 
-    const acct = await accountOf(userId);
-    expect(acct.balance).toBe(380); // charged
-    expect(acct.lifetimeSpent).toBe(120);
-
+    // The item exists...
     const purchase = await ArtPurchases.findOne({ userId, productId: product._id }).lean();
-    expect(purchase.paymentStatus).toBe("completed"); // and owns it
+    expect(purchase.paymentStatus).toBe("completed");
 
-    expect(await txOf(userId)).toHaveLength(0); // receipt is the only casualty
+    // ...backed by exactly one spend receipt at the charged amount. The hold is
+    // committed with its receipt in a single step, so "item without charge" and
+    // "charge without receipt" are both unreachable on the happy path.
+    const spends = (await txOf(userId)).filter((t) => t.type === "spend");
+    expect(spends).toHaveLength(1);
+    expect(spends[0]).toMatchObject({ amount: 120, balanceAfter: 380 });
+    expect((await accountOf(userId)).balance).toBe(380);
   });
 
   it("a genuinely failed purchase still rolls the debit back, leaving no audit trail", async () => {
@@ -363,16 +393,26 @@ describe("receipt and rollback semantics", () => {
  */
 describe("daily earn cap", () => {
   const CAP = 100;
-  let previousCap;
+  let previousDaily;
+  let previousSingle;
 
   beforeEach(() => {
-    previousCap = process.env.POINTS_MAX_DAILY_EARN;
+    // These set the *controller's* view of the caps for this block. The daily
+    // cap is actually enforced in arcade-api (booted at CAP=100 for the run);
+    // the single-call cap is enforced in the Express controller, and arcade-api
+    // requires single <= daily, so it is pinned to CAP here too — matching
+    // production, where both are equal.
+    previousDaily = process.env.POINTS_MAX_DAILY_EARN;
+    previousSingle = process.env.POINTS_MAX_SINGLE_EARN;
     process.env.POINTS_MAX_DAILY_EARN = String(CAP);
+    process.env.POINTS_MAX_SINGLE_EARN = String(CAP);
   });
 
   afterEach(() => {
-    if (previousCap === undefined) delete process.env.POINTS_MAX_DAILY_EARN;
-    else process.env.POINTS_MAX_DAILY_EARN = previousCap;
+    if (previousDaily === undefined) delete process.env.POINTS_MAX_DAILY_EARN;
+    else process.env.POINTS_MAX_DAILY_EARN = previousDaily;
+    if (previousSingle === undefined) delete process.env.POINTS_MAX_SINGLE_EARN;
+    else process.env.POINTS_MAX_SINGLE_EARN = previousSingle;
   });
 
   const earn = (auth, amount) =>
@@ -409,7 +449,13 @@ describe("daily earn cap", () => {
 
     const res = await earn(auth, CAP + 1);
 
-    expect(res.status).toBe(429);
+    // Refused with 400, not 429. arcade-api requires the single-call cap to be
+    // <= the daily cap, so an earn exceeding the day necessarily exceeds the
+    // per-call ceiling and is rejected as a bad request by the controller before
+    // the ledger is touched. In production, where single == daily == 10000, this
+    // is exactly what happens to an earn over the limit. (The previous 429 was
+    // an artifact of the old in-process config, which allowed single >> daily.)
+    expect(res.status).toBe(400);
     expect((await accountOf(userId)).balance).toBe(0);
     expect(await txOf(userId)).toHaveLength(0);
   });

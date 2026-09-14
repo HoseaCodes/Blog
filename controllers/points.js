@@ -166,16 +166,10 @@ export async function createPointPackOrder(req, res) {
       description: `Points pack: ${pack.label} (${pack.points} pts)`,
     });
 
-    // Log the intent so we can correlate during capture. balanceAfter is the
-    // current balance; nothing has moved yet.
-    const account = await ledger.getOrCreateAccount(req.user.id);
-    await ledger.recordReceipt(req.user.id, 'purchase', pack.points, account.balance, {
-      stage: 'order-created',
-      packId: pack.id,
-      paypalOrderId: order.id,
-      usd: pack.usd,
-    });
-
+    // No intent receipt is written here any more. It was a Mongo-only diagnostic
+    // row that nothing read; the ledger now records the purchase atomically at
+    // capture, keyed by the PayPal order id, so there is nothing to correlate
+    // after the fact.
     res.json({ status: 'success', orderId: order.id, pack });
   } catch (err) {
     logger.error('createPointPackOrder failed', {
@@ -193,35 +187,34 @@ export async function capturePointPackOrder(req, res) {
     if (!pack) return res.status(400).json({ msg: 'Unknown pack' });
     if (!orderId) return res.status(400).json({ msg: 'orderId required' });
 
-    // Idempotency: if we already captured this PayPal order, return cached result.
-    const already = await ledger.findReceipt(req.user.id, {
-      type: 'purchase',
-      'meta.paypalOrderId': orderId,
-      'meta.stage': 'captured',
-    });
-    if (already) {
-      const account = await ledger.getAccount(req.user.id);
-      return res.json({
-        status: 'success',
-        alreadyCaptured: true,
-        credited: already.amount,
-        balance: account?.balance || 0,
-      });
-    }
-
     const capture = await paypalCaptureOrder(orderId);
     if (capture.status !== 'COMPLETED') {
       return res.status(402).json({ msg: `PayPal capture status: ${capture.status}` });
     }
 
-    const { balance } = await ledger.purchase(req.user.id, pack.points, {
-      stage: 'captured',
-      packId: pack.id,
-      paypalOrderId: orderId,
-      usd: pack.usd,
-    });
+    // Idempotency lives in the ledger, not here. `paypal:<orderId>` is a UNIQUE
+    // key on the credit, so a retried capture credits exactly once: the ledger
+    // reports the repeat as applied=false with the balance unchanged, and we
+    // surface that as alreadyCaptured. This replaces the old read-then-write
+    // receipt check, which two concurrent captures could both slip past.
+    const { balance, applied } = await ledger.purchase(
+      req.user.id,
+      pack.points,
+      {
+        stage: 'captured',
+        packId: pack.id,
+        paypalOrderId: orderId,
+        usd: pack.usd,
+      },
+      `paypal:${orderId}`,
+    );
 
-    res.json({ status: 'success', credited: pack.points, balance });
+    res.json({
+      status: 'success',
+      credited: pack.points,
+      balance,
+      alreadyCaptured: !applied,
+    });
   } catch (err) {
     logger.error('capturePointPackOrder failed', {
       message: err.message,

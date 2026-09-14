@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.10.0](https://github.com/HoseaCodes/Blog/compare/v1.9.2...v1.10.0) (2026-09-14)
+
+
+### Features
+
+* **integration:** enhance integration tests with arcade-api and Postgres setup ([941b744](https://github.com/HoseaCodes/Blog/commit/941b7440f4b6718f702a1fcb11df2569c9e93e0f))
+* migrate points ledger to Postgres and update auth to use RS256 JWTs ([cc75c69](https://github.com/HoseaCodes/Blog/commit/cc75c69c7bce31e90b2e42f07eca61fbda3fc2ba))
+* **points:** implement daily earn budget limits and corresponding error handling ([fd57923](https://github.com/HoseaCodes/Blog/commit/fd579231b4a687cb3dba908138672a05d57563af))
+
 ## [1.9.2](https://github.com/HoseaCodes/Blog/compare/v1.9.1...v1.9.2) (2026-09-12)
 
 

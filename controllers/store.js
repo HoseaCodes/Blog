@@ -2,8 +2,7 @@ import cloudinary from 'cloudinary';
 import dotenv from 'dotenv';
 import Products from '../models/product.js';
 import ArtPurchases from '../models/artPurchase.js';
-import PointsAccounts from '../models/pointsAccount.js';
-import PointsTransactions from '../models/pointsTransaction.js';
+import * as ledger from '../services/points.js';
 import Logger from '../utils/logger.js';
 
 dotenv.config();
@@ -94,67 +93,51 @@ export async function redeemItem(req, res) {
 
     const cost = product.pointsPrice;
 
-    const account = await PointsAccounts.findOne({ userId: req.user.id });
-    if (!account || account.balance < cost) {
-      return res.status(402).json({
-        msg: 'Insufficient points',
-        balance: account?.balance || 0,
-        required: cost,
-      });
-    }
+    // The ledger owns the atomic debit and the compensating refund. `afterDebit`
+    // runs with the balance already moved: if it throws, the spend is rolled
+    // back; whatever it returns is merged into the receipt's meta, which is how
+    // purchaseId lands on the receipt.
+    let purchase;
+    const result = await ledger.spend(req.user.id, cost, {
+      meta: { reason: 'store-redeem', productId: String(product._id) },
+      afterDebit: async () => {
+        purchase = await ArtPurchases.findOneAndUpdate(
+          { userId: req.user.id, productId: product._id },
+          {
+            userId: req.user.id,
+            productId: product._id,
+            amountPaid: 0,
+            currency: 'USD',
+            paymentProvider: 'points',
+            paymentId: `points:${req.user.id}:${product._id}:${Date.now()}`,
+            paymentStatus: 'completed',
+            downloadExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          },
+          { upsert: true, new: true }
+        );
+        return { purchaseId: String(purchase._id) };
+      },
+    });
 
-    const debited = await PointsAccounts.findOneAndUpdate(
-      { userId: req.user.id, balance: { $gte: cost } },
-      { $inc: { balance: -cost, lifetimeSpent: cost } },
-      { new: true }
-    );
-    if (!debited) {
-      return res.status(402).json({ msg: 'Insufficient points', required: cost });
-    }
-
-    try {
-      const purchase = await ArtPurchases.findOneAndUpdate(
-        { userId: req.user.id, productId: product._id },
-        {
-          userId: req.user.id,
-          productId: product._id,
-          amountPaid: 0,
-          currency: 'USD',
-          paymentProvider: 'points',
-          paymentId: `points:${req.user.id}:${product._id}:${Date.now()}`,
-          paymentStatus: 'completed',
-          downloadExpiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        },
-        { upsert: true, new: true }
-      );
-
-      await PointsTransactions.create({
-        userId: req.user.id,
-        type: 'spend',
-        amount: cost,
-        balanceAfter: debited.balance,
-        meta: {
-          reason: 'store-redeem',
-          productId: String(product._id),
-          purchaseId: String(purchase._id),
-        },
-      });
-
-      return res.json({
-        status: 'success',
-        purchaseId: purchase._id,
-        productId: product._id,
-        balance: debited.balance,
-        downloadsRemaining: purchase.downloadsRemaining,
-      });
-    } catch (purchaseErr) {
-      await PointsAccounts.findOneAndUpdate(
-        { userId: req.user.id },
-        { $inc: { balance: cost, lifetimeSpent: -cost } }
-      );
-      logger.error('Redeem rollback', { message: purchaseErr.message });
+    if (!result.ok) {
+      if (result.reason === 'insufficient') {
+        return res.status(402).json({
+          msg: 'Insufficient points',
+          balance: result.balance,
+          required: cost,
+        });
+      }
+      logger.error('Redeem rollback', { message: result.error.message });
       return res.status(500).json({ msg: 'Redeem failed — points refunded' });
     }
+
+    return res.json({
+      status: 'success',
+      purchaseId: purchase._id,
+      productId: product._id,
+      balance: result.balance,
+      downloadsRemaining: purchase.downloadsRemaining,
+    });
   } catch (err) {
     logger.error('redeemItem failed', { message: err.message });
     res.status(500).json({ msg: err.message });

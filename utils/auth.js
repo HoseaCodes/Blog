@@ -47,14 +47,22 @@ async function syncBlogUser(tok) {
   );
 }
 
+// The Storm-Gate issuer and its JWKS endpoint. Env-overridable so tests can
+// point at a local RS256 issuer; the defaults are the production Storm-Gate, so
+// deployed behaviour is unchanged. Only RS256/JWKS is accepted — no shared
+// secret — which is the hardening commit af18915 deliberately introduced.
+const STORM_GATE_ISSUER =
+  process.env.STORM_GATE_ISSUER ||
+  "https://3ynqb3302m.execute-api.us-east-1.amazonaws.com";
+const STORM_GATE_JWKS_URI =
+  process.env.STORM_GATE_JWKS_URI || `${STORM_GATE_ISSUER}/.well-known/jwks.json`;
+
 const auth = (req, res, next) => {
   if (!stormGateAuth) {
     stormGateAuth = createRequireAuth({
-      secret: process.env.ACCESS_TOKEN_SECRET, // keeps today's HS256 tokens working
-      jwksUri: 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com/.well-known/jwks.json',
-      issuer: 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com',
+      jwksUri: STORM_GATE_JWKS_URI,
+      issuer: STORM_GATE_ISSUER,
     });
-
   }
   stormGateAuth(req, res, async (err) => {
     if (err) return next(err);

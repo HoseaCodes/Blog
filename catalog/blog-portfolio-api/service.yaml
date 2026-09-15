@@ -1,0 +1,45 @@
+apiVersion: opsatlas.ambitiousconcepts.io/v1
+kind: Service
+metadata:
+  name: blog-portfolio-api
+  displayName: HoseaCodes API
+  owner: hoseacodes
+  repository: HoseaCodes/Blog-Portfolio
+  description: Express API under /api for hoseacodes.com - articles, projects, media, store and payments, subscribers, analytics, AI endpoints, and the points ledger consumed cross-origin by asperiagames.com.
+spec:
+  tier: 2
+  lifecycle: active
+  runtime: node
+  environments:
+    - name: production
+      url: https://www.hoseacodes.com/api
+    - name: local
+      url: http://localhost:3003/api
+  observability:
+    dashboard: https://fly-metrics.net/d/fly-app/fly-app?orgId=1272700&var-app=blog-portfolio-wandering-morning-3470
+  operations:
+    runbook: docs/OPERATIONS.md
+  journeys:
+    - Read a blog article
+    - Browse the portfolio and case studies
+    - Subscribe to the newsletter
+    - Sign in and manage an account
+    - Complete a store checkout
+    - Earn arcade points from asperiagames.com
+  dependencies:
+    - name: mongodb
+      kind: datastore
+    - name: storm-gate
+      kind: service
+    - name: cloudinary
+      kind: external
+    - name: openai
+      kind: external
+    - name: stability-ai
+      kind: external
+    - name: paypal
+      kind: external
+    - name: resend
+      kind: external
+    - name: linkedin
+      kind: external

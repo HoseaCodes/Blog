@@ -1,17 +1,11 @@
 import fs from 'fs';
 import dotenv from 'dotenv';
-import cloudinary from 'cloudinary';
+import cloudinary from '../utils/cloudinaryConfig.js';
 import Logger from '../utils/logger.js';
 import {cache} from '../utils/cache.js';
 const logger = new Logger('articles')
 
 dotenv.config();
-
-cloudinary.config({
-  cloud_name: process.env.CLOUND_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET
-});
 
 const removeTmp = (path) => {
   fs.unlink(path, err => {

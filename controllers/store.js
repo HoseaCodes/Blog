@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+import cloudinary from '../utils/cloudinaryConfig.js';
 import dotenv from 'dotenv';
 import Products from '../models/product.js';
 import ArtPurchases from '../models/artPurchase.js';
@@ -7,12 +7,6 @@ import Logger from '../utils/logger.js';
 
 dotenv.config();
 const logger = new Logger('store');
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUND_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
 
 // Build a downloadable URL for an item the user has redeemed. Tries signed
 // private Cloudinary URL first (works for private uploads); falls back to

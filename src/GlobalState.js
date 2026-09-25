@@ -22,6 +22,7 @@ import CommentsAPI from "./API/CommentsAPI";
 import { v4 } from "uuid";
 import ProductsAPI from "./API/ProductsAPI";
 import ProjectsAPI from "./API/ProjectsAPI";
+import RoadmapAPI from "./API/RoadmapAPI";
 import Notification from "./Components/Notification/Notification";
 import { useCookies } from "react-cookie";
 
@@ -54,6 +55,7 @@ export const DataProvider = ({ children }) => {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
     projectsAPI: ProjectsAPI(),
+    roadmapAPI: RoadmapAPI(token),
     articlesAPI: ArticlesAPI(),
     commentsAPI: CommentsAPI,
     userAPI: UserAPI(token),

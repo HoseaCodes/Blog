@@ -363,6 +363,7 @@ const NavBar = () => {
     { to: "/admin/art", label: "Art" },
     { to: "/admin/users", label: "Users" },
     { to: "/admin/uploads", label: "Uploads" },
+    { to: "/admin/roadmap", label: "Roadmap" },
   ];
 
   const isActive = (to) =>

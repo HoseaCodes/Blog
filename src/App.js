@@ -46,6 +46,7 @@ import AdminOverview from "./Pages/Admin/AdminOverview";
 import AdminBlogs from "./Pages/Admin/AdminBlogs";
 import AdminProducts from "./Pages/Admin/AdminProducts";
 import AdminArt from "./Pages/Admin/AdminArt";
+import AdminRoadmap from "./Pages/Admin/Roadmap/AdminRoadmap";
 import PrivateRoute from "./PrivateRouter";
 import Tools from "./Pages/Tools";
 import ReactGA from 'react-ga4';
@@ -175,6 +176,12 @@ const App = () => {
                   path="/admin/art"
                   exact={true}
                   element={AdminArt}
+                />
+                <PrivateRoute
+                  type={"admin"}
+                  path="/admin/roadmap"
+                  exact={true}
+                  element={AdminRoadmap}
                 />
                 {/* AdminManagement */}
                 {/* Shop */}

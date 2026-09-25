@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+import cloudinary, { isCloudinaryConfigured } from '../utils/cloudinaryConfig.js';
 import dotenv from 'dotenv';
 import Logger from '../utils/logger.js';
 
@@ -6,20 +6,13 @@ dotenv.config();
 
 const logger = new Logger('media');
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUND_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET
-});
-
 // Get media library
 export async function getMediaLibrary(req, res) {
   try {
     logger.info('Media library request:', { folder: req.query.folder });
     
     // Check if Cloudinary is configured
-    if (!process.env.CLOUND_NAME || !process.env.CLOUD_API_KEY) {
+    if (!isCloudinaryConfigured()) {
       logger.error('Cloudinary not configured');
       return res.status(400).json({ 
         msg: 'Media service not configured',

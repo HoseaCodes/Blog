@@ -1,4 +1,4 @@
-import cloudinary from 'cloudinary';
+import cloudinary from '../utils/cloudinaryConfig.js';
 import dotenv from 'dotenv';
 import Products from '../models/product.js';
 import ArtPurchases from '../models/artPurchase.js';
@@ -17,12 +17,6 @@ export function priceInPoints(usdPrice) {
 dotenv.config();
 
 const logger = new Logger('aiArt');
-
-cloudinary.v2.config({
-  cloud_name: process.env.CLOUND_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_API_SECRET,
-});
 
 const AI_ART_FOLDER = 'HoseaCodes/ai-art';
 const PNG_PRICE_USD = Number(process.env.AI_ART_PNG_PRICE_USD || 5);

@@ -1,0 +1,31 @@
+apiVersion: opsatlas.ambitiousconcepts.io/v1
+kind: Service
+metadata:
+  name: blog-portfolio-ui
+  displayName: HoseaCodes Web
+  owner: hoseacodes
+  repository: HoseaCodes/Blog-Portfolio
+  description: React SPA for hoseacodes.com - portfolio, case studies, blog, store and arcade. Built with CRA and served as static assets by the Express process in this repository.
+spec:
+  tier: 2
+  lifecycle: active
+  runtime: react
+  environments:
+    - name: production
+      url: https://www.hoseacodes.com
+    - name: local
+      url: http://localhost:3000
+  observability:
+    dashboard: https://fly-metrics.net/d/fly-app/fly-app?orgId=1272700&var-app=blog-portfolio-wandering-morning-3470
+  operations:
+    runbook: docs/OPERATIONS.md
+  journeys:
+    - Browse the portfolio and case studies
+    - Read a blog article
+    - Subscribe to the newsletter
+    - Sign in and manage an account
+    - Complete a store checkout
+    - Play the arcade games
+  dependencies:
+    - name: blog-portfolio-api
+      kind: service

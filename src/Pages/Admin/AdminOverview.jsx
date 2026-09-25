@@ -11,6 +11,7 @@ import {
   FiShoppingBag,
   FiZap,
   FiGift,
+  FiMap,
 } from "react-icons/fi";
 
 /* ------------------------------------------------------------------
@@ -432,6 +433,14 @@ const AdminOverview = () => {
       desc: "Media library — images and assets across the platform.",
       footer: "Storage",
       meta: null,
+    },
+    {
+      to: "/admin/roadmap",
+      icon: <FiMap />,
+      title: "Roadmap",
+      desc: "Learning curricula on one timeline, with goals, ratings and alternatives.",
+      footer: "Planning",
+      meta: "Private",
     },
     {
       to: "/shop/redeem",

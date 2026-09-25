@@ -16,6 +16,7 @@ import uploadRouter from "./routes/upload.js";
 import paymentRouter from "./routes/payment.js";
 import productRouter from "./routes/product.js";
 import projectRouter from "./routes/project.js";
+import roadmapRouter from "./routes/roadmap.js";
 import userRouter from "./routes/user.js";
 import blogRouter from "./routes/blog.js";
 import mediaRouter from "./routes/media.js";
@@ -98,6 +99,10 @@ app.use('/api', uploadRouter);
 app.use('/api', paymentRouter);
 app.use('/api', productRouter);
 app.use('/api', projectRouter);
+// Private admin roadmap. Mounted here, above the routers that apply a
+// no-path router.use(auth) catch-all (store, media, blog, collaboration),
+// so none of them intercept /api/roadmap first.
+app.use('/api', roadmapRouter);
 app.use('/api/user', userRouter);
 // LinkedIn's /callback is intentionally un-gated (LinkedIn's browser redirect
 // can't carry our JWT). Must mount before ANY router with a `router.use(auth)`

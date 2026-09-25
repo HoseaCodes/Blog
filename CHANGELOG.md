@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.11.0](https://github.com/HoseaCodes/Blog/compare/v1.10.0...v1.11.0) (2026-09-25)
+
+
+### Features
+
+* add roadmap forms and utility functions for curriculum management ([ef79069](https://github.com/HoseaCodes/Blog/commit/ef790692b89e9e8ec8a2b57111c295ba7386a824))
+* **cloudinary:** centralize Cloudinary configuration and update imports ([6d73f71](https://github.com/HoseaCodes/Blog/commit/6d73f71562c23780ac21e96899aa38adf259297f))
+* **service:** add service configuration for blog-portfolio-ui ([001cb85](https://github.com/HoseaCodes/Blog/commit/001cb8534a2419d971278eb5240f6c86bedb8a5d))
+
 ## [1.10.0](https://github.com/HoseaCodes/Blog/compare/v1.9.2...v1.10.0) (2026-09-14)
 
 

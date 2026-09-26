@@ -11,12 +11,19 @@ const { bearerToken, mockStormGateMe } = require("../helpers/auth.cjs");
 const Curriculums = require("../../models/curriculum.js").default;
 const Programs = require("../../models/program.js").default;
 const Alternatives = require("../../models/alternative.js").default;
+const Settings = require("../../models/setting.js").default;
 
-const admin = () => mockStormGateMe({ role: 1 });
-const member = () => mockStormGateMe({ role: 0 });
+// Storm-Gate's /me supplies both role AND email; email is what scopes a
+// roadmap to its owner, so every admin here has a concrete address.
+const OWNER = "owner@example.com";
+const OTHER = "someone-else@example.com";
+
+const admin = (email = OWNER) => mockStormGateMe({ role: 1, email });
+const member = () => mockStormGateMe({ role: 0, email: OWNER });
 
 async function seedCurriculum(overrides = {}) {
   return Curriculums.create({
+    ownerEmail: OWNER,
     slug: "test-track",
     name: "Test Track",
     why: "Because the gate needs something to guard",
@@ -83,14 +90,18 @@ describe("Roadmap API", () => {
         .send({ name: "Computer Science", why: "Close the CS gap", rating: 4 });
 
       expect(res.status).toBe(200);
-      expect(res.body.curriculum).toMatchObject({ slug: "computer-science", rating: 4 });
+      expect(res.body.curriculum).toMatchObject({
+        slug: "computer-science",
+        rating: 4,
+        ownerEmail: OWNER,
+      });
 
       const inDb = await Curriculums.findOne({ slug: "computer-science" });
       expect(inDb).not.toBeNull();
       expect(inDb.why).toBe("Close the CS gap");
     });
 
-    test("de-duplicates a slug that already exists", async () => {
+    test("de-duplicates a slug that already exists FOR THIS OWNER", async () => {
       admin();
       await seedCurriculum({ slug: "computer-science", name: "Computer Science" });
 
@@ -122,10 +133,10 @@ describe("Roadmap API", () => {
     test("cascades to the curriculum's programs and alternatives", async () => {
       admin();
       await seedCurriculum();
-      await Programs.create({ slug: "p1", curriculumSlug: "test-track", name: "P1" });
-      await Programs.create({ slug: "p2", curriculumSlug: "test-track", name: "P2" });
-      await Programs.create({ slug: "keep", curriculumSlug: "other-track", name: "Keep" });
-      await Alternatives.create({ slug: "a1", curriculumSlug: "test-track", name: "A1" });
+      await Programs.create({ ownerEmail: OWNER, slug: "p1", curriculumSlug: "test-track", name: "P1" });
+      await Programs.create({ ownerEmail: OWNER, slug: "p2", curriculumSlug: "test-track", name: "P2" });
+      await Programs.create({ ownerEmail: OWNER, slug: "keep", curriculumSlug: "other-track", name: "Keep" });
+      await Alternatives.create({ ownerEmail: OWNER, slug: "a1", curriculumSlug: "test-track", name: "A1" });
 
       const res = await api()
         .delete("/api/roadmap/curricula/test-track")
@@ -176,7 +187,7 @@ describe("Roadmap API", () => {
     test("stamps startedAt on the first move off zero and completedAt at 100", async () => {
       admin();
       await seedCurriculum();
-      await Programs.create({ slug: "os", curriculumSlug: "test-track", name: "OS" });
+      await Programs.create({ ownerEmail: OWNER, slug: "os", curriculumSlug: "test-track", name: "OS" });
 
       const started = await api()
         .patch("/api/roadmap/programs/os/progress")
@@ -205,6 +216,7 @@ describe("Roadmap API", () => {
       admin();
       await seedCurriculum();
       await Programs.create({
+        ownerEmail: OWNER,
         slug: "os",
         curriculumSlug: "test-track",
         name: "OS",
@@ -253,6 +265,116 @@ describe("Roadmap API", () => {
       // clamped by the controller, never written past the schema maximum
       expect(res.status).toBe(200);
       expect((await Curriculums.findOne({ slug: "test-track" })).rating).toBe(5);
+    });
+  });
+  // The point of the ownership change: two admins, two separate roadmaps.
+  describe("ownership isolation", () => {
+    test("another admin's roadmap is invisible", async () => {
+      await seedCurriculum();
+      await Programs.create({ ownerEmail: OWNER, slug: "p1", curriculumSlug: "test-track", name: "P1" });
+      await Alternatives.create({ ownerEmail: OWNER, slug: "a1", curriculumSlug: "test-track", name: "A1" });
+
+      admin(OTHER);
+      const res = await api().get("/api/roadmap").set("Authorization", bearerToken());
+
+      expect(res.status).toBe(200);
+      expect(res.body.curricula).toHaveLength(0);
+      expect(res.body.programs).toHaveLength(0);
+      expect(res.body.alternatives).toHaveLength(0);
+    });
+
+    test("another admin cannot edit, patch or delete your curriculum", async () => {
+      await seedCurriculum({ rating: 2 });
+      admin(OTHER);
+
+      const put = await api()
+        .put("/api/roadmap/curricula/test-track")
+        .set("Authorization", bearerToken())
+        .send({ name: "Hijacked", why: "mine now" });
+      expect(put.status).toBe(404);
+
+      const patch = await api()
+        .patch("/api/roadmap/curricula/test-track")
+        .set("Authorization", bearerToken())
+        .send({ rating: 5 });
+      expect(patch.status).toBe(404);
+
+      const del = await api()
+        .delete("/api/roadmap/curricula/test-track")
+        .set("Authorization", bearerToken());
+      expect(del.status).toBe(404);
+
+      // Untouched on every count.
+      const inDb = await Curriculums.findOne({ slug: "test-track" });
+      expect(inDb).not.toBeNull();
+      expect(inDb.name).toBe("Test Track");
+      expect(inDb.rating).toBe(2);
+      expect(inDb.ownerEmail).toBe(OWNER);
+    });
+
+    test("another admin cannot move a program's progress", async () => {
+      await seedCurriculum();
+      await Programs.create({ ownerEmail: OWNER, slug: "os", curriculumSlug: "test-track", name: "OS" });
+
+      admin(OTHER);
+      const res = await api()
+        .patch("/api/roadmap/programs/os/progress")
+        .set("Authorization", bearerToken())
+        .send({ progress: 99 });
+
+      expect(res.status).toBe(404);
+      expect((await Programs.findOne({ slug: "os" })).progress).toBe(0);
+    });
+
+    test("another admin cannot attach a program to your curriculum", async () => {
+      await seedCurriculum();
+      admin(OTHER);
+
+      const res = await api()
+        .post("/api/roadmap/programs")
+        .set("Authorization", bearerToken())
+        .send({ name: "Intruder", curriculumSlug: "test-track" });
+
+      expect(res.status).toBe(400);
+      expect(await Programs.countDocuments()).toBe(0);
+    });
+
+    test("two owners may each hold the same slug", async () => {
+      await seedCurriculum({ slug: "computer-science", name: "Computer Science" });
+
+      admin(OTHER);
+      const res = await api()
+        .post("/api/roadmap/curricula")
+        .set("Authorization", bearerToken())
+        .send({ name: "Computer Science", why: "my own copy" });
+
+      expect(res.status).toBe(200);
+      // Not "computer-science-2": the slug is only unique per owner.
+      expect(res.body.curriculum.slug).toBe("computer-science");
+      expect(res.body.curriculum.ownerEmail).toBe(OTHER);
+      expect(await Curriculums.countDocuments({ slug: "computer-science" })).toBe(2);
+    });
+
+    // Seeded directly rather than through the API: mockStormGateMe persists its
+    // interceptor, so mocking two different profiles inside one test would have
+    // the first one answer both requests.
+    test("settings are per owner", async () => {
+      await Settings.create({ key: `roadmap:${OWNER}`, value: { anchor: "2026-10" } });
+
+      admin(OTHER);
+      const res = await api().get("/api/roadmap").set("Authorization", bearerToken());
+
+      expect(res.status).toBe(200);
+      expect(res.body.settings).toEqual({});
+    });
+
+    test("an owner reads back their own settings", async () => {
+      await Settings.create({ key: `roadmap:${OWNER}`, value: { anchor: "2027-03" } });
+
+      admin();
+      const res = await api().get("/api/roadmap").set("Authorization", bearerToken());
+
+      expect(res.body.settings.anchor).toBe("2027-03");
     });
   });
 });

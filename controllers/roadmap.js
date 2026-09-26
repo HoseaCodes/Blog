@@ -15,8 +15,34 @@ const logger = new Logger("roadmap");
   route gate IS the filter. Don't "fix" this by adding one.
 */
 
-const SETTINGS_KEY = "roadmap";
 const MAX_MONTHS = 36;
+
+/*
+  Every record belongs to one admin. The owner is Storm-Gate's email for the
+  caller (utils/auth.js merges /me onto req.user), never anything the client
+  sends — otherwise one admin could read or overwrite another's roadmap by
+  passing a different address.
+*/
+function ownerOf(req) {
+  const email = String(req.user?.email || "").trim().toLowerCase();
+  return email || null;
+}
+
+// Settings are per owner too, so each roadmap has its own calendar anchor.
+const settingsKeyFor = (owner) => `roadmap:${owner}`;
+
+// Guard used by every handler. Storm-Gate can authenticate a caller without
+// returning a profile (see the /me failure path in utils/auth.js), and a
+// roadmap with no owner would be invisible and unwritable, so fail loudly
+// rather than silently scoping to undefined.
+function requireOwner(req, res) {
+  const owner = ownerOf(req);
+  if (!owner) {
+    res.status(403).json({ msg: "No account email available; cannot resolve your roadmap." });
+    return null;
+  }
+  return owner;
+}
 
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 
@@ -28,7 +54,7 @@ function num(value, fallback) {
 // Slugs are generated from the name the same way controllers/article.js does
 // it, then de-duplicated against the collection so a second "Computer Science"
 // does not collide on the unique index.
-async function uniqueSlug(Model, name, existingSlug) {
+async function uniqueSlug(Model, owner, name, existingSlug) {
   if (existingSlug) return existingSlug;
 
   const base = String(name || "item")
@@ -40,7 +66,7 @@ async function uniqueSlug(Model, name, existingSlug) {
   let slug = base;
   let n = 2;
   // Bounded so a pathological collision can't spin forever.
-  while (n < 100 && (await Model.exists({ slug }))) {
+  while (n < 100 && (await Model.exists({ ownerEmail: owner, slug }))) {
     slug = `${base}-${n}`;
     n += 1;
   }
@@ -55,18 +81,23 @@ async function uniqueSlug(Model, name, existingSlug) {
 // trip beats three. ~20 documents; there is no pagination case here.
 async function getRoadmap(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const includeArchived = String(req.query.includeArchived || "") === "true";
-    const filter = includeArchived ? {} : { archived: { $ne: true } };
+    const filter = includeArchived
+      ? { ownerEmail: owner }
+      : { ownerEmail: owner, archived: { $ne: true } };
 
     const [curricula, programs, alternatives, setting] = await Promise.all([
       Curriculums.find(filter).sort({ order: 1, name: 1 }).lean(),
       Programs.find(filter).sort({ curriculumSlug: 1, order: 1 }).lean(),
       Alternatives.find(filter).sort({ curriculumSlug: 1, order: 1 }).lean(),
-      Settings.findOne({ key: SETTINGS_KEY }).lean(),
+      Settings.findOne({ key: settingsKeyFor(owner) }).lean(),
     ]);
 
     logger.info(
-      `Returning ${curricula.length} curricula, ${programs.length} programs, ${alternatives.length} alternatives`
+      `Returning ${curricula.length} curricula, ${programs.length} programs, ${alternatives.length} alternatives for ${owner}`
     );
 
     res.json({
@@ -107,12 +138,16 @@ function curriculumPayload(body) {
 
 async function createCurriculum(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const data = curriculumPayload(req.body);
     if (!data.name) {
       return res.status(400).json({ msg: "A curriculum needs a name." });
     }
 
-    data.slug = await uniqueSlug(Curriculums, data.name, String(req.body.slug || "").trim());
+    data.ownerEmail = owner;
+    data.slug = await uniqueSlug(Curriculums, owner, data.name, String(req.body.slug || "").trim());
 
     const curriculum = await Curriculums.create(data);
     logger.info(`Created curriculum ${curriculum.slug}`);
@@ -126,6 +161,9 @@ async function createCurriculum(req, res) {
 
 async function updateCurriculum(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const data = curriculumPayload(req.body);
     if (!data.name) {
       return res.status(400).json({ msg: "A curriculum needs a name." });
@@ -133,8 +171,9 @@ async function updateCurriculum(req, res) {
 
     // runValidators so an out-of-range rating or month is rejected rather than
     // written. updateProject omits this; that omission lets bad enums through.
+    // The ownerEmail in the filter is what stops one admin editing another's.
     const curriculum = await Curriculums.findOneAndUpdate(
-      { slug: req.params.slug },
+      { ownerEmail: owner, slug: req.params.slug },
       data,
       { new: true, runValidators: true }
     );
@@ -165,8 +204,11 @@ async function patchCurriculum(req, res) {
       return res.status(400).json({ msg: "Nothing to update." });
     }
 
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const curriculum = await Curriculums.findOneAndUpdate(
-      { slug: req.params.slug },
+      { ownerEmail: owner, slug: req.params.slug },
       updates,
       { new: true, runValidators: true }
     );
@@ -185,16 +227,21 @@ async function patchCurriculum(req, res) {
 // it, and leaving them behind would orphan bars that never render again.
 async function deleteCurriculum(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const { slug } = req.params;
 
-    const curriculum = await Curriculums.findOneAndDelete({ slug });
+    const curriculum = await Curriculums.findOneAndDelete({ ownerEmail: owner, slug });
     if (!curriculum) {
       return res.status(404).json({ msg: "Curriculum does not exist." });
     }
 
+    // Scoped by owner as well as slug so a cascade can never reach across
+    // accounts, even if two owners share a curriculum slug.
     const [programs, alternatives] = await Promise.all([
-      Programs.deleteMany({ curriculumSlug: slug }),
-      Alternatives.deleteMany({ curriculumSlug: slug }),
+      Programs.deleteMany({ ownerEmail: owner, curriculumSlug: slug }),
+      Alternatives.deleteMany({ ownerEmail: owner, curriculumSlug: slug }),
     ]);
 
     logger.info(
@@ -252,7 +299,11 @@ async function createProgram(req, res) {
       return res.status(400).json({ msg: "A program needs a curriculum." });
     }
 
-    const parent = await Curriculums.exists({ slug: curriculumSlug });
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
+    // Scoped: you cannot hang a program off someone else's curriculum.
+    const parent = await Curriculums.exists({ ownerEmail: owner, slug: curriculumSlug });
     if (!parent) {
       return res.status(400).json({ msg: "That curriculum does not exist." });
     }
@@ -262,8 +313,9 @@ async function createProgram(req, res) {
       return res.status(400).json({ msg: "A program needs a name." });
     }
 
+    data.ownerEmail = owner;
     data.curriculumSlug = curriculumSlug;
-    data.slug = await uniqueSlug(Programs, data.name, String(req.body.slug || "").trim());
+    data.slug = await uniqueSlug(Programs, owner, data.name, String(req.body.slug || "").trim());
 
     const program = await Programs.create(data);
     logger.info(`Created program ${program.slug} under ${curriculumSlug}`);
@@ -277,16 +329,25 @@ async function createProgram(req, res) {
 
 async function updateProgram(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const data = programPayload(req.body);
     if (!data.name) {
       return res.status(400).json({ msg: "A program needs a name." });
     }
     if (req.body.curriculumSlug) {
-      data.curriculumSlug = String(req.body.curriculumSlug).trim();
+      const target = String(req.body.curriculumSlug).trim();
+      // Re-parenting is allowed, but only to a curriculum you own.
+      const parent = await Curriculums.exists({ ownerEmail: owner, slug: target });
+      if (!parent) {
+        return res.status(400).json({ msg: "That curriculum does not exist." });
+      }
+      data.curriculumSlug = target;
     }
 
     const program = await Programs.findOneAndUpdate(
-      { slug: req.params.slug },
+      { ownerEmail: owner, slug: req.params.slug },
       data,
       { new: true, runValidators: true }
     );
@@ -305,9 +366,12 @@ async function updateProgram(req, res) {
 // full PUT so dragging a slider never has to round-trip the whole document.
 async function patchProgramProgress(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const progress = clamp(num(req.body.progress, 0), 0, 100);
 
-    const existing = await Programs.findOne({ slug: req.params.slug });
+    const existing = await Programs.findOne({ ownerEmail: owner, slug: req.params.slug });
     if (!existing) {
       return res.status(404).json({ msg: "Program does not exist." });
     }
@@ -320,7 +384,7 @@ async function patchProgramProgress(req, res) {
     if (req.body.notes !== undefined) updates.notes = String(req.body.notes);
 
     const program = await Programs.findOneAndUpdate(
-      { slug: req.params.slug },
+      { ownerEmail: owner, slug: req.params.slug },
       updates,
       { new: true, runValidators: true }
     );
@@ -334,7 +398,10 @@ async function patchProgramProgress(req, res) {
 
 async function deleteProgram(req, res) {
   try {
-    const program = await Programs.findOneAndDelete({ slug: req.params.slug });
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
+    const program = await Programs.findOneAndDelete({ ownerEmail: owner, slug: req.params.slug });
     if (!program) {
       return res.status(404).json({ msg: "Program does not exist." });
     }
@@ -379,7 +446,10 @@ async function createAlternative(req, res) {
       return res.status(400).json({ msg: "An alternative needs a curriculum." });
     }
 
-    const parent = await Curriculums.exists({ slug: curriculumSlug });
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
+    const parent = await Curriculums.exists({ ownerEmail: owner, slug: curriculumSlug });
     if (!parent) {
       return res.status(400).json({ msg: "That curriculum does not exist." });
     }
@@ -389,8 +459,9 @@ async function createAlternative(req, res) {
       return res.status(400).json({ msg: "An alternative needs a name." });
     }
 
+    data.ownerEmail = owner;
     data.curriculumSlug = curriculumSlug;
-    data.slug = await uniqueSlug(Alternatives, data.name, String(req.body.slug || "").trim());
+    data.slug = await uniqueSlug(Alternatives, owner, data.name, String(req.body.slug || "").trim());
 
     const alternative = await Alternatives.create(data);
     res.json({ success: true, msg: "Alternative created.", alternative });
@@ -407,8 +478,11 @@ async function updateAlternative(req, res) {
       return res.status(400).json({ msg: "An alternative needs a name." });
     }
 
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const alternative = await Alternatives.findOneAndUpdate(
-      { slug: req.params.slug },
+      { ownerEmail: owner, slug: req.params.slug },
       data,
       { new: true, runValidators: true }
     );
@@ -425,7 +499,10 @@ async function updateAlternative(req, res) {
 
 async function deleteAlternative(req, res) {
   try {
-    const alternative = await Alternatives.findOneAndDelete({ slug: req.params.slug });
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
+    const alternative = await Alternatives.findOneAndDelete({ ownerEmail: owner, slug: req.params.slug });
     if (!alternative) {
       return res.status(404).json({ msg: "Alternative does not exist." });
     }
@@ -443,14 +520,17 @@ async function deleteAlternative(req, res) {
 // Currently just the calendar anchor the month axis is labelled from.
 async function updateRoadmapSettings(req, res) {
   try {
+    const owner = requireOwner(req, res);
+    if (!owner) return undefined;
+
     const anchor = String(req.body.anchor || "").trim();
     if (anchor && !/^\d{4}-\d{2}$/.test(anchor)) {
       return res.status(400).json({ msg: "Anchor must look like 2026-10." });
     }
 
     const setting = await Settings.findOneAndUpdate(
-      { key: SETTINGS_KEY },
-      { key: SETTINGS_KEY, value: { anchor } },
+      { key: settingsKeyFor(owner) },
+      { key: settingsKeyFor(owner), value: { anchor } },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 

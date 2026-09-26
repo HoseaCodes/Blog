@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useState, useCallback } from "react";
 import styled from "styled-components";
-import axios from "axios";
 import { GlobalState } from "../../../GlobalState";
+import { apiLocal } from "../../../lib/stormGate";
 import RoadmapDetail from "./RoadmapDetail";
 import { CurriculumForm, ProgramForm, AlternativeForm } from "./RoadmapForms";
 import {
@@ -398,7 +398,6 @@ const EmptyChart = styled.div`
 
 const AdminRoadmap = () => {
   const state = useContext(GlobalState);
-  const [token] = state.token;
   const api = state.roadmapAPI;
 
   const [curricula] = api.curricula;
@@ -418,7 +417,6 @@ const AdminRoadmap = () => {
   const [dialog, setDialog] = useState(null);
   const [error, setError] = useState(null);
 
-  const authHeader = useMemo(() => ({ headers: { Authorization: token } }), [token]);
   const cols = useMemo(() => axisMonths(curricula, programs), [curricula, programs]);
   const ordered = useMemo(() => sortCurricula(curricula, sort), [curricula, sort]);
 
@@ -440,14 +438,14 @@ const AdminRoadmap = () => {
   const saveCurriculum = (slug, form) =>
     run(async () => {
       const body = { ...form, teaches: undefined };
-      if (slug) await axios.put(`/api/roadmap/curricula/${slug}`, body, authHeader);
-      else await axios.post("/api/roadmap/curricula", body, authHeader);
+      if (slug) await apiLocal.put(`/api/roadmap/curricula/${slug}`, body);
+      else await apiLocal.post("/api/roadmap/curricula", body);
       setDialog(null);
     });
 
   const deleteCurriculum = (slug) =>
     run(async () => {
-      await axios.delete(`/api/roadmap/curricula/${slug}`, authHeader);
+      await apiLocal.delete(`/api/roadmap/curricula/${slug}`);
       setDialog(null);
       setSelection(null);
     });
@@ -455,15 +453,15 @@ const AdminRoadmap = () => {
   const saveProgram = (slug, curriculumSlug, form) =>
     run(async () => {
       const body = { ...form, curriculumSlug, teaches: textToList(form.teaches) };
-      if (slug) await axios.put(`/api/roadmap/programs/${slug}`, body, authHeader);
-      else await axios.post("/api/roadmap/programs", body, authHeader);
+      if (slug) await apiLocal.put(`/api/roadmap/programs/${slug}`, body);
+      else await apiLocal.post("/api/roadmap/programs", body);
       setExpanded((e) => ({ ...e, [curriculumSlug]: true }));
       setDialog(null);
     });
 
   const deleteProgram = (program) =>
     run(async () => {
-      await axios.delete(`/api/roadmap/programs/${program.slug}`, authHeader);
+      await apiLocal.delete(`/api/roadmap/programs/${program.slug}`);
       setDialog(null);
       setSelection({ kind: "curriculum", slug: program.curriculumSlug });
     });
@@ -471,40 +469,40 @@ const AdminRoadmap = () => {
   const saveAlternative = (slug, curriculumSlug, form) =>
     run(async () => {
       const body = { ...form, curriculumSlug };
-      if (slug) await axios.put(`/api/roadmap/alternatives/${slug}`, body, authHeader);
-      else await axios.post("/api/roadmap/alternatives", body, authHeader);
+      if (slug) await apiLocal.put(`/api/roadmap/alternatives/${slug}`, body);
+      else await apiLocal.post("/api/roadmap/alternatives", body);
       setDialog(null);
     });
 
   const deleteAlternative = (slug) =>
     run(async () => {
-      await axios.delete(`/api/roadmap/alternatives/${slug}`, authHeader);
+      await apiLocal.delete(`/api/roadmap/alternatives/${slug}`);
       setDialog(null);
     });
 
   const setProgress = (program, value) =>
     run(async () => {
-      await axios.patch(`/api/roadmap/programs/${program.slug}/progress`, { progress: value }, authHeader);
+      await apiLocal.patch(`/api/roadmap/programs/${program.slug}/progress`, { progress: value });
     });
 
   const setRating = (curriculum, value) =>
     run(async () => {
       // Clicking the pip you already sit on clears the rating.
       const next = num(curriculum.rating, 0) === value ? 0 : value;
-      await axios.patch(`/api/roadmap/curricula/${curriculum.slug}`, { rating: next }, authHeader);
+      await apiLocal.patch(`/api/roadmap/curricula/${curriculum.slug}`, { rating: next });
     });
 
   const saveGoal = (curriculum, field, value) => {
     setEditing(null);
     if (String(curriculum[field] || "") === value) return;
     run(async () => {
-      await axios.patch(`/api/roadmap/curricula/${curriculum.slug}`, { [field]: value }, authHeader);
+      await apiLocal.patch(`/api/roadmap/curricula/${curriculum.slug}`, { [field]: value });
     });
   };
 
   const setAnchor = (value) =>
     run(async () => {
-      await axios.put("/api/roadmap/settings", { anchor: value }, authHeader);
+      await apiLocal.put("/api/roadmap/settings", { anchor: value });
     });
 
   /* ---------- pieces ---------- */

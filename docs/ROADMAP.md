@@ -43,6 +43,13 @@ Ranked by value, not effort. The first six are correctness or safety issues, not
 15. **Make Snyk blocking**, or state plainly that it is advisory. Today it is `continue-on-error` plus `|| true`.
 16. **Retire the `dev.v*` tagging** in `master.yaml`, which nothing consumes, and the deprecated `::set-output` calls.
 17. **Tidy the contact form.** The GetForm endpoint id is duplicated across `Contact.jsx` and the apparently-unused `ContactForm.jsx`; the success notification fires before the POST resolves, so failures read as successes; and the public endpoint has no spam protection.
+18. **Move the contact form from GetForm to [formbox](https://github.com/HoseaCodes/Form-Box)**, our self-hosted form backend (already live at `formbox-htx.fly.dev` for hoseafitness). This covers most of item 17 and removes the third-party dependency.
+    - Create a `blog-portfolio contact` form with `allowedOrigins` set to the blog's production and staging origins, `requiredFields: ["email", "message"]`, and a `redirectUrl` to a thank-you route.
+    - Replace `GETFORM_ENDPOINT` in `Contact.jsx` with `https://formbox-htx.fly.dev/f/<formId>`, from an env var rather than hard-coded, and delete `ContactForm.jsx`.
+    - Add a hidden `_gotcha` honeypot input and a `_subject` field. formbox stores honeypot hits as spam and sends no notification.
+    - Either keep the native POST, where formbox redirects to `_next`/`redirectUrl`, or switch to `fetch` with `Accept: application/json`. With `fetch`, the success notification fires only on a `201` and shows formbox's error message otherwise, which fixes the false-success bug.
+    - Email notifications: set `SMTP_URL` on formbox to Resend's SMTP (`smtps://resend:<key>@smtp.resend.com:465`), the provider `utils/email.js` already uses, and set `notifyEmails` on the form.
+    - Export existing GetForm submissions before cancelling it.
 
 ---
 

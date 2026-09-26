@@ -29,6 +29,19 @@ const DRY_RUN = process.argv.includes("--dry-run");
 // Month 1 of the plan. The Gantt labels its axis from this.
 const ANCHOR = "2026-10";
 
+/*
+  Whose roadmap this seeds. Every record is scoped to one admin's Storm-Gate
+  email (controllers/roadmap.js), so the seed has to name an owner — without a
+  matching one, /api/roadmap returns an empty roadmap for everybody.
+
+  Override with --owner=<email> or ROADMAP_OWNER.
+*/
+const OWNER = (
+  process.argv.find((a) => a.startsWith("--owner="))?.split("=")[1] ||
+  process.env.ROADMAP_OWNER ||
+  "dominique11h@yahoo.com"
+).trim().toLowerCase();
+
 const CURRICULA = [
     {
       "slug": "game-development",
@@ -464,10 +477,10 @@ async function upsert(Model, label, records) {
       console.log(`  would upsert ${label} ${record.slug}`);
       continue;
     }
-    const existing = await Model.exists({ slug: record.slug });
+    const existing = await Model.exists({ ownerEmail: OWNER, slug: record.slug });
     await Model.findOneAndUpdate(
-      { slug: record.slug },
-      record,
+      { ownerEmail: OWNER, slug: record.slug },
+      { ...record, ownerEmail: OWNER },
       { upsert: true, new: true, setDefaultsOnInsert: true, runValidators: true }
     );
     if (existing) updated += 1;
@@ -484,6 +497,7 @@ async function main() {
 
   // Never log the URI itself — it carries credentials.
   console.log(`Connected to ${mongoose.connection.host}/${mongoose.connection.name}`);
+  console.log(`Owner: ${OWNER}`);
   if (DRY_RUN) console.log("DRY RUN — nothing will be written.\n");
 
   // Curricula first: programs and alternatives reference them by slug, and the
@@ -502,8 +516,8 @@ async function main() {
 
   if (!DRY_RUN) {
     await Settings.findOneAndUpdate(
-      { key: "roadmap" },
-      { key: "roadmap", value: { anchor: ANCHOR } },
+      { key: `roadmap:${OWNER}` },
+      { key: `roadmap:${OWNER}`, value: { anchor: ANCHOR } },
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
     console.log(`  settings: anchor ${ANCHOR}`);

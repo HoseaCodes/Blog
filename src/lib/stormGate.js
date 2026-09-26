@@ -10,8 +10,13 @@ const STORM_GATE_BASE_URL =
     ? 'https://3ynqb3302m.execute-api.us-east-1.amazonaws.com'
     : 'http://localhost:8081');
 
+// This app's OWN API. In production Express serves the SPA and /api from the
+// same origin, so the correct base is '' (relative) — a hardcoded
+// localhost:3003 made the deployed site call the visitor's own machine, which
+// CORS then refused. Mirrors the STORM_GATE_BASE_URL branch above.
 const LOCAL_API_BASE_URL =
-  process.env.REACT_APP_LOCAL_API_BASE_URL || 'http://localhost:3003';
+  process.env.REACT_APP_LOCAL_API_BASE_URL ||
+  (process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3003');
 
 const AUTH_REQUIRED_PREFIXES = ['/admin', '/profile', '/checkout', '/order'];
 

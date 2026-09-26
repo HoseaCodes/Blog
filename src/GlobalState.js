@@ -55,7 +55,7 @@ export const DataProvider = ({ children }) => {
     token: [token, setToken],
     productsAPI: ProductsAPI(),
     projectsAPI: ProjectsAPI(),
-    roadmapAPI: RoadmapAPI(token),
+    roadmapAPI: RoadmapAPI(),
     articlesAPI: ArticlesAPI(),
     commentsAPI: CommentsAPI,
     userAPI: UserAPI(token),

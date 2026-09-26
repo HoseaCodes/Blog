@@ -1,18 +1,24 @@
 import { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { apiLocal } from '../lib/stormGate';
 
 /*
-  Data for /admin/roadmap. Follows the ProjectsAPI shape (tuple per value, a
-  `loading` flag, a `cancelled` guard in the effect) with two differences: it
-  needs the token, and /api/roadmap is admin-only, so a non-admin session gets
-  403 and is left with empty arrays rather than an error banner — PrivateRoute
-  has already redirected such a user away from the page.
+  Data for /admin/roadmap.
+
+  Uses `apiLocal` (the Storm-Gate authed axios from src/lib/stormGate.js), the
+  same client ListUser, UserAPI, PointsAPI and StoreAPI use. It attaches the
+  bearer token from the Storm-Gate SDK's own session.
+
+  It deliberately does NOT follow AdminBlogs, which sets
+  `Authorization: token` by hand from GlobalState's `accesstoken` cookie value:
+  that cookie is not reliably readable from JS, so the header goes out empty and
+  the request never even reaches the route. Don't reintroduce a token argument
+  here — there is nothing for the caller to pass.
 
   One request returns the whole roadmap. There are around twenty documents and
   the page draws every part of it at once, so three round trips would buy
   nothing.
 */
-function RoadmapAPI(token) {
+function RoadmapAPI() {
   const [curricula, setCurricula] = useState([]);
   const [programs, setPrograms] = useState([]);
   const [alternatives, setAlternatives] = useState([]);
@@ -24,21 +30,10 @@ function RoadmapAPI(token) {
   useEffect(() => {
     let cancelled = false;
 
-    if (!token) {
-      setCurricula([]);
-      setPrograms([]);
-      setAlternatives([]);
-      setSettings({});
-      setLoading(false);
-      return undefined;
-    }
-
     const getRoadmap = async () => {
       setLoading(true);
       try {
-        const res = await axios.get('/api/roadmap', {
-          headers: { Authorization: token },
-        });
+        const res = await apiLocal.get('/api/roadmap');
         if (cancelled) return;
         setCurricula(res.data.curricula || []);
         setPrograms(res.data.programs || []);
@@ -47,10 +42,14 @@ function RoadmapAPI(token) {
         setError(null);
       } catch (err) {
         if (cancelled) return;
-        // 403 is the expected answer for a signed-in non-admin, not a fault.
-        if (err.response && err.response.status !== 403) {
+        const status = err.response?.status;
+        // 401/403 is the expected answer for a signed-out or non-admin visitor,
+        // not a fault: PrivateRoute has already redirected such a user away.
+        // Anything else is worth showing, because an empty page with no
+        // explanation is indistinguishable from "you have no curricula".
+        if (status !== 401 && status !== 403) {
           console.error('Error fetching roadmap:', err);
-          setError(err.response.data?.msg || err.message);
+          setError(err.response?.data?.msg || err.message);
         }
         setCurricula([]);
         setPrograms([]);
@@ -65,7 +64,7 @@ function RoadmapAPI(token) {
     return () => {
       cancelled = true;
     };
-  }, [token, callback]);
+  }, [callback]);
 
   // Re-fetch after a write. Stable identity so it can sit in a dep array.
   const refresh = useCallback(() => setCallback((c) => !c), []);

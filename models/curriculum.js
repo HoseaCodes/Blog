@@ -13,9 +13,15 @@ import mongoose from 'mongoose';
   drift away from the modules it rolls up.
 */
 const curriculumSchema = new mongoose.Schema({
-  // Hand-assignable stable id. Mirrors projectId in models/project.js so
-  // scripts/seedRoadmap.mjs can upsert idempotently on a value we control.
-  slug: { type: String, trim: true, required: true, unique: true, index: true },
+
+  // Whose roadmap this is. Storm-Gate's /me is the source of truth for email
+  // (utils/auth.js), so the controller stamps it from req.user.email and scopes
+  // every query by it: two admins never see each other's tracks.
+  ownerEmail: { type: String, trim: true, lowercase: true, required: true, index: true },
+
+  // Hand-assignable stable id, unique PER OWNER rather than globally: two
+  // people may both track a curriculum called "Computer Science".
+  slug: { type: String, trim: true, required: true, index: true },
 
   name: { type: String, trim: true, required: true },
 
@@ -48,6 +54,9 @@ const curriculumSchema = new mongoose.Schema({
   draft: { type: Boolean, default: false },
   archived: { type: Boolean, default: false },
 }, { timestamps: true });
+
+curriculumSchema.index({ ownerEmail: 1, slug: 1 }, { unique: true });
+curriculumSchema.index({ ownerEmail: 1, order: 1 });
 
 const Curriculums = mongoose.model('Curriculums', curriculumSchema);
 

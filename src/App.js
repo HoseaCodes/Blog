@@ -112,6 +112,8 @@ const App = () => {
                 <Route path="/register" exact={true} component={Register} />
                 <Route path="/forgot-password" exact={true} component={ForgotPassword} />
                 <Route path="/reset-password" exact={true} component={ResetPassword} />
+                {/* Storm Gate emails links as /reset-password/<token>. */}
+                <Route path="/reset-password/:token" exact={true} component={ResetPassword} />
                 <Route path="/check-status" exact={true} component={CheckStatus} />
                 <Route path="/pending" exact={true} component={Pending} />
                 <Route path="/denied" exact={true} component={Denied} />

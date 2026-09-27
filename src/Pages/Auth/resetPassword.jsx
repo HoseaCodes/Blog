@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, useLocation, useParams, Link } from "react-router-dom";
 import { auth } from "../../lib/stormGate";
 import AuthShell, {
   AuthHeader,
@@ -14,11 +14,18 @@ import AuthShell, {
   AuthFooter,
 } from "./AuthShell";
 
+// Storm Gate's rules for a new password: at least 8 characters and at most
+// 72 bytes (bcrypt ignores anything past 72).
+const MIN_LENGTH = 8;
+const MAX_BYTES = 72;
+
 const ResetPassword = () => {
   const history = useHistory();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token");
+  const params = useParams();
+  // Storm Gate's email links to /reset-password/<token>; ?token= is kept for
+  // any older links.
+  const token = params.token || new URLSearchParams(location.search).get("token");
 
   const [formData, setFormData] = useState({
     password: "",
@@ -70,8 +77,12 @@ const ResetPassword = () => {
       setError("Passwords do not match");
       return;
     }
-    if (formData.password.length < 6) {
-      setError("Password must be at least 6 characters long");
+    if ([...formData.password].length < MIN_LENGTH) {
+      setError(`Password must be at least ${MIN_LENGTH} characters long`);
+      return;
+    }
+    if (new TextEncoder().encode(formData.password).length > MAX_BYTES) {
+      setError("Password is too long");
       return;
     }
 
@@ -127,7 +138,7 @@ const ResetPassword = () => {
         <AuthKicker>New password</AuthKicker>
         <AuthTitle>Set a new password.</AuthTitle>
         <AuthSubtitle>
-          Choose something at least 6 characters long that you'll remember.
+          Choose something at least 8 characters long that you'll remember.
         </AuthSubtitle>
       </AuthHeader>
 
@@ -143,10 +154,10 @@ const ResetPassword = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="At least 6 characters"
+            placeholder="At least 8 characters"
             autoComplete="new-password"
             required
-            minLength={6}
+            minLength={MIN_LENGTH}
           />
           <small
             style={{ color: "#5bb39e", cursor: "pointer", marginTop: 4 }}

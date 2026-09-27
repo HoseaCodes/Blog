@@ -52,11 +52,15 @@ const Register = () => {
     ) {
       return { valid: false, message: "Please enter a valid email address" };
     }
-    if (!input.password || input.password.length < 6) {
+    // Storm Gate's rules: at least 8 characters, at most 72 bytes.
+    if (!input.password || [...input.password].length < 8) {
       return {
         valid: false,
-        message: "Password must be at least 6 characters long",
+        message: "Password must be at least 8 characters long",
       };
+    }
+    if (new TextEncoder().encode(input.password).length > 72) {
+      return { valid: false, message: "Password is too long" };
     }
     if (input.password !== input.confirmPassword) {
       return { valid: false, message: "Passwords do not match" };
@@ -169,7 +173,7 @@ const Register = () => {
             id="password"
             required
             autoComplete="new-password"
-            placeholder="At least 6 characters"
+            placeholder="At least 8 characters"
             value={password}
             onChange={onChangeInput}
           />
